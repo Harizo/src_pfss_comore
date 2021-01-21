@@ -1,0 +1,172 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Importation des données</span>
+                <span class="parent"> </span>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent" href="javascript:;">Importation des interventions</span>
+            </div>
+
+            <div class="title">Importation des interventions</div>
+        </div>
+    </div>
+    <div class="content"layout="column">
+		<div class="form-wrapper"> 
+			<md-progress-circular ng-if="vm.affiche_load" class="md-accent" md-mode="indeterminate" md-diameter="64"></md-progress-circular>
+			<div style="clear:both;"></div>
+			<!-- Début Liste fichier excel en attente d'intégration dans la BDD -->
+			<md-tabs md-dynamic-height>
+				<md-tab label="Interventions en attente d'importation vers BDD">
+					<md-tab-body>
+						<fieldset>
+							<legend>
+								Importation des interventions
+								<!--button ng-disabled="vm.disable" ng-click="vm.ajouterDocument()" ng-show="vm.afficherboutonnouveau==1" title="Ajouter document" style="font-size: 24px;font-weight: bold;background-color: rgb(255,255,255);color: rgb(3,155,229);">+</button-->
+							</legend>
+							<div style="clear:both;"></div>
+							<table ng-table="tablelistevalidationintervention" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+								<thead>
+									<tr>
+										<th class="secondary-text" ng-repeat="c in :: vm.colonne_validation">
+											<div class="table-header">
+												<span class="column-title">{{c.titre}}</span>
+											</div>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr  ng-repeat="lstvld in vm.Listevalidationintervention"  ng-class="{selected: lstvld.$selected}" ng-click="vm.selectionDocument(lstvld)">
+										<td>
+											<span ng-if="lstvld.$edit">
+												<md-input-container>
+													<label>Acteur</label>
+													<input type="text" ng-model="lstvld.raisonsociale" disabled />
+													<div ng-messages="raisonsociale.$error" role="alert">									   
+													</div>
+												</md-input-container> 
+											</span>
+											<span ng-if="!lstvld.$edit">{{lstvld.raisonsociale}}</span>
+										</td>
+										<td>
+											<span ng-if="lstvld.$edit">
+												<label>{{lstvld.nom_fichier}}</label>
+												<div class="file-upload">
+													<input file-uploader style="color:#772e03 !important;" id="fichier" name="fichier" type="file" custom-on-change="uploadFile"  ng-multiple="false" />
+													<button ng-click="vm.uploadFile()" ng-disabled="!vm.monfichier" 
+														style="background: #ff843d; /* Old browsers */
+															background: -moz-linear-gradient(top,  #ff843d 0%, #fc8a49 17%, #ef7d3b 33%, #db6520 67%, #ce5712 83%, #ba4603 100%); /* FF3.6+ */
+															background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ff843d), color-stop(17%,#fc8a49), color-stop(33%,#ef7d3b), color-stop(67%,#db6520), color-stop(83%,#ce5712), color-stop(100%,#ba4603)); /* Chrome,Safari4+ */
+															background: -webkit-linear-gradient(top,  #ff843d 0%,#fc8a49 17%,#ef7d3b 33%,#db6520 67%,#ce5712 83%,#ba4603 100%); /* Chrome10+,Safari5.1+ */
+															background: -o-linear-gradient(top,  #ff843d 0%,#fc8a49 17%,#ef7d3b 33%,#db6520 67%,#ce5712 83%,#ba4603 100%); /* Opera 11.10+ */
+															background: -ms-linear-gradient(top,  #ff843d 0%,#fc8a49 17%,#ef7d3b 33%,#db6520 67%,#ce5712 83%,#ba4603 100%); /* IE10+ */
+															background: linear-gradient(to bottom,  #ff843d 0%,#fc8a49 17%,#ef7d3b 33%,#db6520 67%,#ce5712 83%,#ba4603 100%); /* W3C */
+															filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff843d', endColorstr='#ba4603',GradientType=0 ); /* IE6-9 */
+															color:#772e03;
+															font-weight:bold;
+															height:auto;">
+														<md-icon md-font-icon="icon-cloud-upload" class="s16" style="padding-left: 2px !important;padding-right:  2px !important;padding-bottom: 20px"> 
+														</md-icon> Upload me
+													</button>
+												</div>
+												<div ng-messages="fichier.$error" role="alert"> 
+												</div>
+											</span>
+												<div ng-messages="fichier.$error" role="alert"> 
+												</div>
+											</span>
+											<span ng-if="!lstvld.$edit">{{lstvld.nom_fichier}}</span>
+										</td>
+										<td>
+											<span ng-if="lstvld.$edit">
+												<md-input-container>
+													<label>Date upload</label>
+													<input type="datetime-local" ng-model="lstvld.date_reception" disabled />
+													<div ng-messages="date_reception.$error" role="alert">									   
+													</div>
+												</md-input-container> 
+											</span>
+											<span ng-if="!lstvld.$edit">{{lstvld.date_reception |date:'dd/MM/yyyy HH:mm:ss'}}</span>
+										</td>
+										<td>
+											<span ng-if="lstvld.$edit">
+												<md-input-container>
+													<label>Utilisateur</label>
+													<input type="text" ng-model="lstvld.nomutilisateur" disabled />
+													<div ng-messages="nomutilisateur.$error" role="alert">									   
+													</div>
+												</md-input-container> 
+											</span>
+											<span ng-if="!lstvld.$edit">{{lstvld.nomutilisateur}}</span>
+										</td>
+										<td>
+											<span  ng-if="!lstvld.$edit" ng-show="!lstvld.id_utilisateur_validation">	
+												<md-button class="md-icon-button" aria-label="Enregistrer unité de mesure" ng-click="vm.ConfirmerImportIntervention(lstvld)">
+												  <md-icon md-font-icon="icon-upload"></md-icon>
+												  <md-tooltip><span>Intégration dans la base de données</span></md-tooltip>
+												</md-button>
+											</span>	
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</fieldset>
+					</md-tab-body>
+				</md-tab> 
+				<!-- Fin Liste fichier excel en attente d'intégration dans la BDD -->
+				<!-- Début Liste fichier excel déja intégrés dans la BDD -->
+				<md-tab label="Interventions importés">
+					<md-tab-body>
+						<fieldset>
+							<legend>
+								Liste des données interventions importés
+							</legend>
+							<div style="clear:both;"></div>
+							<table ng-table="tablelisteinterventionvalidees" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+								<thead>
+									<tr>
+										<th class="secondary-text" ng-repeat="c in :: vm.colonne_donnees_validees">
+											<div class="table-header">
+												<span class="column-title">{{c.titre}}</span>
+											</div>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr  ng-repeat="lstvld in vm.Listeinterventionvalidees"  ng-class="{selected: lstvld.$selected}" ng-click="vm.selectionInterventionValidees(lstvld)">
+										<td>
+											<span>{{lstvld.raisonsociale}}</span>
+										</td>
+										<td>
+											<span>{{lstvld.nom_fichier}}</span>
+										</td>
+										<td> 
+											<span>{{lstvld.date_reception}}</span>
+										</td>
+										<td>
+											<span>{{lstvld.nomutilisateur}}</span>
+										</td>
+										<td>
+											<span>{{lstvld.date_validation}}</span>
+										</td>
+										<td>
+											<span>{{lstvld.nomutilisateurvalidation}}</span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</fieldset>
+					</md-tab-body>
+				</md-tab> 
+				<md-tab> 
+				</md-tab> 
+				<!-- Fin Liste fichier excel déja intégrés dans la BDD -->
+			</md-tabs>
+		</div>
+    </div>
+</div>
+    
+
+

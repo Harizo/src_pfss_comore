@@ -1,0 +1,27 @@
+{
+    "LOGIN": {
+        "TITLE_FIRST": "Premi&egrave;re connexion &agrave votre compte : Modification mot de passe par d&eacute;faut obligatoire",
+        "EMAIL": "Email",
+        "PASSWORD": "Mot de passe",
+        "CONFIRM_PASSWORD": "Confirmer Mot de passe",
+        "REMEMBER_ME": "Se souvenir de moi",
+        "FORGOT_PASSWORD": "Mot de passe oublié?",
+        "MODIF_LOG_IN": "Modifier mot de passe",
+        "OR": "Ou",
+        "WITH_GOOGLE": "Se connecter avec Google",
+        "WITH_FACEBOOK": "Se connecter avec Facebook",
+        "DONT_HAVE_ACCOUNT": "Pas encors inscrit?",
+        "CREATE_ACCOUNT": "Créer un compte",
+        "ERRORS": {
+            "EMAIL_REQUIRED": "Courriel obligatoire!",
+            "EMAIL_MUST_VALID": "Courriel non valide!",
+            "PASSWORD_REQUIRED": "Mot de passe obligatoire!",
+            "CONFIRM_PASSWORD_REQUIRED": "Confirmation mot de passe obligatoire!"
+        },
+        "error":{
+          "titre": "Erreur d'authentification",
+          "msg": "Verifier votre  <b>login</b> ou <b>mot de passe</b>, Merci.",
+          "quitter": "Quitter"
+        }
+    }
+}

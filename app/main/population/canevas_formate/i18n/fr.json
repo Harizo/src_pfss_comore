@@ -1,0 +1,9 @@
+{
+    "activite": {
+		"parent": "Recommandations",
+		"titre": "Activité",
+		"menu":{
+			"titre":"Activité"
+		}
+    }
+}

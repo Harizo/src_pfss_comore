@@ -1,0 +1,16 @@
+{
+    "RESETPASSWORD": {
+        "TITLE": "Réinitialisez votre mot de passe",
+        "EMAIL_ADRESS": "Email",
+        "PASSWORD": "Mot de passe",
+        "PASSWORD_CONFIRM": "Mot de passe (Confirmation)",
+        "UPDATE_PASSWORD": "Réinitialiser mon mot de passe",
+        "GO_BACK": "Go back to login",
+        "ERRORS": {
+            "EMAIL_REQUIRED": "Email obligatoire",
+            "EMAIL_MUST_VALID": "Doit être une addresse email valide",
+            "PASSWORD_REQUIRED": "Mot de passe obligatoire",
+            "PASSWORD_CONFIRM_REQUIRED": "Mot de passe (Confirmation) obligatoire"
+        }
+    }
+}

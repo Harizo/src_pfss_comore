@@ -1,0 +1,1019 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Traitement</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;"> Suivi</span>
+                </div>
+    
+                <div class="title">Suivi</div>
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>
+                <md-tabs md-dynamic-height>
+                    <md-tab label="Ménage Béneficiaire" ng-click="vm.Filtrer_Item_Promotion_Genre_et_Nutrition(1)">
+                        <form name="filtrepardateform" class="md-inline-form" novalidate >
+                            <div layout="column" layout-gt-xs="row" flex>
+                                <md-input-container flex="100" flex-gt-xs="90">
+                                  <label>Région</label>
+                                    <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_region()" required>
+                                     
+                                      <md-option ng-repeat="reg in vm.all_region" value="{{reg.id}}" >
+                                        {{reg.nom}}
+                                      </md-option>
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.region.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Région obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+
+                                <md-input-container flex="100" flex-gt-xs="90">
+                                  <label>District</label>
+                                    <md-select ng-model="vm.filtre.id_district" name="district" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_region" required>
+                                      
+                                      <md-option ng-repeat="dis in vm.all_district" value="{{dis.id}}" >
+                                        {{dis.nom}}
+                                      </md-option>
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.district.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>District obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+
+                                <md-input-container flex="100" flex-gt-xs="90">
+                                  <label>Commune</label>
+                                    <md-select ng-model="vm.filtre.id_commune" name="commune" ng-change="vm.filtre_fokontany()" ng-disabled="!vm.filtre.id_district"  required>
+                                     
+                                      <md-option ng-repeat="comm in vm.all_commune" value="{{comm.id}}" >
+                                        {{comm.nom}}
+                                      </md-option>
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.commune.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Commune obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+
+                                <md-input-container flex="100" flex-gt-xs="90">
+                                  <label>Fokontany</label>
+                                    <md-select ng-model="vm.filtre.id_fokontany" name="fokontany" ng-change="" ng-disabled="!vm.filtre.id_commune"  required>
+                                      <md-option  value="*">*</md-option>
+                                      <md-option ng-repeat="fkt in vm.all_fokontany" value="{{fkt.id}}" >
+                                        {{fkt.nom}}
+                                      </md-option>
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.fokontany.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Fokontany obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="90">
+                                  <label>Intervention</label>
+                                    <md-select ng-model="vm.id_intervention" name="id_intervention"  ng-disabled="!vm.filtre.id_fokontany"  required>       
+                                      <md-option ng-repeat="intrv in vm.all_intervetion" value="{{intrv.id}}" >
+                                        {{intrv.intitule}}
+                                      </md-option>
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.id_intervention.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Intervention obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                    
+                            </div>
+                            <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                  ng-disabled="filtrepardateform.$invalid||vm.affiche_load" ng-click="vm.filtrer(vm.filtre)">
+                                  Actualiser
+                            </md-button>
+                        </form>
+                        <table class="dataTable row-border hover" datatable="ng"
+                          dt-options="vm.dtOptions">
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::vm.menage_column">
+                                <div class="table-header">
+                                  <span class="column-title">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="mp in vm.all_menage_intervention"  ng-class="{selected: mp.$selected}" ng-click="vm.selection(mp)">
+                              <td>{{mp.nom}}  {{mp.prenom}}</td>
+                              <td>{{mp.date_naissance |date:'dd/MM/yyyy'}}</td>
+                              <td>{{mp.cin}}</td>                
+                              <td>{{mp.profession}}</td>                
+                              <td>{{mp.date_inscription |date:'dd/MM/yyyy'}}</td>                
+                            </tr>
+                          </tbody>
+                        </table>
+                    </md-tab>
+                    <md-tab label="Suivi Ménage" ng-disabled="!vm.selectedItemMenage.id">                        
+						<md-tab-body>
+							<div style="widht:100%;">                                     
+								<md-button type="submit" ng-show="vm.afficherboutonnouveau==1" class="md-raised md-accent" aria-label="Nouveau" ng-click="vm.ajouterSuiviMenage()" style="width:10%;">
+								  Nouveau
+								</md-button>
+								<md-button type="submit" ng-show="vm.afficherboutonModifSupr==1" class="md-raised md-accent" aria-label="Modifier" ng-click="vm.modifierSuiviMenage()" style="width:10%;">
+								  Modifier
+								</md-button>
+								<md-button type="submit" ng-show="vm.afficherboutonModifSupr==1" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimerSuiviMenage()" style="width:10%;">
+								  Supprimer
+								</md-button>
+							</div>
+							<div style="widht:100%;"  ng-show="vm.affichageMasque==1"> 
+								<form name="form_suivi_menage_transfert_argent" class="md-inline-form"  ng-show="vm.affichesuivimenagepardefaut ==1" novalidate >
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date</span>
+										</md-input-container>
+										<md-datepicker name="date_suivi" ng-model="vm.suivimenage.date_suivi"   md-placeholder="Enter date de suivi" required>                       
+										</md-datepicker>
+									</div>
+									<div layout="column" layout-gt-sm="row">
+										<!--md-input-container flex-gt-sm>
+											<label>Partenaire</label>
+											<md-select name="id_partenaire" ng-model="vm.suivimenage.id_partenaire"  ng-change="vm.modifierPartenaireSuiviMenage(vm.suivimenage)" required>												
+												<md-option ng-repeat="srcf in vm.allRecordsSourcefinancement" value="{{srcf.id}}">
+													{{srcf.nom}}
+												</md-option>
+											</md-select>
+											<div ng-messages="form_suivi_menage_transfert_argent.id_partenaire.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Partenaire obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+										<md-input-container flex-gt-sm>
+											<label>Acteur</label>
+											<md-select name="id_acteur" ng-model="vm.suivimenage.id_acteur" ng-change="vm.modifierActeurSuiviMenage(vm.suivimenage)" required>
+												<md-option ng-repeat="ttrf in vm.allRecordsActeur" value="{{ttrf.id}}">
+													{{ttrf.nom}}
+												</md-option>
+											</md-select>
+											<div ng-messages="form_suivi_menage_transfert_argent.id_acteur.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Acteur obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container-->
+										<md-input-container flex-gt-sm>
+											<label>Type transfert</label>
+											<md-select name="id_type_transfert" ng-model="vm.suivimenage.id_type_transfert" ng-change="vm.modifierTypeTransfertSuiviMenage(vm.suivimenage)" required>
+												<md-option ng-repeat="ttrf in vm.allRecordsTypedetransfert" value="{{ttrf.id}}">
+													{{ttrf.description}}
+												</md-option>
+											</md-select>
+											<div ng-messages="form_suivi_menage_transfert_argent.id_type_transfert.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Type de transfert obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+										<md-input-container flex-gt-sm>
+											<input type="Number" name="montant" ng-model="vm.suivimenage.montant"
+											placeholder="Montant " required>
+											<div ng-messages="form_suivi_menage_transfert_argent.montant.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Montant obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+									</div>
+										<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+											ng-disabled="form_suivi_menage_transfert_argent.$invalid " ng-click="vm.Enregistrer_suivi_menage(vm.suivimenage,0)">
+											Enregistrer
+										</md-button>
+										<md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerSuiviMenage()">
+											Annuler
+										</md-button>
+										<input type="hidden" name="id" ng-model="vm.suivimenage.id" ng-init="vm.suivimenage.id=0"/>
+										<input type="hidden" name="id_menage" ng-model="vm.suivimenage.id_menage" ng-init="vm.suivimenage.id_menage=0"/>
+								</form>
+								<form name="form_suivi_menage_nutrition" class="md-inline-form" ng-show="vm.affichesuivimenagenutrition ==1" novalidate >
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date</span>
+										</md-input-container>
+										<md-datepicker name="date_suivi" ng-model="vm.suivimenage.date_suivi"   md-placeholder="Enter date de suivi" required>                       
+										</md-datepicker>
+									</div>
+									<div layout="column" layout-gt-sm="row">
+										<md-input-container flex-gt-sm>
+											<input type="Number" name="poids" ng-model="vm.suivimenage.poids"
+											placeholder="Poids ">
+											<div ng-messages="form_suivi_menage_nutrition.poids.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Poids obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+										<md-input-container flex-gt-sm>
+											<input type="Number" name="perimetre_bracial" ng-model="vm.suivimenage.perimetre_bracial"
+											placeholder="Périmètre brachial " required>
+											<div ng-messages="form_suivi_menage_nutrition.perimetre_bracial.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Périmètre brachial obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+										<md-input-container flex-gt-sm>
+											<input type="Number" name="age_mois" ng-model="vm.suivimenage.age_mois"
+											placeholder="Age : en mois" >
+											<div ng-messages="form_suivi_menage_nutrition.age_mois.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Age : en mois obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+										<md-input-container flex-gt-sm>
+											<input type="Number" name="taille" ng-model="vm.suivimenage.taille"
+											placeholder="Taille(cm)" >
+											<div ng-messages="form_suivi_menage_nutrition.taille.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Taille(cm) obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+										<md-input-container flex-gt-sm>
+											<input type="Number" name="zscore" ng-model="vm.suivimenage.zscore"
+											placeholder="Z-score" >
+											<div ng-messages="form_suivi_menage_nutrition.zscore.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Z-score obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+										<md-input-container flex-gt-sm>
+											<input type="Number" name="mois_grossesse" min='1'  max='9' ng-model="vm.suivimenage.mois_grossesse"
+											placeholder="Nb mois de grossesse" >
+											<div ng-messages="form_suivi_menage_nutrition.mois_grossesse.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Nb mois de grossesse obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+									</div>
+										<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+											ng-disabled="form_suivi_menage_nutrition.$invalid " ng-click="vm.Enregistrer_suivi_menage(vm.suivimenage,0)">
+											Enregistrer
+										</md-button>
+										<md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerSuiviMenage()">
+											Annuler
+										</md-button>
+										<input type="hidden" name="id" ng-model="vm.suivimenage.id" ng-init="vm.suivimenage.id=0"/>
+										<input type="hidden" name="id_menage" ng-model="vm.suivimenage.id_menage" ng-init="vm.suivimenage.id_menage=0"/>
+								</form>
+							</div> 
+							<div style="widht:100%;"  ng-show="vm.affichesuivimenagepardefaut==1"> 
+								<table id="TableMenagetransfertargent" class="dataTable row-border hover" datatable="ng"  dt-options="vm.dtOptions">
+								  <thead>
+									<tr>
+									  <th class="secondary-text" ng-repeat="re in ::vm.suivi_menage_column">
+										<div class="table-header">
+										  <span class="column-title">{{re.titre}}</span>
+										</div>
+									  </th>
+									</tr>
+								  </thead>
+								  <tbody>
+									<tr ng-repeat="mp in vm.selectedItemMenage.detail_suivi_menage"  ng-class="{selected: mp.$selected}" ng-click="vm.selectionDetailSuiviMenage(mp)">
+									  <td>{{mp.nom}} - {{mp.prenom}}</td>
+									  <td>{{mp.date_suivi |date:'dd/MM/yyyy'}}</td>                
+									  <td>{{mp.typetransfert[0].description}}</td>                
+									  <td>{{mp.montant |number:0}}</td>                
+									</tr>
+								  </tbody>
+								</table>
+							</div>	
+							<div style="widht:100%;"  ng-show="vm.affichesuivimenagepardefaut==0"> 
+								<table id="TableMenagenutrition" class="dataTable row-border hover" datatable="ng"
+								  dt-options="vm.dtOptions">
+								  <thead>
+									<tr>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Nom</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Date</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Poids</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Périm-Bra</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Age:mois</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Taille</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Z-score</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Mois-grossesse</span>
+											</div>
+										  </th>
+										  <th class="secondary-text" style="visibility:hidden">
+											<div class="table-header">
+											  <span class="column-title">id</span>
+											</div>
+										  </th>
+									</tr>
+								  </thead>
+								  <tbody>
+									<tr ng-repeat="nu in vm.selectedItemMenage.nutrition track by $index"  ng-class="{selected: nu.$selected}" ng-click="vm.selectionDetailSuiviMenage(nu)">
+									  <td>{{nu.nomchefmenage}}</td>
+									  <td>{{nu.date_suivi |date:'dd/MM/yyyy'}}</td>                
+									  <td>{{nu.poids | number:2}}</td>                
+									  <td>{{nu.perimetre_bracial | number:2}}</td>                
+									  <td>{{nu.age_mois | number:0}}</td>                
+									  <td>{{nu.taille | number:2}}</td>                
+									  <td>{{nu.zscore | number:2}}</td>                
+									  <td>{{nu.mois_grossesse | number:0}}</td>                
+									  <td style="visibility:hidden">{{nu.id}}</td>                
+									</tr>
+								  </tbody>
+								</table>
+							</div>									
+						</md-tab-body>
+                    </md-tab>
+                    <md-tab label="Individu Béneficiaire"  ng-click="vm.Filtrer_Item_Promotion_Genre_et_Nutrition(0)">
+                            <div layout="column" layout-gt-xs="row" flex>
+                                <md-input-container flex="100" flex-gt-xs="90">
+                                  <label>Région</label>
+                                    <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_region()" required>
+                                     
+                                      <md-option ng-repeat="reg in vm.all_region" value="{{reg.id}}" >
+                                        {{reg.nom}}
+                                      </md-option>
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.region.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Région obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+
+                                <md-input-container flex="100" flex-gt-xs="90">
+                                  <label>District</label>
+                                    <md-select ng-model="vm.filtre.id_district" name="district" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_region" required>
+                                      
+                                      <md-option ng-repeat="dis in vm.all_district" value="{{dis.id}}" >
+                                        {{dis.nom}}
+                                      </md-option>
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.district.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>District obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+
+                                <md-input-container flex="100" flex-gt-xs="90">
+                                  <label>Commune</label>
+                                    <md-select ng-model="vm.filtre.id_commune" name="commune" ng-change="vm.filtre_fokontany()" ng-disabled="!vm.filtre.id_district"  required>
+                                     
+                                      <md-option ng-repeat="comm in vm.all_commune" value="{{comm.id}}" >
+                                        {{comm.nom}}
+                                      </md-option>
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.commune.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Commune obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+
+                                <md-input-container flex="100" flex-gt-xs="90">
+                                  <label>Fokontany</label>
+                                    <md-select ng-model="vm.filtre.id_fokontany" name="fokontany" ng-change="" ng-disabled="!vm.filtre.id_commune"  required>
+                                      <md-option  value="*">*</md-option>
+                                      <md-option ng-repeat="fkt in vm.all_fokontany" value="{{fkt.id}}" >
+                                        {{fkt.nom}}
+                                      </md-option>
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.fokontany.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Fokontany obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="90">
+                                  <label>Intervention</label>
+                                    <md-select ng-model="vm.id_intervention" name="id_intervention"  ng-disabled="!vm.filtre.id_fokontany"  required>                                     
+                                      <md-option ng-repeat="intrv in vm.all_intervetion" value="{{intrv.id}}" >
+                                        {{intrv.intitule}}
+                                      </md-option>
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.id_intervention.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Intervention obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                  ng-disabled="filtrepardateform.$invalid||vm.affiche_load" ng-click="vm.filtrer_Individu(vm.filtre)">
+                                  Actualiser
+                            </md-button>
+                        </form>
+                        <table class="dataTable row-border hover" datatable="ng"
+                          dt-options="vm.dtOptions">
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::vm.individu_column">
+                                <div class="table-header">
+                                  <span class="column-title">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="mp in vm.all_individu_intervention"  ng-class="{selected: mp.$selected}" ng-click="vm.selectionIndividu(mp)">
+                              <td>{{mp.nom}}  {{mp.prenom}}</td>
+                              <td>{{mp.date_naissance |date:'dd/MM/yyyy'}}</td>
+                              <td>{{mp.cin}}</td>                
+                              <td>{{mp.adresse}}</td>                
+                            </tr>
+                          </tbody>
+                        </table>
+                    </md-tab>
+                    <md-tab label="Suivi Individu" ng-disabled="!vm.selectedItemIndividu.id">                        
+						<md-tab-body>
+							<div style="widht:100%;">                                     
+								<md-button type="submit" ng-show="vm.afficherboutonnouveauIndividu==1" class="md-raised md-accent" aria-label="Nouveau" ng-click="vm.ajouterSuiviIndividu()" style="width:10%;">
+								  Nouveau
+								</md-button>
+								<md-button type="submit" ng-show="vm.afficherboutonModifSuprIndividu==1" class="md-raised md-accent" aria-label="Modifier" ng-click="vm.modifierSuiviIndividu()" style="width:10%;">
+								  Modifier
+								</md-button>
+								<md-button type="submit" ng-show="vm.afficherboutonModifSuprIndividu==1" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimerSuiviIndividu()" style="width:10%;">
+								  Supprimer
+								</md-button>
+							</div>
+							<div style="widht:100%;"  ng-show="vm.affichageMasqueIndividu==1"> 
+								<form name="form_suivi_individu" class="md-inline-form" ng-show="vm.affichesuiviindividupardefaut ==1" novalidate >
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date</span>
+										</md-input-container>
+										<md-datepicker name="date_suivi" ng-model="vm.suiviindividu.date_suivi"   md-placeholder="Enter date de suivi" required>                       
+										</md-datepicker>
+									</div>
+									<div layout="column" layout-gt-sm="row">
+										<!--md-input-container flex-gt-sm>
+											<label>Partenaire</label>
+											<md-select name="id_partenaire" ng-model="vm.suiviindividu.id_partenaire" ng-change="vm.modifierPartenaireSuiviIndividu(vm.suiviindividu)" required>												
+												<md-option ng-repeat="srcf in vm.allRecordsSourcefinancement" value="{{srcf.id}}">
+													{{srcf.nom}}
+												</md-option>
+											</md-select>
+											<div ng-messages="form_suivi_individu.id_partenaire.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Partenaire obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+										<md-input-container flex-gt-sm>
+											<label>Acteur</label>
+											<md-select name="id_acteur" ng-model="vm.suiviindividu.id_acteur" ng-change="vm.modifierAgencePaiementSuiviIndividu(vm.suiviindividu)" required>
+												<md-option ng-repeat="ttrf in vm.allRecordsAgencepaiement" value="{{ttrf.id}}">
+													{{ttrf.Nom}}
+												</md-option>
+											</md-select>
+											<div ng-messages="form_suivi_individu.id_acteur.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Acteur obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container-->
+										<md-input-container flex-gt-sm>
+											<label>Type transfert</label>
+											<md-select name="id_type_transfert" ng-model="vm.suiviindividu.id_type_transfert" ng-change="vm.modifierTypeTransfertSuiviIndividu(vm.suiviindividu)" required>
+												<md-option ng-repeat="ttrf in vm.allRecordsTypedetransfert" value="{{ttrf.id}}">
+													{{ttrf.description}}
+												</md-option>
+											</md-select>
+											<div ng-messages="form_suivi_individu.id_type_transfert.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Type de transfert obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+										<md-input-container flex-gt-sm>
+											<input type="Number" name="montant" ng-model="vm.suiviindividu.montant"
+											placeholder="Montant " required>
+											<div ng-messages="form_suivi_individu.montant.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Montant obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+									</div>
+										<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+											ng-disabled="form_suivi_individu.$invalid " ng-click="vm.Enregistrer_suivi_individu(vm.suiviindividu,0)">
+											Enregistrer
+										</md-button>
+										<md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerSuiviIndividu()">
+											Annuler
+										</md-button>
+										<input type="hidden" name="id" ng-model="vm.suiviindividu.id" ng-init="vm.suiviindividu.id=0"/>
+										<input type="hidden" name="id_individu" ng-model="vm.suiviindividu.id_individu" ng-init="vm.suiviindividu.id_individu=0"/>
+								</form>
+								<form name="form_suivi_individu_nutrition" class="md-inline-form" ng-show="vm.affichesuiviindividunutrition ==1" novalidate >
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date</span>
+										</md-input-container>
+										<md-datepicker name="date_suivi" ng-model="vm.suiviindividu.date_suivi"   md-placeholder="Enter date de suivi" required>                       
+										</md-datepicker>
+									</div>
+									<div layout="column" layout-gt-sm="row">
+										<md-input-container flex-gt-sm>
+											<input type="Number" name="poids" ng-model="vm.suiviindividu.poids"
+											placeholder="Poids ">
+											<div ng-messages="form_suivi_individu_nutrition.poids.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Poids obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+										<md-input-container flex-gt-sm>
+											<input type="Number" name="perimetre_bracial" ng-model="vm.suiviindividu.perimetre_bracial"
+											placeholder="Périmètre brachial " required>
+											<div ng-messages="form_suivi_individu_nutrition.perimetre_bracial.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Périmètre brachial obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+										<md-input-container flex-gt-sm>
+											<input type="Number" name="age_mois" ng-model="vm.suiviindividu.age_mois"
+											placeholder="Age : en mois" >
+											<div ng-messages="form_suivi_individu_nutrition.age_mois.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Age : en mois obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+										<md-input-container flex-gt-sm>
+											<input type="Number" name="taille" ng-model="vm.suiviindividu.taille"
+											placeholder="Taille(cm)" >
+											<div ng-messages="form_suivi_individu_nutrition.taille.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Taille(cm) obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+										<md-input-container flex-gt-sm>
+											<input type="Number" name="zscore" ng-model="vm.suiviindividu.zscore"
+											placeholder="Z-score" >
+											<div ng-messages="form_suivi_individu_nutrition.zscore.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Z-score obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+										<md-input-container flex-gt-sm>
+											<input type="Number" name="mois_grossesse" min='1'  max='9' ng-model="vm.suiviindividu.mois_grossesse"
+											placeholder="Nb mois de grossesse" >
+											<div ng-messages="form_suivi_individu_nutrition.mois_grossesse.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Nb mois de grossesse obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+									</div>
+										<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+											ng-disabled="form_suivi_individu_nutrition.$invalid " ng-click="vm.Enregistrer_suivi_individu(vm.suiviindividu,0)">
+											Enregistrer
+										</md-button>
+										<md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerSuiviIndividu()">
+											Annuler
+										</md-button>
+										<input type="hidden" name="id" ng-model="vm.suiviindividu.id" ng-init="vm.suiviindividu.id=0"/>
+										<input type="hidden" name="id_individu" ng-model="vm.suiviindividu.id_individu" ng-init="vm.suiviindividu.id_individu=0"/>
+								</form>
+								<form name="form_suivi_individu_promotiongenre" class="md-inline-form" ng-show="vm.affichesuiviindividugenre ==1" novalidate >
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date</span>
+										</md-input-container>
+										<md-datepicker name="date_suivi" ng-model="vm.suiviindividu.date_suivi"   md-placeholder="Enter date de suivi" required>                       
+										</md-datepicker>
+									</div>
+									<div layout="column" layout-gt-sm="row">
+										<md-input-container flex="100" flex-gt-xs="10">
+											<input type="Number" name="age" ng-model="vm.suiviindividu.age"
+											placeholder="Age">
+											<div ng-messages="form_suivi_individu_promotiongenre.age.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Age obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+										<md-input-container  flex="100" flex-gt-xs="50">
+											<input type="text" name="infraction" ng-model="vm.suiviindividu.infraction"
+											placeholder="Infraction" required>
+											<div ng-messages="form_suivi_individu_promotiongenre.infraction.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Infraction obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+										<md-input-container  flex="100" flex-gt-xs="20">
+											<input type="text" name="lieu_infraction" ng-model="vm.suiviindividu.lieu_infraction"
+											placeholder="Lieu infraction" required>
+											<div ng-messages="form_suivi_individu_promotiongenre.lieu_infraction.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Lieu infraction obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+										<md-input-container flex="100" flex-gt-xs="20">
+										  <label>Type violence</label>
+											<md-select ng-model="vm.suiviindividu.id_type_violence" name="id_type_violence" ng-change="vm.modifierTypeViolenceSuiviIndividu(vm.suiviindividu)" required>											 
+											  <md-option ng-repeat="tv in vm.allRecordsTypeViolence" value="{{tv.id}}" >
+												{{tv.description}}
+											  </md-option>
+
+											</md-select>
+											<div ng-messages="form_suivi_individu_promotiongenre.id_type_violence.$error"
+											  role="alert">
+											  <div ng-message="required">
+												<span>Type violence obligatoire</span>
+											  </div>
+											</div>
+										</md-input-container>
+									</div>
+										<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+											ng-disabled="form_suivi_individu_promotiongenre.$invalid " ng-click="vm.Enregistrer_suivi_individu(vm.suiviindividu,0)">
+											Enregistrer
+										</md-button>
+										<md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerSuiviIndividu()">
+											Annuler
+										</md-button>
+										<input type="hidden" name="id" ng-model="vm.suiviindividu.id" ng-init="vm.suiviindividu.id=0"/>
+										<input type="hidden" name="id_individu" ng-model="vm.suiviindividu.id_individu" ng-init="vm.suiviindividu.id_individu=0"/>
+								</form>
+								<form name="form_suivi_individu_mariageprecoce" class="md-inline-form" ng-show="vm.affichesuiviindividumariageprecoce ==1" novalidate >
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date</span>
+										</md-input-container>
+										<md-datepicker name="date_suivi" ng-model="vm.suiviindividu.date_suivi"   md-placeholder="Enter date de suivi" required>                       
+										</md-datepicker>
+									</div>
+									<div layout="column" layout-gt-sm="row">
+										<md-input-container  flex="100" flex-gt-xs="25">
+											<input type="text" name="age" ng-model="vm.suiviindividu.Nom" placeholder="Nom" disabled>
+										</md-input-container>
+										<md-input-container  flex="100" flex-gt-xs="15">
+											<input type="Number" name="age" ng-model="vm.suiviindividu.age"
+											placeholder="Age">
+											<div ng-messages="form_suivi_individu_mariageprecoce.age.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Age obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+										<md-input-container flex="100" flex-gt-xs="20">
+										  <label>Type mariage</label>
+											<md-select ng-model="vm.suiviindividu.id_type_mariage" name="id_type_mariage" ng-change="vm.modifierTypeMariageSuiviIndividu(vm.suiviindividu)" required>											 
+											  <md-option ng-repeat="tv in vm.allRecordsTypeMariage" value="{{tv.id}}" >
+												{{tv.description}}
+											  </md-option>
+											</md-select>
+											<div ng-messages="form_suivi_individu_mariageprecoce.id_type_mariage.$error"
+											  role="alert">
+											  <div ng-message="required">
+												<span>Type mariage obligatoire</span>
+											  </div>
+											</div>
+										</md-input-container>
+										<md-input-container  flex="100" flex-gt-xs="40">
+											<input type="text" name="cause_mariage" ng-model="vm.suiviindividu.cause_mariage"
+											placeholder="Cause mariage" required>
+											<div ng-messages="form_suivi_individu_mariageprecoce.cause_mariage.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Cause mariage obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container>
+									</div>
+										<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+											ng-disabled="form_suivi_individu_mariageprecoce.$invalid " ng-click="vm.Enregistrer_suivi_individu(vm.suiviindividu,0)">
+											Enregistrer
+										</md-button>
+										<md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerSuiviIndividu()">
+											Annuler
+										</md-button>
+										<input type="hidden" name="id" ng-model="vm.suiviindividu.id" ng-init="vm.suiviindividu.id=0"/>
+										<input type="hidden" name="id_individu" ng-model="vm.suiviindividu.id_individu" ng-init="vm.suiviindividu.id_individu=0"/>
+								</form>
+							</div> 
+							<div style="widht:100%;"  ng-show="vm.affichesuiviindividupardefaut==1"> 
+								<table id="TableIndividu" class="dataTable row-border hover" datatable="ng"
+								  dt-options="vm.dtOptions">
+								  <thead>
+									<tr>
+									  <th class="secondary-text" ng-repeat="re in ::vm.suivi_individu_transfert_column">
+										<div class="table-header">
+										  <span class="column-title">{{re.titre}}</span>
+										</div>
+									  </th>
+									</tr>
+								  </thead>
+								  <tbody>
+									<tr ng-repeat="mp in vm.selectedItemIndividu.detail_suivi_individu track by $index"  ng-class="{selected: mp.$selected}" ng-click="vm.selectionDetailSuiviIndividu(mp)">
+									  <td>io</td>
+									  <td>{{mp.nom}} {{mp.prenom}}</td>
+									  <td>{{mp.date_suivi |date:'dd/MM/yyyy'}}</td>                
+									  <td>{{mp.typetransfert[0].description}}</td>                
+									  <td>{{mp.montant |number:0}}</td>                
+									</tr>
+								  </tbody>
+								</table>
+							</div>	
+							<div style="widht:100%;"  ng-show="vm.affichesuiviindividupardefaut==0"> 
+								<table id="TableIndividunutrition" class="dataTable row-border hover" datatable="ng"
+								  dt-options="vm.dtOptions">
+								  <thead>
+									<tr>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Nom</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Date</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Poids</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Périm-Bra</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Age:mois</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Taille</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Z-score</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Mois-grossesse</span>
+											</div>
+										  </th>
+										  <th class="secondary-text" style="visibility:hidden">
+											<div class="table-header">
+											  <span class="column-title">id</span>
+											</div>
+										  </th>
+									</tr>
+								  </thead>
+								  <tbody>
+									<tr ng-repeat="nu in vm.selectedItemIndividu.nutrition track by $index"  ng-class="{selected: nu.$selected}" ng-click="vm.selectionDetailSuiviIndividu(nu)">
+									  <td>{{nu.Nom}}</td>
+									  <td>{{nu.date_suivi |date:'dd/MM/yyyy'}}</td>                
+									  <td>{{nu.poids | number:2}}</td>                
+									  <td>{{nu.perimetre_bracial | number:2}}</td>                
+									  <td>{{nu.age_mois | number:0}}</td>                
+									  <td>{{nu.taille | number:2}}</td>                
+									  <td>{{nu.zscore | number:2}}</td>                
+									  <td>{{nu.mois_grossesse | number:0}}</td>                
+									  <td style="visibility:hidden">{{nu.id}}</td>                
+									</tr>
+								  </tbody>
+								</table>
+							</div>		
+							<div style="widht:100%;"  ng-show="vm.affichesuiviindividupardefaut==2"> 
+								<fieldset class="standard" >
+									<legend  class="md-grey-800-bg">Promotion genre/Mariage précoce</legend>
+									<md-radio-group ng-model="vm.mariage_precode_ou_promotion_genre" ng-change="vm.ChangerPromotiongenre_Mariageprecoce(vm.mariage_precode_ou_promotion_genre)" ng-disabled="vm.disable_radiobutton_promotiongenre_marriage_precoce=1">
+										<div layout="row" layout-wrap flex>
+										<div flex="50">
+											<md-radio-button ng-value="1" >Promotion genre</md-radio-button>
+										</div>
+										<div flex="50">
+											<md-radio-button ng-value="2" >Mariage précoce</md-radio-button>
+										</div>
+										</div>
+									</md-radio-group>
+								</fieldset>
+								<div style="widht:100%;"  ng-show="vm.mariage_precode_ou_promotion_genre==1"> 								
+									<table id="TableIndividupromotiongenre" class="dataTable row-border hover" datatable="ng"
+									  dt-options="vm.dtOptions">
+									  <thead>
+										<tr>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Nom</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Sexe</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Age</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Date/Infr</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Infraction</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Lieu</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">T-Violence</span>
+											</div>
+										  </th>
+										  <th class="secondary-text" style="visibility:hidden">
+											<div class="table-header">
+											  <span class="column-title">id</span>
+											</div>
+										  </th>
+										</tr>
+									  </thead>
+									  <tbody>
+										<tr ng-repeat="mpro in vm.selectedItemIndividu.promotion_genre  track by $index"  ng-class="{selected: mpro.$selected}" ng-click="vm.selectionDetailSuiviIndividu(mpro)">
+										  <td>{{mpro.Nom}}</td>
+										  <td>{{mpro.sexe | number:0}}</td>                
+										  <td>{{mpro.age | number:0}}</td>                
+										  <td>{{mpro.date_suivi |date:'dd/MM/yyyy'}}</td>                
+										  <td>{{mpro.infraction}}</td>                
+										  <td>{{mpro.lieu_infraction}}</td>                
+										  <td>{{mpro.type_violence[0].description}}</td>                
+										  <td style="visibility:hidden">{{mpro.id}}</td>                
+										</tr>
+									  </tbody>
+									</table>
+								</div>		
+								<div style="widht:100%;"  ng-show="vm.mariage_precode_ou_promotion_genre==2"> 								
+									<table id="TableIndividumariageprecoce" class="dataTable row-border hover" datatable="ng"
+									  dt-options="vm.dtOptions">
+									  <thead>
+										<tr>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Nom</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Sexe</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Age</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Date</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Type-mariage</span>
+											</div>
+										  </th>
+										  <th class="secondary-text">
+											<div class="table-header">
+											  <span class="column-title">Cause</span>
+											</div>
+										  </th>
+										  <th class="secondary-text" style="visibility:hidden">
+											<div class="table-header">
+											  <span class="column-title">id</span>
+											</div>
+										  </th>
+										</tr>
+									  </thead>
+									  <tbody>
+										<tr ng-repeat="mprec in vm.selectedItemIndividu.mariage_precoce  track by $index"  ng-class="{selected: mprec.$selected}" ng-click="vm.selectionDetailSuiviIndividu(mprec)">
+										  <td>{{mprec.Nom}}</td>
+										  <td>{{mprec.sexe | number:0}}</td> 
+										  <td>{{mprec.age | number:0}}</td>                
+										  <td>{{mprec.date_suivi |date:'dd/MM/yyyy'}}</td>                
+										  <td>{{mprec.type_mariage[0].description}}</td>                
+										  <td>{{mprec.cause_mariage}}</td>                         
+										  <td style="visibility:hidden">{{mprec.id}}</td>                         
+										</tr>
+									  </tbody>
+									</table>
+								</div>		
+							</div>		
+						</md-tab-body>
+                    </md-tab>
+                    <md-tab>
+                    </md-tab>
+                </md-tabs>
+            </div>
+        </div>
+    </div>
+    

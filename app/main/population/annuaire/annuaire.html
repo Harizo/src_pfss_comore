@@ -1,0 +1,1176 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Données de bases</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;"> Annuaire</span>
+                </div>
+    
+                <div class="title">Annuaire</div>
+            </div>
+        </div>
+<!-- DEBUT de tous les Masques de saisie -->		
+		<!-- Début Masque de saisie information programme-->
+        <md-tabs md-dynamic-height ng-show="vm.affichageMasqueprogramme==1">
+			<md-tab label="{{vm.titreacteur}}">
+				<md-tab-body>
+					<form name="programmeform" class="md-inline-form"  novalidate>
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="25">
+								<input type="text" name="nom" ng-model="vm.programme.nom" placeholder="Nom contact" ng-init="vm.programme.nom=''" required>
+								<div ng-messages="programmeform.nom.$error"	role="alert">
+									<div ng-message="required">
+										<span>Nom contact</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="25">
+								<input type="text" name="prenom" ng-model="vm.programme.prenom" placeholder="Prénom contact" ng-init="vm.programme.prenom=''">
+								<div ng-messages="programmeform.prenom.$error"	role="alert">
+									<div ng-message="required">
+										<span>Prénom contact</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="10">
+								<input type="text" name="telephone" ng-model="vm.programme.telephone" placeholder="Téléphone contact" ng-init="vm.programme.telephone=''">
+								<div ng-messages="programmeform.telephone.$error"	role="alert">
+									<div ng-message="required">
+										<span>Téléphone obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="25">
+								<input type="mail" name="email" ng-model="vm.programme.email" placeholder="e-mail contact" ng-init="vm.programme.email=''">
+								<div ng-messages="programmeform.email.$error"	role="alert">
+									<div ng-message="required">
+										<span>e-mail obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<input type="text" name="identifiant" ng-model="vm.programme.identifiant" placeholder="Identifiant" ng-init="vm.programme.identifiant=''" >
+								<div ng-messages="programmeform.identifiant.$error" role="alert">
+									<div ng-message="required">
+										<span>Identifiant du programme obligatoire</span>
+									</div>							  
+								</div>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="70">
+								<label>Bénéficiaire du programme</label>
+								<md-select name="id_tutelle" ng-model="vm.programme.id_tutelle" ng-init="vm.programme.id_tutelle=''" ng-change="vm.modifierTutelle(vm.programme)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="ta in vm.allRecordsTutelle | orderBy:['nom']" value='{{ta.id}}'>
+										{{ta.nom}}
+									</md-option>
+								</md-select>
+								<div ng-messages="programmeform.id_tutelle.$error" role="alert">
+									<div ng-message="required">
+										<span>Bénéficiaire du programme obligatoire</span>
+									</div>							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Type action</label>
+								<md-select name="id_type_action" ng-model="vm.programme.id_type_action" ng-init="vm.programme.id_type_action=''" ng-change="vm.modifierTypeaction(vm.programme)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="ta in vm.allRecordsTypeaction | orderBy:['description']" value='{{ta.id}}'>
+										{{ta.description}}
+									</md-option>
+								</md-select>
+								<div ng-messages="programmeform.id_type_action.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Inscription budgétaire</label>
+								<md-select name="inscription_budgetaire" ng-model="vm.programme.inscription_budgetaire" ng-init="vm.programme.inscription_budgetaire=''">
+									<md-option value=''></md-option>
+									<md-option value='Lois des finances'>Lois des finances</md-option>
+									<md-option value='Hors budget'>Hors budget</md-option>
+								</md-select>
+								<div ng-messages="programmeform.inscription_budgetaire.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex >
+							<md-input-container flex="100" flex-gt-xs="100">
+								<input type="text" name="intitule" ng-model="vm.programme.intitule" placeholder="Intitulé du programme" ng-init="vm.programme.intitule=''" >
+								<div ng-messages="programmeform.intitule.$error" role="alert">
+									<div ng-message="required">
+										<span>Intitulé du programme obligatoire</span>
+									</div>							  
+								</div>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex >
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Situation intervention</label>
+								<md-select name="situation_intervention" ng-model="vm.programme.situation_intervention" ng-init="vm.programme.situation_intervention=''">
+									<md-option value=''></md-option>
+									<md-option value='En-cours'>En-cours</md-option>
+									<md-option value='Prévision'>Prévision</md-option>
+									<md-option value='Clôturé(e)'>Clôturé(e)</md-option>
+									<md-option value='Abandonné(e)'>Abandonné(e)</md-option>
+								</md-select>
+								<div ng-messages="programmeform.situation_intervention.$error" role="alert">
+									<div ng-message="required">
+										<span>Situation intervention obligatoire</span>
+									</div>							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="5">
+								<span>Date début</span>
+							</md-input-container>
+								<md-datepicker name="date_debut" ng-model="vm.programme.date_debut"   md-placeholder="Date début" required>                       
+								</md-datepicker>
+							<md-input-container flex="100" flex-gt-xs="5">
+								<span>Date fin</span>
+							</md-input-container>						   
+								<md-datepicker name="date_fin" ng-model="vm.programme.date_fin"   md-placeholder="Date fin" required>                       
+								</md-datepicker>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex >
+							<md-input-container flex="100" flex-gt-xs="50">
+								<input type="text" name="description" ng-model="vm.programme.description" placeholder="Description du programme" ng-init="vm.programme.description=''" >
+								<div ng-messages="programmeform.description.$error" role="alert">
+									<div ng-message="required">
+										<span>Description du programme obligatoire</span>
+									</div>							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="50">
+								<input type="text" name="commentaire" ng-model="vm.programme.commentaire" placeholder="Commentaire du programme" ng-init="vm.programme.commentaire=''" >
+								<div ng-messages="programmeform.commentaire.$error" role="alert">
+									<div ng-message="required">
+										<span>Commentaire du programme obligatoire</span>
+									</div>							  
+								</div>
+							</md-input-container>
+						</div>
+						<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+							ng-disabled="programmeform.$invalid" ng-click="vm.ajoutProgramme(vm.programme,0)">
+							Enregistrer
+						</md-button>
+						<md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerProgramme()">
+							Annuler
+						</md-button>
+					</form>
+				</md-tab-body>
+			</md-tab>
+        </md-tabs>
+		<!-- Fin Masque de saisie information programme-->
+		<!-- Début Masque de saisie financement programme-->
+        <md-tabs md-dynamic-height ng-show="vm.affichageMasquefinancementprogramme==1">
+			<md-tab label="{{vm.titrefinancementprogramme}}">
+				<md-tab-body>
+					<form name="financementprogrammeform" class="md-inline-form"  novalidate>
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Source financement</label>
+								<md-select name="id_source_financement" ng-model="vm.financementprogramme.id_source_financement" ng-init="vm.financementprogramme.id_source_financement=''" ng-change="vm.modifierSourcefinancementFNP(vm.financementprogramme)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="ta in vm.allRecordsSourcefinancement | orderBy:['nom']" value='{{ta.id}}'>
+										{{ta.nom}}
+									</md-option>
+								</md-select>
+								<div ng-messages="financementprogrammeform.id_source_financement.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="30">
+								<label>Axe stratégique</label>
+								<md-select name="id_axe_strategique" ng-model="vm.financementprogramme.id_axe_strategique" ng-init="vm.financementprogramme.id_axe_strategique=''" ng-change="vm.modifierAxestrategiqueFNP(vm.financementprogramme)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="ta in vm.allRecordsAxestrategique | orderBy:['axe']" value='{{ta.id}}'>
+										{{ta.axe}}
+									</md-option>
+								</md-select>
+								<div ng-messages="financementprogrammeform.id_axe_strategique.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex >
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Type financement</label>
+								<md-select name="id_type_financement_prg" ng-model="vm.financementprogramme.id_type_financement" ng-init="vm.financementprogramme.id_type_financement=''" ng-change="vm.modifierTypefinancementFNP(vm.financementprogramme)">
+									<md-option ng-repeat="tf in vm.allRecordsTypefinancement | orderBy:['intitule']" value='{{tf.id}}'>
+										{{tf.intitule}}
+									</md-option>
+								</md-select>
+								<div ng-messages="financementprogrammeform.id_type_financement_prg.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Devise</label>
+								<md-select name="id_devise" ng-model="vm.financementprogramme.id_devise" ng-init="vm.financementprogramme.id_devise=''" ng-change="vm.modifierDeviseFNP(vm.financementprogramme)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="ta in vm.allRecordsDevise | orderBy:['description']" value='{{ta.id}}'>
+										{{ta.description}}
+									</md-option>
+								</md-select>
+								<div ng-messages="financementprogrammeform.id_devise.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Budget initial</label>
+								<input name="budget_initial" type="number" ng-model="vm.financementprogramme.budget_initial"/>
+								<div ng-messages="financementprogrammeform.budget_initial.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Budget modifié</label>
+								<input name="budget_modifie" type="number" ng-model="vm.financementprogramme.budget_modifie"/>
+								<div ng-messages="financementprogrammeform.budget_modifie.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex >
+							<div flex="30">							
+								<fieldset class="standard" >
+									<legend class="md-grey-800-bg">Secteur concerné(s)</legend>
+									<div layout="row" layout-wrap flex>                              
+										<div flex="50" ng-repeat="item in vm.allRecordsTypesecteur">
+											<md-checkbox ng-checked="exists(item.id, vm.tab_reponse_type_secteur)" ng-click="vm.toggle(item.id, vm.tab_reponse_type_secteur)">
+												{{item.nom}}
+											</md-checkbox>
+										</div>
+									</div>
+								</fieldset>
+							</div>
+						</div>
+						<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+							ng-disabled="financementprogrammeform.$invalid" ng-click="vm.ajoutFinancementprogramme(vm.financementprogramme,0)">
+							Enregistrer
+						</md-button>
+						<md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerFinancementprogramme()">
+							Annuler
+						</md-button>
+					</form>
+				</md-tab-body>
+			</md-tab>
+        </md-tabs>
+		<!-- Fin Masque de saisie financement programme-->
+		<!-- Début Masque de saisie intervention-->
+        <md-tabs md-dynamic-height ng-show="vm.affichageMasqueintervention==1">
+			<md-tab label="{{vm.titreintervention}}">
+				<md-tab-body>
+					<form name="interventionform" class="md-inline-form"  novalidate>
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<input type="text" name="identifiant" ng-model="vm.intervention.identifiant" placeholder="Identifiant" ng-init="vm.intervention.identifiant=''" >
+								<div ng-messages="interventionform.identifiant.$error" role="alert">
+									<div ng-message="required">
+										<span>Identifiant de l'intervention obligatoire</span>
+									</div>							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="25">
+								<input type="text" name="nom_informateur" ng-model="vm.intervention.nom_informateur" placeholder="Nom informateur" ng-init="vm.intervention.nom_informateur=''" required>
+								<div ng-messages="interventionform.nom_informateur.$error"	role="alert">
+									<div ng-message="required">
+										<span>Nom informateur</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="25">
+								<input type="text" name="prenom_informateur" ng-model="vm.intervention.prenom_informateur" placeholder="Prénom informateur" ng-init="vm.intervention.prenom_informateur=''">
+								<div ng-messages="interventionform.prenom_informateur.$error"	role="alert">
+									<div ng-message="required">
+										<span>Prénom informateur</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="10">
+								<input type="text" name="telephone_informateur" ng-model="vm.intervention.telephone_informateur" placeholder="Téléphone informateur" ng-init="vm.intervention.telephone_informateur=''">
+								<div ng-messages="interventionform.telephone_informateur.$error"	role="alert">
+									<div ng-message="required">
+										<span>Téléphone obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="25">
+								<input type="mail" name="email_informateur" ng-model="vm.intervention.email_informateur" placeholder="e-mail informateur" ng-init="vm.intervention.email_informateur=''">
+								<div ng-messages="interventionform.email_informateur.$error"	role="alert">
+									<div ng-message="required">
+										<span>e-mail obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="35">
+								<input type="text" name="ministere_tutelle" ng-model="vm.intervention.ministere_tutelle" placeholder="Ministère tutelle" ng-init="vm.intervention.ministere_tutelle=''" >
+								<div ng-messages="interventionform.ministere_tutelle.$error" role="alert">
+									<div ng-message="required">
+										<span>Ministère tutelle obligatoire</span>
+									</div>							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="50">
+								<label>Intitulé</label>
+								<input type="text" name="intitule" ng-model="vm.intervention.intitule" placeholder="Intitulé de l'intervention" ng-init="vm.intervention.intitule=''" >
+								<div ng-messages="interventionform.intitule.$error" role="alert">
+									<div ng-message="required">
+										<span>Intitulé de l'intervention obligatoire</span>
+									</div>							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Valeur transfert</label>
+								<input type="number" name="montant_transfert" ng-model="vm.intervention.montant_transfert" placeholder="Contre valeur en Ar" ng-init="vm.intervention.intitule=''" required>
+								<div ng-messages="interventionform.montant_transfert.$error" role="alert">
+									<div ng-message="required">
+										<span>Valeur transfert obligatoire</span>
+									</div>							  
+								</div>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex >
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Acteur</label>
+								<md-select name="id_acteur" ng-model="vm.intervention.id_acteur" ng-init="vm.intervention.id_acteur=''" ng-change="vm.modifierActeur(vm.intervention)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="ta in vm.allRecordsActeur | orderBy:['nom']" value='{{ta.id}}'>
+										{{ta.nom}}
+									</md-option>
+								</md-select>
+								<div ng-messages="interventionform.id_acteur.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<!--md-input-container flex="100" flex-gt-xs="15">
+								<label>Catégorie intervention</label>
+								<md-select name="categorie_intervention" ng-model="vm.intervention.categorie_intervention" ng-init="vm.intervention.categorie_intervention=''">
+									<md-option value=""></md-option>
+									<md-option value="Transfert sociaux">Transfert sociaux</md-option>
+									<md-option value="Service d'action sociale">Service d'action sociale</md-option>
+								</md-select>
+								<div ng-messages="interventionform.categorie_intervention.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container-->
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Action</label>
+								<md-select name="id_type_action" ng-model="vm.intervention.id_type_action" ng-init="vm.intervention.id_type_action=''" ng-change="vm.modifierTypeactionIntervention(vm.intervention)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="ta in vm.allRecordsTypeaction | orderBy:['description']" value='{{ta.id}}'>
+										{{ta.description}}
+									</md-option>
+								</md-select>
+								<div ng-messages="interventionform.id_type_action.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Inscription budgétaire</label>
+								<md-select name="inscription_budgetaire" ng-model="vm.intervention.inscription_budgetaire" ng-init="vm.intervention.inscription_budgetaire=''">
+									<md-option value=''></md-option>
+									<md-option value='Lois des finances'>Lois des finances</md-option>
+									<md-option value='Hors budget'>Hors budget</md-option>
+								</md-select>
+								<div ng-messages="interventionform.inscription_budgetaire.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Programmation</label>
+								<md-select name="programmation" ng-model="vm.intervention.programmation" ng-init="vm.intervention.programmation=''">
+									<md-option value=''></md-option>
+									<md-option value='Multi-annuel'>Multi-annuel</md-option>
+									<md-option value='Annuel'>Annuel</md-option>
+									<md-option value='Multi-saison'>Multi-saison</md-option>
+									<md-option value='Saisonnière'>Saisonnière</md-option>
+								</md-select>
+								<div ng-messages="interventionform.programmation.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Durée</label>
+								<input type="number" name="duree" ng-model="vm.intervention.duree" placeholder="Duréé" ng-init="vm.intervention.duree=''" required>
+								<div ng-messages="interventionform.duree.$error" role="alert">
+									<div ng-message="required">
+										<span>Duréé obligatoire</span>
+									</div>							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="10">
+								<label>Unité</label>
+								<md-select name="unite_duree" ng-model="vm.intervention.unite_duree" ng-init="vm.intervention.unite_duree=''">
+									<md-option value=''></md-option>
+									<md-option value='Jour'>Jour</md-option>
+									<md-option value='Mois'>Mois</md-option>
+									<md-option value='Année'>Année</md-option>
+									<md-option value='Non définie'>Non définie</md-option>
+								</md-select>
+								<div ng-messages="interventionform.unite_duree.$error" role="alert">
+									<div ng-message="required">
+										<span>Unité durée obligatoire</span>
+									</div>							  
+								</div>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex >
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Nomenclature intervention</label>
+								<md-select name="id_nomenclature_intervention" ng-model="vm.intervention.id_nomenclature_intervention" ng-init="vm.intervention.id_nomenclature_intervention=''" ng-change="vm.modifierNomenclatureIntervention(vm.intervention)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="ta in vm.allRecordsNomenclatureintervention | orderBy:['code']" value='{{ta.id}}'>
+										{{ta.description1}} | {{ta.description2}} | {{ta.description3}} | {{ta.description}}
+									</md-option>
+								</md-select>
+								<div ng-messages="interventionform.id_nomenclature_intervention.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex >
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Type transfert</label>
+								<md-select name="id_type_transfert" ng-model="vm.intervention.id_type_transfert" ng-init="vm.intervention.id_type_transfert=''" ng-change="vm.modifierTypetransfert(vm.intervention)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="ta in vm.allRecordsTypetransfert | orderBy:['description']" value='{{ta.id}}'>
+										{{ta.description}}
+									</md-option>
+								</md-select>
+								<div ng-messages="interventionform.id_type_transfert.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<div flex="40">
+                                <table ng-show="vm.intervention.id_type_transfert >0" id="tableDetailtypetransfert" ng-table="tableDetailtypetransfert" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.detailtypetransfert_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="dettrf in vm.ListeDetailtypetransfert"  ng-class="{selected: dettrf.$selected}" ng-click="vm.selectionDetailtypetransfert(dettrf)">										
+                                            <td>
+												<input id="type_transfert_{{dettrf.id}}" type="checkbox" name="id_detail_type_transfert" ng-model="dettrf.id_detail_type_transfert" ng-true-value='{{dettrf.id}}' ng-false-value='0'  ng-click="vm.modifierChoixTypetransfert(dettrf)">
+                                            </td>
+											<td>
+                                                <span>{{dettrf.description}}</span>
+                                            </td>
+                                            <td>
+												<input ng-disabled="dettrf.id_detail_type_transfert==0" type="number" name="valeur_quantite" ng-model="dettrf.valeur_quantite" ng-change="vm.modifierQuantitValeur(dettrf)">
+                                            </td>
+                                            <td>
+                                                <span>{{dettrf.unitedemesure[0].description}}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+							</div>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Fréquence transfert</label>
+								<md-select name="id_frequence_transfert" ng-model="vm.intervention.id_frequence_transfert" ng-init="vm.intervention.id_frequence_transfert=''" ng-change="vm.modifierFrequencetransfert(vm.intervention)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="freq in vm.allRecordsFrequencetransfert | orderBy:['code']" value='{{freq.id}}'>
+										{{freq.code}}-{{freq.description}}
+									</md-option>
+								</md-select>
+								<div ng-messages="interventionform.id_frequence_transfert.$error" role="alert">
+									<div ng-message="required">
+										<span>Fréquence transfert obligatoire</span>
+									</div>							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="30">
+								<label>Commentaire</label>
+								<input type="text" name="commentaire" ng-model="vm.intervention.commentaire" placeholder="Commentaire sur intervention" ng-init="vm.intervention.commentaire=''" >
+								<div ng-messages="interventionform.commentaire.$error" role="alert">
+									<div ng-message="required">
+										<span>Commentaire sur intervention obligatoire</span>
+									</div>							  
+								</div>
+							</md-input-container>
+						</div>
+						<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+							ng-disabled="interventionform.$invalid" ng-click="vm.ajoutIntervention(vm.intervention,0)">
+							Enregistrer
+						</md-button>
+						<md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerIntervention()">
+							Annuler
+						</md-button>
+					</form>
+				</md-tab-body>
+			</md-tab>
+        </md-tabs>
+		<!-- Fin Masque de saisie intervention-->
+		<!-- Début Masque de saisie financement intervention-->
+        <md-tabs md-dynamic-height ng-show="vm.affichageMasquefinancementintervention==1">
+			<md-tab label="{{vm.titrefinancementintervention}}">
+				<md-tab-body>
+					<form name="financementinterventionform" class="md-inline-form"  novalidate>
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Source financement</label>
+								<md-select name="id_source_financement" ng-model="vm.financementintervention.id_source_financement" ng-init="vm.financementintervention.id_source_financement=''" ng-change="vm.modifierSourcefinancementINTV(vm.financementintervention)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="ta in vm.allRecordsSourcefinancement | orderBy:['nom']" value='{{ta.id}}'>
+										{{ta.nom}}
+									</md-option>
+								</md-select>
+								<div ng-messages="financementinterventionform.id_source_financement.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="30">
+								<label>Action stratégique</label>
+								<md-select name="id_action_strategique" ng-model="vm.financementintervention.id_action_strategique" ng-init="vm.financementintervention.id_action_strategique=''" ng-change="vm.modifierActionstrategiqueINTV(vm.financementintervention)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="ta in vm.allRecordsActionstrategique | orderBy:['action']" value='{{ta.id}}'>
+										{{ta.action}}
+									</md-option>
+								</md-select>
+								<div ng-messages="financementinterventionform.id_action_strategique.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex >
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Type secteur</label>
+								<md-select name="id_type_secteur" ng-model="vm.financementintervention.id_type_secteur" ng-init="vm.financementintervention.id_type_secteur=''" ng-change="vm.modifierTypesecteurINTV(vm.financementintervention)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="ta in vm.allRecordsTypesecteur | orderBy:['nom']" value='{{ta.id}}'>
+										{{ta.nom}}
+									</md-option>
+								</md-select>
+								<div ng-messages="financementinterventionform.id_type_secteur.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Devise</label>
+								<md-select name="id_devise" ng-model="vm.financementintervention.id_devise" ng-init="vm.financementintervention.id_devise=''" ng-change="vm.modifierDeviseINTV(vm.financementintervention)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="ta in vm.allRecordsDevise | orderBy:['description']" value='{{ta.id}}'>
+										{{ta.description}}
+									</md-option>
+								</md-select>
+								<div ng-messages="financementinterventionform.id_devise.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Budget initial</label>
+								<input name="budget_initial" type="number" ng-model="vm.financementintervention.budget_initial"/>
+								<div ng-messages="financementinterventionform.budget_initial.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Budget modifié</label>
+								<input name="budget_modifie" type="number" ng-model="vm.financementintervention.budget_modifie"/>
+								<div ng-messages="financementinterventionform.budget_modifie.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+						</div>
+						<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+							ng-disabled="financementinterventionform.$invalid" ng-click="vm.ajoutFinancementintervention(vm.financementintervention,0)">
+							Enregistrer
+						</md-button>
+						<md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerFinancementintervention()">
+							Annuler
+						</md-button>
+					</form>
+				</md-tab-body>
+			</md-tab>
+        </md-tabs>
+		<!-- Début Masque de saisie financement intervention-->
+<!-- FIN de tous les Masques de saisie -->		
+<!-- Début affichage de tous les onglets  -->		
+        <div class="content" layout="column" ng-show="vm.afficher_les_onglets==1">
+            <div class="form-wrapper">
+                <md-progress-circular ng-if="vm.affiche_load" class="md-accent" md-mode="indeterminate" md-diameter="64"></md-progress-circular>
+                <div style="clear:both;"></div>
+                <md-tabs md-dynamic-height>
+					<!-- Début Onglet  programme-->		
+                    <md-tab label="Programme">
+                        <md-tab-body>
+                            <fieldset>
+                                <legend>
+                                        Programme
+                                </legend>
+								<div style="widht:100%;">    
+									<md-button type="submit" ng-show="vm.afficherboutonnouveauprogramme==1" class="md-raised md-accent" aria-label="Nouveau" ng-click="vm.ajouterProgramme()" style="width:10%;">
+									  Nouveau
+									</md-button>
+									<md-button type="submit" ng-show="vm.afficherboutonModifSuprprogramme==1" class="md-raised md-accent" aria-label="Modifier" ng-click="vm.modifierProgramme()" style="width:10%;">
+									  Modifier
+									</md-button>
+									<md-button type="submit" ng-show="vm.afficherboutonModifSuprprogramme==1" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimerProgramme()" style="width:10%;">
+									  Supprimer
+									</md-button>
+								</div>  
+                                <table id="tableProgramme" ng-table="tableProgramme" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.programme_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="prg in vm.allRecordsProgramme"  ng-class="{selected: prg.$selected}" ng-click="vm.selectionProgramme(prg)">										
+                                            <td>
+                                                <p style="margin:0;"><b>Nom    :</b>{{prg.nom}}</p>
+                                                <p style="margin:0;"><b>Prénom :</b>{{prg.prenom}}</p>
+                                                <p style="margin:0;"><b>Tél    :</b>{{prg.telephone}}</p>
+                                                <p style="margin:0;"><b>e-mail :</b>{{prg.email}}</p>
+                                            </td>
+											<td>
+                                                <span>{{prg.identifiant}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{prg.tutelle[0].nom}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{prg.typeaction[0].description}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{prg.intitule}}</span>
+                                            </td>
+                                            <td>
+                                                <p style="margin:0;"><b>Début :</b> {{prg.date_debut | date:'dd/MM/yyyy'}}</p>
+                                                <p style="margin:0;"><b>Fin   :</b> {{prg.date_fin | date:'dd/MM/yyyy'}}</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>
+					<!-- Fin Onglet  programme-->		
+					<!-- Début Onglet Zone d'intervention programme-->		
+                    <md-tab label="Zone d'intervention programme" ng-disabled="!vm.selectedItemProgramme.id" ng-click="vm.charger_detail_zone_intervention_programme(vm.selectedItemProgramme)">
+                       <md-tab-body>
+                            <fieldset>
+                                <legend>
+                                        Zone d'intervention programme
+ 									<div class="border-right" ng-disabled="!vm.selectedItemProgramme.id">
+										<md-button class="md-icon-button" aria-label="add Type acteur" ng-click="vm.ajouterZoneinterventionprogramme()">
+											<md-icon md-font-icon="icon-plus-box"></md-icon>
+											<md-tooltip><span>Ajouter</span></md-tooltip>
+										</md-button>
+									</div> 
+                                </legend>
+								<b>Programme : {{vm.selectedItemProgramme.intitule}}</b>
+                                <table id="tableZoneinterventionprogramme" ng-table="tableZoneinterventionprogramme" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.ziprg_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="ziprg in vm.selectedItemProgramme.detail_zone_intervention_programme"  ng-class="{selected: ziprg.$selected}" ng-click="vm.selectionZoneinterventionprogramme(ziprg)">										
+                                            <td style="width:30%;">
+                                                <span ng-if="ziprg.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Région</label>
+														<md-select ng-model="ziprg.id_region"  ng-change="vm.modifierRegionZIPRG(ziprg)">													  
+														  <md-option value="">&nbsp;</md-option>
+														  <md-option ng-repeat="reg in vm.allRecordsRegion" value="{{reg.id}}" >
+															{{reg.nom}}
+														  </md-option>
+														</md-select>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!ziprg.$edit">{{ziprg.region[0].nom}}</span>
+                                            </td>
+                                            <td style="width:30%;">
+                                                <span ng-if="ziprg.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>District</label>
+														<md-select ng-model="ziprg.id_district"  ng-change="vm.modifierDistrictZIPRG(ziprg)">													  
+														  <md-option value="">&nbsp;</md-option>
+														  <md-option ng-repeat="dis in vm.allRecordsDistrict" value="{{dis.id}}" >
+															{{dis.nom}}
+														  </md-option>
+														</md-select>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!ziprg.$edit">{{ziprg.district[0].nom}}</span>
+                                            </td>
+                                            <td style="width:10%;">
+                                                <span ng-if="ziprg.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Ménage prévu</label>
+                                                        <input name="menage_beneficiaire_prevu" type="number" ng-model="ziprg.menage_beneficiaire_prevu"/>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!ziprg.$edit">{{ziprg.menage_beneficiaire_prevu | number:0}}</span>
+                                            </td>
+                                            <td style="width:10%;">
+                                                <span ng-if="ziprg.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Individu prévu</label>
+                                                        <input name="individu_beneficiaire_prevu" type="number" ng-model="ziprg.individu_beneficiaire_prevu"/>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!ziprg.$edit">{{ziprg.individu_beneficiaire_prevu | number:0}}</span>
+                                            </td>
+                                            <td style="width:10%;">
+                                                <span ng-if="ziprg.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Groupe prévu</label>
+                                                        <input name="groupe_beneficiaire_prevu" type="number" ng-model="ziprg.groupe_beneficiaire_prevu"/>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!ziprg.$edit">{{ziprg.groupe_beneficiaire_prevu | number:0}}</span>
+                                            </td>
+                                            <td style="width:20%;">
+												<span ng-if="!ziprg.$edit">
+													<md-button class="md-icon-button" aria-label="Modifier unité de mesure" ng-click="vm.modifierZoneinterventionprogramme(ziprg)">
+													  <md-icon md-font-icon="icon-table-edit"></md-icon>
+													  <md-tooltip><span>Modifier</span></md-tooltip>
+													</md-button>
+												</span>	
+												<span ng-if="!ziprg.$edit">	
+													<md-button class="md-icon-button" aria-label="Supprimer unité de mesure" ng-click="vm.supprimerZoneinterventionprogramme(ziprg)">
+													  <md-icon md-font-icon="icon-delete"></md-icon>
+													  <md-tooltip><span>Supprimer</span></md-tooltip>
+													</md-button>
+												</span>	
+												<span ng-if="ziprg.$edit">	
+													<md-button class="md-icon-button" aria-label="Annuler modification" ng-click="vm.annulerZoneinterventionprogramme(ziprg)">
+													  <md-icon md-font-icon="icon-cancel"></md-icon>
+													  <md-tooltip><span>Annuler</span></md-tooltip>
+													</md-button>
+												</span>	
+												<span ng-if="ziprg.$edit && ziprg.id_programme >0 && (ziprg.id_region > 0 || ziprg.id_district > 0) && (ziprg.menage_beneficiaire_prevu >0 || ziprg.individu_beneficiaire_prevu >0 || ziprg.groupe_beneficiaire_prevu >0)">	
+													<md-button class="md-icon-button" aria-label="Enregistrer unité de mesure" ng-click="vm.ajoutZoneinterventionprogramme(ziprg,0)">
+													  <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+													  <md-tooltip><span>Enregistrer</span></md-tooltip>
+													</md-button>
+												</span>	
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>		
+					<!-- Fin Onglet Zone d'intervention programme-->		
+					<!-- Début Onglet Financement programme-->		
+                    <md-tab label="Financement Programme" ng-disabled="!vm.selectedItemProgramme.id" ng-click="vm.charger_detail_financement_programme(vm.selectedItemProgramme)">
+                        <md-tab-body>
+                            <fieldset>
+                                <legend>
+                                        Financement Programme
+                                </legend>
+								<b>Programme : {{vm.selectedItemProgramme.intitule}}</b>
+								<div style="widht:100%;">    
+									<md-button type="submit" ng-disabled="!vm.selectedItemProgramme.id" ng-show="vm.afficherboutonnouveaufinancementprogramme==1" class="md-raised md-accent" aria-label="Nouveau" ng-click="vm.ajouterFinancementprogramme()" style="width:10%;">
+									  Nouveau
+									</md-button>
+									<md-button type="submit" ng-show="vm.afficherboutonModifSuprfinancementprogramme==1" class="md-raised md-accent" aria-label="Modifier" ng-click="vm.modifierFinancementprogramme()" style="width:10%;">
+									  Modifier
+									</md-button>
+									<md-button type="submit" ng-show="vm.afficherboutonModifSuprfinancementprogramme==1" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimerFinancementprogramme()" style="width:10%;">
+									  Supprimer
+									</md-button>
+								</div>  
+                                <table id="tableFinancementProgramme" ng-table="tableFinancementProgramme" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.financementprogramme_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="prg in vm.selectedItemProgramme.detail_financement_programme"  ng-class="{selected: prg.$selected}" ng-click="vm.selectionFinancementprogramme(prg)">										
+                                            <td>
+                                                <p style="margin:0;"><b>Source-fin :</b>{{prg.sourcefinancement[0].nom}}</p>
+                                                <p style="margin:0;"><b>Axe stratég :</b>{{prg.axestrategique[0].axe}}</p>
+                                            </td>
+											<td>
+                                                <span>{{prg.typefinancement[0].intitule}}</span>
+                                            </td>
+                							<td>
+                                                <span>{{prg.devise[0].description}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{prg.typesecteur[0].nom}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{prg.budget_initial | number:2}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{prg.budget_modifie | number:2}}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>
+					<!-- Fin Onglet Financement programme-->		
+					<!-- Début Onglet Intervention-->		
+                    <md-tab label="Intervention" ng-disabled="!vm.selectedItemProgramme.id" ng-click="vm.charger_detail_intervention(vm.selectedItemProgramme)">
+                        <md-tab-body>
+                            <fieldset>
+                                <legend>
+                                        Intervention
+                                </legend>
+								<b>Programme : {{vm.selectedItemProgramme.intitule}}</b>
+								<div style="widht:100%;">    
+									<md-button type="submit" ng-disabled="!vm.selectedItemProgramme.id" ng-show="vm.afficherboutonnouveauintervention==1" class="md-raised md-accent" aria-label="Nouveau" ng-click="vm.ajouterIntervention()" style="width:10%;">
+									  Nouveau
+									</md-button>
+									<md-button type="submit" ng-show="vm.afficherboutonModifSuprintervention==1" class="md-raised md-accent" aria-label="Modifier" ng-click="vm.modifierIntervention()" style="width:10%;">
+									  Modifier
+									</md-button>
+									<md-button type="submit" ng-show="vm.afficherboutonModifSuprintervention==1" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimerIntervention()" style="width:10%;">
+									  Supprimer
+									</md-button>
+								</div>  
+                                <table id="tableIntervention" ng-table="tableIntervention" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.intervention_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="prg in vm.selectedItemProgramme.detail_intervention"  ng-class="{selected: prg.$selected}" ng-click="vm.selectionIntervention(prg)">										
+                                            <td>
+                                                <p style="margin:0;"><b>Nom    :</b>{{prg.nom_informateur}}</p>
+                                                <p style="margin:0;"><b>Prénom :</b>{{prg.prenom_informateur}}</p>
+                                                <p style="margin:0;"><b>Tél    :</b>{{prg.telephone_informateur}}</p>
+                                                <p style="margin:0;"><b>e-mail :</b>{{prg.email_informateur}}</p>
+                                            </td>
+                                            <td>
+                                                <p style="margin:0;"><b>Identifiant :</b>{{prg.identifiant}}</p>
+                                                <p style="margin:0;"><b>Tutelle    :</b>{{prg.ministere_tutelle}}</p>
+                                                <p style="margin:0;"><b>Intitulé    :</b>{{prg.intitule}}</p>
+                                                <p style="margin:0;"><b>Comment :</b>{{prg.commentaire}}</p>
+                                            </td>
+                                            <td>
+                                                <p style="margin:0;"><b>Acteur    :</b>{{prg.acteur[0].nom}}</p>
+                                                <p style="margin:0;"><b>Categ int :</b>{{prg.categorie_intervention}}</p>
+                                                <p style="margin:0;"><b>Action :</b>{{prg.typeaction[0].description}}</p>
+                                            </td>
+                                            <td>
+                                                <p style="margin:0;"><b>Insc budg :</b>{{prg.inscription_budgetaire}}</p>
+                                                <p style="margin:0;"><b>Progr :</b>{{prg.programmation}}</p>
+                                                <p style="margin:0;"><b>Durée :</b>{{prg.duree}}-{{prg.unite_duree}}</p>
+                                            </td>
+                                            <td>
+                                                <p style="margin:0;"><b>Transf :</b>{{prg.typetransfert[0].description}}</p>
+                                                <p style="margin:0;"><b>Détail :</b>{{prg.detail_transfert}}</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>
+					<!-- Fin Onglet Intervention-->		
+					<!-- Début Onglet Financement intervention-->		
+					<md-tab label="Financement Intervention" ng-show="vm.affichageMasquefinancementintervention==0"  ng-disabled="!vm.selectedItemIntervention.id" ng-click="vm.charger_detail_financement_intervention(vm.selectedItemIntervention)">
+                        <md-tab-body>
+                            <fieldset>
+                                <legend>
+                                        Financement Intervention
+                                </legend>
+								<b>Programme : {{vm.selectedItemProgramme.intitule}}</b></br>
+								<b>Intervention : {{vm.selectedItemIntervention.intitule}}</b>
+								<div style="widht:100%;">    
+									<md-button type="submit" ng-disabled="!vm.selectedItemIntervention.id" ng-show="vm.afficherboutonnouveaufinancementintervention==1" class="md-raised md-accent" aria-label="Nouveau" ng-click="vm.ajouterFinancementintervention()" style="width:10%;">
+									  Nouveau
+									</md-button>
+									<md-button type="submit" ng-show="vm.afficherboutonModifSuprfinancementintervention==1" class="md-raised md-accent" aria-label="Modifier" ng-click="vm.modifierFinancementintervention()" style="width:10%;">
+									  Modifier
+									</md-button>
+									<md-button type="submit" ng-show="vm.afficherboutonModifSuprfinancementintervention==1" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimerFinancementintervention()" style="width:10%;">
+									  Supprimer
+									</md-button>
+								</div>  
+                                <table id="tableFinancementIntervention" ng-table="tableFinancementIntervention" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.financementintervention_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="prg in vm.selectedItemIntervention.detail_financement_intervention"  ng-class="{selected: prg.$selected}" ng-click="vm.selectionFinancementintervention(prg)">										
+                                            <td>
+                                                <p style="margin:0;"><b>Source-fin :</b>{{prg.sourcefinancement[0].nom}}</p>
+                                                <p style="margin:0;"><b>Act° stratég :</b>{{prg.actionstrategique[0].action}}</p>
+                                            </td>
+											<td>
+                                                <span>{{prg.devise[0].description}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{prg.typesecteur[0].nom}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{prg.budget_initial | number:2}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{prg.budget_modifie | number:2}}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>	
+					<!-- Fin Onglet Financement intervention-->		
+ 					<!-- Début Onglet variable intervention-->		
+                    <md-tab label="Variable intervention" ng-disabled="!vm.selectedItemIntervention.id" ng-click="vm.charger_detail_variable_intervention(vm.selectedItemIntervention)">
+							<b>Programme : {{vm.selectedItemProgramme.intitule}}</b></br>
+							<b>Intervention : {{vm.selectedItemIntervention.intitule}}</b></br>
+							<div style="clear:both;"></div>	
+							<div layout="column" flex-gt-xs="50" ng-repeat='item in vm.allRecordsListevariable' style="width:50%;display:inline-block">					
+								<fieldset class="standard" ng-if="item.choix_unique==0">
+									<legend  class="md-grey-800-bg">{{item.description}}</legend>
+                                    <md-checkbox ng-repeat='det in item.detail_variable' ng-checked="exists(det.id, vm.tab_reponse_variable)" ng-click="vm.toggle(det.id, vm.tab_reponse_variable)" ng-disabled="!vm.selectedItemIntervention.id">
+                                        {{det.description}}
+                                    </md-checkbox>
+								</fieldset>
+								<fieldset class="standard" ng-if="item.choix_unique==1">
+									<legend  class="md-grey-800-bg">{{item.description}}</legend>
+                                        <md-radio-group ng-model="vm.choix_unique[item.id]" ng-change="vm.ModifierChoixUnique()">
+ 										   <div ng-repeat='detail in item.detail_variable' class="row">
+											  <md-radio-button   ng-value="detail.id">{{detail.description}}</md-radio-button>
+										  </div>
+                                       </md-radio-group>
+								</fieldset>
+							</div>
+							<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>						 
+							  <md-button class="md-raised md-primary" ng-disabled="!vm.selectedItemIntervention.id" ng-click="vm.sauvegarder_variable_intervention(vm.selectedItemIntervention.id)">Enregistrer</md-button>                         
+							</section>
+					</md-tab>
+ 					<!-- Fin Onglet variable intervention-->
+					<!-- Début Onglet Zone d'intervention-->		
+                    <md-tab label="Zone d'intervention" ng-disabled="!vm.selectedItemIntervention.id" ng-click="vm.charger_detail_zone_intervention(vm.selectedItemIntervention)">
+                        <md-tab-body>
+                            <fieldset>
+                                <legend>
+                                        Zone d'intervention 
+ 									<div class="border-right" ng-disabled="!vm.selectedItemIntervention.id">
+										<md-button class="md-icon-button" aria-label="add Type acteur" ng-click="vm.ajouterZoneintervention()">
+											<md-icon md-font-icon="icon-plus-box"></md-icon>
+											<md-tooltip><span>Ajouter</span></md-tooltip>
+										</md-button>
+									</div> 
+                                </legend>
+ 								<b>Programme : {{vm.selectedItemProgramme.intitule}}</b></br>
+ 								<b>Intervention : {{vm.selectedItemIntervention.intitule}}</b></br>
+								<b>Cible : {{vm.afficher_cible}}</b>
+                               <table id="TableZoneIntervention" ng-table="tableZoneintervention" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.zone_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="zoneint in vm.selectedItemIntervention.detail_zone_intervention"  ng-class="{selected: zoneint.$selected}" ng-click="vm.selectionZoneintervention(zoneint)">										
+                                            <td style="width:15%;">
+                                                <span ng-if="zoneint.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Région</label>
+														<md-select ng-model="zoneint.id_region"  ng-change="vm.modifierRegionZONEINT(zoneint)">													  
+														  <md-option value="">&nbsp;</md-option>
+														  <md-option ng-repeat="reg in vm.allRecordsRegion" value="{{reg.id}}" >
+															{{reg.nom}}
+														  </md-option>
+														</md-select>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!zoneint.$edit">{{zoneint.region[0].nom}}</span>
+                                            </td>
+                                            <td style="width:15%;">
+                                                <span ng-if="zoneint.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>District</label>
+														<md-select ng-model="zoneint.id_district"  ng-change="vm.modifierDistrictZONEINT(zoneint)" ng-disabled="!zoneint.id_region">													  
+														  <md-option value="">&nbsp;</md-option>
+														  <md-option ng-repeat="dis in vm.allRecordsDistrict" value="{{dis.id}}" >
+															{{dis.nom}}
+														  </md-option>
+														</md-select>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!zoneint.$edit">{{zoneint.district[0].nom}}</span>
+                                            </td>
+                                            <td style="width:15%;">
+                                                <span ng-if="zoneint.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Commune</label>
+														<md-select ng-model="zoneint.id_commune"  ng-change="vm.modifierCommuneZONEINT(zoneint)" ng-disabled="!zoneint.id_district">													  
+														  <md-option value="">&nbsp;</md-option>
+														  <md-option ng-repeat="comm in vm.allRecordsCommune" value="{{comm.id}}" >
+															{{comm.nom}}
+														  </md-option>
+														</md-select>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!zoneint.$edit">{{zoneint.commune[0].nom}}</span>
+                                            </td>
+                                            <td style="width:15%;">
+                                                <span ng-if="zoneint.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Fokontany</label>
+														<md-select ng-model="zoneint.id_fokontany"  ng-change="vm.modifierFokontanyZONEINT(zoneint)" ng-disabled="!zoneint.id_commune">													  
+														  <md-option value="">&nbsp;</md-option>
+														  <md-option ng-repeat="fkt in vm.allRecordsFokontany" value="{{fkt.id}}" >
+															{{fkt.nom}}
+														  </md-option>
+														</md-select>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!zoneint.$edit">{{zoneint.fokontany[0].nom}}</span>
+                                            </td>
+                                            <td style="width:10%;">
+                                                <span ng-if="zoneint.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Ménage prévu</label>
+                                                        <input name="menage_beneficiaire_prevu" type="number" ng-model="zoneint.menage_beneficiaire_prevu" ng-disabled="vm.menage_prevu==0"/>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!zoneint.$edit">{{zoneint.menage_beneficiaire_prevu | number:0}}</span>
+                                            </td>
+                                            <td style="width:10%;">
+                                                <span ng-if="zoneint.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Individu prévu</label>
+                                                        <input name="individu_beneficiaire_prevu" type="number" ng-model="zoneint.individu_beneficiaire_prevu" ng-disabled="vm.individu_prevu==0"/>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!zoneint.$edit">{{zoneint.individu_beneficiaire_prevu | number:0}}</span>
+                                            </td>
+                                            <td style="width:10%;">
+                                                <span ng-if="zoneint.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Groupe prévu</label>
+                                                        <input name="groupe_beneficiaire_prevu" type="number" ng-model="zoneint.groupe_beneficiaire_prevu" ng-disabled="vm.groupe_prevu==0"/>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!zoneint.$edit">{{zoneint.groupe_beneficiaire_prevu | number:0}}</span>
+                                            </td>
+                                            <td style="width:20%;">
+												<span ng-if="!zoneint.$edit">
+													<md-button class="md-icon-button" aria-label="Modifier unité de mesure" ng-click="vm.modifierZoneintervention(zoneint)">
+													  <md-icon md-font-icon="icon-table-edit"></md-icon>
+													  <md-tooltip><span>Modifier</span></md-tooltip>
+													</md-button>
+												</span>	
+												<span ng-if="!zoneint.$edit">	
+													<md-button class="md-icon-button" aria-label="Supprimer unité de mesure" ng-click="vm.supprimerZoneintervention(zoneint)">
+													  <md-icon md-font-icon="icon-delete"></md-icon>
+													  <md-tooltip><span>Supprimer</span></md-tooltip>
+													</md-button>
+												</span>	
+												<span ng-if="zoneint.$edit">	
+													<md-button class="md-icon-button" aria-label="Annuler modification" ng-click="vm.annulerZoneintervention(zoneint)">
+													  <md-icon md-font-icon="icon-cancel"></md-icon>
+													  <md-tooltip><span>Annuler</span></md-tooltip>
+													</md-button>
+												</span>	
+												<span ng-if="zoneint.$edit && zoneint.id_intervention >0 && zoneint.id_fokontany > 0 && (zoneint.menage_beneficiaire_prevu >0 || zoneint.individu_beneficiaire_prevu >0 || zoneint.groupe_beneficiaire_prevu >0)">	
+													<md-button class="md-icon-button" aria-label="Enregistrer unité de mesure" ng-click="vm.ajoutZoneintervention(zoneint,0)">
+													  <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+													  <md-tooltip><span>Enregistrer</span></md-tooltip>
+													</md-button>
+												</span>	
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>		
+ 					<!-- Fin Onglet Zone d'intervention-->		
+					<md-tab>
+                    </md-tab>
+                </md-tabs>
+            </div>
+        </div>
+<!-- Fin affichage de tous les onglets  -->		
+    </div>

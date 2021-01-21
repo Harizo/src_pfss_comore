@@ -1,0 +1,9 @@
+{
+    "activite": {
+		"parent": "Home",
+		"titre":"Activity",
+		"menu":{
+			"titre":"Activity"
+		}
+    }
+}

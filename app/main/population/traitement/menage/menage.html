@@ -1,0 +1,769 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Enquête</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;"> Ménage</span>
+                </div>
+    
+                <div class="title">Ménage : {{vm.selectedItem.nom}} - {{vm.selectedItem.prenom}}</div>
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>
+                <md-tabs md-dynamic-height>
+                    <md-tab label="Ménage">
+                        <md-progress-circular ng-if="vm.affiche_load" class="md-accent" aria-label="Rating" md-mode="indeterminate" md-diameter="64"></md-progress-circular> 
+                        <div ng-if="vm.affiche_load" style="position:relative;top: -30px;  left: 60px;color: #039be5">
+                            Chargement,veuillez patienter s'il vous plait ...
+                        </div>
+                        <div style="widht:100%;">    
+                            <md-button type="submit" ng-show="(vm.filtre.id_region)&&(vm.filtre.id_region)&&(vm.filtre.id_commune)&&(vm.filtre.fokontany_id)" class="md-raised md-green-800-bg" aria-label="Nouveau" ng-click="vm.afficher_masque_ajout()" style="width:10%;">
+                              Nouveau
+                            </md-button>
+                            <md-button type="submit"  ng-show="(vm.selectedItem.id)" class="md-raised md-blue-800-bg" aria-label="Modifier" ng-click="vm.modifier()" style="width:10%;">
+                              Modifier
+                            </md-button>
+                            <!--md-button type="submit" ng-show="vm.afficherboutonModifSupr==1" ng-disabled="vm.selectedItem.utilisateur_id!=vm.user_id" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimer()" style="width:10%;">
+                              Supprimer
+                            </md-button-->
+                          
+                        </div>
+                        <form name="filtrepardateform" class="md-inline-form" novalidate >
+
+                            <div layout="column" layout-gt-xs="row" ng-show="vm.affichage_masque">
+                                <md-input-container>
+                                <span>Date d'inscription</span>
+                                </md-input-container>
+                                <md-datepicker ng-model="vm.filtre.DateInscription"   md-placeholder="Enter date d'inscription" >                       
+                                </md-datepicker>
+                           
+                            </div>
+                           
+                            <div layout="column" layout-gt-xs="row" flex >
+
+                                <md-input-container flex="100" flex-gt-xs="90">
+                                  <label>Région</label>
+                                    <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_region()" required>
+                                     
+                                      <md-option ng-repeat="region in vm.all_region" value="{{region.id}}" >
+                                        {{region.nom}}
+                                      </md-option>
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.region.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Région obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                               <md-input-container flex="100" flex-gt-xs="90">
+                                  <label>District</label>
+                                    <md-select ng-model="vm.filtre.id_district" name="district" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_region" required>
+                                      
+                                      <md-option ng-repeat="dist in vm.all_district" value="{{dist.id}}" >
+                                        {{dist.nom}}
+                                      </md-option>
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.district.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>District obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+
+                                <md-input-container flex="100" flex-gt-xs="90">
+                                  <label>Commune</label>
+                                    <md-select ng-model="vm.filtre.id_commune" name="commune" ng-change="vm.filtre_fokontany()" ng-disabled="!vm.filtre.id_region"  required>
+                                     
+                                      <md-option ng-repeat="comm in vm.all_commune  track by $index" value="{{comm.id}}" >
+                                        {{comm.nom}}
+                                      </md-option>
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.commune.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Commune obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+
+                                <md-input-container flex="100" flex-gt-xs="90">
+                                  <label>Fokontany</label>
+                                    <md-select ng-model="vm.filtre.id_fokontany" name="fokontany"  ng-disabled="!vm.filtre.id_commune"  required>
+                                      <md-option ng-repeat="fkt in vm.all_fokontany" value="{{fkt.id}}" >
+                                        {{fkt.nom}}
+                                      </md-option>
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.fokontany.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Fokontany obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                               
+                            </div>
+                            <div layout="column" layout-gt-xs="row" flex>
+                              <md-input-container flex-gt-sm ng-show="vm.affichage_masque">
+                                    <input type="text"  name="NumeroEnregistrement" ng-model="vm.filtre.NumeroEnregistrement"
+                                    placeholder="Numero Enregistrement " ng-init="vm.filtre.NumeroEnregistrement=''" readonly>
+                                    <div ng-messages="filtrepardateform.NumeroEnregistrement.$error"
+                                        role="alert">
+                                        <div ng-message="required">
+                                            <span>NumeroEnregistrement obligatoire.</span>
+                                        </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex-gt-sm ng-show="vm.affichage_masque">
+                                    <input type="text"  name="nomchefmenage" ng-model="vm.filtre.nomchefmenage"
+                                    placeholder="Chef de ménage" ng-init="vm.filtre.nomchefmenage=''" >
+                                    <div ng-messages="filtrepardateform.nomchefmenage.$error"
+                                        role="alert">
+                                        <div ng-message="required">
+                                            <span>Chef de ménage obligatoire.</span>
+                                        </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex-gt-sm ng-show="vm.affichage_masque">
+                                    <input type="text"  name="PersonneInscription" ng-model="vm.filtre.PersonneInscription"
+                                    placeholder="Nom de l'enquêteur" ng-init="vm.filtre.PersonneInscription=''">
+                                    <div ng-messages="filtrepardateform.PersonneInscription.$error"
+                                        role="alert">
+                                        <div ng-message="required">
+                                            <span>Personne Inscrire obligatoire.</span>
+                                        </div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div layout="column" layout-gt-xs="row" flex>
+                              <md-input-container  flex="100" flex-gt-xs="10" ng-show="vm.affichage_masque">
+                                  <input type="number"  name="agechefdemenage" ng-model="vm.filtre.agechefdemenage"
+                                  placeholder="Age chef de ménage " ng-init="vm.filtre.agechefdemenage=''">
+                                  <div ng-messages="filtrepardateform.agechefdemenage.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                          <span>agechefdemenage obligatoire.</span>
+                                      </div>
+                                  </div>
+                              </md-input-container>
+                              
+                                <md-input-container flex="100" flex-gt-xs="10"ng-show="vm.affichage_masque">
+                                  <label>SexeChefMenage</label>
+                                    <md-select ng-model="vm.filtre.SexeChefMenage" name="SexeChefMenage"  >
+                                      <md-option  value="M">Homme</md-option>
+                                      <md-option  value="F">Femme</md-option>
+                                      
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.SexeChefMenage.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>SexeChefMenage obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="80" ng-show="vm.affichage_masque">
+                                    <input type="text"  name="Addresse" ng-model="vm.filtre.Addresse"
+                                    placeholder="Addresse " ng-init="vm.filtre.Addresse=''">
+                                    <div ng-messages="filtrepardateform.Addresse.$error"
+                                        role="alert">
+                                        <div ng-message="required">
+                                            <span>Addresse obligatoire.</span>
+                                        </div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div>
+                             
+
+                            <section layout="row" layout-sm="column" layout-align="left" layout-wrap>
+                     
+                              <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                  ng-if="!vm.affichage_masque" ng-disabled="filtrepardateform.$invalid||vm.affiche_load" ng-click="vm.filtrer(vm.filtre)">
+                                  Actualiser
+                              </md-button>
+                              <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                  ng-if="vm.affichage_masque" ng-disabled="(filtrepardateform.$invalid)||(vm.disable_button)" ng-click="vm.save_menage(vm.filtre)">
+                                  Enregistrer
+                              </md-button>
+                              <md-button type="submit" class="md-raised md-primary" aria-label="Enregistrer"
+                                  ng-if="vm.affichage_masque"  ng-click="vm.annuler()">
+                                  Annuler
+                              </md-button>
+                              
+                            </section>
+
+                         
+                            </div>
+                        </form>
+                        
+                        <table class="dataTable row-border hover cell-border text-center" datatable="ng"
+                          dt-options="vm.dtOptions">
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::vm.menage_column">
+                                <div class="table-header">
+                                  <span class="column-title text-center">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="menage in vm.all_menages  track by $index"  ng-class="{selected: menage.$selected}" ng-click="vm.selection(menage)">
+                              <td>{{menage.code}}</td>
+                              <td>{{menage.nom}} {{menage.prenom}}</td>
+                              <td>{{menage.sexe}}</td>
+                              <td>{{menage.cin}}</td>
+                              <td>{{menage.fokontany[0].nom}}</td>
+                              <td>{{menage.adresse}}</td>                
+                            </tr>
+                          </tbody>
+                        </table>
+                    </md-tab>   
+
+                    <md-tab label="Questionnaires Ménage" ng-disabled="!vm.selectedItem.id">
+                        <fieldset class="standard" >
+                            <legend  class="md-grey-800-bg">Type logement</legend>
+                            <md-radio-group ng-model="vm.id_type_logement" ng-checked="" ng-click="vm.test_check_type_logement()">
+                                <div layout="row" layout-wrap flex>
+                                <div flex="50" ng-repeat='t in vm.all_type_logement'>
+                                    <md-radio-button ng-value="t.id" >{{t.description}}</md-radio-button>
+                                </div>
+                                </div>
+                            </md-radio-group>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend  class="md-grey-800-bg">Occupation logement</legend>
+                            <md-radio-group ng-model="vm.id_occupation_logement" ng-checked="" ng-click="vm.test_check_occupation_logement()">
+                                <div layout="row" layout-wrap flex>
+                                <div flex="50" ng-repeat='t in vm.all_occupation_logement'>
+                                    <md-radio-button ng-value="t.id" >{{t.description}}</md-radio-button>
+                                </div>
+                                </div>
+                            </md-radio-group>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Revêtement toit(maison)</legend>
+                            <div layout="row" layout-wrap flex>                              
+                                <div flex="50" ng-repeat="item in vm.all_revetement_toit">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_reponse_revetement_toit)" ng-click="vm.toggle(item.id, vm.tab_reponse_revetement_toit)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Revêtement sol(maison)</legend>
+                            <div layout="row" layout-wrap flex>                              
+                                <div flex="50" ng-repeat="item in vm.all_revetement_sol">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_reponse_revetement_sol)" ng-click="vm.toggle(item.id, vm.tab_reponse_revetement_sol)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Revêtement mur(maison)</legend>
+                            <div layout="row" layout-wrap flex>                               
+                                <div flex="50" ng-repeat="item in vm.all_revetement_mur">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_reponse_revetement_mur)" ng-click="vm.toggle(item.id, vm.tab_reponse_revetement_mur)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Type éclairage</legend>
+                            <div layout="row" layout-wrap flex>                               
+                                <div flex="50" ng-repeat="item in vm.all_source_eclairage">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_reponse_source_eclairage)" ng-click="vm.toggle(item.id, vm.tab_reponse_source_eclairage)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Combustible</legend>
+                            <div layout="row" layout-wrap flex>
+                                <div flex="50" ng-repeat="item in vm.all_combustible">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_reponse_combustible)" ng-click="vm.toggle(item.id, vm.tab_reponse_combustible)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard " >
+                            <legend class="md-grey-800-bg">Toilette</legend>
+                            <div layout="row" layout-wrap flex>                              
+                                <div flex="50" ng-repeat="item in vm.all_toilette">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_reponse_toilette)" ng-click="vm.toggle(item.id, vm.tab_reponse_toilette)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard " >
+                            <legend class="md-grey-800-bg">Source d'eau</legend>
+                            <div layout="row" layout-wrap flex>                              
+                                <div flex="50" ng-repeat="item in vm.all_source_eau">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_reponse_source_eau)" ng-click="vm.toggle(item.id, vm.tab_reponse_source_eau)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Bien / Equipement</legend>
+                            <div layout="row" layout-wrap flex>                               
+                                <div flex="50" ng-repeat="item in vm.all_bien_equipement">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_reponse_bien_equipement)" ng-click="vm.toggle(item.id, vm.tab_reponse_bien_equipement)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Moyen de production</legend>
+                            <div layout="row" layout-wrap flex>
+                                
+                                <div flex="50" ng-repeat="item in vm.all_moyen_production">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_reponse_moyen_production)" ng-click="vm.toggle(item.id, vm.tab_reponse_moyen_production)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Source de revenu</legend>
+                            <div layout="row" layout-wrap flex>
+                                
+                                <div flex="50" ng-repeat="item in vm.all_source_revenu">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_reponse_source_revenu)" ng-click="vm.toggle(item.id, vm.tab_reponse_source_revenu)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Type élevage</legend>
+                            <div layout="row" layout-wrap flex>                               
+                                <div flex="50" ng-repeat="item in vm.all_elevage">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_reponse_elevage)" ng-click="vm.toggle(item.id, vm.tab_reponse_elevage)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Type culture</legend>
+                            <div layout="row" layout-wrap flex>                               
+                                <div flex="50" ng-repeat="item in vm.all_culture">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_reponse_culture)" ng-click="vm.toggle(item.id, vm.tab_reponse_culture)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Type aliment</legend>
+                            <div layout="row" layout-wrap flex>                               
+                                <div flex="50" ng-repeat="item in vm.all_aliment">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_reponse_aliment)" ng-click="vm.toggle(item.id, vm.tab_reponse_aliment)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Source obtention aliment</legend>
+                            <div layout="row" layout-wrap flex>                               
+                                <div flex="50" ng-repeat="item in vm.all_source_aliment">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_source_aliment)" ng-click="vm.toggle(item.id, vm.tab_source_aliment)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Stratégie alimentaire</legend>
+                            <div layout="row" layout-wrap flex>                               
+                                <div flex="50" ng-repeat="item in vm.all_strategie_alimentaire">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_strategie_alimentaire)" ng-click="vm.toggle(item.id, vm.tab_strategie_alimentaire)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Problème sur revenu</legend>
+                            <div layout="row" layout-wrap flex>                               
+                                <div flex="50" ng-repeat="item in vm.all_probleme_sur_revenu">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_probleme_sur_revenu)" ng-click="vm.toggle(item.id, vm.tab_probleme_sur_revenu)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Stratégie sur revenu</legend>
+                            <div layout="row" layout-wrap flex>                               
+                                <div flex="50" ng-repeat="item in vm.all_strategie_sur_revenu">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_strategie_sur_revenu)" ng-click="vm.toggle(item.id, vm.tab_strategie_sur_revenu)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Activité de recours</legend>
+                            <div layout="row" layout-wrap flex>                               
+                                <div flex="50" ng-repeat="item in vm.all_activite_recours">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_activite_recours)" ng-click="vm.toggle(item.id, vm.tab_activite_recours)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Infrastructure fréquenté</legend>
+                            <div layout="row" layout-wrap flex>                               
+                                <div flex="50" ng-repeat="item in vm.all_infrastructure_frequente">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_infrastructure_frequente)" ng-click="vm.toggle(item.id, vm.tab_infrastructure_frequente)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Service bénéficié</legend>
+                            <div layout="row" layout-wrap flex>                               
+                                <div flex="50" ng-repeat="item in vm.all_service_beneficie">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_service_beneficie)" ng-click="vm.toggle(item.id, vm.tab_service_beneficie)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+
+                            </div>
+                        </fieldset>
+
+
+                        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                     
+                          <md-button class="md-raised md-primary" ng-disabled="vm.disable_button" ng-if="vm.id_enquete_menage != 0" ng-click="vm.save_reponse_menage()">Mettre à jour</md-button>
+                          <md-button class="md-raised md-primary" ng-disabled="vm.disable_button" ng-if="vm.id_enquete_menage == 0" ng-click="vm.save_reponse_menage()">Enregistrer</md-button>                         
+                        </section>
+
+
+                    </md-tab> 
+
+                    <md-tab label="Intervention - Ménage" ng-disabled="(!vm.selectedItem.id)||(vm.id_enquete_menage == 0)">
+                        <fieldset class="standard " >
+                            <legend class="md-grey-800-bg">Intervention de protection social associé aux ménages</legend>
+                            <div layout="row" layout-wrap flex>
+                                
+                                <div flex="50" ng-repeat="item in vm.all_intervention">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_intervention)" ng-click="vm.toggle(item.id, vm.tab_intervention)">
+                                        {{item.intitule}}
+                                    </md-checkbox>
+                                </div>
+
+                            </div>
+                        </fieldset>
+
+                        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                     
+                          <md-button class="md-raised md-primary" ng-disabled="vm.disable_button" ng-if="vm.id_menage_intervention != 0" ng-click="vm.save_reponse_menage_intervention()">Mettre à jour</md-button>
+                          <md-button class="md-raised md-primary" ng-disabled="vm.disable_button" ng-if="vm.id_menage_intervention == 0" ng-click="vm.save_reponse_menage_intervention()">Enregistrer</md-button>
+                        </section>
+                    </md-tab> 
+
+                    <md-tab label="Individu" ng-disabled="!vm.selectedItem.id">
+                        <div style="widht:100%;">    
+                            <md-button type="submit" class="md-raised md-green-800-bg" aria-label="Nouveau" ng-click="vm.ajout_individu()" style="width:10%;">
+                              Nouveau
+                            </md-button>
+                            <md-button type="submit"  ng-show="(vm.selectedItem_individu.id)" class="md-raised md-blue-800-bg" aria-label="Modifier" ng-click="vm.modifier_individu()" style="width:10%;">
+                              Modifier
+                            </md-button>
+
+                            
+                          
+                        </div>
+                        <form name="individu_form" class="md-inline-form" novalidate >
+                          <div layout="column" layout-gt-xs="row" flex>
+                            
+
+                            <md-input-container flex="100" flex-gt-xs="30" ng-show="vm.affichage_masque_individu">
+                              <input type="text"  name="Nom" ng-model="vm.individu_masque.Nom"
+                                placeholder="Nom et Prénom" ng-init="vm.individu_masque.Nom=''" >
+                              <div ng-messages="individu_form.Nom.$error"
+                                role="alert">
+                                <div ng-message="required">
+                                  <span>Nom obligatoire.</span>
+                                </div>
+                              </div>
+                            </md-input-container>
+
+                            <md-input-container flex="100" flex-gt-xs="10" ng-show="vm.affichage_masque_individu">
+                              <input type="text"  name="Activite" ng-model="vm.individu_masque.Activite"
+                                placeholder="Activite" ng-init="vm.individu_masque.Activite=''" >
+                              <div ng-messages="individu_form.Activite.$error"
+                                role="alert">
+                                <div ng-message="required">
+                                  <span>Activite obligatoire.</span>
+                                </div>
+                              </div>
+                            </md-input-container>
+
+                            
+
+                            <md-input-container flex="100" flex-gt-xs="5"ng-show="vm.affichage_masque_individu">
+                              <label>Travailleur</label>
+                                <md-select ng-model="vm.individu_masque.travailleur" name="travailleur"  >
+                                  <md-option  value="Oui">Oui</md-option>
+                                  <md-option  value="Non">Non</md-option>
+                                  
+
+                                </md-select>
+                                <div ng-messages="individu_form.travailleur.$error"
+                                  role="alert">
+                                  <div ng-message="required">
+                                    <span>travailleur obligatoire</span>
+                                  </div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container flex="100" flex-gt-xs="10"ng-show="vm.affichage_masque_individu">
+                                  <label>Sexe</label>
+                                    <md-select ng-model="vm.individu_masque.sexe" name="sexe"  >
+                                      <md-option  value="1">Homme</md-option>
+                                      <md-option  value="0">Femme</md-option>
+                                      
+
+                                    </md-select>
+                                    <div ng-messages="individu_form.sexe.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Sexe obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+
+                            <div layout="column" layout-gt-xs="row" ng-show="vm.affichage_masque_individu">
+                                <md-input-container>
+                                <span>Date de naissance</span>
+                                </md-input-container>
+                                <md-datepicker ng-model="vm.individu_masque.DateNaissance" md-max-date="vm.date_now"  md-placeholder="Date ed naissance" >                       
+                                </md-datepicker>
+                           
+                            </div>
+
+                          </div>
+                          <section layout="row" layout-sm="column" layout-align="left" layout-wrap>
+                     
+                              
+                              <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                  ng-if="vm.affichage_masque_individu" ng-disabled="(individu_form.$invalid)||(vm.disable_button)" ng-click="vm.save_individu(vm.individu_masque)">
+                                  Enregistrer
+                              </md-button>
+                              <md-button type="submit" class="md-raised md-primary" aria-label="Enregistrer"
+                                  ng-if="vm.affichage_masque_individu"  ng-click="vm.annuler_individu()">
+                                  Annuler
+                              </md-button>
+                              
+                            </section>
+                        </form>
+                        <table class="dataTable row-border hover cell-border text-center" datatable="ng"
+                          dt-options="vm.dtOptions">
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::vm.individu_column">
+                                <div class="table-header">
+                                  <span class="column-title text-center">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="indiv in vm.all_individus"  ng-class="{selected: indiv.$selected}" ng-click="vm.selection_individu(indiv)">
+                              <td>{{indiv.nom}} {{indiv.prenom}}</td>
+                              <td>{{indiv.date_naissance | date:'dd/MM/yyyy'}}</td>                
+                              <td>{{indiv.liendeparente[0].description}}</td>           
+                              <td>{{vm.sexe}}</td>   
+                            </tr>
+                          </tbody>
+                        </table>
+                    </md-tab> 
+
+                    <md-tab label="Questionnaires Individu" ng-disabled="!vm.selectedItem_individu.id">
+
+                      <fieldset class="standard" >
+                            <legend  class="md-grey-800-bg">Lien parenté</legend>
+                            <md-radio-group ng-model="vm.reponse_individu.id_lien_de_parente" ng-click="vm.test_check_id_lien_parente()">
+                                <div layout="row" layout-wrap flex>
+                                <div flex="50" ng-repeat='t in vm.allRecordsLiendeparente'>
+                                    <md-radio-button ng-value="t.id" >{{t.description}}</md-radio-button>
+                                </div>
+                                </div>
+                            </md-radio-group>
+                        </fieldset>
+                        <!--fieldset class="standard " >
+                            <legend class="md-grey-800-bg">Situation matrimoniale</legend>
+                            <md-radio-group ng-model="vm.reponse_individu.id_situation_matrimoniale" ng-click="vm.test_check_situation_matrimoniale()">
+                                <div layout="row" layout-wrap flex>
+                                <div flex="50" ng-repeat='t in vm.allRecordsSituationmatrimoniale'>
+                                    <md-radio-button ng-value="t.id" >{{t.description}}</md-radio-button>
+                                </div>
+                                </div>
+                            </md-radio-group>
+                        </fieldset-->
+                        <fieldset class="standard " >
+                            <legend class="md-grey-800-bg">Groupe d'appartenance</legend>
+                            <md-radio-group ng-model="vm.reponse_individu.id_groupe_appartenance" ng-click="vm.test_check_id_groupe_appartenace()">
+                                <div layout="row" layout-wrap flex>
+                                <div flex="50" ng-repeat='t in vm.allRecordsGroupeappartenance'>
+                                    <md-radio-button ng-value="t.id" >{{t.description}}</md-radio-button>
+                                </div>
+                                </div>
+                            </md-radio-group>
+                        </fieldset>
+                        <fieldset class="standard " >
+                            <legend class="md-grey-800-bg">Type école fréquentée</legend>
+                            <md-radio-group ng-model="vm.reponse_individu.id_type_ecole" ng-click="vm.test_check_id_type_ecole()">
+                                <div layout="row" layout-wrap flex>
+                                <div flex="50" ng-repeat='t in vm.allRecordsTypeecole'>
+                                    <md-radio-button ng-value="t.id" >{{t.description}}</md-radio-button>
+                                </div>
+                                </div>
+                            </md-radio-group>
+                        </fieldset>
+                        <fieldset class="standard " >
+                            <legend class="md-grey-800-bg">Niveau de classe</legend>
+                            <md-radio-group ng-model="vm.reponse_individu.id_niveau_de_classe" ng-click="vm.test_check_id_niveau_de_classe()">
+                                <div layout="row" layout-wrap flex>
+                                <div flex="50" ng-repeat='t in vm.allRecordsNiveaudeclasse'>
+                                    <md-radio-button ng-value="t.id" >{{t.description}}</md-radio-button>
+                                </div>
+                                </div>
+                            </md-radio-group>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend class="md-grey-800-bg">Langue</legend>
+                            <div layout="row" layout-wrap flex>                               
+                                <div flex="50" ng-repeat="item in vm.allRecordsLangue">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_reponse_langue)" ng-click="vm.toggle(item.id, vm.tab_reponse_langue)">
+                                        {{item.description}}
+                                    </md-checkbox>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                        <fieldset class="standard" >
+                            <legend  class="md-grey-800-bg">Handicap visuel</legend>
+                            <md-radio-group ng-model="vm.reponse_individu.id_handicap_visuel" ng-click="vm.test_check_id_handicap_visuel()">
+                                <div layout="row" layout-wrap flex>
+                                <div flex="50" ng-repeat='t in vm.allRecordsHandicapvisuel'>
+                                    <md-radio-button ng-value="t.id" >{{t.description}}</md-radio-button>
+                                </div>
+                                </div>
+                            </md-radio-group>
+                        </fieldset>
+
+                        <fieldset class="standard" >
+                            <legend  class="md-grey-800-bg">Handicap Parole</legend>
+                            <md-radio-group ng-model="vm.reponse_individu.id_handicap_parole" ng-click="vm.test_check_id_handicap_parole()">
+                                <div layout="row" layout-wrap flex>
+                                <div flex="50" ng-repeat='t in vm.allRecordsHandicapparole'>
+                                    <md-radio-button ng-value="t.id" >{{t.description}}</md-radio-button>
+                                </div>
+                                </div>
+                            </md-radio-group>
+                        </fieldset>
+
+                        <fieldset class="standard" >
+                            <legend  class="md-grey-800-bg">Handicap auditif</legend>
+                            <md-radio-group ng-model="vm.reponse_individu.id_handicap_auditif" ng-click="vm.test_check_id_handicap_auditif()">
+                                <div layout="row" layout-wrap flex>
+                                <div flex="50" ng-repeat='t in vm.allRecordsHandicapauditif'>
+                                    <md-radio-button ng-value="t.id" >{{t.description}}</md-radio-button>
+                                </div>
+                                </div>
+                            </md-radio-group>
+                        </fieldset>
+
+                        <fieldset class="standard" >
+                            <legend  class="md-grey-800-bg">Handicap mental</legend>
+                            <md-radio-group ng-model="vm.reponse_individu.id_handicap_mental" ng-click="vm.test_check_id_handicap_mental()">
+                                <div layout="row" layout-wrap flex>
+                                <div flex="50" ng-repeat='t in vm.allRecordsHandicapmental'>
+                                    <md-radio-button ng-value="t.id" >{{t.description}}</md-radio-button>
+                                </div>
+                                </div>
+                            </md-radio-group>
+                        </fieldset>
+
+                        <fieldset class="standard" >
+                            <legend  class="md-grey-800-bg">Handicap moteur</legend>
+                            <md-radio-group ng-model="vm.reponse_individu.id_handicap_moteur" ng-click="vm.test_check_id_handicap_moteur()">
+                                <div layout="row" layout-wrap flex>
+                                <div flex="50" ng-repeat='t in vm.allRecordsHandicapmoteur'>
+                                    <md-radio-button ng-value="t.id" >{{t.description}}</md-radio-button>
+                                </div>
+                                </div>
+                            </md-radio-group>
+                        </fieldset>
+                        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                     
+                          <md-button class="md-raised md-primary" ng-if="vm.id_enquete_individu != 0" ng-disabled="vm.disable_button" ng-click="vm.save_reponse_individu(vm.reponse_individu)">Mettre à jour</md-button>
+                          <md-button class="md-raised md-primary" ng-if="vm.id_enquete_individu == 0" ng-disabled="vm.disable_button" ng-click="vm.save_reponse_individu(vm.reponse_individu)">Enregistrer</md-button>
+
+                        </section>
+                        
+                    </md-tab> 
+
+                    <md-tab label="Intervention - Individu" ng-disabled="(!vm.selectedItem_individu.id)||(vm.id_enquete_individu == 0)">
+                        <fieldset class="standard " >
+                            <legend class="md-grey-800-bg">Intervention de protection social associé aux membres de ménage</legend>
+                            <div layout="row" layout-wrap flex>
+                                
+                                <div flex="50" ng-repeat="item in vm.all_intervention">
+                                    <md-checkbox ng-checked="exists(item.id, vm.tab_intervention_individu)" ng-click="vm.toggle(item.id, vm.tab_intervention_individu)">
+                                        {{item.intitule}}
+                                    </md-checkbox>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                     
+                          <md-button class="md-raised md-primary" ng-if="vm.id_individu_intervention != 0" ng-click="vm.save_reponse_individu_intervention()">Mettre à jour</md-button>
+                          <md-button class="md-raised md-primary" ng-if="vm.id_individu_intervention == 0" ng-click="vm.save_reponse_individu_intervention()">Enregistrer</md-button>
+                        </section>
+                    </md-tab> 
+
+                </md-tabs>
+            </div>
+        </div>
+    </div>
+    

@@ -1,0 +1,22 @@
+.map-wrapper {
+  position: relative;
+  height: calc(100vh - 4em - 64px) !important;
+}
+
+.angular-google-map-container {
+  
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 100%!important;
+  z-index: 0 !important;
+}
+#forme {
+	position: absolute !important;
+	z-index: 2 !important;
+	opacity: 80% !important;
+	background-color:  white;
+	margin-top: 30px !important;
+}

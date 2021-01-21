@@ -1,0 +1,250 @@
+  <div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Administration</span>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent"  > Groupes d'utilisateurs</span>
+            </div>
+
+            <div class="title">Groupes d'utilisateurs</div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+            
+    <div class="content"layout="column">
+		<div class="form-wrapper " >       
+		<md-progress-circular ng-if="vm.affichage_load"  md-mode="indeterminate" md-diameter="64">
+                
+        </md-progress-circular>
+        <div ng-if="vm.affichage_load" style="position:relative;top: -30px;  left: 60px;color: #383c48">
+			Chargement !!!,veuillez patienter s'il vous plait ...
+		</div>
+				<!--md-tabs md-dynamic-height  md-center-tabs="true"!-->
+				<md-tabs md-dynamic-height  >
+					<md-tab label="Groupes">
+
+
+			          	<div layout="row" layout-align="start">
+
+			          		<md-button class="md-fab md-mini" aria-label="Ajout groupe d'utilisateur" ng-click="vm.ajouter()">
+					            <md-icon md-svg-src="assets/icons/svg/add.svg"></md-icon>
+					            <md-tooltip><span>Ajout groupe d'utilisateur</span></md-tooltip>
+					        </md-button>
+			              
+			              	                  
+			          	</div>
+			       		<div>
+					
+							<table class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions" >
+								<thead>
+								  <tr>
+								    <th class="secondary-text" ng-repeat="cisc in ::vm.groupe_column">
+								      <div class="table-header">
+								        <span class="column-title">{{cisc.titre}}</span>
+								      </div>
+								    </th>
+								  </tr>
+								</thead>
+								         
+								<tbody>
+								  <tr ng-repeat="groupe_user in vm.allgroupe_user"  ng-class="{selected: groupe_user.$selected}" ng-click="vm.selection(groupe_user)">           
+								  
+								              
+								    <td>
+								      <span ng-if="groupe_user.$edit">
+								        <md-input-container style="width:100%;display: flex !important;">
+								          <label>Nom du groupe</label>
+								          <input name="nom" type="text" ng-model="groupe_user.nom"/>
+								        </md-input-container>   
+								      </span>
+								                
+								      <span ng-if="!groupe_user.$edit">{{groupe_user.nom}}</span>
+								    </td>
+								                                 
+								    <td>
+								      <!--a ng-if="!groupe_user.$edit" ng-click="vm.modifier(groupe_user)" title="Modifier">
+								        <span class="icon-table-edit"></span>
+								      </a!-->
+
+								      	<md-button ng-if="!groupe_user.$edit" class="md-icon-button" aria-label="Modifier" ng-click="vm.modifier(groupe_user)">
+		                                  <md-icon md-font-icon="icon-table-edit"></md-icon>
+		                                  <md-tooltip><span>Modifier</span></md-tooltip>
+		                                </md-button>
+								                
+								      <!--a ng-if="!groupe_user.$edit" ng-click="vm.supprimer(groupe_user)" title="Supprimer">
+								        <span class="icon-delete"></span>
+								      </a!-->
+
+								      	<md-button ng-if="!groupe_user.$edit" class="md-icon-button" aria-label="Supprimer" ng-click="vm.supprimer(groupe_user)">
+		                                  <md-icon md-font-icon="icon-delete"></md-icon>
+		                                  <md-tooltip><span>Supprimer</span></md-tooltip>
+		                                </md-button>
+								                
+								      <!--a ng-if="groupe_user.$edit" ng-click="vm.annuler(groupe_user)" title="Annuler modification">
+								        <span class="icon-cancel"></span>
+								      </a!-->
+
+								      	<md-button ng-if="groupe_user.$edit" class="md-icon-button" aria-label="Annuler" ng-click="vm.annuler(groupe_user)">
+		                                  <md-icon md-font-icon="icon-cancel"></md-icon>
+		                                  <md-tooltip><span>Annuler</span></md-tooltip>
+		                                </md-button>
+								                
+								      <!--a ng-if="groupe_user.$edit && groupe_user.nom != ''" ng-click="vm.insert_in_base(groupe_user,0)" title="Sauvegarder">
+								        <span class="icon-content-save"></span>
+								      </a!-->
+
+								      	<md-button ng-if="groupe_user.$edit && groupe_user.nom != ''" class="md-icon-button" aria-label="Sauvegarder" ng-click="			vm.insert_in_base(groupe_user,0)">
+		                                  <md-icon md-font-icon="icon-content-save"></md-icon>
+		                                  <md-tooltip><span>Sauvegarder</span></md-tooltip>
+		                                </md-button>
+								    </td>
+								  </tr>
+								</tbody>
+							</table>
+						</div>
+						
+					</md-tab>
+
+					<md-tab label="Accès aux menus et aux sous-menus du groupe {{vm.selectedItem.nom}}" ng-disabled="(!vm.selectedItem.id)||(vm.selectedItem.id <= 0)" ng-click="vm.get_privilege()">
+
+						<fieldset class="standard" >
+							<legend><code>Tous les menus et sous menus</code></legend>                                
+								<md-checkbox  ng-model="vm.acces.spr_adm"  aria-label="Checkbox 1" ng-change="vm.control_all(vm.acces)" style="margin: 4px;">
+								    
+								</md-checkbox>
+								  
+						                                                            
+						</fieldset>
+					
+						<fieldset class="standard" >
+							<legend><code>Administration</code></legend>   
+
+								<md-checkbox ng-show="false" ng-model="vm.acces.user" ng-init="vm.acces.user=true" value="true" aria-label="Checkbox 1"  style="margin: 4px;">
+								    Utilisateur
+								</md-checkbox>
+								<md-checkbox ng-disabled="vm.acces.spr_adm" ng-model="vm.acces.ges_user" aria-label="Checkbox 1"  style="margin: 4px;">
+								    Gestion utilisateurs
+								</md-checkbox>                                                
+								<md-checkbox ng-disabled="vm.acces.spr_adm" ng-model="vm.acces.grp_user" aria-label="Checkbox 1"  style="margin: 4px;">
+								    Groupes utilisateurs
+								</md-checkbox>                                                                               
+								<md-checkbox ng-disabled="vm.acces.spr_adm" ng-model="vm.acces.his_user" aria-label="Checkbox 1"  style="margin: 4px;">
+								    Historique utilisateur
+								</md-checkbox>
+								<md-checkbox ng-disabled="vm.acces.spr_adm" ng-model="vm.acces.cr_change" aria-label="Checkbox 1"  style="margin: 4px;">
+								    Cours de change
+								</md-checkbox>
+						                                                            
+						</fieldset>
+
+						<fieldset class="standard" >
+							<legend><code>Données de bases</code></legend>  
+
+								<md-checkbox  ng-model="vm.acces.var_ind"  aria-label="Checkbox 1" ng-disabled="vm.acces.spr_adm" style="margin: 4px;">
+								    Variable/Individu
+								</md-checkbox>
+								<md-checkbox ng-model="vm.acces.act_typ" aria-label="Checkbox 1" ng-disabled="vm.acces.spr_adm" style="margin: 4px;">
+								    Acteurs/Type transfert
+								</md-checkbox>                                                
+								<md-checkbox ng-model="vm.acces.prog" aria-label="Checkbox 1" ng-disabled="vm.acces.spr_adm" style="margin: 4px;">
+								    Programme
+								</md-checkbox>                                                                               
+								<md-checkbox ng-model="vm.acces.dec_adm" aria-label="Checkbox 1" ng-disabled="vm.acces.spr_adm" style="margin: 4px;">
+								    Découpage administratif
+								</md-checkbox>
+								<md-checkbox ng-model="vm.acces.nom_int" aria-label="Checkbox 1" ng-disabled="vm.acces.spr_adm" style="margin: 4px;">
+								    Nomenclature intervention
+								</md-checkbox> 
+								<md-checkbox ng-model="vm.acces.var_int" aria-label="Checkbox 1" ng-disabled="vm.acces.spr_adm" style="margin: 4px;">
+								    Variable/Intervention
+								</md-checkbox> 
+								 
+						                                                            
+						</fieldset>
+
+						<fieldset class="standard" >
+							<legend><code>Registre bénéficiaire</code></legend>
+							<md-checkbox ng-model="vm.acces.reg_ben" aria-label="Checkbox 1" ng-disabled="vm.acces.spr_adm" style="margin: 4px;">
+								    
+							</md-checkbox>
+
+						</fieldset>
+
+						<fieldset class="standard" >
+							<legend><code>Annuaire Intervention</code></legend>
+							<md-checkbox ng-model="vm.acces.anr_int" aria-label="Checkbox 1" ng-disabled="vm.acces.spr_adm" style="margin: 4px;">
+								    
+							</md-checkbox>
+
+						</fieldset>
+
+						<fieldset class="standard" >
+							<legend><code>Traitement</code></legend>                                
+								<md-checkbox  ng-model="vm.acces.sui_dec" aria-label="Checkbox 1" ng-disabled="vm.acces.spr_adm" style="margin: 4px;">
+								    Suivi décaissement
+								</md-checkbox>
+					                                                      
+						</fieldset>
+
+						<fieldset class="standard" >
+							<legend><code>Simulation</code></legend>                                
+								<md-checkbox  ng-model="vm.acces.sim_ben"  aria-label="Checkbox 1" ng-disabled="vm.acces.spr_adm" style="margin: 4px;">
+								    Bénéficiaire
+								</md-checkbox>
+								<md-checkbox ng-model="vm.acces.sim_int" aria-label="Checkbox 1" ng-disabled="vm.acces.spr_adm" style="margin: 4px;">
+								    Suivi Intervention
+								</md-checkbox>     
+						                                                            
+						</fieldset>
+
+						<fieldset class="standard" >
+							<legend><code>Importation des données</code></legend>                                
+								<md-checkbox  ng-model="vm.acces.imp_ben"  aria-label="Checkbox 1" ng-disabled="vm.acces.spr_adm" style="margin: 4px;">
+								    Bénéficiaire
+								</md-checkbox>
+								<md-checkbox ng-model="vm.acces.imp_int" aria-label="Checkbox 1" ng-disabled="vm.acces.spr_adm" style="margin: 4px;">
+								    Intervention
+								</md-checkbox>     
+						                                                            
+						</fieldset>
+						<fieldset class="standard" >
+							<legend><code>Suivi stratégique</code></legend>                                
+								<md-checkbox  ng-model="vm.acces.rpt"  aria-label="Checkbox 1" ng-disabled="vm.acces.spr_adm" style="margin: 4px;">
+								    
+								</md-checkbox>
+								  
+						                                                            
+						</fieldset>
+
+						<div layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                     
+                          <md-button class="md-raised md-primary" ng-disabled="vm.disable_button" ng-if="vm.id_access_menu > 0 && !vm.affichage_load" ng-click="vm.save_access_menu()">Mettre à jour</md-button>
+                          <md-button class="md-raised md-primary" ng-disabled="vm.disable_button" ng-if="vm.id_access_menu == 0 && !vm.affichage_load" ng-click="vm.save_access_menu()">Enregistrer</md-button>
+
+                          <md-progress-circular ng-if="vm.affichage_load" class="md-primary" aria-label="Rating" md-mode="indeterminate" md-diameter="34"></md-progress-circular> 
+                                    <div ng-if="vm.affichage_load" style="color: #404040">
+                                        Chargement,veuillez patienter s'il vous plait ...
+                                    </div> 
+                          
+                       
+                        </div>
+						
+					</md-tab>
+
+					
+
+
+
+				</md-tabs>
+			                  
+		</div>
+      
+    </div>
+    <!-- / CONTENT -->
+  </div>

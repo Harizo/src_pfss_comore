@@ -1,0 +1,171 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Validation des données</span>
+                <span class="parent"> </span>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent" href="javascript:;">Validation des bénéficiaires</span>
+            </div>
+
+            <div class="title">Validation des bénéficiaires</div>
+        </div>
+    </div>
+    <div class="content"layout="column">
+		<div class="form-wrapper"> 
+			<md-progress-circular ng-if="vm.affiche_load" class="md-accent" md-mode="indeterminate" md-diameter="64"></md-progress-circular>
+			<div style="clear:both;"></div>
+			<md-tabs md-dynamic-height>
+				<md-tab label="Liste validation des bénéficiaires">
+					<md-tab-body>
+						<fieldset>
+							<legend>
+								Validation des bénéficiaires
+								<div class="border-right" ng-if="!vm.selectedListedonneesavaliderItem.$edit"  ng-show="vm.afficherboutonnouveau==1">
+									<md-button class="md-icon-button" aria-label="add Type acteur" ng-click="vm.ajouterDocument()">
+										<md-icon md-font-icon="icon-plus-box"></md-icon>
+										<md-tooltip><span>Ajouter</span></md-tooltip>
+									</md-button>
+								</div> 
+							</legend>
+							<div style="clear:both;"></div>
+							<table ng-table="tableAvancement" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+								<thead>
+									<tr>
+										<th class="secondary-text" ng-repeat="c in :: vm.colonne_donnees_a_validees">
+											<div class="table-header">
+												<span class="column-title">{{c.titre}}</span>
+											</div>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr  ng-repeat="lstvld in vm.Listevalidationbeneficiaire"  ng-class="{selected: lstvld.$selected}" ng-click="vm.selectionDocument(lstvld)">
+										<td>
+											<span ng-if="lstvld.$edit">
+												<md-input-container>
+													<label>Acteur</label>
+													<input type="text" ng-model="lstvld.raisonsociale" disabled />
+													<div ng-messages="raisonsociale.$error" role="alert">									   
+													</div>
+												</md-input-container> 
+											</span>
+											<span ng-if="!lstvld.$edit">{{lstvld.raisonsociale}}</span>
+										</td>
+										<td>
+											<span ng-if="lstvld.$edit">
+												<label>{{lstvld.nom_fichier}}</label>
+												<div class="file-upload">
+													<input file-uploader style="color:#772e03 !important;" id="fichier" name="fichier" type="file" custom-on-change="uploadFile"  ng-multiple="false" />
+													<button ng-click="vm.uploadFile()" ng-disabled="!vm.monfichier" 
+														style="background: #ff843d; /* Old browsers */
+															background: -moz-linear-gradient(top,  #ff843d 0%, #fc8a49 17%, #ef7d3b 33%, #db6520 67%, #ce5712 83%, #ba4603 100%); /* FF3.6+ */
+															background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ff843d), color-stop(17%,#fc8a49), color-stop(33%,#ef7d3b), color-stop(67%,#db6520), color-stop(83%,#ce5712), color-stop(100%,#ba4603)); /* Chrome,Safari4+ */
+															background: -webkit-linear-gradient(top,  #ff843d 0%,#fc8a49 17%,#ef7d3b 33%,#db6520 67%,#ce5712 83%,#ba4603 100%); /* Chrome10+,Safari5.1+ */
+															background: -o-linear-gradient(top,  #ff843d 0%,#fc8a49 17%,#ef7d3b 33%,#db6520 67%,#ce5712 83%,#ba4603 100%); /* Opera 11.10+ */
+															background: -ms-linear-gradient(top,  #ff843d 0%,#fc8a49 17%,#ef7d3b 33%,#db6520 67%,#ce5712 83%,#ba4603 100%); /* IE10+ */
+															background: linear-gradient(to bottom,  #ff843d 0%,#fc8a49 17%,#ef7d3b 33%,#db6520 67%,#ce5712 83%,#ba4603 100%); /* W3C */
+															filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff843d', endColorstr='#ba4603',GradientType=0 ); /* IE6-9 */
+															color:#772e03;
+															font-weight:bold;
+															height:auto;">
+														<md-icon md-font-icon="icon-cloud-upload" class="s16" style="padding-left: 2px !important;padding-right:  2px !important;padding-bottom: 20px"> 
+														</md-icon> Upload me
+													</button>
+												</div>
+												<div ng-messages="fichier.$error" role="alert"> 
+												</div>
+											</span>
+											<span ng-if="!lstvld.$edit">{{lstvld.nom_fichier}}</span>
+										</td>
+										<td>
+											<span ng-if="lstvld.$edit">
+												<md-input-container>
+													<label>Date upload</label>
+													<input type="datetime-local" ng-model="lstvld.date_reception" disabled />
+													<div ng-messages="date_reception.$error" role="alert">									   
+													</div>
+												</md-input-container> 
+											</span>
+											<span ng-if="!lstvld.$edit">{{lstvld.date_reception |date:'dd/MM/yyyy HH:mm:ss'}}</span>
+										</td>
+										<td>
+											<span ng-if="lstvld.$edit">
+												<md-input-container>
+													<label>Utilisateur</label>
+													<input type="text" ng-model="lstvld.nomutilisateur" disabled />
+													<div ng-messages="nomutilisateur.$error" role="alert">									   
+													</div>
+												</md-input-container> 
+											</span>
+											<span ng-if="!lstvld.$edit">{{lstvld.nomutilisateur}}</span>
+										</td>
+										<td>
+											<span ng-if="lstvld.$edit">
+												<md-input-container>
+													<label>Date validation</label>
+													<input type="date" ng-model="lstvld.date_validation" disabled />
+													<div ng-messages="date_validation.$error" role="alert">									   
+													</div>
+												</md-input-container> 
+											</span>
+											<span ng-if="!lstvld.$edit">{{lstvld.date_validation}}</span>
+										</td>
+										<td>
+											<span ng-if="lstvld.$edit">
+												<md-input-container>
+													<label>Validateur</label>
+													<input type="text" ng-model="lstvld.nomutilisateurvalidation" disabled />
+													<div ng-messages="nomutilisateurvalidation.$error" role="alert">									   
+													</div>
+												</md-input-container> 
+											</span>
+											<span ng-if="!lstvld.$edit">{{lstvld.nomutilisateurvalidation}}</span>
+										</td>
+										<td>
+											<span ng-if="!lstvld.$edit && (vm.id_utilisateur ==lstvld.id_utilisateur)" ng-show="!lstvld.id_utilisateur_validation">
+												<md-button class="md-icon-button" aria-label="Modifier unité de mesure" ng-click="vm.modifierDocument(lstvld)">
+												  <md-icon md-font-icon="icon-table-edit"></md-icon>
+												  <md-tooltip><span>Modifier</span></md-tooltip>
+												</md-button>
+											</span>	
+											<span  ng-if="!lstvld.$edit && (vm.id_utilisateur ==lstvld.id_utilisateur)" ng-show="!lstvld.id_utilisateur_validation" >	
+												<md-button class="md-icon-button" aria-label="Supprimer unité de mesure" ng-click="vm.supprimerDocument(lstvld)">
+												  <md-icon md-font-icon="icon-delete"></md-icon>
+												  <md-tooltip><span>Supprimer</span></md-tooltip>
+												</md-button>
+											</span>	
+											<span  ng-if="lstvld.$edit">	
+												<md-button class="md-icon-button" aria-label="Annuler modification" ng-click="vm.annulerDocument(lstvld)">
+												  <md-icon md-font-icon="icon-cancel"></md-icon>
+												  <md-tooltip><span>Annuler</span></md-tooltip>
+												</md-button>
+											</span>	
+											<span ng-if="lstvld.$edit" ng-show="lstvld.nom_fichier >''">	
+												<md-button class="md-icon-button" aria-label="Enregistrer unité de mesure" ng-click="vm.uploadFile(lstvld,0)">
+												  <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+												  <md-tooltip><span>Enregistrer</span></md-tooltip>
+												</md-button>
+											</span>	
+											<span  ng-if="!lstvld.$edit && (vm.id_utilisateur ==lstvld.id_utilisateur)" ng-show="!lstvld.id_utilisateur_validation">	
+												<md-button class="md-icon-button" aria-label="Enregistrer unité de mesure" ng-click="vm.exportfichier(lstvld)">
+												  <md-icon md-font-icon="icon-download"></md-icon>
+												  <md-tooltip><span>Download</span></md-tooltip>
+												</md-button>
+											</span>	
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</fieldset>
+					</md-tab-body>
+				</md-tab> 
+			</md-tabs>
+		</div>
+    </div>
+</div>
+    
+
+

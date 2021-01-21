@@ -1,0 +1,38 @@
+  <div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Données de bases</span>
+
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent" href="javascript:;"> Nomenclature intervention</span>
+            </div>
+
+            <div class="title">Nomenclature intervention</div>
+        </div>
+    </div>
+    <div class="content" layout="column">
+      <div class="form-wrapper md-whiteframe-1dp" >
+        <!--Détail nomenclature intervention  -->
+          <kendo-grid options="vm.mainGridOptions">
+            <div k-detail-template>
+              <kendo-grid k-options="vm.allnomenclature2({{dataItem.id}})">
+                <div k-detail-template>
+                  <kendo-grid k-options="vm.allnomenclature3({{dataItem.id}})">
+                    <div k-detail-template>
+                      <kendo-grid k-options="vm.allnomenclature4({{dataItem.id}})">
+                      </kendo-grid>
+                  </div>
+                  </kendo-grid>
+                </div>
+              </kendo-grid>
+            </div>
+          </kendo-grid>
+        <!--Détail nomenclature intervention  -->
+      </div>
+    </div>
+  </div>

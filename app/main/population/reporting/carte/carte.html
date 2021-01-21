@@ -1,0 +1,130 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Reporting</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;"> Carte</span>
+                </div>
+
+            <div class="title">Carte</div>
+        </div>
+    </div>
+    <!--/ HEADER -->
+   
+    <!-- CONTENT -->
+    <div class="content" layout="column" layout-align="center end">
+      
+            
+         
+           
+            <div class="white-bg md-whiteframe-4dp">
+
+                <ui-gmap-google-map center="vm.map.center" zoom="vm.map.zoom" events="vm.map.events" >
+                    
+
+                        <ui-gmap-polygon id="p.id" path="p.path" stroke="p.stroke" visible='p.visible'
+                            geodesic='p.geodesic' fit="false" editable="p.editable" draggable="p.draggable" clickable='true' icons='p.icons' events="p.events" fill="p.fill" geodesic="true" ng-repeat="p in vm.polylines"> 
+
+                            <ui-gmap-marker  idKey='p.id_mark' coords='p.marker_cord' options="p.marker_option">
+                                <ui-gmap-window  idKey="p.id_win" show="vm.affiche_info_box(p.nbr)" >
+                                   
+                                    <div layout="column" layout-align="center"  style="background-color: #383c48 !important;color: #f8670d !important;padding-right: 10px !important;padding-right: 10px;padding-left: 10px;border-radius: 5px;">
+                                         <u><strong>{{p.nom}}</strong></u>
+                                        <br> 
+                                        
+                                        <small>Nbr ménage bénéficiaire: {{p.nbr}}</small>
+                                    </div>
+                                </ui-gmap-window>
+                            </ui-gmap-marker>
+                          
+                        </ui-gmap-polygon>
+
+                   
+                </ui-gmap-google-map>
+            </div>
+            <div id="forme" >
+                
+            
+                
+
+                <form name="formEffAgeSexe" class="md-inline-form" novalidate >
+                    <!--div layout="column" layout-gt-xs="row">
+                      <md-input-container flex="100" flex-gt-xs="40">
+                                  
+                        <label>Reporting</label>
+                          <md-select ng-model="vm.filtre_carte.pivot" ng-disabled="vm.affiche_load"  >
+                            <md-optgroup label="Environnement démographique et socioéconomique">
+                                <md-option  ng-repeat="pivo in vm.pivots | filter: {category: 'theme1' } | orderBy : 'titre'" value="{{pivo.id}}">{{pivo.titre}}
+                                </md-option>
+                            </md-optgroup>
+
+                            <md-optgroup label="Système de protection sociale">
+                                <md-option  ng-repeat="pivo in vm.pivots | filter: {category: 'theme2' } | orderBy : 'titre'" value="{{pivo.id}}">{{pivo.titre}}
+                                </md-option>
+                            </md-optgroup>
+                          </md-select>
+                      </md-input-container>
+                      <md-input-container flex="100" flex-gt-xs="60">
+                      </md-input-container>
+                    </div!-->
+                 
+
+                    <div layout="column" layout-gt-xs="row">       
+                        
+
+                        <md-input-container flex="100" flex-gt-xs="25" >
+
+                            <label>Region</label>
+                                <md-select ng-model="vm.filtre_carte.region_id" ng-change="vm.modifierregion(vm.filtre_carte)" required>
+                                    <md-option ng-repeat="region in vm.allregion" value="{{region.id}}">
+                                    {{region.nom}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+
+
+                            <md-input-container flex="100" flex-gt-xs="25" ng-disabled="!(vm.filtre_carte.region_id)">
+
+                            <label>District</label>
+                                <md-select ng-model="vm.filtre_carte.district_id">
+
+                                    <md-option value="*">*</md-option>
+                                    <md-option ng-repeat="dist in vm.alldistrict" value="{{dist.id}}">
+                                        
+                                    {{dist.nom}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+
+                           
+
+                    </div>
+
+
+                    
+                    
+                    <div>
+                        <md-button ng-if="!vm.load_ddb" type="submit" class="md-raised md-accent" aria-label="Enregistrer" ng-disabled="formEffAgeSexe.$invalid" ng-click="vm.affichage_commune_in_carte(vm.filtre_carte)"> Afficher les communes sur la carte
+                             
+                        </md-button>
+
+
+                        
+                        <div ng-if="vm.load_ddb" layout="row" layout-align="center center">
+                            <md-progress-circular ng-if="vm.load_ddb"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                            
+                            <small>Chargement,veuillez patienter s'il vous plait ...</small>
+                        </div>
+                    </div>
+                </form>  
+            </div>
+               
+           
+    </div>
+    <!--/ CONTENT -->    
+</div>

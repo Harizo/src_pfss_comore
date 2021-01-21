@@ -1,0 +1,1389 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Reporting</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;"> Environnement et système </span>
+                </div>
+
+            <div class="title">Environnement démo_socio et système de protection sociale</div>
+        </div>
+    </div>
+    <!--/ HEADER -->
+   
+    <!-- CONTENT -->
+    <div class="content"layout="column">
+        <div class="form-wrapper">
+
+            <!--md-progress-circular ng-if="vm.affiche_load" class="md-accent" aria-label="Rating" md-mode="indeterminate" md-diameter="34"></md-progress-circular> 
+                  <div ng-if="vm.affiche_load" style="position:relative;top: -30px;  left: 60px;color: #039be5">
+                      Chargement,veuillez patienter s'il vous plait ...
+                  </div!-->
+            <div class="white-bg md-whiteframe-4dp">
+                <md-button class="custum_button"  style="color: #f8670d;" ui-sref="app.population_accueil">Revenir à l'accueil</md-button>
+            <md-tabs md-dynamic-height>
+                <md-tab label="Tableau de bord et reporting">
+                    <md-tab-body>
+                         
+                        <div layout="row" class="md-orange-900-bg" style="margin-bottom: 20px ;" layout-align="center center">
+                            <span class="md-headline" style="color: rgb(45,50,62) !important;"><b>Tableau de bord décideur</b></span>
+                        </div>
+
+
+                        <table class="dataTable row-border cell-border hover text-center" datatable="ng"
+                        dt-options="vm.dtOptions" ms-responsive-table>
+                            <thead>
+                                <tr>
+                                    <!--tableu_bord_dg-->
+
+                                            <th class="secondary-text">
+                                                <div class="table-header">
+                                                    <span class="column-title text-center">Région</span>
+                                                </div>
+                                            </th>
+                                            <th class="secondary-text">
+                                                <div class="table-header">
+                                                    <span class="column-title text-center">District</span>
+                                                </div>
+                                            </th>
+                                            
+                                            <th class="secondary-text">
+                                                <div class="table-header">
+                                                    <span class="column-title text-center">Nomenclature</span>
+                                                </div>
+                                            </th>
+                                            <th class="secondary-text">
+                                                <div class="table-header">
+                                                    <span class="column-title text-center">Intervention</span>
+                                                </div>
+                                            </th>
+                                            <th class="secondary-text">
+                                                <div class="table-header">
+                                                    <span class="column-title text-center">Sexe</span>
+                                                </div>
+                                            </th>
+                                            <th class="secondary-text">
+                                                <div class="table-header">
+                                                    <span class="column-title text-center">Enfant</span>
+                                                </div>
+                                            </th>
+                                            <th class="secondary-text">
+                                                <div class="table-header">
+                                                    <span class="column-title text-center">En âge <br> scolaire</span>
+                                                </div>
+                                            </th>
+                                            <th class="secondary-text">
+                                                <div class="table-header">
+                                                    <span class="column-title text-center">En âge <br> de travailler</span>
+                                                </div>
+                                            </th>
+                                            <th class="secondary-text">
+                                                <div class="table-header">
+                                                    <span class="column-title text-center">Âgées</span>
+                                                </div>
+                                            </th>
+                                            <th class="secondary-text">
+                                                <div class="table-header">
+                                                    <span class="column-title text-center">Sous-total</span>
+                                                </div>
+                                            </th>
+
+                                            <th class="secondary-text">
+                                                <div class="table-header">
+                                                    <span class="column-title text-center">Total</span>
+                                                </div>
+                                            </th>
+                               
+                                        <!--fin tableu_bord_dg-->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!--tableu_bord_dg-->
+                                <tr ng-repeat="data in vm.datas_dg">
+                                        <td>{{data.nom_region}}</td>
+                                        <td>{{data.nom_dist}}</td>
+                                        <td>{{data.nomenclature}}</td>
+                                        <td>{{data.intitule_intervention}}</td>
+                                        <td>
+                                            H 
+                                            <br> 
+                                            F
+                                        </td>
+                                        <td style="background-color: {{vm.couleur(data.nbr_enfant_homme, data.nbr_enfant_fille)}};" >
+                                            {{data.nbr_enfant_homme}}
+                                            <br>
+                                            {{data.nbr_enfant_fille}}
+                                        </td>
+                                        <td style="background-color: {{vm.couleur(data.nbr_agescolaire_homme, data.nbr_agescolaire_fille)}};" >
+                                            {{data.nbr_agescolaire_homme}}
+                                            <br>
+                                            {{data.nbr_agescolaire_fille}}
+                                        </td>
+                                        <td style="background-color: {{vm.couleur(data.nbr_agetravaille_homme, data.nbr_agetravaille_fille)}};" >
+                                            {{data.nbr_agetravaille_homme}}
+                                            <br>
+                                            {{data.nbr_agetravaille_fille}}
+                                        </td>
+                                        <td style="background-color: {{vm.couleur(data.nbr_agee_homme, data.nbr_agee_fille)}};" >
+                                            {{data.nbr_agee_homme}}
+                                            <br>
+                                            {{data.nbr_agee_fille}}
+                                        </td>
+                                        <td   style="background-color: {{vm.couleur(data.nbr_agee_homme, data.nbr_agee_fille)}};">
+                                        {{vm.parse_int(data.nbr_agee_homme)+vm.parse_int(data.nbr_agetravaille_homme)+vm.parse_int(data.nbr_agescolaire_homme)+vm.parse_int(data.nbr_enfant_homme)}}
+                                        <br>
+                                        {{vm.parse_int(data.nbr_agee_fille)+vm.parse_int(data.nbr_agetravaille_fille)+vm.parse_int(data.nbr_agescolaire_fille)+vm.parse_int(data.nbr_enfant_fille)}}
+                                        </td>
+
+                                        <td   style="background-color: {{vm.couleur(data.nbr_agee_homme, data.nbr_agee_fille)}};">
+                                            {{vm.parse_int(data.nbr_agee_homme)+vm.parse_int(data.nbr_agetravaille_homme)+vm.parse_int(data.nbr_agescolaire_homme)+vm.parse_int(data.nbr_enfant_homme)+vm.parse_int(data.nbr_agee_fille)+vm.parse_int(data.nbr_agetravaille_fille)+vm.parse_int(data.nbr_agescolaire_fille)+vm.parse_int(data.nbr_enfant_fille)}}
+                                           
+                                        </td>
+                                </tr>
+                                        <!--fin tableu_bord_dg-->
+                            </tbody>
+                        </table>  
+
+                        <div layout="row" class="md-orange-900-bg"  layout-align="center center">
+                            <span class="md-headline" style="color: rgb(45,50,62) !important;"><b>Reporting</b> </span>
+                        </div>
+
+                        <form name="formEffAgeSexe" class="md-inline-form" novalidate >
+                            <div layout="column" layout-gt-xs="row">
+                              <md-input-container flex="100" flex-gt-xs="40">
+                                          
+                                <label>Reporting</label>
+                                  <md-select ng-model="vm.filtre.pivot" ng-disabled="vm.affiche_load"  required>
+                                    <md-optgroup label="Environnement démographique et socioéconomique">
+                                        <md-option  ng-repeat="pivo in vm.pivots | filter: {category: 'theme1' } | orderBy : 'titre'" value="{{pivo.id}}">{{pivo.titre}}
+                                        </md-option>
+                                    </md-optgroup>
+
+                                    <md-optgroup label="Système de protection sociale">
+                                        <md-option  ng-repeat="pivo in vm.pivots | filter: {category: 'theme2' } | orderBy : 'titre'" value="{{pivo.id}}">{{pivo.titre}}
+                                        </md-option>
+                                    </md-optgroup>
+                                  </md-select>
+                              </md-input-container>
+                              <md-input-container flex="100" flex-gt-xs="60">
+                              </md-input-container>
+                            </div>
+                         
+
+                            <!--div layout="column" layout-gt-xs="row">       
+                                
+
+                                <md-input-container flex="100" flex-gt-xs="25" ng-if="(vm.filtre.pivot != 'req41_theme2')&&(vm.filtre.pivot != 'req40_theme2')&&(vm.filtre.pivot != 'req42_theme2')&&(vm.filtre.pivot != 'req43_theme2')&&(vm.filtre.pivot != 'req10_theme2')&&(vm.filtre.pivot != 'req11_theme2')&&(vm.filtre.pivot != 'req12_theme2')&&(vm.filtre.pivot != 'req37_theme2')&&(vm.filtre.pivot != 'req36_theme2')&&(vm.filtre.pivot != 'req18_theme2')&&(vm.filtre.pivot != 'req14_theme2')&&(vm.filtre.pivot != 'req20_theme2')&&(vm.filtre.pivot != 'req19_theme2')&&(vm.filtre.pivot != 'req32_theme2')&&(vm.filtre.pivot != 'req34_theme2')&&(vm.filtre.pivot != 'req1_theme1')&&(vm.filtre.pivot != 'req3_theme1')&&(vm.filtre.pivot != 'req38_theme2')&&(vm.filtre.pivot != 'req7_theme2')&&(vm.filtre.pivot != 'req8_theme2')&&(vm.filtre.pivot != 'req9_theme2')&&(vm.filtre.pivot != 'req_multiple_21_to_30_theme2')
+                                &&(vm.filtre.pivot != 'req6_theme2')">
+
+                                    <label>Region</label>
+                                        <md-select ng-model="vm.filtre.region_id" ng-change="vm.modifierregion(vm.filtre)" required>
+                                            <md-option ng-repeat="region in vm.allregion" value="{{region.id}}">
+                                            {{region.nom}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+
+
+                                    <md-input-container flex="100" flex-gt-xs="25" ng-if="(vm.filtre.pivot != 'req41_theme2')&&(vm.filtre.pivot != 'req40_theme2')&&(vm.filtre.pivot != 'req42_theme2')&&(vm.filtre.pivot != 'req43_theme2')&&(vm.filtre.pivot != 'req10_theme2')&&(vm.filtre.pivot != 'req11_theme2')&&(vm.filtre.pivot != 'req12_theme2')&&(vm.filtre.pivot != 'req37_theme2')&&(vm.filtre.pivot != 'req36_theme2')&&(vm.filtre.pivot != 'req18_theme2')&&(vm.filtre.pivot != 'req14_theme2')&&(vm.filtre.pivot != 'req20_theme2')&&(vm.filtre.pivot != 'req19_theme2')&&(vm.filtre.pivot != 'req32_theme2')&&(vm.filtre.pivot != 'req34_theme2')&&(vm.filtre.pivot != 'req1_theme1')&&(vm.filtre.pivot != 'req3_theme1')&&(vm.filtre.pivot != 'req38_theme2')&&(vm.filtre.pivot != 'req7_theme2')&&(vm.filtre.pivot != 'req8_theme2')&&(vm.filtre.pivot != 'req9_theme2')&&(vm.filtre.pivot != 'req_multiple_21_to_30_theme2')
+                                &&(vm.filtre.pivot != 'req6_theme2')" ng-disabled="!(vm.filtre.region_id)">
+
+                                    <label>District</label>
+                                        <md-select ng-model="vm.filtre.district_id" ng-change="vm.modifierdistrict(vm.filtre)">
+
+                                            <md-option value="*">*</md-option>
+                                            <md-option ng-repeat="dist in vm.alldistrict" value="{{dist.id}}">
+                                                
+                                            {{dist.nom}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+
+                                    <md-input-container flex="100" flex-gt-xs="25" ng-if="(vm.filtre.pivot != 'req41_theme2')&&(vm.filtre.pivot != 'req40_theme2')&&(vm.filtre.pivot != 'req42_theme2')&&(vm.filtre.pivot != 'req43_theme2')&&(vm.filtre.pivot != 'req10_theme2')&&(vm.filtre.pivot != 'req11_theme2')&&(vm.filtre.pivot != 'req12_theme2')&&(vm.filtre.pivot != 'req37_theme2')&&(vm.filtre.pivot != 'req36_theme2')&&(vm.filtre.pivot != 'req18_theme2')&&(vm.filtre.pivot != 'req14_theme2')&&(vm.filtre.pivot != 'req20_theme2')&&(vm.filtre.pivot != 'req19_theme2')&&(vm.filtre.pivot != 'req32_theme2')&&(vm.filtre.pivot != 'req34_theme2')&&(vm.filtre.pivot != 'req1_theme1')&&(vm.filtre.pivot != 'req3_theme1')&&(vm.filtre.pivot != 'req38_theme2')&&(vm.filtre.pivot != 'req7_theme2')&&(vm.filtre.pivot != 'req8_theme2')&&(vm.filtre.pivot != 'req9_theme2')&&(vm.filtre.pivot != 'req_multiple_21_to_30_theme2')
+                                &&(vm.filtre.pivot != 'req6_theme2')" ng-disabled="!(vm.filtre.district_id)">
+
+                                    <label>Commune</label>
+                                        <md-select ng-model="vm.filtre.commune_id" >
+
+                                            <md-option value="*">*</md-option>
+                                            <md-option ng-repeat="com in vm.allcommune" value="{{com.id}}">
+                                            {{com.nom}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+
+                                <md-input-container flex="100" flex-gt-xs="25" ng-if="(vm.filtre.pivot != 'req41_theme2')&&(vm.filtre.pivot != 'req40_theme2')&&(vm.filtre.pivot != 'req42_theme2')&&(vm.filtre.pivot != 'req43_theme2')&&(vm.filtre.pivot != 'req10_theme2')&&(vm.filtre.pivot != 'req11_theme2')&&(vm.filtre.pivot != 'req12_theme2')&&(vm.filtre.pivot != 'req37_theme2')&&(vm.filtre.pivot != 'req36_theme2')&&(vm.filtre.pivot != 'req18_theme2')&&(vm.filtre.pivot != 'req14_theme2')&&(vm.filtre.pivot != 'req20_theme2')&&(vm.filtre.pivot != 'req19_theme2')&&(vm.filtre.pivot != 'req32_theme2')&&(vm.filtre.pivot != 'req34_theme2')&&(vm.filtre.pivot != 'req1_theme1')&&(vm.filtre.pivot != 'req3_theme1')&&(vm.filtre.pivot != 'req38_theme2')&&(vm.filtre.pivot != 'req7_theme2')&&(vm.filtre.pivot != 'req8_theme2')&&(vm.filtre.pivot != 'req9_theme2')&&(vm.filtre.pivot != 'req_multiple_21_to_30_theme2')
+                                &&(vm.filtre.pivot != 'req6_theme2')" ng-disabled="!(vm.filtre.district_id)">
+
+                                    <label>Intervention</label>
+                                        <md-select ng-model="vm.filtre.intervention_id" >
+
+                                            <md-option value="*">*</md-option>
+                                            <md-option ng-repeat="int in vm.allintervention" value="{{int.id}}">
+                                            {{int.intitule}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+
+                            </div!-->
+
+
+
+                            <div layout="column" layout-gt-xs="row" ng-if="(vm.filtre.pivot =='req42_theme2')||(vm.filtre.pivot =='req43_theme2')||(vm.filtre.pivot =='req32_theme2')">
+                                <md-input-container>
+                                <span>Du</span>
+                                </md-input-container>
+                                <md-datepicker ng-model="vm.filtre.date_debut" md-max-date="vm.filtre.date_fin" md-placeholder="Enter date de debut" required>                        
+                                </md-datepicker>
+                                <md-input-container>
+                                <span>&nbsp &nbsp au &nbsp &nbsp</span>
+                                </md-input-container>
+                                <md-datepicker ng-model="vm.filtre.date_fin" md-placeholder="Enter date de fin"
+                                        md-min-date="vm.filtre.date_debut" md-max-date="vm.max_date" ng-disabled="!vm.filtre.date_debut" required>                                        
+                                </md-datepicker>
+                            </div>
+
+                            <fieldset class="standard" ng-if="(vm.filtre.pivot =='req42_theme2')||(vm.filtre.pivot =='req43_theme2')">
+                                <legend  class="md-grey-800-bg">Type transfert</legend>
+                                <md-radio-group ng-model="vm.filtre.id_type_transfert" ng-checked="" ng-click="vm.test_check()" required>
+                                    <div layout="row" layout-wrap flex>
+                                    <div flex="50" ng-repeat='t in vm.alltype_transfert'>
+                                        <md-radio-button ng-value="t.id" >{{t.description}}</md-radio-button>
+                                    </div>
+                                    </div>
+                                </md-radio-group>
+                            </fieldset>
+                            
+                            
+                            <div>
+                                <md-button ng-if="!vm.affiche_load" type="submit" class="md-raised md-accent" aria-label="Enregistrer" ng-disabled="formEffAgeSexe.$invalid" ng-click="vm.filtrer(vm.filtre)"> Afficher le résultat
+                                     
+                                </md-button>
+
+                                <md-button ng-if="!vm.affiche_load&&vm.filtre.pivot" type="submit" class="md-raised md-primary" aria-label="Enregistrer" ng-disabled="formEffAgeSexe.$invalid" ng-click="vm.export_excel(vm.filtre)"> Exporter en Excel
+                                     
+                                </md-button>
+
+                                <md-progress-circular ng-if="vm.affiche_load"  aria-label="Rating" md-mode="indeterminate" md-diameter="34"></md-progress-circular> 
+                                    <div ng-if="vm.affiche_load" style="position:relative;top: -30px;  left: 60px;color: #383c48">
+                                        Chargement,veuillez patienter s'il vous plait ...
+                                    </div> 
+                            </div>
+                        </form>  
+                        <table class="dataTable row-border cell-border hover text-center" datatable="ng"
+                        dt-options="vm.dtOptions" ms-responsive-table>
+                            <thead>
+                                <tr>
+                                    
+                                    <!--CODE HARIZO-->
+                                        <!--41-->
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req41_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req41_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req41_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Sexe</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req41_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nombre Ménage</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req41_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nombre Individu</span>
+                                            </div>
+                                        </th>
+                                        <!--fin 41-->
+
+                                        <!--40-->
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req40_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req40_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req40_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Bénéficiaire <br> avec <br> handicap visuel</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req40_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Bénéficiaire <br> avec <br> handicap de la parole</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req40_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Bénéficiaire <br> avec <br> handicap auditif</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req40_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Bénéficiaire <br> avec <br> handicap mentale</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req40_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Bénéficiaire <br> avec <br> handicap moteur</span>
+                                            </div>
+                                        </th>
+                                        <!--fin 40-->
+
+                                        <!--42-->
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req42_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req42_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req42_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Détail</span>
+                                            </div>
+                                        </th>
+                                        <!--fin 42-->
+                                        <!--43-->
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req43_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req43_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req43_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Détail</span>
+                                            </div>
+                                        </th>
+                                        <!--fin 43-->
+
+                                        <!--10-->
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req10_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Programme</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req10_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req10_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req10_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Montant initial</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req10_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Montant révisé</span>
+                                            </div>
+                                        </th>
+                                        <!--fin 10-->
+
+                                        <!--11-->
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req11_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Tutelle</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req11_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req11_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req11_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Montant initial</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req11_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Montant révisé</span>
+                                            </div>
+                                        </th>
+                                        <!--fin 11-->
+
+                                        <!--12-->
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req12_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Programme</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req12_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req12_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req12_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Agence d'éxécution</span>
+                                            </div>
+                                        </th>
+                                        <!--fin 12-->
+
+                                        <!--37-->
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req37_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Programme</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req37_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Budget prévu</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req37_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Décaissement</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req37_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Budget non consommé</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req37_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Taux de décaissement</span>
+                                            </div>
+                                        </th>
+                                        <!--fin 37-->
+
+                                        <!--36-->
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req36_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Programme</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req36_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req36_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req36_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Budget prévu</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req36_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Décaissement</span>
+                                            </div>
+                                        </th>
+
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req36_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Taux de décaissement</span>
+                                            </div>
+                                        </th>
+                                        <!--fin 36-->
+
+                                        <!--18-->
+                                        
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req18_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req18_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req18_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center"><u>Ménage:</u><br>- Effectif<br>- Coût</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req18_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center"><u> Individu:</u><br>- Effectif<br>- Coût</span>
+                                            </div>
+                                        </th>
+
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req18_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center"><u>Groupe:</u><br>- Effectif<br>- Coût</span>
+                                            </div>
+                                        </th>
+                                        <!--fin 18-->
+
+                                        <!--14-->
+                                        
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req14_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req14_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req14_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Région</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req14_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">District</span>
+                                            </div>
+                                        </th>
+
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req14_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Effectif</span>
+                                            </div>
+                                        </th>
+
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req14_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Coût</span>
+                                            </div>
+                                        </th>
+                                        <!--fin 14-->
+                                        <!-- 20-->
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req20_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req20_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req20_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Homme</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req20_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Femme</span>
+                                            </div>
+                                        </th>
+                                        <!--fin 20-->
+
+                                        <!-- 19-->
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req19_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req19_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req19_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Enfant</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req19_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Âge scolaire</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req19_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Âge de travailler</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req19_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Personnes âgées</span>
+                                            </div>
+                                        </th>
+                                        <!--fin 19-->
+                                        <!-- 32-->
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req32_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req32_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req32_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Région</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req32_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nombre <br>de nouveaux <br>bénéficiaires</span>
+                                            </div>
+                                        </th>
+                                        <!--fin 32-->
+
+                                        <!-- miltiple 21 à 30-->
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req_multiple_21_to_30_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req_multiple_21_to_30_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req_multiple_21_to_30_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Variable</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req_multiple_21_to_30_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Détails variable</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req_multiple_21_to_30_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Effectif</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req_multiple_21_to_30_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Coût</span>
+                                            </div>
+                                        </th>
+                                        <!--fin miltiple 21 à 30-->
+
+
+                                        <!-- 6-->
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req6_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Région</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req6_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">District</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req6_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Niveau de vulnérabilité</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req6_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nombre</span>
+                                            </div>
+                                        </th>
+                                        <!--fin 6-->
+
+                                        <!-- liste_beneficiaire_intevention-->
+                                        
+                                        <!--th class="secondary-text" ng-show="vm.cacher_table('liste_beneficiaire_intevention',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Région</span>
+                                            </div>
+                                        </th!-->
+                                        <th class="secondary-text" ng-show="vm.cacher_table('liste_beneficiaire_intevention',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">District</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('liste_beneficiaire_intevention',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Commune</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('liste_beneficiaire_intevention',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Fokontany</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('liste_beneficiaire_intevention',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('liste_beneficiaire_intevention',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Bénéficiaire</span>
+                                            </div>
+                                        </th>
+                                        
+                                        <!--fin liste_beneficiaire_intevention-->
+
+
+                                        <!--if init-->
+                                        <th class="secondary-text" ng-show="!vm.filtre.pivot">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Champ</span>
+                                            </div>
+                                        </th>
+                                        <!--if init-->
+
+                                    <!--FIN CODE HARIZO-->
+                                    <!--CODE Corriger-->
+                                        <!--req34_theme2-->
+
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req34_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Programme</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req34_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req34_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req34_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Région</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req34_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Taux Ménage</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req34_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Taux individu</span>
+                                            </div>
+                                        </th>
+
+                                        <!--fin req34_theme2-->
+
+                                        <!--req1_theme1-->
+
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Région</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">District</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Commune</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Sexe</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Enfant</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">En âge <br> scolaire</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">En âge <br> de travailler</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Âgées</span>
+                                            </div>
+                                        </th>
+
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Sous-total</span>
+                                            </div>
+                                        </th>
+
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Total</span>
+                                            </div>
+                                        </th>
+                               
+                                        <!--fin req1_theme1-->
+
+                                        <!--req3_theme1-->
+
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req3_theme1',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Région</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req3_theme1',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">District</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req3_theme1',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Commune</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req3_theme1',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Effectif des ménages <br> ayant <br>des enfant de 0-6 ans</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req3_theme1',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Effectif des ménages <br> ayant <br>des enfant en âge scolaire</span>
+                                            </div>
+                                        </th>
+
+                                        <!--fin req3_theme1-->
+                                        <!--req38_theme2-->
+
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Région</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">District</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Commune</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Sexe</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Enfant</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">En âge <br> scolaire</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">En âge <br> de travailler</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Âgées</span>
+                                            </div>
+                                        </th>
+                               
+                                        <!--fin req38_theme2-->
+
+                                       
+
+                                        <!--fin req7_theme2-->
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req7_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Programme</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req7_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Situation</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req7_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req7_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req7_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Budget initial</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req7_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Budget modifier</span>
+                                            </div>
+                                        </th>
+                                        <!--fin req7_theme2-->
+
+                                        <!--fin req8_theme2-->
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req8_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Programme</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req8_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Situation</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req8_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req8_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req8_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Source <br> financement</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req8_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Budget initial</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req8_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Budget modifier</span>
+                                            </div>
+                                        </th>
+                                        <!--fin req8_theme2-->
+
+                                        <!--fin req9_theme2-->
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req9_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Programme</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req9_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Situation</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req9_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nomenclature</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req9_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Intervention</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req9_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Tutelle</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req9_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Budget initial</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.cacher_table('req9_theme2',vm.filtre.pivot)">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Budget modifier</span>
+                                            </div>
+                                        </th>
+                                        <!--fin req9_theme2-->
+                                    <!--FIN CODE Corriger-->
+
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in vm.datas">
+
+                                    
+
+
+
+                                    <!--CODE HARIZO-->
+
+                                        <!--41-->
+                                        <td ng-show="vm.cacher_table('req41_theme2',vm.filtre.pivot)">{{data.nomenclature}}</td>
+                                        <td ng-show="vm.cacher_table('req41_theme2',vm.filtre.pivot)">{{data.intervention}}</td>
+                                        <td ng-show="vm.cacher_table('req41_theme2',vm.filtre.pivot)">{{data.sexe}}</td>
+                                        <td ng-show="vm.cacher_table('req41_theme2',vm.filtre.pivot)">{{data.nombre_menage}}</td>
+                                        <td ng-show="vm.cacher_table('req41_theme2',vm.filtre.pivot)">{{data.nombre_individu}}</td>
+                                        <!--fin 41-->
+                                        <!-- 40-->
+                                        <td ng-show="vm.cacher_table('req40_theme2',vm.filtre.pivot)">{{data.nomenclature}}</td>
+                                        <td ng-show="vm.cacher_table('req40_theme2',vm.filtre.pivot)">{{data.intervention}}</td>
+                                        <td ng-show="vm.cacher_table('req40_theme2',vm.filtre.pivot)">{{data.nbr_hand_visu}}</td>
+                                        <td ng-show="vm.cacher_table('req40_theme2',vm.filtre.pivot)">{{data.nbr_hand_paro}}</td>
+                                        <td ng-show="vm.cacher_table('req40_theme2',vm.filtre.pivot)">{{data.nbr_hand_audi}}</td>
+                                        <td ng-show="vm.cacher_table('req40_theme2',vm.filtre.pivot)">{{data.nbr_hand_ment}}</td>
+                                        <td ng-show="vm.cacher_table('req40_theme2',vm.filtre.pivot)">{{data.nbr_hand_mote}}</td>
+                                        <!--fin 40-->
+                                        <!--42-->
+                                        <td ng-show="vm.cacher_table('req42_theme2',vm.filtre.pivot)">{{data.nomenclature}}</td>
+                                        <td ng-show="vm.cacher_table('req42_theme2',vm.filtre.pivot)">{{data.intitule_intervention}}</td>
+                                        <td ng-show="vm.cacher_table('req42_theme2',vm.filtre.pivot)">{{data.detail_type_transfert}}: {{data.moyenne}} {{data.unite_mesure}}</td>
+                                        <!--fin 42-->
+                                        <!--43-->
+                                        <td ng-show="vm.cacher_table('req43_theme2',vm.filtre.pivot)">{{data.nomenclature}}</td>
+                                        <td ng-show="vm.cacher_table('req43_theme2',vm.filtre.pivot)">{{data.intitule_intervention}}</td>
+                                        <td ng-show="vm.cacher_table('req43_theme2',vm.filtre.pivot)">{{data.detail_type_transfert}}: {{data.quantite}} {{data.unite_mesure}}</td>
+                                        <!--fin 43-->
+
+                                        <!--10-->
+                                        <td ng-show="vm.cacher_table('req10_theme2',vm.filtre.pivot)">{{data.intitule_programme}}</td>
+                                        <td ng-show="vm.cacher_table('req10_theme2',vm.filtre.pivot)">{{data.nomenclature}}</td>
+                                        <td ng-show="vm.cacher_table('req10_theme2',vm.filtre.pivot)">{{data.intitule_intervention}}</td>
+                                        <td ng-show="vm.cacher_table('req10_theme2',vm.filtre.pivot)">{{vm.formatMillier(data.montant_init)}} {{data.devise}}</td>
+                                        <td ng-show="vm.cacher_table('req10_theme2',vm.filtre.pivot)">{{vm.formatMillier(data.montant_revise)}} {{data.devise}}</td>
+                                        <!--fin 10-->
+
+                                        <!--11-->
+                                        <td ng-show="vm.cacher_table('req11_theme2',vm.filtre.pivot)">{{data.tutelle}}</td>
+                                        <td ng-show="vm.cacher_table('req11_theme2',vm.filtre.pivot)">{{data.nomenclature}}</td>
+                                        <td ng-show="vm.cacher_table('req11_theme2',vm.filtre.pivot)">{{data.intitule_intervention}}</td>
+                                        <td ng-show="vm.cacher_table('req11_theme2',vm.filtre.pivot)">{{vm.formatMillier(data.montant_init)}} {{data.devise}}</td>
+                                        <td ng-show="vm.cacher_table('req11_theme2',vm.filtre.pivot)">{{vm.formatMillier(data.montant_revise)}} {{data.devise}}</td>
+                                        <!--fin 11-->
+
+                                        <!--12-->
+                                        <td ng-show="vm.cacher_table('req12_theme2',vm.filtre.pivot)">{{data.intitule_programme}}</td>
+                                        <td ng-show="vm.cacher_table('req12_theme2',vm.filtre.pivot)">{{data.nomenclature}}</td>
+                                        <td ng-show="vm.cacher_table('req12_theme2',vm.filtre.pivot)">{{data.intitule_intervention}}</td>
+                                        <td ng-show="vm.cacher_table('req12_theme2',vm.filtre.pivot)">{{data.nom_acteur}}</td>
+                                        <!--fin 12-->
+
+                                        <!--37-->
+                                        <td ng-show="vm.cacher_table('req37_theme2',vm.filtre.pivot)">{{data.intitule_programme}}</td>
+                                        <td ng-show="vm.cacher_table('req37_theme2',vm.filtre.pivot)">{{vm.formatMillier(data.budget_prevu)}} {{data.desc_devise}}</td>
+                                        <td ng-show="vm.cacher_table('req37_theme2',vm.filtre.pivot)">{{vm.formatMillier(data.somme_decaissement)}} {{data.desc_devise}}</td>
+                                        <td ng-show="vm.cacher_table('req37_theme2',vm.filtre.pivot)">{{vm.formatMillier(data.budget_non_comnsommee)}} {{data.desc_devise}}</td>
+                                        <td ng-show="vm.cacher_table('req37_theme2',vm.filtre.pivot)">{{vm.parseFloat_0(data.prop)}} %</td>
+                                        <!--fin 37-->
+
+                                        <!--36-->
+                                        <td ng-show="vm.cacher_table('req36_theme2',vm.filtre.pivot)">{{data.intitule_programme}}</td>
+                                        <td ng-show="vm.cacher_table('req36_theme2',vm.filtre.pivot)">{{data.nomenclature}}</td>
+                                        <td ng-show="vm.cacher_table('req36_theme2',vm.filtre.pivot)">{{data.intitule_intervention}}</td>
+                                        <td ng-show="vm.cacher_table('req36_theme2',vm.filtre.pivot)">{{vm.formatMillier(data.sum_financement_par_intervention_par_programme)}} {{data.devise}}</td>
+                                        <td ng-show="vm.cacher_table('req36_theme2',vm.filtre.pivot)">{{vm.formatMillier(data.sum_decaissement)}} {{data.devise}}</td>
+                                        <td ng-show="vm.cacher_table('req36_theme2',vm.filtre.pivot)">{{vm.parseFloat_0(data.prop)}} %</td>
+                                        <!--fin 36-->
+                                         <!--18-->
+                                        
+                                        <td ng-show="vm.cacher_table('req18_theme2',vm.filtre.pivot)">{{data.nomenclature}}</td>
+                                        <td ng-show="vm.cacher_table('req18_theme2',vm.filtre.pivot)">{{data.intitule_intervention}}</td>
+                                        <td ng-show="vm.cacher_table('req18_theme2',vm.filtre.pivot)">
+                                            - {{data.stat_menage}} %<br> 
+                                            - {{data.stat_montant_menage}} %
+                                        </td>
+                                        <td ng-show="vm.cacher_table('req18_theme2',vm.filtre.pivot)">
+                                            - {{data.stat_individu}} %<br> 
+                                            - {{data.stat_montant_individu}} %
+                                        </td>
+                                        <td ng-show="vm.cacher_table('req18_theme2',vm.filtre.pivot)">
+                                            - {{data.stat_groupe}} %<br> 
+                                            - {{data.stat_montant_groupe}} %
+                                        </td>
+                                        <!--fin 18-->
+
+                                        <!--14-->
+                                        <td ng-show="vm.cacher_table('req14_theme2',vm.filtre.pivot)">{{data.nomenclature}}</td>
+                                        <td ng-show="vm.cacher_table('req14_theme2',vm.filtre.pivot)">{{data.intitule_inter}}</td>
+                                        <td ng-show="vm.cacher_table('req14_theme2',vm.filtre.pivot)">{{data.nom_reg}}</td>
+                                        <td ng-show="vm.cacher_table('req14_theme2',vm.filtre.pivot)">{{data.nom_dist}}</td>
+                                        <td ng-show="vm.cacher_table('req14_theme2',vm.filtre.pivot)">{{vm.parseFloat_0((data.nbr_interv_dist * 100)/data.total_interv)}} %</td>
+                                        <td ng-show="vm.cacher_table('req14_theme2',vm.filtre.pivot)">{{vm.parseFloat_0(((data.total_cout_district)*100)/data.total_cout_menage)}} %</td>
+                                        <!--fin 14-->
+
+
+                                        <!--20-->
+                                        <td ng-show="vm.cacher_table('req20_theme2',vm.filtre.pivot)">{{data.nomenclature}}</td>
+                                        <td ng-show="vm.cacher_table('req20_theme2',vm.filtre.pivot)">{{data.intitule_interv}}</td>
+                                        <td ng-show="vm.cacher_table('req20_theme2',vm.filtre.pivot)">
+                                            - Effectif : {{vm.parseFloat_0((data.nbr_total_homme * 100) / data.total_beneficiaire)}} %<br>
+                                            - Coût : {{vm.parseFloat_0((data.cout_total_intervention_h * 100) / data.total_cout_menage)}} %
+                                        </td>
+                                        <td ng-show="vm.cacher_table('req20_theme2',vm.filtre.pivot)">
+
+                                            - Effectif : {{vm.parseFloat_0((data.nbr_total_femme * 100) / data.total_beneficiaire)}} %<br>
+                                            - Coût : {{vm.parseFloat_0((data.cout_total_intervention_f * 100) / data.total_cout_menage)}} %
+
+
+                                        </td>
+                                        
+                                        <!--fin 20-->
+
+
+                                        <!--19-->
+                                        <td ng-show="vm.cacher_table('req19_theme2',vm.filtre.pivot)">{{data.nomenclature}}</td>
+                                        <td ng-show="vm.cacher_table('req19_theme2',vm.filtre.pivot)">{{data.intitule_intervention}}</td>
+
+                                        <td ng-show="vm.cacher_table('req19_theme2',vm.filtre.pivot)">
+                                            - Effectif : {{vm.parseFloat_0((data.nbr_enfant * 100) / data.nbr_total_benaficiare)}} %<br>
+                                            - Coût : {{vm.parseFloat_0((data.cout_enfant * 100) / data.total_cout)}} %
+                                        </td>
+
+                                        <td ng-show="vm.cacher_table('req19_theme2',vm.filtre.pivot)">
+                                            - Effectif : {{vm.parseFloat_0((data.nbr_age_scolaire * 100) / data.nbr_total_benaficiare)}} %<br>
+                                            - Coût : {{vm.parseFloat_0((data.cout_age_scolaire * 100) / data.total_cout)}} %
+                                        </td>
+
+                                        <td ng-show="vm.cacher_table('req19_theme2',vm.filtre.pivot)">
+                                            - Effectif : {{vm.parseFloat_0((data.nbr_age_travail * 100) / data.nbr_total_benaficiare)}} %<br>
+                                            - Coût : {{vm.parseFloat_0((data.cout_age_travail * 100) / data.total_cout)}} %
+                                        </td>
+
+                                        <td ng-show="vm.cacher_table('req19_theme2',vm.filtre.pivot)">
+                                            - Effectif : {{vm.parseFloat_0((data.nbr_agee * 100) / data.nbr_total_benaficiare)}} %<br>
+                                            - Coût : {{vm.parseFloat_0((data.cout_agee * 100) / data.total_cout)}} %
+                                        </td>
+                                        
+                                        
+                                        <!--fin 19-->
+                                        <!--32-->
+                                        <td ng-show="vm.cacher_table('req32_theme2',vm.filtre.pivot)">{{data.nomenclature}}</td>
+                                        <td ng-show="vm.cacher_table('req32_theme2',vm.filtre.pivot)">{{data.intitule_interv}}</td>
+                                        <td ng-show="vm.cacher_table('req32_theme2',vm.filtre.pivot)">{{data.nom_reg}}</td>
+                                        <td ng-show="vm.cacher_table('req32_theme2',vm.filtre.pivot)">{{data.nbr_total_benaficiaire}}</td>
+                                        <!--fin 32-->
+
+                                        <!--req_multiple_21_to_30_theme2-->
+                                        <td ng-show="vm.cacher_table('req_multiple_21_to_30_theme2',vm.filtre.pivot)">{{data.nomenclature_description}}</td>
+                                        <td ng-show="vm.cacher_table('req_multiple_21_to_30_theme2',vm.filtre.pivot)">{{data.intitule_intervention}}</td>
+                                        <td ng-show="vm.cacher_table('req_multiple_21_to_30_theme2',vm.filtre.pivot)">{{data.liste_variable}}</td>
+                                        <td ng-show="vm.cacher_table('req_multiple_21_to_30_theme2',vm.filtre.pivot)">{{data.variable}}</td>
+                                        <td ng-show="vm.cacher_table('req_multiple_21_to_30_theme2',vm.filtre.pivot)">{{vm.parseFloat_0(data.effectif)}} %</td>
+                                        <td ng-show="vm.cacher_table('req_multiple_21_to_30_theme2',vm.filtre.pivot)">{{vm.parseFloat_0(data.stat_cout)}} %</td>
+                                        <!--fin req_multiple_21_to_30_theme2-->
+
+
+                                        <!-- 6-->
+                                        <td ng-show="vm.cacher_table('req6_theme2',vm.filtre.pivot)">{{data.nom_region}}</td>
+                                        <td ng-show="vm.cacher_table('req6_theme2',vm.filtre.pivot)">{{data.nom_district}}</td>
+                                        <td ng-show="vm.cacher_table('req6_theme2',vm.filtre.pivot)">({{data.code_vulnerabilite}}) {{data.description_vulnerabilite}} </td>
+                                        <td ng-show="vm.cacher_table('req6_theme2',vm.filtre.pivot)">{{data.nbr}}</td>
+                                        <!--fin 6-->
+
+
+                                        <!-- liste_beneficiaire_intevention-->
+                                        <!--td ng-show="vm.cacher_table('liste_beneficiaire_intevention',vm.filtre.pivot)">{{data.nom_region}}</td!-->
+                                        <td ng-show="vm.cacher_table('liste_beneficiaire_intevention',vm.filtre.pivot)">{{data.nom_district}}</td>
+                                        <td ng-show="vm.cacher_table('liste_beneficiaire_intevention',vm.filtre.pivot)">{{data.nom_commune}}  </td>
+                                        <td ng-show="vm.cacher_table('liste_beneficiaire_intevention',vm.filtre.pivot)">{{data.nom_fokontany}}</td>
+                                        <td ng-show="vm.cacher_table('liste_beneficiaire_intevention',vm.filtre.pivot)">{{data.intitule_intervention}}</td>
+                                        <td ng-show="vm.cacher_table('liste_beneficiaire_intevention',vm.filtre.pivot)"><b>{{data.nom}}</b> <br> {{data.prenom}}</td>
+                                        <!--fin liste_beneficiaire_intevention-->
+
+
+                                        <!-- init-->
+                                        <td ng-show="!vm.filtre.pivot">{{data.intitule_interv}}</td>
+                                        <!--fin init-->
+
+                                    <!--FIN CODE HARIZO-->
+
+                                    <!--CODE Corriger-->
+                                        <!-- 34-->
+                                        <td ng-show="vm.cacher_table('req34_theme2',vm.filtre.pivot)">{{data.intitule_programme}}</td>
+                                        <td ng-show="vm.cacher_table('req34_theme2',vm.filtre.pivot)">{{data.nomenclature}}</td>
+                                        <td ng-show="vm.cacher_table('req34_theme2',vm.filtre.pivot)">{{data.intitule_intervention}}</td>
+                                        <td ng-show="vm.cacher_table('req34_theme2',vm.filtre.pivot)">{{data.nom_region}}</td>
+                                        <td ng-show="vm.cacher_table('req34_theme2',vm.filtre.pivot)">{{vm.parseFloat_0((data.nbr_menage_beneficiaire * 100) / data.nbr_menage_prevu)}} %</td>
+                                        <td ng-show="vm.cacher_table('req34_theme2',vm.filtre.pivot)">{{vm.parseFloat_0((data.nbr_individu_beneficiaire * 100) / data.nbr_individu_prevu)}} %</td>
+                                        <!--fin 34-->
+
+                                        <!--1-->
+                                        <td ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)">{{data.nom_region}}</td>
+                                        <td ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)">{{data.nom_dist}}</td>
+                                        <td ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)">{{data.nom_com}}</td>
+                                        <td ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)">
+                                            H 
+                                            <br> 
+                                            F
+                                        </td>
+                                        <td style="background-color: {{vm.couleur(data.nbr_enfant_homme, data.nbr_enfant_fille)}};" ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)">
+                                            {{data.nbr_enfant_homme}}
+                                            <br>
+                                            {{data.nbr_enfant_fille}}
+                                        </td>
+                                        <td style="background-color: {{vm.couleur(data.nbr_agescolaire_homme, data.nbr_agescolaire_fille)}};" ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)">
+                                            {{data.nbr_agescolaire_homme}}
+                                            <br>
+                                            {{data.nbr_agescolaire_fille}}
+                                        </td>
+                                        <td style="background-color: {{vm.couleur(data.nbr_agetravaille_homme, data.nbr_agetravaille_fille)}};" ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)">
+                                            {{data.nbr_agetravaille_homme}}
+                                            <br>
+                                            {{data.nbr_agetravaille_fille}}
+                                        </td>
+                                        <td style="background-color: {{vm.couleur(data.nbr_agee_homme, data.nbr_agee_fille)}};" ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)">
+                                            {{data.nbr_agee_homme}}
+                                            <br>
+                                            {{data.nbr_agee_fille}}
+                                        </td>
+                                        <td  ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)" style="background-color: {{vm.couleur(data.nbr_agee_homme, data.nbr_agee_fille)}};">
+                                            {{vm.parse_int(data.nbr_agee_homme)+vm.parse_int(data.nbr_agetravaille_homme)+vm.parse_int(data.nbr_agescolaire_homme)+vm.parse_int(data.nbr_enfant_homme)}}
+                                            <br>
+                                            {{vm.parse_int(data.nbr_agee_fille)+vm.parse_int(data.nbr_agetravaille_fille)+vm.parse_int(data.nbr_agescolaire_fille)+vm.parse_int(data.nbr_enfant_fille)}}
+                                        </td>
+
+                                        <td  ng-show="vm.cacher_table('req1_theme1',vm.filtre.pivot)" style="background-color: {{vm.couleur(data.nbr_agee_homme, data.nbr_agee_fille)}};">
+                                            {{vm.parse_int(data.nbr_agee_homme)+vm.parse_int(data.nbr_agetravaille_homme)+vm.parse_int(data.nbr_agescolaire_homme)+vm.parse_int(data.nbr_enfant_homme)+vm.parse_int(data.nbr_agee_fille)+vm.parse_int(data.nbr_agetravaille_fille)+vm.parse_int(data.nbr_agescolaire_fille)+vm.parse_int(data.nbr_enfant_fille)}}
+                                           
+                                        </td>
+                                        <!--fin 1-->
+
+                                        <!-- 3-->
+                                        <td ng-show="vm.cacher_table('req3_theme1',vm.filtre.pivot)">{{data.nom_reg}}</td>
+                                        <td ng-show="vm.cacher_table('req3_theme1',vm.filtre.pivot)">{{data.nom_dist}}</td>
+                                        <td ng-show="vm.cacher_table('req3_theme1',vm.filtre.pivot)">{{data.nom_com}}</td>
+                                        <td ng-show="vm.cacher_table('req3_theme1',vm.filtre.pivot)">{{data.nbr_ayant_enfant}}</td>
+                                        <td ng-show="vm.cacher_table('req3_theme1',vm.filtre.pivot)">{{data.nbr_ayant_enfant_age_scolaire}}</td>
+                                        <!--fin 3-->
+
+                                        <!--38-->
+                                            <td ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">{{data.nom_region}}</td>
+                                            <td ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">{{data.nom_dist}}</td>
+                                            <td ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">{{data.nom_com}}</td>
+                                            <td ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">{{data.nomenclature}}</td>
+                                            <td ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">{{data.intitule_intervention}}</td>
+                                            <td ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">
+                                                H 
+                                                <br> 
+                                                F
+                                            </td>
+                                            <td style="background-color: {{vm.couleur(data.nbr_enfant_homme, data.nbr_enfant_fille)}};" ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">
+                                                {{data.nbr_enfant_homme}}
+                                                <br>
+                                                {{data.nbr_enfant_fille}}
+                                            </td>
+                                            <td style="background-color: {{vm.couleur(data.nbr_agescolaire_homme, data.nbr_agescolaire_fille)}};" ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">
+                                                {{data.nbr_agescolaire_homme}}
+                                                <br>
+                                                {{data.nbr_agescolaire_fille}}
+                                            </td>
+                                            <td style="background-color: {{vm.couleur(data.nbr_agetravaille_homme, data.nbr_agetravaille_fille)}};" ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">
+                                                {{data.nbr_agetravaille_homme}}
+                                                <br>
+                                                {{data.nbr_agetravaille_fille}}
+                                            </td>
+                                            <td style="background-color: {{vm.couleur(data.nbr_agee_homme, data.nbr_agee_fille)}};" ng-show="vm.cacher_table('req38_theme2',vm.filtre.pivot)">
+                                                {{data.nbr_agee_homme}}
+                                                <br>
+                                                {{data.nbr_agee_fille}}
+                                            </td>
+                                        <!--fin 38-->
+
+                                        
+
+                                        <!-- 7-->
+                                        <td ng-show="vm.cacher_table('req7_theme2',vm.filtre.pivot)">{{data.intitule_programme}}</td>
+                                        <td ng-show="vm.cacher_table('req7_theme2',vm.filtre.pivot)">{{vm.affichage_situation(data)}}</td>
+                                        <td ng-show="vm.cacher_table('req7_theme2',vm.filtre.pivot)">{{data.nomenclature}}</td>
+                                        <td ng-show="vm.cacher_table('req7_theme2',vm.filtre.pivot)">{{data.intitule_intervention}}</td>
+                                        <td ng-show="vm.cacher_table('req7_theme2',vm.filtre.pivot)">{{vm.affichage_budget_initial(data)}} {{data.description_devise}}</td>
+                                        <td ng-show="vm.cacher_table('req7_theme2',vm.filtre.pivot)">{{vm.affichage_budget_modifie(data)}} {{data.description_devise}}</td>
+                                        <!--fin 7-->
+
+                                        <!-- 8-->
+                                        <td ng-show="vm.cacher_table('req8_theme2',vm.filtre.pivot)">{{data.intitule_programme}}</td>
+                                        <td ng-show="vm.cacher_table('req8_theme2',vm.filtre.pivot)">{{vm.affichage_situation(data)}}</td>
+                                        <td ng-show="vm.cacher_table('req8_theme2',vm.filtre.pivot)">{{data.nomenclature}}</td>
+                                        <td ng-show="vm.cacher_table('req8_theme2',vm.filtre.pivot)">{{data.intitule_intervention}}</td>
+                                        <td ng-show="vm.cacher_table('req8_theme2',vm.filtre.pivot)">{{data.nom_source_financement}}</td>
+                                        <td ng-show="vm.cacher_table('req8_theme2',vm.filtre.pivot)">{{vm.affichage_budget_initial(data)}} {{data.description_devise}}</td>
+                                        <td ng-show="vm.cacher_table('req8_theme2',vm.filtre.pivot)">{{vm.affichage_budget_modifie(data)}} {{data.description_devise}}</td>
+                                        <!--fin 8-->
+
+                                        <!-- 9-->
+                                        <td ng-show="vm.cacher_table('req9_theme2',vm.filtre.pivot)">{{data.intitule_programme}}</td>
+                                        <td ng-show="vm.cacher_table('req9_theme2',vm.filtre.pivot)">{{vm.affichage_situation(data)}}</td>
+                                        <td ng-show="vm.cacher_table('req9_theme2',vm.filtre.pivot)">{{data.nomenclature}}</td>
+                                        <td ng-show="vm.cacher_table('req9_theme2',vm.filtre.pivot)">{{data.intitule_intervention}}</td>
+                                        <td ng-show="vm.cacher_table('req9_theme2',vm.filtre.pivot)">{{data.ministere_tutelle}}</td>
+                                        <td ng-show="vm.cacher_table('req9_theme2',vm.filtre.pivot)">{{vm.affichage_budget_initial(data)}} {{data.description_devise}}</td>
+                                        <td ng-show="vm.cacher_table('req9_theme2',vm.filtre.pivot)">{{vm.affichage_budget_modifie(data)}} {{data.description_devise}}</td>
+                                        <!--fin 9-->
+                                    <!--FIN CODE Corriger-->
+
+                                
+
+                                </tr>
+                            </tbody>
+                        </table> 
+                    </md-tab-body>
+                    
+                </md-tab>                
+            </md-tabs>
+            </div>
+        </div>
+    </div>
+    <!--/ CONTENT -->    
+</div>

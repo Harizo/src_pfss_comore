@@ -1,0 +1,220 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Régistre social</span>
+            </div>
+
+            <div class="title">Régistre social</div>
+        </div>
+    </div>
+        <md-tabs md-dynamic-height ng-show="vm.affichageMasque==1">
+			<md-tab label="Ajout Régistre social">
+				<md-tab-body>
+					<form name="personnelform" class="md-inline-form"  novalidate>
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="30">
+								<input type="text" name="code" ng-model="vm.beneficiaire.code" placeholder="Code unique" ng-init="vm.beneficiaire.code=''" required>
+								<div ng-messages="code.$error"	role="alert">
+									<div ng-message="required">
+										<span>Code unique obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="20">
+								<input type="text" name="nom" ng-model="vm.beneficiaire.nom" placeholder="Nom" ng-init="vm.beneficiaire.nom=''" required>
+								<div ng-messages="nom.$error"	role="alert">
+									<div ng-message="required">
+										<span>Nom obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="20">
+								<input type="text" name="prenom" ng-model="vm.beneficiaire.prenom" placeholder="Prénom" ng-init="vm.beneficiaire.prenom=''" required>
+								<div ng-messages="prenom.$error"	role="alert">
+									<div ng-message="required">
+										<span>Prénom obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="20">
+								<input type="text" name="cin" ng-model="vm.beneficiaire.cin" placeholder="C.I.N" ng-init="vm.beneficiaire.cin=''" required>
+								<div ng-messages="cin.$error"	role="alert">
+									<div ng-message="required">
+										<span>CIN obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="10">
+								<input type="date" name="date_naissance" ng-model="vm.beneficiaire.date_naissance" placeholder="Date de naissance" ng-init="vm.beneficiaire.date_naissance=''" >
+								<div ng-messages="date_naissance.$error" role="alert">
+							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="25">
+								<input type="text" name="adresse" ng-model="vm.beneficiaire.adresse" placeholder="Adresse" ng-init="vm.beneficiaire.adresse=''" >
+								<div ng-messages="adresse.$error" role="alert">
+							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+ 								<md-checkbox ng-model="vm.beneficiaire.chef_menage" aria-label="Checkbox 1"  ng-true-value='1' ng-false-value='0' style="margin: 4px;">
+                                    Chef de ménage
+                                </md-checkbox>
+							</md-input-container>						 
+							<md-input-container flex="100" flex-gt-xs="10">
+								<input type="text" name="profession" ng-model="vm.beneficiaire.profession" placeholder="Profession" ng-init="vm.beneficiaire.profession=''" >
+								<div ng-messages="profession.$error" role="alert">
+							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="10">
+								<label>Situation matrimoniale</label>
+								<md-select ng-model="vm.beneficiaire.situation_matrimoniale" ng-init="vm.beneficiaire.situation_matrimoniale=''">
+									<md-option value=''>&nbsp;</md-option>
+									<md-option value='Célibataire'>Célibataire</md-option>
+									<md-option value='Marié'>Marié</md-option>
+									<md-option value='Veuf'>Veuf</md-option>
+								</md-select>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="10">
+								<label>Sexe</label>
+								<md-select ng-model="vm.beneficiaire.sexe" ng-init="vm.beneficiaire.sexe=''">
+									<md-option value=''>&nbsp;</md-option>
+									<md-option value='H'>Homme</md-option>
+									<md-option value='F'>Femme</md-option>
+								</md-select>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="10">
+								<input type="date" name="date_inscription" ng-model="vm.beneficiaire.date_inscription" placeholder="Date d'inscription" ng-init="vm.beneficiaire.date_inscription=''" >
+								<div ng-messages="date_inscription.$error" role="alert">
+							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="10">
+								<label>Type bénéficiaire</label>
+								<md-select ng-model="vm.beneficiaire.id_type_beneficiaire" ng-init="vm.beneficiaire.id_type_beneficiaire=''" ng-change="vm.modifierTypeBeneficiaire(vm.beneficiaire)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="fonct in vm.alltypebeneficiaire | orderBy:['description']" value='{{fonct.id}}'>
+										{{fonct.description}}
+									</md-option>
+								</md-select>
+								<div ng-messages="fonction.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="25">
+								<input type="number" name="revenu_mensuel" ng-model="vm.beneficiaire.revenu_mensuel" placeholder="Revenu mensuel" ng-init="vm.beneficiaire.revenu_mensuel=''" >
+								<div ng-messages="revenu_mensuel.$error" role="alert">
+							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="25">
+								<input type="number" name="depense_mensuel" ng-model="vm.beneficiaire.depense_mensuel" placeholder="Dépense mensuel" ng-init="vm.beneficiaire.depense_mensuel=''" >
+								<div ng-messages="depense_mensuel.$error" role="alert">
+							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="10">
+								<label>Fokontany</label>
+								<md-select ng-model="vm.beneficiaire.id_fokontany" ng-init="vm.beneficiaire.id_fokontany=''" ng-change="vm.modifierTypeBeneficiaire(vm.beneficiaire)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="fkt in vm.listefokontany | orderBy:['fokontany']" value='{{fkt.id}}'>
+										{{fkt.fokontany}}
+									</md-option>
+								</md-select>
+								<div ng-messages="fonction.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+						</div>
+						<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+							ng-disabled="personnelform.$invalid" ng-click="vm.ajout(vm.beneficiaire,0)">
+							Enregistrer
+						</md-button>
+						<md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annuler()">
+							Annuler
+						</md-button>
+					</form>
+				</md-tab-body>
+			</md-tab>
+        </md-tabs>
+    <div class="content" layout="column">
+		<div class="form-wrapper">
+			<div style="widht:100%;">    
+				<md-button type="submit" ng-show="vm.afficherboutonnouveau==1" class="md-raised md-accent" aria-label="Nouveau" ng-click="vm.ajouter()" style="width:10%;">
+				  Nouveau
+				</md-button>
+				<md-button type="submit" ng-show="vm.afficherboutonModifSupr==1" class="md-raised md-accent" aria-label="Modifier" ng-click="vm.modifier()" style="width:10%;">
+				  Modifier
+				</md-button>
+				<md-button type="submit" ng-show="vm.afficherboutonModifSupr==1" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimer()" style="width:10%;">
+				  Supprimer
+				</md-button>
+			</div>  
+			<div style="clear:both;"></div>
+			<md-tabs md-dynamic-height>
+				<md-tab label="Chef ménage">
+						<table id="table1" class="simple" ms-responsive-table datatable="ng"  dt-options="vm.dtOptions">
+							<thead>
+								<tr>
+								  <th class="secondary-text" ng-repeat="pe in ::vm.personnel_column">
+									<div class="table-header">
+										<span class="column-title">{{pe.titre}}</span>
+									</div>
+								  </th>
+								</tr>
+							</thead>
+							<tbody>
+							  <tr ng-repeat="benef in vm.allbeneficiaire" ng-class="{selected: benef.$selected}" ng-click="vm.selection(benef)">
+								  <td>{{benef.code}}</td>
+								  <td>{{benef.nom}} {{benef.prenom}}</td>
+								   <td>{{benef.date_naissance |date:'dd/MM/yyyy'}}</td>
+								   <td>{{benef.date_inscription |date:'dd/MM/yyyy'}}</td>
+								   <td>{{benef.type_beneficiaire[0].description}}</td>
+								   <td>{{benef.fokontany[0].fokontany}}</td>
+							  </tr>
+							</tbody>
+						</table>
+				</md-tab>
+				<md-tab label="Membre ménage">
+						<table id="table2" class="simple" ms-responsive-table datatable="ng"  dt-options="vm.dtOptions">
+							<thead>
+								<tr>
+								  <th class="secondary-text" ng-repeat="pe in ::vm.membre_column">
+									<div class="table-header">
+										<span class="column-title">{{pe.titre}}</span>
+									</div>
+								  </th>
+								</tr>
+							</thead>
+							<tbody>
+							  <tr ng-repeat="benef in vm.allbeneficiaire" ng-class="{selected: benef.$selected}" ng-click="vm.selection(benef)">
+								  <td>{{benef.nom}} {{benef.prenom}}</td>
+								   <td>{{benef.date_naissance |date:'dd/MM/yyyy'}}</td>
+								   <td>{{benef.date_inscription |date:'dd/MM/yyyy'}}</td>
+								   <td>{{benef.type_beneficiaire[0].description}}</td>
+								   <td>{{benef.fokontany[0].fokontany}}</td>
+							  </tr>
+							</tbody>
+						</table>
+				</md-tab>
+				<md-tab label="Enquete sur ménage">
+				</md-tab>
+				<md-tab label="Enquete sur individu">
+				</md-tab>
+			</md-tabs>
+		</div>
+    </div>
+</div>

@@ -1,0 +1,176 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Canevas formaté</span>
+            </div>
+            <div class="title">Canevas formaté</div>
+        </div>
+    </div>
+    <div class="content"layout="column">
+		<div class="form-wrapper"> 
+		<md-progress-circular ng-if="vm.affichage_load"  md-mode="indeterminate" md-diameter="64">
+                
+        </md-progress-circular>
+        <div ng-if="vm.affichage_load" style="position:relative;top: -30px;  left: 60px;color: #383c48">
+			Chargement !!!,veuillez patienter s'il vous plait ...
+		</div>
+			<md-tabs md-dynamic-height>
+				<!-- Début affichage liste recommandantion-->
+				<md-tab label="Liste Canevas formaté">
+					<md-tab-body>
+						<fieldset>
+							<legend>
+								Canevas formaté
+								<button ng-disabled="vm.disable || vm.affichage_load " ng-click="vm.ajouterDocument()" title="Ajouter document" style="font-size: 24px;font-weight: bold;background-color: rgb(255,255,255);color: rgb(3,155,229);">+</button>
+							</legend>
+							<div style="clear:both;"></div>
+							<table ng-table="tableAvancement" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+								<thead>
+									<tr>
+										<th class="secondary-text" ng-repeat="c in :: vm.titre_canevas_formate">
+											<div class="table-header">
+												<span class="column-title">{{c.titre}}</span>
+											</div>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr  ng-repeat="docs in vm.allCanevasformate"  ng-class="{selected: docs.$selected}" ng-click="vm.selectionDocument(docs)">
+										<td>
+											<span ng-if="docs.$edit">
+												<md-input-container>
+													<label>Resumé</label>
+													<input type="text" ng-model="docs.resume"   required/>
+													<div ng-messages="resume.$error"
+														role="alert">
+														<div ng-message="required">
+															<span>Resumé obligatoire.</span>
+														</div>
+													</div>
+												</md-input-container> 
+											</span>
+											<span ng-if="!docs.$edit">{{docs.resume}}</span>
+										</td>
+										<td>
+											<span ng-if="docs.$edit">
+												<label>{{docs.nom_fichier}}</label>
+												<div class="file-upload">
+													<input file-uploader id="fichier" name="fichier" type="file" custom-on-change="uploadFile"  ng-multiple="false" />
+													<!--button ng-click="vm.uploadFile()" style="background: #b4ddb4; /* Old browsers */
+														background: -moz-linear-gradient(top,  #b4ddb4 0%, #83c783 17%, #52b152 33%, #008a00 67%, #005700 83%, #002400 100%); /* FF3.6+ */
+														background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b4ddb4), color-stop(17%,#83c783), color-stop(33%,#52b152), color-stop(67%,#008a00), color-stop(83%,#005700), color-stop(100%,#002400)); /* Chrome,Safari4+ */
+														background: -webkit-linear-gradient(top,  #b4ddb4 0%,#83c783 17%,#52b152 33%,#008a00 67%,#005700 83%,#002400 100%); /* Chrome10+,Safari5.1+ */
+														background: -o-linear-gradient(top,  #b4ddb4 0%,#83c783 17%,#52b152 33%,#008a00 67%,#005700 83%,#002400 100%); /* Opera 11.10+ */
+														background: -ms-linear-gradient(top,  #b4ddb4 0%,#83c783 17%,#52b152 33%,#008a00 67%,#005700 83%,#002400 100%); /* IE10+ */
+														background: linear-gradient(to bottom,  #b4ddb4 0%,#83c783 17%,#52b152 33%,#008a00 67%,#005700 83%,#002400 100%); /* W3C */
+														filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4ddb4', endColorstr='#002400',GradientType=0 ); /* IE6-9 */
+														color:white;
+														font-weight:bold;
+														height:30px;">Upload me
+													</button!-->
+													<button ng-click="vm.uploadFile()" 
+														style="background: #ff843d; /* Old browsers */
+															background: -moz-linear-gradient(top,  #ff843d 0%, #fc8a49 17%, #ef7d3b 33%, #db6520 67%, #ce5712 83%, #ba4603 100%); /* FF3.6+ */
+															background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ff843d), color-stop(17%,#fc8a49), color-stop(33%,#ef7d3b), color-stop(67%,#db6520), color-stop(83%,#ce5712), color-stop(100%,#ba4603)); /* Chrome,Safari4+ */
+															background: -webkit-linear-gradient(top,  #ff843d 0%,#fc8a49 17%,#ef7d3b 33%,#db6520 67%,#ce5712 83%,#ba4603 100%); /* Chrome10+,Safari5.1+ */
+															background: -o-linear-gradient(top,  #ff843d 0%,#fc8a49 17%,#ef7d3b 33%,#db6520 67%,#ce5712 83%,#ba4603 100%); /* Opera 11.10+ */
+															background: -ms-linear-gradient(top,  #ff843d 0%,#fc8a49 17%,#ef7d3b 33%,#db6520 67%,#ce5712 83%,#ba4603 100%); /* IE10+ */
+															background: linear-gradient(to bottom,  #ff843d 0%,#fc8a49 17%,#ef7d3b 33%,#db6520 67%,#ce5712 83%,#ba4603 100%); /* W3C */
+															filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff843d', endColorstr='#ba4603',GradientType=0 ); /* IE6-9 */
+															color:#772e03;
+															font-weight:bold;
+															height:auto;">
+														<md-icon md-font-icon="icon-cloud-upload" class="s16" style="padding-left: 2px !important;padding-right:  2px !important;padding-bottom: 20px"> 
+														</md-icon> Upload me
+														<!--label style="padding-right:  2px !important;">
+															
+														</label!-->
+													</button>
+												</div>
+												<div ng-messages="fichier.$error" role="alert"> 
+												</div>
+											</span>
+											<span ng-if="!docs.$edit">{{docs.nom_fichier}}</span>
+										</td>
+										<td>
+											<span ng-if="docs.$edit">
+												<md-input-container>
+													<label>Date upload</label>
+													<input type="date" ng-model="docs.date_upload" />
+													<div ng-messages="date_upload.$error" role="alert">									   
+													</div>
+												</md-input-container> 
+											</span>
+											<span ng-if="!docs.$edit">{{docs.date_upload |date:'dd/MM/yyyy'}}</span>
+										</td>
+										<td>
+											<span>{{docs.nomutilisateur}}</span>
+										</td>
+										<td>
+											<!--a ng-if="!docs.$edit && (vm.id_utilisateur ==docs.id_utilisateur || vm.id_utilisateur=='1')" ng-click="vm.modifierDocument(docs)" title="Modifier">
+												<span class="icon-table-edit"></span>
+											</a!-->
+
+											<md-button ng-if="!docs.$edit && (vm.id_utilisateur ==docs.id_utilisateur || vm.id_utilisateur=='1')" class="md-icon-button" aria-label="Modifier" ng-click="vm.modifierDocument(docs)">
+			                                  <md-icon md-font-icon="icon-table-edit"></md-icon>
+			                                  <md-tooltip><span>Modifier</span></md-tooltip>
+			                                </md-button>
+
+
+
+											<!--a ng-if="!docs.$edit && (vm.id_utilisateur ==docs.id_utilisateur || vm.id_utilisateur=='1')" ng-click="vm.supprimerDocument(docs)" title="Supprimer">
+												<span class="icon-delete"></span>
+											</a!-->
+
+											<md-button ng-if="!docs.$edit && (vm.id_utilisateur ==docs.id_utilisateur || vm.id_utilisateur=='1')" class="md-icon-button" aria-label="Supprimer" ng-click="vm.supprimerDocument(docs)">
+			                                  <md-icon md-font-icon="icon-delete"></md-icon>
+			                                  <md-tooltip><span>Supprimer</span></md-tooltip>
+			                                </md-button>
+
+
+											<!--a ng-if="docs.$edit" ng-click="vm.annulerDocument(docs)" title="Annuler modification">
+												<span class="icon-cancel"></span>
+											</a!-->
+
+											<md-button ng-if="docs.$edit" class="md-icon-button" aria-label="Annuler" ng-click="vm.annulerDocument(docs)" >
+			                                  <md-icon md-font-icon="icon-cancel"></md-icon>
+			                                  <md-tooltip><span>Annuler</span></md-tooltip>
+			                                </md-button>
+
+
+											<!--a ng-if="docs.$edit" ng-click="vm.uploadFile(docs,0)" title="Enregistrer">
+												<span class="icon-content-save"></span>
+											</a!-->
+
+											<md-button ng-if="docs.$edit" ng-click="vm.uploadFile(docs,0)" class="md-icon-button" aria-label="Sauvegarder" >
+			                                  <md-icon md-font-icon="icon-content-save"></md-icon>
+			                                  <md-tooltip><span>Enregistrer</span></md-tooltip>
+			                                </md-button>
+
+											<!--a ng-if="!docs.$edit" ng-click="vm.exportfichier(docs)" title="Enregistré par : {{docs.nomutilisateur}} (Download)">
+												<span class="icon-download"></span>
+											</a!-->
+
+											<md-button ng-if="!docs.$edit" ng-click="vm.exportfichier(docs)" class="md-icon-button" aria-label="Télécharger" >
+			                                  <md-icon md-font-icon="icon-download"></md-icon>
+			                                  <md-tooltip><span>Télécharger</span></md-tooltip>
+			                                </md-button>
+
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</fieldset>
+					</md-tab-body>
+				</md-tab> 
+				<!-- Fin affichage liste recommandantion-->
+			</md-tabs>
+		</div>
+    </div>
+</div>
+    
+
+

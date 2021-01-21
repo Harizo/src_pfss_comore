@@ -1,0 +1,223 @@
+  <div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <!--span class="parent">Traitement</span>
+                <span class="parent"> </span>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon-->
+                <span class="parent" href="javascript:;">Suivi Décaissement</span>
+            </div>
+
+            <div class="title">Suivi Décaissement</div>
+        </div>
+    </div>
+        <div style="clear:both;"></div>
+		<!--div layout="column" layout-gt-xs="row">
+			<md-progress-circular ng-if="vm.affiche_load" class="md-accent" md-mode="indeterminate" md-diameter="64"></md-progress-circular>
+		</div-->
+        <md-tabs md-dynamic-height ng-show="vm.affichageMasque==1">
+			<md-tab label="{{vm.titrepage}}">
+				<md-tab-body>							
+					<form name="decaissementform" class="md-inline-form"  novalidate>
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="30">
+								<label>Montant initial</label>
+								<input type="number" name="montant_initial" ng-model="vm.decaissement.montant_initial" placeholder="Montant initial" ng-init="vm.decaissement.montant_initial=''" required>
+								<div ng-messages="montant_initial.$error" role="alert">
+									<div ng-message="required">
+										<span>Montant initial obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="30">
+								<label>Montant revisé</label>
+								<input type="number" name="montant_revise" ng-model="vm.decaissement.montant_revise" placeholder="Montant revisé" ng-init="vm.decaissement.montant_revise=''" required>
+								<div ng-messages="montant_revise.$error" role="alert">
+									<div ng-message="required">
+										<span>Montant revisé obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+							<!--md-input-container flex="100" flex-gt-xs="40">
+								<label>Date révision</span>
+								<input type="date" name="date_revision" ng-model="vm.decaissement.date_revision" placeholder="Date révision">
+								<div ng-messages="date_revision.$error" role="alert">
+									<div ng-message="required">
+										<span>Date révision</span>
+									</div>
+								</div>
+							</md-input-container-->
+						</div>
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="20">
+								<label>Décaissement prévu</label>
+								<input type="number" name="decaissement_prevu" ng-model="vm.decaissement.decaissement_prevu" placeholder="Décaissement prevu" ng-init="vm.decaissement.decaissement_prevu=''" required>
+								<div ng-messages="decaissement_prevu.$error" role="alert">
+									<div ng-message="required">
+										<span>Montant Décaissement prévu</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="20">
+								<label>Décaissement effectif</label>
+								<input type="number" name="decaissement_effectif" ng-model="vm.decaissement.decaissement_effectif" placeholder="Décaissement effectif" ng-init="vm.decaissement.decaissement_effectif=''" required>
+								<div ng-messages="decaissement_effectif.$error" role="alert">
+									<div ng-message="required">
+										<span>Montant Décaissement effectif</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="20">
+								<label>Décaissement effectif</label>
+								<input type="number" name="transfert_direct_beneficiaire" ng-model="vm.decaissement.transfert_direct_beneficiaire" placeholder="Transfer direct bénéficiaire" ng-init="vm.decaissement.transfert_direct_beneficiaire=''" required>
+								<div ng-messages="transfert_direct_beneficiaire.$error" role="alert">
+									<div ng-message="required">
+										<span>Montant transfert direct beneficiaire</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="5">
+								<span>Début période</span>
+							</md-input-container>
+								<md-datepicker name="date_debut_periode" ng-model="vm.decaissement.date_debut_periode"   md-placeholder="Début période" required>                       
+								</md-datepicker>
+							<md-input-container flex="100" flex-gt-xs="5">
+								<span>Fin période</span>
+							</md-input-container>
+								<md-datepicker name="date_fin_periode" ng-model="vm.decaissement.date_fin_periode"   md-placeholder="Fin période" required>                       
+								</md-datepicker>
+						</div>
+						<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+							ng-disabled="decaissementform.$invalid" ng-click="vm.ajoutDecaissement(vm.decaissement,0,0)">
+							Enregistrer
+						</md-button>
+						<md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerDecaissement(vm.decaissement)">
+							Annuler
+						</md-button>
+					</form>
+				</md-tab-body>
+				<!-- / BASIC FORM -->
+			</md-tab>
+        </md-tabs>
+
+    
+            <!-- LISTE TABLE -->
+    <div class="content" layout="column">
+		<div class="form-wrapper">
+			<md-progress-circular ng-if="vm.affiche_load" class="md-accent" md-mode="indeterminate" md-diameter="64"></md-progress-circular>
+			<md-tabs md-dynamic-height ng-show="vm.afficher_les_onglets ==1">
+				<md-tab label="Financement Intervention">
+					<md-tab-body>
+						<div layout="column" layout-gt-xs="row" flex>
+							<!--md-input-container flex="100" flex-gt-xs="100"-->
+								<p style="float:left;display:inline-block;margin-right:5px;"><b>Choisir un Programme :  </b></p>
+								<md-select name="id_programme" ng-model="vm.id_programme"  ng-change="vm.modifierProgramme(vm.id_programme)" style="min-width:40%;display:inline-block;float:left;">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="ta in vm.allRecordsProgramme | orderBy:['intitule']" value='{{ta.id}}'>
+										{{ta.intitule}}
+									</md-option>
+								</md-select>
+							<!--/md-input-container-->
+						</div>	
+						<table id="tableFinancementIntervention" ng-table="tableFinancementIntervention" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+							<thead>
+								<tr>
+									<th class="secondary-text" ng-repeat="c in ::vm.financementintervention_column">
+										<div class="table-header">
+											<span class="column-title">{{c.titre}}</span>
+										</div>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="prg in vm.allRecordsFinancementintervention"  ng-class="{selected: prg.$selected}" ng-click="vm.selection(prg)">										
+									<td>
+										<p style="margin:0;"><b>Source-fin :</b>{{prg.sourcefinancement[0].nom}}</p>
+										<p style="margin:0;"><b>Axe stratég :</b>{{prg.axestrategique[0].axe}}</p>
+										<p style="margin:0;"><b>Act° stratég :</b>{{prg.actionstrategique[0].action}}</p>
+									</td>
+									<td>
+										<span>{{prg.devise[0].description}}</span>
+									</td>
+									<td>
+										<span>{{prg.typesecteur[0].nom}}</span>
+									</td>
+									<td>
+										<span>{{prg.budget_initial | number:2}}</span>
+									</td>
+									<td>
+										<span>{{prg.budget_modifie | number:2}}</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</md-tab-body>
+				</md-tab>					
+				<md-tab label="Décaissement" ng-disabled="!vm.selectedItem.id">
+					<md-tab-body>
+							<div style="widht:100%;">    
+								<md-button type="submit" ng-show="vm.afficherboutonnouveau==1" class="md-raised md-accent" aria-label="Nouveau" ng-click="vm.ajouterDecaissement()" style="width:10%;">
+								  Nouveau
+								</md-button>
+								<md-button type="submit" ng-disabled="vm.desactivermodifier ==1" ng-show="vm.afficherboutonModifSupr==1" class="md-raised md-accent" aria-label="Modifier" ng-click="vm.modifierDecaissement()" style="width:10%;">
+								  Modifier
+								</md-button>
+								<md-button type="submit" ng-disabled="vm.desactivermodifier ==1" ng-show="vm.afficherboutonModifSupr==1" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimerDecaissement()" style="width:10%;">
+								  Supprimer
+								</md-button>
+							</div>  
+							<div style="clear:both;"></div>
+							<table id="tableDecaissement" ng-table="tableDecaissement" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+								<thead>
+									<tr>
+										<th class="secondary-text" ng-repeat="c in ::vm.decaissement_column">
+											<div class="table-header">
+												<span class="column-title">{{c.titre}}</span>
+											</div>
+										</th>
+									</tr>
+								</thead>
+								<div ng-show="vm.selectedItem.id >0">
+									<p><b>Source fin : {{vm.selectedItem.sourcefinancement[0].nom}}  - Axe strat : {{vm.selectedItem.axestrategique[0].axe}}</b></p>
+									<p><b>Act° stra : {{vm.selectedItem.actionstrategique[0].action}}</b></p>
+								</div>
+								<tbody>
+									<tr ng-repeat="densi in vm.selectedItem.detail_decaissement"  ng-class="{selected: densi.$selected}" ng-click="vm.selectionDecaissement(densi)">
+										<td>
+											<span>{{densi.montant_initial}}</span>
+										</td>
+										<td>
+											<span>{{densi.montant_revise}}</span>
+										</td>
+										<td>
+											<span>{{densi.date_revision | date:'dd/MM/yyyy'}}</span>
+										</td>
+										<td>
+											<span>{{densi.decaissement_prevu}}</span>
+										</td>
+										<td>
+											<span>{{densi.decaissement_effectif}}</span>
+										</td>
+										<td>
+											<span>{{densi.transfert_direct_beneficiaire}}</span>
+										</td>
+										<td>
+											<span>{{densi.date_debut_periode | date:'dd/MM/yyyy'}}</span>
+										</td>
+										<td>
+											<span>{{densi.date_fin_periode | date:'dd/MM/yyyy'}}</span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+					</md-tab-body>
+				</md-tab>		
+			</md-tabs>
+			<!-- / LISTE TABLE -->    
+		</div>
+    </div>
+    <!-- / CONTENT -->
+  </div>

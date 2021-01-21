@@ -1,0 +1,82 @@
+<div id="login" class="flex-scrollable" layout="column" ms-scroll>
+    <div id="login-form-wrapper" layout="column" layout-align="center center">
+        <div id="login-form" class="md-whiteframe-8dp">
+            <div>
+                <span><img src="logo_MPPSPF.png"></span>
+            </div>
+            <div>
+                <span><img src="logo_population.png"></span>
+            </div>
+
+            <div class="title" translate="LOGIN.TITLE_FIRST">Log in to your account</div>
+
+            <div layout="column" layout-align="start center">
+              
+
+              <span>
+                <b>Le mot de passe doit:</b>  <br>
+                - Contenir au moins 8 caractères <br>
+                - Contiennent au moins un chiffre <br>
+                - Contiennent au moins 1 caractère de base (A-z) <br>
+                - Contiennent au moins un caractère majuscule (A-Z) <br>
+                - Contient seulement 0-9a-zA-Z
+              </span>
+            
+            </div>
+
+            <form name="loginForm" novalidate>
+                <md-input-container class="md-block" md-no-float>
+                    <input type="password" name="password" ng-model="vm.login.password" placeholder="Password"
+                           translate translate-attr-placeholder="LOGIN.PASSWORD" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/" 
+                           required>
+                    <div ng-messages="loginForm.password.$error" role="alert">
+                        <div ng-message="required">
+                            <span translate="LOGIN.ERRORS.PASSWORD_REQUIRED">Password field is required</span>
+                        </div>
+                        <div ng-message="pattern">
+                            <span>
+
+                              - Contenir au moins 8 caractères <br>
+                              - Contiennent au moins un chiffre <br>
+                              - Contiennent au moins 1 caractère de base (A-z) <br> 
+                              - Contiennent au moins un caractère majuscule (A-Z) <br>
+                              - Contient seulement 0-9a-zA-Z <br>
+                              <!--
+
+                                  /^
+                                    (?=.*\d)          // should contain at least one digit
+                                    (?=.*[a-z])       // should contain at least one lower case
+                                    (?=.*[A-Z])       // should contain at least one upper case
+                                    [a-zA-Z0-9]{8,}   // should contain at least 8 from the mentioned characters
+                                  $/
+                              -->
+                              
+                            </span>
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block" md-no-float>
+                    <input type="password" name="confirm_password" ng-model="vm.login.confirm_password" placeholder="Password"
+                           translate translate-attr-placeholder="LOGIN.CONFIRM_PASSWORD"
+                           required>
+                    <div ng-messages="loginForm.confirm_password.$error" role="alert">
+                        <div ng-message="required">
+                            <span translate="LOGIN.ERRORS.CONFIRM_PASSWORD_REQUIRED">Confirm Password field is required</span>
+                        </div>
+
+                        <div ng-if="vm.login.password != vm.login.confirm_password">
+                            <span>Vérifier votre saisie</span>
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-button type="submit" class="md-raised md-accent submit-button" aria-label="LOG IN"
+                           ng-disabled="loginForm.$invalid || loginForm.$pristine || (vm.login.password != vm.login.confirm_password)"
+                           translate="LOGIN.MODIF_LOG_IN" translate-attr-aria-label="LOGIN.MODIF_LOG_IN"
+                           ng-click="vm.enregistrer(vm.login)">
+                    LOG IN
+                </md-button>
+
+            </form>
+        </div>
+    </div>
+</div>

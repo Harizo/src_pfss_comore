@@ -1,0 +1,499 @@
+  <div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Administration</span>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent"  > Gestion Utilisateurs</span>
+            </div>
+
+            <div class="title">Utilisateur</div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+            <!-- LISTE TABLE -->
+    <div class="content"layout="column">
+      <div class="form-wrapper">
+      <div style="widht:100%;">    
+          
+          <md-button type="submit" ng-show="vm.afficherboutonnouveau==1" ng-if="!vm.affiche_load" class="md-raised md-accent" aria-label="Nouveau" ng-click="vm.ajouterUtilisateur()" style="width:10%;">
+              Nouveau
+          </md-button>
+          <md-progress-circular ng-if="vm.affiche_load" class="md-accent" aria-label="Rating" md-mode="indeterminate" md-diameter="34"></md-progress-circular> 
+            <div ng-if="vm.affiche_load" style="position:relative;top: -30px;  left: 60px;color: #039be5">
+                Chargement,veuillez patienter s'il vous plait ...
+            </div> 
+          <md-button type="submit" ng-if="!vm.affiche_load" ng-show="vm.afficherboutonModifSupr==1" class="md-raised md-accent" aria-label="Modifier" ng-click="vm.modifier()" style="width:10%;">
+              Modifier
+          </md-button>
+          <md-button type="submit" ng-if="!vm.affiche_load" ng-show="vm.afficherboutonModifSupr==1" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimer()" style="width:10%;">
+              Supprimer
+          </md-button>
+        </div>  
+        <div style="clear:both;"></div>
+        <!-- BASIC FORM -->
+
+            <md-tabs md-dynamic-height ng-show="vm.affichageMasque==1">
+              <md-tab label="{{vm.titre}}">
+                <md-tab-body>
+                    <form name="userForm" class="md-inline-form"  novalidate>
+						<fieldset class="standard" >
+							<legend><code>Institution hôte</code></legend>                                
+							<div layout="column" layout-gt-xs="row" flex>
+								<md-input-container flex="100" flex-gt-xs="25">
+								  <input type="text" name="raison_sociale" ng-model="vm.user.raison_sociale"
+									placeholder="Nom ou Raison sociale" ng-init="vm.user.raison_sociale=''"
+									required>
+									<div ng-messages="userForm.raison_sociale.$error"
+									  role="alert">
+									  <div ng-message="required">
+										<span>Nom ou Raison sociale obligatoire.</span>
+									  </div>
+									</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="25">
+								  <input type="text" name="adresse_hote" ng-model="vm.user.adresse_hote"
+									placeholder="Adresse hôte" ng-init="vm.user.adresse_hote=''"
+									required>
+									<div ng-messages="userForm.adresse_hote.$error"
+									  role="alert">
+									  <div ng-message="required">
+										<span>Adresse hôte obligatoire.</span>
+									  </div>
+									</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="25">
+								  <input type="text" name="nom_responsable" ng-model="vm.user.nom_responsable"
+									placeholder="Nom responsable" ng-init="vm.user.nom_responsable=''"
+									required>
+									<div ng-messages="userForm.nom_responsable.$error"
+									  role="alert">
+									  <div ng-message="required">
+										<span>Nom responsable obligatoire.</span>
+									  </div>
+									</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="25">
+								  <input type="text" name="fonction_responsable" ng-model="vm.user.fonction_responsable"
+									placeholder="Fonction responsable" ng-init="vm.user.fonction_responsable=''"
+									required>
+									<div ng-messages="userForm.fonction_responsable.$error"
+									  role="alert">
+									  <div ng-message="required">
+										<span>Fonction responsable obligatoire.</span>
+									  </div>
+									</div>
+								</md-input-container>
+							</div>	
+							<div layout="column" layout-gt-xs="row" flex>
+								<md-input-container flex="100" flex-gt-xs="25">
+								  <input type="text" name="email_hote" ng-model="vm.user.email_hote"
+									placeholder="e-mail hôte" ng-init="vm.user.email_hote=''"
+									ng-pattern="/^.+@.+\..+$/"  required>
+									<div ng-messages="userForm.email_hote.$error"
+									  role="alert">
+									  <div ng-message="required">
+										<span>e-mail hôte obligatoire.</span>
+									  </div>
+									</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="25">
+								  <input type="text" name="telephone_hote" ng-model="vm.user.telephone_hote"
+									placeholder="Téléphone hôte" ng-init="vm.user.telephone_hote=''"
+									required>
+									<div ng-messages="userForm.telephone_hote.$error"
+									  role="alert">
+									  <div ng-message="required">
+										<span>Téléphone hôte obligatoire.</span>
+									  </div>
+									</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="50">
+								  <input type="text" name="description_hote" ng-model="vm.user.description_hote"
+									placeholder="Description hôte" ng-init="vm.user.description_hote=''"
+									required>
+									<div ng-messages="userForm.description_hote.$error"
+									  role="alert">
+									  <div ng-message="required">
+										<span>Description hôte obligatoire.</span>
+									  </div>
+									</div>
+								</md-input-container>
+							</div>	
+						</fieldset>
+						<fieldset class="standard" >
+							<legend><code>Titulaire du compte</code></legend>                                
+							<div layout="column" layout-gt-xs="row" flex>
+								<input type="hidden" ng-model="vm.user.id"></input>
+								<md-input-container flex="100" flex-gt-xs="25">
+								  <input type="text" name="nom" ng-model="vm.user.nom"
+									placeholder="nom" ng-init="vm.user.nom=''"
+									required>
+									<div ng-messages="userForm.nom.$error"
+									  role="alert">
+									  <div ng-message="required">
+										<span>Nom obligatoire.</span>
+									  </div>
+									</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="25">
+								  <input type="text" name="prenom" ng-model="vm.user.prenom"
+									placeholder="prenom " ng-init="vm.user.prenom=''">
+									<div ng-messages="userForm.prenom.$error"
+									  role="alert">
+									  <div ng-message="required">
+										<span>prenom obligatoire.</span>
+									  </div>
+									</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="25" ng-show="vm.user.id=='0'">
+								  <input type="password" name="password" ng-model="vm.user.password"
+									placeholder="Mot de passe " ng-init="vm.user.password=''" required>
+									<div ng-messages="userForm.password.$error"
+									  role="alert">
+									  <div ng-message="required">
+										<span>Mot de passe obligatoire.</span>
+									  </div>
+									</div>
+								</md-input-container>
+								<md-checkbox ng-model="vm.user.default_password"  ng-show="vm.user.id=='0'" aria-label="Checkbox 1"  style="margin: 4px;" ng-true-value="1" ng-false-value="0" ng-disabled="vm.user.id=='0'">
+									Mot de passe par défaut
+								</md-checkbox>                                                                            
+							</div>
+							<div layout="column"  layout-gt-xs="row" flex>                        
+								<md-input-container flex="100" flex-gt-xs="25" >
+								  <input type="text" name="adresse" ng-model="vm.user.adresse"
+									placeholder="Adresse " ng-init="vm.user.adresse=''" required>
+									<div ng-messages="userForm.adresse.$error" role="alert">
+									  <div ng-message="required">
+										<span>Adresse obligatoire.</span>
+									  </div>
+									</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="20" >
+								  <input type="text" name="fonction" ng-model="vm.user.fonction"
+									placeholder="Fonction " ng-init="vm.user.fonction=''" required>
+									<div ng-messages="userForm.fonction.$error" role="alert">
+									  <div ng-message="required">
+										<span>Fonction obligatoire.</span>
+									  </div>
+									</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="20" >
+								  <input type="text" name="telephone" ng-model="vm.user.telephone"
+									placeholder="Téléphone " ng-init="vm.user.telephone=''" required>
+									<div ng-messages="userForm.telephone.$error" role="alert">
+									  <div ng-message="required">
+										<span>Téléphone obligatoire.</span>
+									  </div>
+									</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="25" >
+								  <input type="email" name="email" ng-model="vm.user.email"
+									placeholder="email " ng-init="vm.user.email=''"
+									 ng-pattern="/^.+@.+\..+$/" required>
+									<div ng-messages="userForm.email.$error"
+									  role="alert">
+									  <div ng-message="required">
+										<span>email obligatoire.</span>
+									  </div>
+									  <div ng-message="ng-pattern" role="alert">
+											<span >L'adresse e-mail doit être valide</span>
+										</div>
+									</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="10">
+									<label>Etat</label>
+									<md-select name="enabled" ng-model="vm.user.enabled" >
+									  <md-option value="1">Actif</md-option>
+									  <md-option value="0">Inactif</md-option>
+									  <md-option value="2">Suspendu</md-option>
+									</md-select>
+									<div ng-messages="enabled.$error"
+									   role="alert">
+									  <div ng-message="">
+										  <span>Etat</span>
+									  </div>
+									</div>
+								</md-input-container> 
+								<md-input-container flex="100" flex-gt-xs="10">
+									<label>Etat connexion</label>
+									<md-select name="etat_connexion" ng-model="vm.user.etat_connexion" >
+									  <md-option value="1">Connecté</md-option>
+									  <md-option value="0">Déconnecté</md-option>
+									</md-select>
+									<div ng-messages="etat_connexion.$error"
+									   role="alert">
+									  <div ng-message="">
+										  <span>Etat</span>
+									  </div>
+									</div>
+								</md-input-container> 
+							</div>
+						</fieldset>
+							<fieldset class="standard" >
+					          <legend><code>Groupes</code></legend>
+					          <div layout="row" layout-wrap flex>
+					            <div flex="50" ng-repeat="item in vm.all_groupe">
+					              <md-checkbox ng-checked="exists(item.id, vm.tab_selected)" ng-click="toggle(item.id, vm.tab_selected)" required>
+					                {{ item.nom }} 
+					              </md-checkbox>
+					            </div>
+					          </div>
+					        </fieldset>
+
+					        <fieldset class="standard" >
+					          <legend><code>Accès menu et sous-menu</code></legend>
+					          	<fieldset class="standard" >
+									<legend><code>Tous les menus et sous menus</code></legend>                                
+									<md-checkbox ng-disabled="true" ng-model="vm.acces.spr_adm"  aria-label="Checkbox 1"  style="margin: 4px;">
+									    
+									</md-checkbox>
+								  
+						                                                            
+								</fieldset>
+							
+								<fieldset class="standard" >
+									<legend><code>Administration</code></legend>   
+
+										<md-checkbox ng-show="false" ng-model="vm.acces.user" ng-init="vm.acces.user=true" value="true" aria-label="Checkbox 1"  style="margin: 4px;">
+										    Utilisateur
+										</md-checkbox>
+										<md-checkbox ng-disabled="true" ng-model="vm.acces.ges_user" aria-label="Checkbox 1"  style="margin: 4px;">
+										    Gestion utilisateurs
+										</md-checkbox>                                                
+										<md-checkbox ng-disabled="true" ng-model="vm.acces.grp_user" aria-label="Checkbox 1"  style="margin: 4px;">
+										    Groupes utilisateurs
+										</md-checkbox>                                                                               
+										<md-checkbox ng-disabled="true" ng-model="vm.acces.his_user" aria-label="Checkbox 1"  style="margin: 4px;">
+										    Historique utilisateur
+										</md-checkbox>
+										<md-checkbox ng-disabled="true" ng-model="vm.acces.cr_change" aria-label="Checkbox 1"  style="margin: 4px;">
+										    Cours de change
+										</md-checkbox>
+								                                                            
+								</fieldset>
+
+								<fieldset class="standard" >
+									<legend><code>Données de bases</code></legend>  
+
+										<md-checkbox  ng-model="vm.acces.var_ind"  aria-label="Checkbox 1" ng-disabled="true" style="margin: 4px;">
+										    Variable/Individu
+										</md-checkbox>
+										<md-checkbox ng-model="vm.acces.act_typ" aria-label="Checkbox 1" ng-disabled="true" style="margin: 4px;">
+										    Acteurs/Type transfert
+										</md-checkbox>                                                
+										<md-checkbox ng-model="vm.acces.prog" aria-label="Checkbox 1" ng-disabled="true" style="margin: 4px;">
+										    Programme
+										</md-checkbox>                                                                               
+										<md-checkbox ng-model="vm.acces.dec_adm" aria-label="Checkbox 1" ng-disabled="true" style="margin: 4px;">
+										    Découpage administratif
+										</md-checkbox>
+										<md-checkbox ng-model="vm.acces.nom_int" aria-label="Checkbox 1" ng-disabled="true" style="margin: 4px;">
+										    Nomenclature intervention
+										</md-checkbox> 
+										<md-checkbox ng-model="vm.acces.var_int" aria-label="Checkbox 1" ng-disabled="true" style="margin: 4px;">
+										    Variable/Intervention
+										</md-checkbox> 
+										
+								                                                            
+								</fieldset>
+
+								<fieldset class="standard" >
+									<legend><code>Annuaire Intervention</code></legend>  
+									<md-checkbox ng-model="vm.acces.anr_int" aria-label="Checkbox 1" ng-disabled="true" style="margin: 4px;">
+									    
+									</md-checkbox> 
+								</fieldset>
+								<fieldset class="standard" >
+									<legend><code>Traitement</code></legend>                                
+										<md-checkbox  ng-model="vm.acces.sui_dec" aria-label="Checkbox 1" ng-disabled="true" style="margin: 4px;">
+										    Suivi décaissement
+										</md-checkbox>
+							                                                      
+								</fieldset>
+
+								<fieldset class="standard" >
+									<legend><code>Simulation</code></legend>                                
+										<md-checkbox  ng-model="vm.acces.sim_ben"  aria-label="Checkbox 1" ng-disabled="true" style="margin: 4px;">
+										    Bénéficiaire
+										</md-checkbox>
+										<md-checkbox ng-model="vm.acces.sim_int" aria-label="Checkbox 1" ng-disabled="true" style="margin: 4px;">
+										    Intervention
+										</md-checkbox>     
+								                                                            
+								</fieldset>
+
+								<fieldset class="standard" >
+									<legend><code>Importation des données</code></legend>                                
+										<md-checkbox  ng-model="vm.acces.imp_ben"  aria-label="Checkbox 1" ng-disabled="true" style="margin: 4px;">
+										    Bénéficiaire
+										</md-checkbox>
+										<md-checkbox ng-model="vm.acces.imp_int" aria-label="Checkbox 1" ng-disabled="true" style="margin: 4px;">
+										    Intervention
+										</md-checkbox>     
+								                                                            
+								</fieldset>
+								<fieldset class="standard" >
+									<legend><code>Suivi stratégique</code></legend>                                
+										<md-checkbox  ng-model="vm.acces.rpt"  aria-label="Checkbox 1" ng-disabled="true" style="margin: 4px;">
+										    
+										</md-checkbox>
+										  
+								                                                            
+								</fieldset>
+
+								<fieldset class="standard" >
+									<legend><code>Registre Bénéficiaire</code></legend>                                
+										<md-checkbox  ng-model="vm.acces.reg_ben"  aria-label="Checkbox 1" ng-disabled="true" style="margin: 4px;">
+										    
+										</md-checkbox>
+										  
+								                                                            
+								</fieldset>
+					        </fieldset>
+
+
+                            <fieldset class="standard" >
+								<legend><code>Choix par défaut découpage administratif et intervention</code></legend>                                
+								<form name="filtrepardateform" class="md-inline-form" novalidate >
+									<div layout="column" layout-gt-xs="row" flex >
+										<md-input-container flex="100" flex-gt-xs="90">
+										  <label>Région</label>
+											<md-select ng-model="vm.user.id_region" name="region" ng-change="vm.filtre_region()">
+											 
+											  <md-option ng-repeat="region in vm.all_region" value="{{region.id}}" >
+												{{region.nom}}
+											  </md-option>
+
+											</md-select>
+											<div ng-messages="filtrepardateform.region.$error"
+											  role="alert">
+											  <div ng-message="required">
+												<span>Région obligatoire</span>
+											  </div>
+											</div>
+										</md-input-container>
+									   <md-input-container flex="100" flex-gt-xs="90">
+										  <label>District</label>
+											<md-select ng-model="vm.user.id_district" name="district" ng-change="vm.filtre_commune()" ng-disabled="!vm.user.id_region">
+											  
+											  <md-option ng-repeat="dist in vm.all_district" value="{{dist.id}}" >
+												{{dist.nom}}
+											  </md-option>
+
+											</md-select>
+											<div ng-messages="filtrepardateform.district.$error"
+											  role="alert">
+											  <div ng-message="required">
+												<span>District obligatoire</span>
+											  </div>
+											</div>
+										</md-input-container>
+
+										<md-input-container flex="100" flex-gt-xs="90">
+										  <label>Commune</label>
+											<md-select ng-model="vm.user.id_commune" name="commune" ng-change="vm.filtre_fokontany()" ng-disabled="!vm.user.id_region">
+											 
+											  <md-option ng-repeat="comm in vm.all_commune  track by $index" value="{{comm.id}}" >
+												{{comm.nom}}
+											  </md-option>
+
+											</md-select>
+											<div ng-messages="filtrepardateform.commune.$error"
+											  role="alert">
+											  <div ng-message="required">
+												<span>Commune obligatoire</span>
+											  </div>
+											</div>
+										</md-input-container>
+
+										<md-input-container flex="100" flex-gt-xs="90">
+										  <label>Fokontany</label>
+											<md-select ng-model="vm.user.id_fokontany" name="fokontany"  ng-disabled="!vm.user.id_commune">
+											  <md-option ng-repeat="fkt in vm.all_fokontany" value="{{fkt.id}}" >
+												{{fkt.nom}}
+											  </md-option>
+
+											</md-select>
+											<div ng-messages="filtrepardateform.fokontany.$error"
+											  role="alert">
+											  <div ng-message="required">
+												<span>Fokontany obligatoire</span>
+											  </div>
+											</div>
+										</md-input-container>
+										<md-input-container flex="100" flex-gt-xs="90">
+										  <label>Intervention</label>
+											<md-select ng-model="vm.user.id_intervention" name="intervention">
+											  <md-option ng-repeat="intv in vm.all_intervention" value="{{intv.id}}" >
+												{{intv.intitule}}
+											  </md-option>
+
+											</md-select>
+											<div ng-messages="filtrepardateform.intervention.$error"
+											  role="alert">
+											  <div ng-message="required">
+												<span>Intervention obligatoire</span>
+											  </div>
+											</div>
+										</md-input-container>
+									   
+									</div>
+								</form>	
+                            </fieldset>
+                        <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                          ng-disabled="userForm.$invalid" ng-click="vm.ajout(vm.user,0)">
+                          Enregistrer
+                        </md-button>
+                        <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annuler()">
+                          Annuler
+                        </md-button>
+                    </form>
+                </md-tab-body>
+              </md-tab>
+            </md-tabs>
+            <!-- / BASIC FORM -->
+        <md-tabs md-dynamic-height  ng-show="vm.afficherliste==1">
+          <md-tab label="Listes des utilisateurs">
+            <table class="dataTable row-border hover" datatable="ng"
+              dt-options="vm.dtOptions">
+              <thead>
+                <tr>
+                  <th class="secondary-text" ng-repeat="sc in ::vm.column">
+                    <div class="table-header">
+                      <span class="column-title">{{sc.titre}}</span>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="user in vm.listes_utilisateurs" ng-class="{selected: user.$selected}" ng-click="vm.selection(user)">
+					<td>{{user.nom}} {{user.prenom}}</td>
+					<td>{{user.fonction}}</td>
+					<td>{{user.telephone}}</td>
+					<td>{{user.email}}</td>
+					<td>{{vm.testEnabled(user.enabled)}}</td>
+					<!--td><input  style="width:15px;height: 12px;" ng-checked="user.envoi_donnees==1" type="checkbox"  ng-disabled="true"></td!-->
+					<td>
+						<span  ng-repeat="s in user.groupes" style="font-size: 10px;">
+						  {{"- "+vm.affichage_groupe(s)}} <br>
+						</span>
+					</td>
+					<td>{{vm.test_statut(user.etat_connexion)}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </md-tab>
+        </md-tabs>
+            <!-- / LISTE TABLE -->
+        </md-tabs>
+      </div>
+    </div>
+    <!-- / CONTENT -->
+  </div>

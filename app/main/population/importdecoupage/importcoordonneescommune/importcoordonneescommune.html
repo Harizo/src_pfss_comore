@@ -1,0 +1,61 @@
+  <div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent" href="javascript:;"> Export découpage</span>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Importation coordonnées commune</span>                
+            </div>
+
+            <div class="title">Importation coordonnées commune</div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+            <!-- LISTE TABLE -->
+    <div class="content"layout="column">
+      <div class="form-wrapper">
+      <div style="widht:100%;">    
+          <md-button type="submit" ng-show="vm.cliquable==1" class="md-raised md-accent" aria-label="Exporter" ng-click="vm.Importer_coordonnees_commune()" style="width:35%;">
+              Importer les coordonnées des communes
+          </md-button>
+          <md-button type="submit" ng-show="vm.cliquable==1" class="md-raised md-accent" aria-label="Exporter" ng-click="vm.Miseajour_coordonnees_commune()" style="width:35%;">
+              Mise à jour coordonnées des communes
+          </md-button>
+          <md-button type="submit" ng-show="vm.cliquable==1" class="md-raised md-accent" aria-label="Exporter" ng-click="vm.Miseajour_coordonnees_tronquees()" style="width:35%;">
+              8 communes
+          </md-button>
+        </div>  
+		<md-progress-circular ng-if="vm.affiche_load" class="md-accent" md-mode="indeterminate" md-diameter="64"></md-progress-circular>
+        <div style="clear:both;"></div>
+        <md-tabs md-dynamic-height>
+          <md-tab label="Liste commune">
+            <table class="dataTable row-border hover" datatable="ng"
+              dt-options="vm.dtOptions">
+              <thead>
+                <tr>
+                  <th class="secondary-text" ng-repeat="re in ::vm.commune_column">
+                    <div class="table-header">
+                      <span class="column-title">{{re.titre}}</span>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="commune in vm.allcommune"  ng-class="{selected: commune.$selected}" ng-click="vm.selection(commune)">
+                  <td>{{commune.code}}</td>
+                  <td>{{commune.nom}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </md-tab>
+        </md-tabs>
+            <!-- / LISTE TABLE -->
+      </div>
+    </div>
+    <!-- / CONTENT -->
+  </div>

@@ -1,0 +1,58 @@
+<md-dialog aria-label="Informations à remplir pour le PTA">
+<form name="saisiedeviseform" class="md-inline-form" novalidate >
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Saisie cours de change</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <!--md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon-->
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="width:800px;max-height:95%; ">
+		<md-tabs md-dynamic-height md-border-bottom>
+			<md-tab label="Saisie cours de change">
+				<div layout="column" layout-gt-xs="row">
+					<md-input-container>
+						<span>Date : </span>
+					</md-input-container>					
+					<md-datepicker ng-model="date_cours"  md-max-date="date_max" md-placeholder="Enter date cours" ng-change="modifierdate_cours(date_cours)" required>                 		
+					</md-datepicker>
+				</div>
+				<table class="dataTable row-border hover" datatable="ng"  dt-options="dtOptions">
+					<thead>
+						<tr>
+							<th class="secondary-text" ng-repeat="c in ::titre_cols">
+								<div class="table-header">
+									<span class="column-title">{{c.titre}}</span>
+								</div>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="item in listedevise">
+							<td>{{item.description}}</td>
+							<td>                               
+								<input  type="number" name="cours" ng-model="item.cours" placeholder="" required>
+							</td>  
+						</tr>
+					</tbody>
+				</table>
+			</md-tab>
+		</md-tabs>
+    </md-dialog-content> 
+    <md-dialog-actions layout="row">
+      <!--md-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" md-autofocus>
+        More on Wikipedia
+      </md-button-->
+      <span flex></span>
+      <md-button ng-click="cancel()" >
+        Annuler
+      </md-button>
+      <md-button ng-click="answer(listedevise,date_cours)" style="margin-right:20px;" ng-disabled="saisiedeviseform.$invalid" >
+        Accepter
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
+

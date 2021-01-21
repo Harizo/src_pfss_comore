@@ -1,0 +1,30 @@
+{
+    "LOGIN": {
+
+        "TITLE": "Identifiez vous à votre compte",
+        "load_titre": "Déconnexion de compte",
+        "load_corps": "<img src='assets/images/load/load.gif'> &nbsp; veuillez consulter votre courriel à la fin du chargement!  Merci.",
+        "EMAIL": "Email",
+        "PASSWORD": "Mot de passe",
+        "REMEMBER_ME": "Se souvenir de moi",
+        "FORGOT_PASSWORD": "Mot de passe oublié?",
+        "deconnecte_autre_compte": "Déconnecter autre session?",
+        "LOG_IN": "Se connecter",
+        "OR": "Ou",
+        "WITH_GOOGLE": "Se connecter avec Google",
+        "WITH_FACEBOOK": "Se connecter avec Facebook",
+        "DONT_HAVE_ACCOUNT": "Pas encors inscrit?",
+        "CREATE_ACCOUNT": "Créer un compte",
+        "ERRORS": {
+            "EMAIL_REQUIRED": "Courriel obligatoire!",
+            "EMAIL_MUST_VALID": "Courriel non valide!",
+            "PASSWORD_REQUIRED": "Mot de passe obligatoire!"
+        },
+        "error":{
+          "titre": "Erreur d'authentification",
+          "msg": "Verifier votre  <b>login</b> ou <b>mot de passe</b>, Merci.",
+          "msg_conecter":"Votre compte est déjà connecté,veuillez contacter l'administrateur pour vous déconnecter si vous n'avez pas l'appareil sur vous.",
+          "quitter": "Quitter"
+        }
+    }
+}

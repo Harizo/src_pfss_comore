@@ -1,0 +1,742 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Régistre bénéficiaire</span>
+            </div>
+
+            <div class="title">Régistre bénéficiaire</div>
+        </div>
+    </div>
+        <md-tabs md-dynamic-height ng-show="vm.affichageMasque==1">
+			<md-tab label="{{vm.titrebeneficiaire}}">
+				<md-tab-body>
+					<form name="personnelform" class="md-inline-form"  novalidate>
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="30">
+								<input type="text" name="code" ng-model="vm.beneficiaire.code" placeholder="Code unique" ng-init="vm.beneficiaire.code=''" required>
+								<div ng-messages="code.$error"	role="alert">
+									<div ng-message="required">
+										<span>Code unique obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="20">
+								<input type="text" name="nom" ng-model="vm.beneficiaire.nom" placeholder="Nom" ng-init="vm.beneficiaire.nom=''" required>
+								<div ng-messages="nom.$error"	role="alert">
+									<div ng-message="required">
+										<span>Nom obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="20">
+								<input type="text" name="prenom" ng-model="vm.beneficiaire.prenom" placeholder="Prénom" ng-init="vm.beneficiaire.prenom=''" required>
+								<div ng-messages="prenom.$error"	role="alert">
+									<div ng-message="required">
+										<span>Prénom obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="20">
+								<input type="text" name="cin" ng-model="vm.beneficiaire.cin" placeholder="C.I.N" ng-init="vm.beneficiaire.cin=''" required>
+								<div ng-messages="cin.$error"	role="alert">
+									<div ng-message="required">
+										<span>CIN obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="10">
+								<input type="date" name="date_naissance" ng-model="vm.beneficiaire.date_naissance" placeholder="Date de naissance" ng-init="vm.beneficiaire.date_naissance=''" >
+								<div ng-messages="date_naissance.$error" role="alert">
+							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="25">
+								<input type="text" name="adresse" ng-model="vm.beneficiaire.adresse" placeholder="Adresse" ng-init="vm.beneficiaire.adresse=''" >
+								<div ng-messages="adresse.$error" role="alert">
+							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+ 								<md-checkbox ng-model="vm.beneficiaire.chef_menage" aria-label="Checkbox 1"  ng-true-value='1' ng-false-value='0' style="margin: 4px;">
+                                    Chef de ménage
+                                </md-checkbox>
+							</md-input-container>						 
+							<md-input-container flex="100" flex-gt-xs="10">
+								<input type="text" name="profession" ng-model="vm.beneficiaire.profession" placeholder="Profession" ng-init="vm.beneficiaire.profession=''" >
+								<div ng-messages="profession.$error" role="alert">
+							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="10">
+								<label>Situation matrimoniale</label>
+								<md-select ng-model="vm.beneficiaire.situation_matrimoniale" ng-init="vm.beneficiaire.situation_matrimoniale=''">
+									<md-option value=''>&nbsp;</md-option>
+									<md-option value='Célibataire'>Célibataire</md-option>
+									<md-option value='Marié'>Marié</md-option>
+									<md-option value='Veuf'>Veuf</md-option>
+								</md-select>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="10">
+								<label>Sexe</label>
+								<md-select ng-model="vm.beneficiaire.sexe" ng-init="vm.beneficiaire.sexe=''">
+									<md-option value=''>&nbsp;</md-option>
+									<md-option value='H'>Homme</md-option>
+									<md-option value='F'>Femme</md-option>
+								</md-select>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="10">
+								<input type="date" name="date_inscription" ng-model="vm.beneficiaire.date_inscription" placeholder="Date d'inscription" ng-init="vm.beneficiaire.date_inscription=''" >
+								<div ng-messages="date_inscription.$error" role="alert">
+							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="10">
+								<label>Type bénéficiaire</label>
+								<md-select ng-model="vm.beneficiaire.id_type_beneficiaire" ng-init="vm.beneficiaire.id_type_beneficiaire=''" ng-change="vm.modifierTypeBeneficiaire(vm.beneficiaire)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="fonct in vm.alltypebeneficiaire | orderBy:['description']" value='{{fonct.id}}'>
+										{{fonct.description}}
+									</md-option>
+								</md-select>
+								<div ng-messages="fonction.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="25">
+								<input type="number" name="revenu_mensuel" ng-model="vm.beneficiaire.revenu_mensuel" placeholder="Revenu mensuel" ng-init="vm.beneficiaire.revenu_mensuel=''" >
+								<div ng-messages="revenu_mensuel.$error" role="alert">
+							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="25">
+								<input type="number" name="depense_mensuel" ng-model="vm.beneficiaire.depense_mensuel" placeholder="Dépense mensuel" ng-init="vm.beneficiaire.depense_mensuel=''" >
+								<div ng-messages="depense_mensuel.$error" role="alert">
+							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="10">
+								<label>Fokontany</label>
+								<md-select ng-model="vm.beneficiaire.id_fokontany" ng-init="vm.beneficiaire.id_fokontany=''" ng-change="vm.modifierTypeBeneficiaire(vm.beneficiaire)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="fkt in vm.listefokontany | orderBy:['fokontany']" value='{{fkt.id}}'>
+										{{fkt.fokontany}}
+									</md-option>
+								</md-select>
+								<div ng-messages="fonction.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+						</div>
+						<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+							ng-disabled="personnelform.$invalid" ng-click="vm.ajout(vm.beneficiaire,0)">
+							Enregistrer
+						</md-button>
+						<md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annuler()">
+							Annuler
+						</md-button>
+					</form>
+				</md-tab-body>
+			</md-tab>
+        </md-tabs>
+        <md-tabs md-dynamic-height ng-show="vm.affichageMasqueIndividu==1">
+			<md-tab label="{{vm.titreindividu}}">
+				<md-tab-body>
+					<form name="individuform" class="md-inline-form"  novalidate>
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="30">
+								<input type="text" name="code_individu" ng-model="vm.individu.code" placeholder="Code unique" ng-init="vm.individu.code=''" required>
+								<div ng-messages="code_individu.$error"	role="alert">
+									<div ng-message="required">
+										<span>Code unique obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="20">
+								<input type="text" name="nom" ng-model="vm.individu.nom" placeholder="Nom" ng-init="vm.individu.nom=''" required>
+								<div ng-messages="nom.$error"	role="alert">
+									<div ng-message="required">
+										<span>Nom obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="20">
+								<input type="text" name="prenom" ng-model="vm.individu.prenom" placeholder="Prénom" ng-init="vm.individu.prenom=''" required>
+								<div ng-messages="prenom.$error"	role="alert">
+									<div ng-message="required">
+										<span>Prénom obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="20">
+								<input type="text" name="cin" ng-model="vm.individu.cin" placeholder="C.I.N" ng-init="vm.individu.cin=''" required>
+								<div ng-messages="cin.$error"	role="alert">
+									<div ng-message="required">
+										<span>CIN obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="10">
+								<input type="date" name="date_naissance" ng-model="vm.individu.date_naissance" placeholder="Date de naissance" ng-init="vm.individu.date_naissance=''" >
+								<div ng-messages="date_naissance.$error" role="alert">
+							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="10">
+								<label>Sexe</label>
+								<md-select ng-model="vm.individu.sexe" ng-init="vm.individu.sexe=''">
+									<md-option value=''>&nbsp;</md-option>
+									<md-option value='H'>Homme</md-option>
+									<md-option value='F'>Femme</md-option>
+								</md-select>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Handicap visuel</label>
+								<md-select ng-model="vm.individu.id_handicap_visuel" ng-init="vm.individu.id_handicap_visuel=''" ng-change="vm.modifierHandicapvisuel(vm.individu)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="hv in vm.allRecordsHandicapvisuel | orderBy:['description']" value='{{hv.id}}'>
+										{{hv.description}}
+									</md-option>
+								</md-select>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Handicap parole</label>
+								<md-select ng-model="vm.individu.id_handicap_parole" ng-init="vm.individu.id_handicap_parole=''" ng-change="vm.modifierHandicapparole(vm.individu)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="hp in vm.allRecordsHandicapparole | orderBy:['description']" value='{{hp.id}}'>
+										{{hp.description}}
+									</md-option>
+								</md-select>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Handicap auditif</label>
+								<md-select ng-model="vm.individu.id_handicap_auditif" ng-init="vm.individu.id_handicap_auditif=''" ng-change="vm.modifierHandicapauditif(vm.individu)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="ha in vm.allRecordsHandicapauditif | orderBy:['description']" value='{{ha.id}}'>
+										{{ha.description}}
+									</md-option>
+								</md-select>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Handicap mental</label>
+								<md-select ng-model="vm.individu.id_handicap_mental" ng-init="vm.individu.id_handicap_mental=''" ng-change="vm.modifierHandicapmental(vm.individu)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="hm in vm.allRecordsHandicapmental | orderBy:['description']" value='{{hm.id}}'>
+										{{hm.description}}
+									</md-option>
+								</md-select>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label>Handicap moteur</label>
+								<md-select ng-model="vm.individu.id_handicap_moteur" ng-init="vm.individu.id_handicap_moteur=''" ng-change="vm.modifierHandicapmoteur(vm.individu)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="hmot in vm.allRecordsHandicapmoteur | orderBy:['description']" value='{{hmot.id}}'>
+										{{hmot.description}}
+									</md-option>
+								</md-select>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="30">
+								<label>Type école</label>
+								<md-select ng-model="vm.individu.id_type_ecole" ng-init="vm.individu.id_type_ecole=''" ng-change="vm.modifierTypeecole(vm.individu)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="te in vm.allRecordsTypeecole | orderBy:['description']" value='{{te.id}}'>
+										{{te.description}}
+									</md-option>
+								</md-select>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="30">
+								<label>Niveau de classe</label>
+								<md-select ng-model="vm.individu.id_niveau_de_classe" ng-init="vm.individu.id_niveau_de_classe=''" ng-change="vm.modifierNiveaudeclasse(vm.individu)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="te in vm.allRecordsNiveaudeclasse | orderBy:['description']" value='{{te.id}}'>
+										{{te.description}}
+									</md-option>
+								</md-select>
+							</md-input-container>	
+							<md-input-container flex="100" flex-gt-xs="30">
+								<label>Langue</label>
+								<md-select ng-model="vm.individu.id_langue" ng-init="vm.individu.id_langue=''" ng-change="vm.modifierLangue(vm.individu)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="te in vm.allRecordsLangue | orderBy:['description']" value='{{te.id}}'>
+										{{te.description}}
+									</md-option>
+								</md-select>
+							</md-input-container>	
+						</div>
+						<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+							ng-disabled="individuform.$invalid" ng-click="vm.insert_in_base_individu(vm.individu,0)">
+							Enregistrer
+						</md-button>
+						<md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerIndividu()">
+							Annuler
+						</md-button>
+					</form>
+				</md-tab-body>
+			</md-tab>
+        </md-tabs>
+    <div class="content" layout="column">
+		<div class="form-wrapper">
+			<div style="clear:both;"></div>
+			<md-tabs md-dynamic-height>
+				<md-tab label="Chef ménage">
+					<form name="filtrepardateform" class="md-inline-form" novalidate >
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="90">
+							  <label>Région</label>
+								<md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_district()" required>
+								 
+								  <md-option ng-repeat="region in vm.allregion" value="{{region.id}}" >
+									{{region.nom}}
+								  </md-option>
+
+								</md-select>
+								<div ng-messages="filtrepardateform.region.$error"
+								  role="alert">
+								  <div ng-message="required">
+									<span>Région obligatoire</span>
+								  </div>
+								</div>
+							</md-input-container>
+
+							<md-input-container flex="100" flex-gt-xs="90">
+							  <label>District</label>
+								<md-select ng-model="vm.filtre.id_district" name="district" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_region" required>
+								  
+								  <md-option ng-repeat="dist in vm.alldistrict" value="{{dist.id}}" >
+									{{dist.nom}}
+								  </md-option>
+
+								</md-select>
+								<div ng-messages="filtrepardateform.ile.$error"
+								  role="alert">
+								  <div ng-message="required">
+									<span>District obligatoire</span>
+								  </div>
+								</div>
+							</md-input-container>
+
+							<md-input-container flex="100" flex-gt-xs="90">
+							  <label>Commune</label>
+								<md-select ng-model="vm.filtre.id_commune" name="commune" ng-change="vm.filtre_fokontany()" ng-disabled="!vm.filtre.id_district"  required>
+								 
+								  <md-option ng-repeat="comm in vm.allcommune" value="{{comm.id}}" >
+									{{comm.nom}}
+								  </md-option>
+
+								</md-select>
+								<div ng-messages="filtrepardateform.commune.$error"
+								  role="alert">
+								  <div ng-message="required">
+									<span>Commune obligatoire</span>
+								  </div>
+								</div>
+							</md-input-container>
+
+							<md-input-container flex="100" flex-gt-xs="90">
+							  <label>Fokontany</label>
+								<md-select ng-model="vm.filtre.id_fokontany" name="fokontany" ng-change="" ng-disabled="!vm.filtre.id_commune"  required>
+								  <md-option  value="*">*</md-option>
+								  <md-option ng-repeat="fkt in vm.allfokontany" value="{{fkt.id}}" >
+									{{fkt.nom}}
+								  </md-option>
+
+								</md-select>
+								<div ng-messages="filtrepardateform.fokontany.$error"
+								  role="alert">
+								  <div ng-message="required">
+									<span>Village obligatoire</span>
+								  </div>
+								</div>
+							</md-input-container>
+							<!--md-input-container flex="100" flex-gt-xs="90">
+							  <label>Programme</label>
+								<md-select ng-model="vm.id_programme" name="programme" ng-change="vm.filtre_region()" required>
+								 
+								  <md-option ng-repeat="programme in vm.all_programme" value="{{programme.id}}" >
+									{{programme.libelle}}
+								  </md-option>
+
+								</md-select>
+								<div ng-messages="filtrepardateform.programme.$error"
+								  role="alert">
+								  <div ng-message="required">
+									<span>Programme obligatoire</span>
+								  </div>
+								</div>
+							</md-input-container-->
+								
+						</div>
+						<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+							  ng-disabled="filtrepardateform.$invalid||vm.affiche_load" ng-click="vm.filtrer(vm.filtre)">
+							  Actualiser
+						</md-button>
+					</form>
+					<div style="widht:100%;">    
+						<md-button type="submit" ng-show="vm.afficherboutonnouveau==1" class="md-raised md-accent" aria-label="Nouveau" ng-click="vm.ajouter()" style="width:10%;">
+						  Nouveau
+						</md-button>
+						<md-button type="submit" ng-show="vm.afficherboutonModifSupr==1" class="md-raised md-accent" aria-label="Modifier" ng-click="vm.modifier()" style="width:10%;">
+						  Modifier
+						</md-button>
+						<!--md-button type="submit" ng-show="vm.afficherboutonModifSupr==1" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimer()" style="width:10%;">
+						  Supprimer
+						</md-button-->
+					</div>  
+						<table id="table1" class="simple" ms-responsive-table datatable="ng"  dt-options="vm.dtOptions">
+							<thead>
+								<tr>
+								  <th class="secondary-text" ng-repeat="pe in ::vm.personnel_column">
+									<div class="table-header">
+										<span class="column-title">{{pe.titre}}</span>
+									</div>
+								  </th>
+								</tr>
+							</thead>
+							<tbody>
+							  <tr ng-repeat="benef in vm.allbeneficiaire" ng-class="{selected: benef.$selected}" ng-click="vm.selection(benef)">
+								  <td>{{benef.code}}</td>
+								  <td>{{benef.nom}} {{benef.prenom}}</td>
+								   <td>{{benef.date_naissance |date:'dd/MM/yyyy'}}</td>
+								   <td>{{benef.date_inscription |date:'dd/MM/yyyy'}}</td>
+								   <td>{{benef.type_beneficiaire[0].description}}</td>
+								   <!--td>{{benef.fokontany[0].fokontany}}</td-->
+							  </tr>
+							</tbody>
+						</table>
+				</md-tab>
+				<md-tab label="Enquete sur ménage" ng-disabled="!vm.selectedItem.id">
+						<div layout="column" layout-gt-xs="row" flex>
+							<md-input-container flex="100" flex-gt-xs="20">
+								<label style="font-size:14px !important;"><b>Type de logement</b></label>
+								<md-select ng-model="vm.beneficiaire.id_type_logement" ng-init="vm.beneficiaire.id_type_logement=''" ng-change="vm.modifierTypeLogement(vm.beneficiaire)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="tl in vm.allRecordsTypelogement | orderBy:['code']" value='{{tl.id}}'>
+										{{tl.description}}
+									</md-option>
+								</md-select>
+								<div ng-messages="fonction.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="20">
+								<label style="font-size:14px !important;"><b>Occupation du logement</b></label>
+								<md-select ng-model="vm.beneficiaire.id_type_occupation_logement" ng-init="vm.beneficiaire.id_type_occupation_logement=''" ng-change="vm.modifierOccupationLogement(vm.beneficiaire)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="ol in vm.allRecordsOccupationlogement | orderBy:['code']" value='{{ol.id}}'>
+										{{ol.description}}
+									</md-option>
+								</md-select>
+								<div ng-messages="fonction.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="10">
+								<input style="font-size:14px !important;font-weight:bold;" type="number" name="nombre_piece_logement" ng-model="vm.beneficiaire.nombre_piece_logement" placeholder="Nb pce logement" >
+								<div ng-messages="nombre_piece_logement.$error" role="alert">
+							  
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="20">
+								<label style="font-size:14px !important;"><b>Revetement toit</b></label>
+								<md-select ng-model="vm.beneficiaire.id_revetement_toit" ng-init="vm.beneficiaire.id_revetement_toit=''" ng-change="vm.modifierRevetementToit(vm.beneficiaire)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="rs in vm.allRecordsRevetementtoit | orderBy:['code']" value='{{rs.id}}'>
+										{{rs.description}}
+									</md-option>
+								</md-select>
+								<div ng-messages="fonction.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label style="font-size:14px !important;"><b>Revetement sol</b></label>
+								<md-select ng-model="vm.beneficiaire.id_revetement_sol" ng-init="vm.beneficiaire.id_revetement_sol=''" ng-change="vm.modifierRevetementSol(vm.beneficiaire)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="rs in vm.allRecordsRevetementsol | orderBy:['code']" value='{{rs.id}}'>
+										{{rs.description}}
+									</md-option>
+								</md-select>
+								<div ng-messages="fonction.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+							<md-input-container flex="100" flex-gt-xs="15">
+								<label style="font-size:14px !important;"><b>Revetement mur</b></label>
+								<md-select ng-model="vm.beneficiaire.id_revetement_mur" ng-init="vm.beneficiaire.id_revetement_mur=''" ng-change="vm.modifierRevetementMur(vm.beneficiaire)">
+									<md-option value=''></md-option>
+									<md-option ng-repeat="rm in vm.allRecordsRevetementmur | orderBy:['code']" value='{{rm.id}}'>
+										{{rm.description}}
+									</md-option>
+								</md-select>
+								<div ng-messages="fonction.$error" role="alert">
+									<div ng-message="required">
+										<span></span>
+									</div>
+								</div>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex>
+							<fieldset>
+								<legend>
+									<b>Source d'éclairage</b>
+								</legend>
+								<div layout="row" layout-wrap flex>
+									<div ng-repeat="se in vm.allRecordsSourceeclairage | orderBy:['code']" class="standard" flex="100">
+										<label>
+											<md-checkbox ng-checked="vm.exists(se.id, vm.Listesourceeclairage)" ng-click="vm.toggle(se.id, vm.Listesourceeclairage)">
+											{{se.code}}-{{ se.description }}
+											</md-checkbox>
+										</label>
+									</div>
+								</div>
+							</fieldset>
+							<fieldset>
+								<legend>
+									<b>Combustible utilisé</b>
+								</legend>
+								<div layout="row" layout-wrap flex>
+									<div ng-repeat="co in vm.allRecordsCombustible | orderBy:['code']" class="standard" flex="100">
+										<label>
+											<md-checkbox ng-checked="vm.exists(co.id, vm.Listecombustible)" ng-click="vm.toggle(co.id, vm.Listecombustible)">
+											{{co.code}}-{{ co.description }}
+											</md-checkbox>
+										</label>
+									</div>
+								</div>
+							</fieldset>
+							<fieldset>
+								<legend>
+									<b>Toilettes</b>
+								</legend>
+								<div layout="row" layout-wrap flex>
+									<div ng-repeat="toil in vm.allRecordsToilette | orderBy:['code']" class="standard" flex="100">
+										<label>
+											<md-checkbox ng-checked="vm.exists(toil.id, vm.Listetoilette)" ng-click="vm.toggle(toil.id, vm.Listetoilette)">
+											{{toil.code}}-{{ toil.description }}
+											</md-checkbox>
+										</label>
+									</div>
+								</div>
+							</fieldset>
+							<fieldset>
+								<legend>
+									<b>Source d'eau</b>
+								</legend>
+								<div layout="row" layout-wrap flex>
+									<div ng-repeat="seau in vm.allRecordsSourceeau | orderBy:['code']" class="standard" flex="100">
+										<label>
+											<md-checkbox ng-checked="vm.exists(seau.id, vm.Listesourceeau)" ng-click="vm.toggle(seau.id, vm.Listesourceeau)">
+											{{seau.code}}-{{ seau.description }}
+											</md-checkbox>
+										</label>
+									</div>
+								</div>
+							</fieldset>
+							<fieldset>
+								<legend>
+									<b>Biens et équipements</b>
+								</legend>
+								<div layout="row" layout-wrap flex>
+									<div ng-repeat="equip in vm.allRecordsBienequipement | orderBy:['code']" class="standard" flex="100">
+										<label>
+											<md-checkbox ng-checked="vm.exists(equip.id, vm.Listebiensequipement)" ng-click="vm.toggle(equip.id, vm.Listebiensequipement)">
+											{{equip.code}}-{{ equip.description }}
+											</md-checkbox>
+										</label>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex>
+							<fieldset>
+								<legend>
+									<b>Moyen de production</b>
+								</legend>
+								<div layout="row" layout-wrap flex>
+									<div ng-repeat="moyp in vm.allRecordsMoyenproduction | orderBy:['code']" class="standard" flex="100">
+										<label>
+											<md-checkbox ng-checked="vm.exists(moyp.id, vm.Listemoyenproduction)" ng-click="vm.toggle(moyp.id, vm.Listemoyenproduction)">
+											{{moyp.code}}-{{ moyp.description }}
+											</md-checkbox>
+										</label>
+									</div>
+								</div>
+							</fieldset>
+							<fieldset>
+								<legend>
+									<b>Source de revenu</b>
+								</legend>
+								<div layout="row" layout-wrap flex>
+									<div ng-repeat="srev in vm.allRecordsSourcerevenu | orderBy:['code']" class="standard" flex="100">
+										<label>
+											<md-checkbox ng-checked="vm.exists(srev.id, vm.Listesourcerevenu)" ng-click="vm.toggle(srev.id, vm.Listesourcerevenu)">
+											{{srev.code}}-{{ srev.description }}
+											</md-checkbox>
+										</label>
+									</div>
+								</div>
+							</fieldset>	
+							<fieldset>
+								<legend>
+									<b>Type élévage</b>
+								</legend>
+								<div layout="row" layout-wrap flex>
+									<div ng-repeat="telv in vm.allRecordsElevage | orderBy:['code']" class="standard" flex="100">
+										<label>
+											<md-checkbox ng-checked="vm.exists(telv.id, vm.Listetypeelevage)" ng-click="vm.toggle(telv.id, vm.Listetypeelevage)">
+											{{telv.code}}-{{ telv.description }}
+											</md-checkbox>
+										</label>
+									</div>
+								</div>
+							</fieldset>	
+							<fieldset>
+								<legend>
+									<b>Type culture</b>
+								</legend>
+								<div layout="row" layout-wrap flex>
+									<div ng-repeat="tcult in vm.allRecordsCulture | orderBy:['code']" class="standard" flex="100">
+										<label>
+											<md-checkbox ng-checked="vm.exists(tcult.id, vm.Listetypeculture)" ng-click="vm.toggle(tcult.id, vm.Listetypeculture)">
+											{{tcult.code}}-{{ tcult.description }}
+											</md-checkbox>
+										</label>
+									</div>
+								</div>
+							</fieldset>	
+							<fieldset>
+								<legend>
+									<b>Aliment</b>
+								</legend>
+								<div layout="row" layout-wrap flex>
+									<div ng-repeat="tal in vm.allRecordsAliment | orderBy:['code']" class="standard" flex="100">
+										<label>
+											<md-checkbox ng-checked="vm.exists(tal.id, vm.Listealiment)" ng-click="vm.toggle(tal.id, vm.Listealiment)">
+											{{tal.code}}-{{ tal.description }}
+											</md-checkbox>
+										</label>
+									</div>
+								</div>
+							</fieldset>	
+						</div>
+						<div layout="column" layout-gt-xs="row" flex>
+							<fieldset>
+								<legend>
+									<b>Stratégie alimentaire</b>
+								</legend>
+								<div layout="row" layout-wrap flex>
+									<div ng-repeat="stga in vm.allRecordsStrategiealimentaire | orderBy:['code']" class="standard" flex="100">
+										<label>
+											<md-checkbox ng-checked="vm.exists(stga.id, vm.Listestrategiealimentaire)" ng-click="vm.toggle(stga.id, vm.Listestrategiealimentaire)">
+											{{stga.code}}-{{ stga.description }}
+											</md-checkbox>
+										</label>
+									</div>
+								</div>
+							</fieldset>
+							<fieldset>
+								<legend>
+									<b>Problème sur revenu</b>
+								</legend>
+								<div layout="row" layout-wrap flex>
+									<div ng-repeat="pbrev in vm.allRecordsStrategierevenu | orderBy:['code']" class="standard" flex="100">
+										<label>
+											<md-checkbox ng-checked="vm.exists(pbrev.id, vm.Listeproblemesurrevenu)" ng-click="vm.toggle(pbrev.id, vm.Listeproblemesurrevenu)">
+											{{pbrev.code}}-{{ pbrev.description }}
+											</md-checkbox>
+										</label>
+									</div>
+								</div>
+							</fieldset>
+							<fieldset>
+								<legend>
+									<b>Activité de recours</b>
+								</legend>
+								<div layout="row" layout-wrap flex>
+									<div ng-repeat="actrec in vm.allRecordsActiviterecoursmenage | orderBy:['code']" class="standard" flex="100">
+										<label>
+											<md-checkbox ng-checked="vm.exists(actrec.id, vm.Listeactivitederecours)" ng-click="vm.toggle(actrec.id, vm.Listeactivitederecours)">
+											{{actrec.code}}-{{ actrec.description }}
+											</md-checkbox>
+										</label>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+				</md-tab>
+				<md-tab label="Individu/Ménage">
+					<div style="widht:100%;">    
+						<md-button type="submit" ng-show="vm.afficherboutonnouveauIndividu==1 && vm.selectedItem.id >0" class="md-raised md-accent" aria-label="Nouveau" ng-click="vm.ajouterIndividu()" style="width:10%;">
+						  Nouveau
+						</md-button>
+						<md-button type="submit" ng-show="vm.afficherboutonModifSuprIndividu==1" class="md-raised md-accent" aria-label="Modifier" ng-click="vm.modifierIndividu()" style="width:10%;">
+						  Modifier
+						</md-button>
+						<!--md-button type="submit" ng-show="vm.afficherboutonModifSuprIndividu==1" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimerIndividu()" style="width:10%;">
+						  Supprimer
+						</md-button-->
+					</div>  
+						<table id="tableindividu" class="simple" ms-responsive-table datatable="ng"  dt-options="vm.dtOptions">
+							<thead>
+								<tr>
+								  <th class="secondary-text" ng-repeat="pe in ::vm.individu_column">
+									<div class="table-header">
+										<span class="column-title">{{pe.titre}}</span>
+									</div>
+								  </th>
+								</tr>
+							</thead>
+							<tbody>
+							  <tr ng-repeat="ind in vm.allindividu" ng-class="{selected: ind.$selected}" ng-click="vm.selectionIndividu(ind)">
+								  <td>{{ind.code}}</td>
+								  <td>{{ind.nom}} {{ind.prenom}}</td>
+								   <td>{{ind.date_naissance |date:'dd/MM/yyyy'}}</td>
+								   <td>{{ind.cin}}</td>
+								   <td>{{ind.sexe}}</td>
+								   <td>
+										<p ng-show="ind.id_type_ecole >0" style="margin:0;"><b>Type  :</b> {{ind.id_type_ecole[0].description}}</p>
+										<p ng-show="ind.id_niveau_de_classe >0" style="margin:0;"><b>Niv :</b> {{ind.id_niveau_de_classe[0].description}}</p>
+										<p ng-show="ind.id_langue >0" style="margin:0;"><b>Lang :</b> {{ind.id_langue[0].description}}</p>
+								   </td>
+								   <td>
+										<p ng-show="ind.id_handicap_visuel >0" style="margin:0;"><b>Vis  :</b> {{ind.handicap_visuel[0].description}}</p>
+										<p ng-show="ind.id_handicap_parole >0" style="margin:0;"><b>Par :</b> {{ind.handicap_parole[0].description}}</p>
+										<p ng-show="ind.id_handicap_auditif >0" style="margin:0;"><b>Aud :</b> {{ind.handicap_auditif[0].description}}</p>
+										<p ng-show="ind.id_handicap_mental >0" style="margin:0;"><b>Ment :</b> {{ind.handicap_mental[0].description}}</p>
+										<p ng-show="ind.id_handicap_moteur >0" style="margin:0;"><b>Mot :</b> {{ind.handicap_moteur[0].description}}</p>
+								   </td>
+							  </tr>
+							</tbody>
+						</table>
+				</md-tab>
+				<!--md-tab label="Enquete sur individu">
+				</md-tab-->
+			</md-tabs>
+		</div>
+    </div>
+</div>

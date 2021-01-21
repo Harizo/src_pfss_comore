@@ -1,0 +1,83 @@
+  <div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Administration</span>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent"  > Cours de change</span>
+            </div>
+
+            <div class="title">Cours de change</div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->            
+    <div class="content"layout="column">    	 
+      	<div class="form-wrapper">
+      		<div style="clear:both;"></div>
+            <md-progress-circular ng-if="vm.affiche_load" class="md-accent" aria-label="Rating" md-mode="indeterminate" md-diameter="50"></md-progress-circular> 
+      		<div class="white-bg md-whiteframe-4dp">
+	      	<md-tabs  md-dynamic-height>
+	            <md-tab label="Cours de change">
+
+	                <!-- Formulaire -->  
+	                <form name="filtreform" class="md-inline-form" novalidate >
+
+	                    <div layout="column" layout-gt-xs="row">
+	                        <md-input-container>
+		                        <span>Date du</span>
+		                    </md-input-container>
+		                    
+		                    <md-datepicker ng-model="vm.filtre.date_debut"  md-max-date="vm.filtre.date_fin" md-placeholder="Enter date de debut" required>                 		
+		                    </md-datepicker>
+		                    
+		                    <md-input-container>
+		                        <span>&nbsp &nbsp jusqu'au &nbsp &nbsp</span>
+		                    </md-input-container>
+		                    
+		                    <md-datepicker ng-model="vm.filtre.date_fin" md-placeholder="Enter date de fin" md-min-date="vm.filtre.date_debut" md-max-date="vm.date_now" ng-disabled="!vm.filtre.date_debut" required>        								
+        					</md-datepicker>
+							<md-input-container>				  
+								<md-button class="md-raised md-button md-ink-ripple" ng-click="vm.Filtrer()">Rafraichir</md-button>
+							</md-input-container>				  				
+							<md-input-container>				  
+								<md-button class="md-raised md-button md-ink-ripple" ng-click="showTabDialog($event,vm.filtre.date_fin)"">Saisie</md-button>
+							</md-input-container>				  				
+	                    </div>
+	                    
+	                    <div>
+	                    </div>
+	                </form>
+	                <!--/ Formulaire -->
+	                <!-- Liste table -->
+	                <div>
+	                	<table class="dataTable row-border hover" >
+							<thead>
+								<tr>
+									<th class="secondary-text" ng-repeat="tit in ::vm.titre_saisie_cours">
+										<div class="table-header">
+											<span class="column-title">{{tit.titre}}</span>
+										</div>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="item in vm.valeur_saisie_cours" ng-class="{selected: item.$selected}" ng-click="vm.selectioncours(item)">
+									<td ng-repeat="(index,val) in item">
+										<span>{{val}}</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+	                </div>
+	                <!--/ Liste table -->
+	            </md-tab>
+	        </md-tabs>
+	    	</div>
+      	</div>
+    </div>
+    <!-- / CONTENT -->
+  </div>

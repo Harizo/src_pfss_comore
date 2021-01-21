@@ -1,0 +1,33 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Administration</span>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Données de bases</span>
+
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent" href="javascript:;"> Variable Intervention</span>
+            </div>
+
+            <div class="title">Variable Intervention</div>
+        </div>
+    </div>
+    <!-- / HEADER -->    
+    <!-- CONTENT -->
+    <div class="content" layout="column">
+		<div class="form-wrapper md-whiteframe-1dp" >
+			<kendo-grid options="vm.mainGridOptions">
+				<div k-detail-template>
+					<kendo-grid k-options="vm.alldetailvariable({{dataItem.id}})">
+					</kendo-grid>
+				</div>
+			</kendo-grid>
+		</div>
+    </div>
+    <!-- CONTENT -->
+</div>

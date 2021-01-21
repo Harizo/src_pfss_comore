@@ -1,0 +1,91 @@
+  <div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Importation découpage administratif</span>
+                
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent" href="javascript:;"> Export découpage</span>
+            </div>
+
+            <div class="title">Export découpage</div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+            <!-- LISTE TABLE -->
+    <div class="content"layout="column">
+      <div class="form-wrapper">
+      <div style="widht:100%;">    
+          <md-button type="submit" ng-show="vm.cliquable==1" class="md-raised md-accent" aria-label="Exporter" ng-click="vm.Exporter_decoupage()" style="width:25%;">
+              Exporter les variables
+          </md-button>
+        </div>  
+		<md-progress-circular ng-if="vm.affiche_load" class="md-accent" md-mode="indeterminate" md-diameter="64"></md-progress-circular>
+        <div style="clear:both;"></div>
+        <md-tabs md-dynamic-height>
+          <md-tab label="Liste">
+            <table class="dataTable row-border hover" datatable="ng"
+              dt-options="vm.dtOptions">
+              <thead>
+                <tr>
+                  <th class="secondary-text" ng-repeat="re in ::vm.region_column">
+                    <div class="table-header">
+                      <span class="column-title">{{re.titre}}</span>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="region in vm.allregion"  ng-class="{selected: region.$selected}" ng-click="vm.selection(region)">
+                  <td>{{region.code}}</td>
+                  <td>{{region.nom}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </md-tab>
+          <md-tab label="Essai">
+				<h2>Accordion</h2>
+
+				<button class="accordion">Section 1</button>
+				<div class="panel">
+				  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+				</div>
+
+				<button class="accordion">Section 2</button>
+				<div class="panel">
+				  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+				</div>
+
+				<button class="accordion">Section 3</button>
+				<div class="panel">
+				  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+				</div>
+
+				<script>
+				var acc = document.getElementsByClassName("accordion");
+				var i;
+
+				for (i = 0; i < acc.length; i++) {
+				  acc[i].addEventListener("click", function() {
+					this.classList.toggle("active");
+					var panel = this.nextElementSibling;
+					if (panel.style.display === "block") {
+					  panel.style.display = "none";
+					} else {
+					  panel.style.display = "block";
+					}
+				  });
+				}
+				</script>
+          </md-tab>
+        </md-tabs>
+            <!-- / LISTE TABLE -->
+      </div>
+    </div>
+    <!-- / CONTENT -->
+  </div>
