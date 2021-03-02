@@ -21,7 +21,7 @@
             'app.quick-panel',
           
             //peche
-            'app.population',
+            'app.pfss',
             "kendo.directives"
 
         ]);
