@@ -1,0 +1,143 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Données de bases</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;"> INFRASTRUCTURE ET ACTIVITE</span>
+                </div>
+    
+                <div class="title">INFRASTRUCTURE ET ACTIVITE</div>
+            </div>
+        </div>
+        <div class="content" layout="column"  >
+            <div class="form-wrapper md-whiteframe-1dp" >
+                <div style="clear:both;"></div>
+                <div class="page-layout carded left-sidenav" layout="row">
+
+                    <!-- TOP BACKGROUND -->
+                    <div class="top-bg md-accent-bg">
+                    </div>
+                    <!-- / TOP BACKGROUND -->
+                
+                    <!-- SIDENAV -->
+                    <md-sidenav class="sidenav" md-is-locked-open="$mdMedia('gt-md')" md-component-id="sidenav" ms-scroll
+                                ms-sidenav-helper>
+                
+                        <!-- SIDENAV HEADER -->
+                        <div class="header">
+                        </div>
+                        <!-- / SIDENAV HEADER -->
+                
+                        <!-- SIDENAV CONTENT -->
+                        <md-content class="content" flex ms-scroll>
+                
+                            <!-- DEMO SIDENAV -->
+                            <!--div ng-include="'app/main/ui/page-layouts/demo/demo-sidenav.html'"></div-->
+                            <div class="demo-sidenav">
+                                <md-list>
+                                    <md-subheader class="md-no-sticky">Item</md-subheader>
+                                    
+                                    <md-list-item ng-repeat="ind in vm.allitem_infrastructure" ng-class="{selected: ind.$selected}" ng-click="vm.selectionItem_infrastructure(ind)">
+                                        <p>{{ind.nom}}</p>
+                            
+                                        <md-divider></md-divider>
+                                    </md-list-item>
+                            
+                                    <md-divider></md-divider>
+                            
+                                </md-list>
+                            </div>
+                            <!-- / DEMO SIDENAV -->
+                
+                        </md-content>
+                        <!-- / SIDENAV CONTENT -->
+                
+                    </md-sidenav>
+                    <!-- / SIDENAV -->
+                
+                    <!-- CENTER -->
+                    <div class="center" layout="column" flex style="min-height: 600px !important;">
+                
+                        <!-- CONTENT HEADER -->
+                        <div class="header" layout="row">
+                            <!--div>
+                                <span class="h2 white-fg">Left sidenav with independent scroll</span>
+                            </div-->
+                        </div>
+                        <!-- / CONTENT HEADER -->
+                
+                        <!-- CONTENT CARD -->
+                        <div class="content-card" layout="column" flex>
+                
+                            <!-- CONTENT TOOLBAR -->
+                            <div class="toolbar" layout="row" layout-align="start center">
+                                <md-button class="md-icon-button sidenav-toggle" ng-click="vm.toggleSidenav('sidenav')" hide-gt-md
+                                           aria-label="Toggle left sidenav">
+                                    <md-icon md-font-icon="icon-menu" class="icon"></md-icon>
+                                </md-button>
+                
+                                <p style="font-weight:bold">{{vm.titre_contenu}}</p>
+                            </div>
+                            <!-- / CONTENT TOOLBAR -->
+                
+                            <!-- CONTENT -->
+                            <md-content class="content" flex ms-scroll>
+                
+                                <!-- DEMO CONTENT -->
+                                <!--div ng-include="'app/main/ui/page-layouts/demo/demo-content.html'"></div-->
+                                <!-- / DEMO CONTENT -->
+                                <div ng-show="vm.selected_item.id==1">                                    
+                                    <kendo-grid options="vm.mainGridOptions">
+                                        <div k-detail-template>
+                                        <kendo-grid k-options="vm.allinfrastructure({{dataItem.id}})">
+                                        </kendo-grid>
+                                        </div>
+                                    </kendo-grid>
+                                </div>
+                                
+                                <div ng-show="vm.selected_item.id==2">                                    
+                                    <kendo-grid options="vm.alltype_agr">
+                                        <div k-detail-template>
+                                        <kendo-grid k-options="vm.allactivite_agr({{dataItem.id}})">
+                                        </kendo-grid>
+                                        </div>
+                                    </kendo-grid>
+                                </div>
+                                
+                                <div ng-show="vm.selected_item.id==3">                                    
+                                    <kendo-grid options="vm.alltype_activite_act">
+                                        <div k-detail-template>
+                                        <kendo-grid k-options="vm.allactivite_act({{dataItem.id}})">
+                                        </kendo-grid>
+                                        </div>
+                                    </kendo-grid>
+                                </div>
+                                <!--/ Type infrastructure--> 
+                
+                            </md-content>
+                            <!-- / CONTENT -->
+                
+                        </div>
+                        <!-- / CONTENT CARD -->
+                
+                    </div>
+                    <!-- / CENTER -->
+                
+                </div>
+                <!--Type infrastructure  -->
+                <!--kendo-grid options="vm.mainGridOptions">
+                    <div k-detail-template>
+                    <kendo-grid k-options="vm.allinfrastructure({{dataItem.id}})">
+                    </kendo-grid>
+                    </div>
+                </kendo-grid-->
+                <!--/ Type infrastructure--> 
+            </div>
+        </div>
+    </div>
+    

@@ -1,0 +1,73 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Communaute</span>
+                <span class="parent"> </span>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent" href="javascript:;">Bénéficiaire</span>
+            </div>
+        </div>
+    </div>
+        <div style="clear:both;"></div>
+		    
+            <!-- LISTE TABLE -->
+    <div class="content" layout="column">
+		<div class="form-wrapper">
+			<md-progress-circular ng-if="vm.affiche_load" class="md-accent" md-mode="indeterminate" md-diameter="64"></md-progress-circular>
+			<div style="overflow: auto; width: 100%;">
+				<fieldset >
+					<legend>
+                        Bénéficiaire
+						<md-button class="md-fab md-mini" style="background-color: rgb(192, 59, 59);" aria-label="Ajoutpreselection" ng-click="vm.preselection()" ng-show="vm.show_bouton_preselection">
+						  <md-icon md-font-icon="icon-playlist-minus" ></md-icon>
+						  <md-tooltip><span>Retours au liste des présélection</span></md-tooltip>
+						</md-button>
+					</legend>
+					<table ng-table="tableBeneficiaire" id="tableBeneficiaire" class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+						<thead>
+							<tr>
+								<th class="secondary-text" ng-repeat="c in ::vm.beneficiaire_column">
+									<div class="table-header">
+										<span class="column-title">{{c.titre}}</span>
+									</div>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="bene in vm.allBeneficiaire"  ng-class="{selected: bene.$selected}" ng-click="vm.selection(bene)">                                      
+								
+								<td>
+									<span>{{bene.zip.libelle}}</span>
+								  </td>
+								  <td>
+									<span>{{bene.commune.Commune}}</span>
+								  </td>
+								<td style="width:35% !important;">
+									<span>{{bene.code}}</span>
+								</td>
+								<td style="width:35% !important;">
+									<span>{{bene.libelle}}</span>
+								</td>
+								<td style="width:35% !important;">
+									<span>{{bene.nbr_personne}}</span>
+								</td>
+								<td style="width:35% !important;">
+									<span>{{bene.representant}}</span>
+								</td>
+								<td style="width:35% !important;">
+									<span>{{bene.telephone}}</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</fieldset>
+					
+			</div>
+		</div>
+    </div>
+    <!-- / CONTENT -->
+  </div>

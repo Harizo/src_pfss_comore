@@ -1,0 +1,77 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Communaute</span>
+                <span class="parent"> </span>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent" href="javascript:;">Présélection</span>
+            </div>
+        </div>
+    </div>
+        <div style="clear:both;"></div>
+		    
+            <!-- LISTE TABLE -->
+    <div class="content" layout="column">
+		<div class="form-wrapper">
+			<md-progress-circular ng-if="vm.affiche_load" class="md-accent" md-mode="indeterminate" md-diameter="64"></md-progress-circular>
+			<div style="overflow: auto; width: 100%;">
+				<fieldset >
+					<legend>
+                        Présélection
+						<md-button class="md-fab md-mini" style="background-color: rgb(192, 59, 59);" aria-label="Ajoutinscrit" ng-click="vm.inscrit()" ng-show="vm.show_bouton_inscrit">
+						  <md-icon md-font-icon="icon-playlist-minus" ></md-icon>
+						  <md-tooltip><span>Retours au liste des inscrits</span></md-tooltip>
+						</md-button>
+						<md-button class="md-fab md-mini" style="background-color: green;" aria-label="Ajoutbeneficiaire" ng-click="vm.beneficiaire()" ng-show="vm.show_bouton_beneficiaire">
+						  <md-icon md-font-icon="icon-check-circle" ></md-icon>
+						  <md-tooltip><span>Faire bénéficiaire</span></md-tooltip>
+						</md-button>
+					</legend>
+					<table ng-table="tablePreselection" id="tablePreselection" class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+						<thead>
+							<tr>
+								<th class="secondary-text" ng-repeat="c in ::vm.preselection_column">
+									<div class="table-header">
+										<span class="column-title">{{c.titre}}</span>
+									</div>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="presel in vm.allPreselection"  ng-class="{selected: presel.$selected}" ng-click="vm.selection(presel)">                                      
+								
+								<td>
+									<span>{{presel.zip.libelle}}</span>
+								  </td>
+								  <td>
+									<span>{{presel.commune.Commune}}</span>
+								  </td>
+								<td style="width:35% !important;">
+									<span>{{presel.code}}</span>
+								</td>
+								<td style="width:35% !important;">
+									<span>{{presel.libelle}}</span>
+								</td>
+								<td style="width:35% !important;">
+									<span>{{presel.nbr_personne}}</span>
+								</td>
+								<td style="width:35% !important;">
+									<span>{{presel.representant}}</span>
+								</td>
+								<td style="width:35% !important;">
+									<span>{{presel.telephone}}</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</fieldset>
+					
+			</div>
+		</div>
+    </div>
+    <!-- / CONTENT -->
+  </div>

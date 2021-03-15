@@ -1,0 +1,802 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Données de bases</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;"> Acteurs</span>
+                </div>
+    
+                <div class="title">Acteurs</div>
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>
+                <md-tabs md-dynamic-height layout="column" flex>
+                    <md-tab label="Consultant/ONG" ng-click="vm.Select_table(1)" layout="column" flex>
+                        <md-tab-body>
+                            <fieldset style="width: 100%">
+                                <legend>
+                                        Consultant/ONG
+                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterConsultant_ong()">
+                                      <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
+                                    </md-button>
+
+                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('consultant_ong/index','consultant_ong')">
+                                      <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
+                                    </md-button>
+                                </legend>
+                                <table ng-table="tablePrestataireConsultant_ong" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="age in ::vm.consultant_ong_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{age.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="cons_ong in vm.allRecordsConsultant_ong"  ng-class="{selected: cons_ong.$selected}" ng-click="vm.selectionConsultant_ong(cons_ong)">           
+                                            <td>
+                                                <span ng-if="cons_ong.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>code</label>
+                                                        <input name="code" type="text" ng-model="cons_ong.code"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!cons_ong.$edit">{{cons_ong.code}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="cons_ong.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Nom</label>
+                                                        <input name="Nom" type="text" ng-model="cons_ong.raison_social"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!cons_ong.$edit">{{cons_ong.raison_social}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="cons_ong.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Contact</label>
+                                                        <input name="contact" type="text" ng-model="cons_ong.contact"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!cons_ong.$edit">{{cons_ong.contact}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="cons_ong.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Fonction contact</label>
+                                                        <input name="fonction_contact" type="text" ng-model="cons_ong.fonction_contact" />
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!cons_ong.$edit">{{cons_ong.fonction_contact}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="cons_ong.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Tél contact</label>
+                                                        <input name="telephone_contact" type="text" ng-model="cons_ong.telephone_contact" />
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!cons_ong.$edit">{{cons_ong.telephone_contact}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="cons_ong.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Adresse</label>
+                                                        <input name="adresse" type="text" ng-model="cons_ong.adresse" />
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!cons_ong.$edit">{{cons_ong.adresse}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="cons_ong.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                      <label>Ile</label>
+                                                        <md-select name="ile_id" ng-model="cons_ong.ile_id" ng-change="vm.modifierile(cons_ong)" style="display: inline-block;" style="width:90px;overflow: hidden;text-overflow: ellipsis;">
+                                                          <md-option ng-repeat="il in vm.allile" value="{{il.id}}">
+                                                            {{il.Ile}}
+                                                          </md-option>
+                                                        </md-select>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!cons_ong.$edit">{{cons_ong.ile.Ile}}</span>
+                                            </td>
+                                            <td>
+                                                <a ng-if="!cons_ong.$edit" ng-click="vm.modifierConsultant_ong(cons_ong)" title="Modifier">
+                                                    <span class="icon-table-edit"></span>
+                                                </a>
+                                                <a ng-if="!cons_ong.$edit" ng-click="vm.supprimerConsultant_ong(cons_ong)" title="Supprimer">
+                                                    <span class="icon-delete"></span>
+                                                </a>
+                                                <a ng-if="cons_ong.$edit" ng-click="vm.annulerConsultant_ong(cons_ong)" title="Annuler modification">
+                                                    <span class="icon-cancel"></span>
+                                                </a>
+                                                <a ng-if="cons_ong.$edit && cons_ong.code && cons_ong.contact && cons_ong.raison_social && cons_ong.fonction_contact && cons_ong.telephone_contact && cons_ong.adresse && cons_ong.ile_id " ng-click="vm.ajoutConsultant_ong(cons_ong,0)" title="Sauvegarder">
+                                                    <span class="icon-content-save"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>       
+                    <md-tab label="Agence d'execution" ng-click="vm.Select_table(1)" layout="column" flex>
+                        <md-tab-body>
+                            <fieldset style="width: 100%">
+                                <legend>
+                                        Agence d'execution
+                                    <!--button ng-click="vm.ajouterAgent_ex()" title="Ajouter un type d'acteur" style="font-size: 24px;font-weight: bold;background-color: rgb(255,255,255);color: rgb(3,155,229);">+</button!-->
+
+                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterAgent_ex()">
+                                      <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
+                                    </md-button>
+
+                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('agent_ex/index','see_agex')">
+                                      <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
+                                    </md-button>
+                                </legend>
+                                <table ng-table="tablePrestataireAgent_ex" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="age in ::vm.agent_ex_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{age.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="agent_ex in vm.allRecordsAgent_ex"  ng-class="{selected: agent_ex.$selected}" ng-click="vm.selectionAgent_ex(agent_ex)">           
+                                            <td>
+                                                <span ng-if="agent_ex.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Code</label>
+                                                        <input name="Code" type="text" ng-model="agent_ex.Code"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!agent_ex.$edit">{{agent_ex.Code}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="agent_ex.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Nom</label>
+                                                        <input name="Nom" type="text" ng-model="agent_ex.Nom"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!agent_ex.$edit">{{agent_ex.Nom}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="agent_ex.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Contact</label>
+                                                        <input name="Contact" type="text" ng-model="agent_ex.Contact"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!agent_ex.$edit">{{agent_ex.Contact}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="agent_ex.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Representant</label>
+                                                        <input name="Representant" type="text" ng-model="agent_ex.Representant" />
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!agent_ex.$edit">{{agent_ex.Representant}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="agent_ex.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                      <label>Ile</label>
+                                                        <md-select name="ile_id" ng-model="agent_ex.ile_id" ng-change="vm.modifierile(agent_ex)" style="display: inline-block;" style="width:90px;overflow: hidden;text-overflow: ellipsis;">
+                                                          <md-option ng-repeat="il in vm.allile" value="{{il.id}}">
+                                                            {{il.Ile}}
+                                                          </md-option>
+                                                        </md-select>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!agent_ex.$edit">{{agent_ex.ile.Ile}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="agent_ex.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                      <label>Programme</label>
+                                                        <md-select ng-model="agent_ex.programme_id" disabled style="width:90px;overflow: hidden;text-overflow: ellipsis;">
+                                                          <md-option ng-repeat="programme in vm.allprogramme" value="{{programme.id}}">
+                                                            {{programme.libelle}}
+                                                          </md-option>
+                                                        </md-select>
+                                                    </md-input-container>  
+                                                </span>
+                                                <span ng-if="!agent_ex.$edit">{{agent_ex.programme.libelle}}</span>
+                                            </td>
+                                            <td>
+                                                <a ng-if="!agent_ex.$edit" ng-click="vm.modifierAgent_ex(agent_ex)" title="Modifier">
+                                                    <span class="icon-table-edit"></span>
+                                                </a>
+                                                <a ng-if="!agent_ex.$edit" ng-click="vm.supprimerAgent_ex(agent_ex)" title="Supprimer">
+                                                    <span class="icon-delete"></span>
+                                                </a>
+                                                <a ng-if="agent_ex.$edit" ng-click="vm.annulerAgent_ex(agent_ex)" title="Annuler modification">
+                                                    <span class="icon-cancel"></span>
+                                                </a>
+                                                <a ng-if="agent_ex.$edit && agent_ex.Code && agent_ex.Contact && agent_ex.Nom && agent_ex.Representant && agent_ex.ile_id && agent_ex.programme_id>''" ng-click="vm.ajout(agent_ex,0)" title="Sauvegarder">
+                                                    <span class="icon-content-save"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>       
+                    <md-tab label="Agence de paiement" ng-click="vm.Select_table(2)">
+                        <md-tab-body>
+                            <fieldset>
+                                <legend>
+                                        Agence de paiement
+                                    <!--button ng-click="vm.ajouterAgence_p()" title="Ajouter un agence de paiement" style="font-size: 24px;font-weight: bold;background-color: rgb(255,255,255);color: rgb(3,155,229);">+</button!-->
+
+                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterAgence_p()">
+                                      <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
+                                    </md-button>
+
+                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('agence_p/index','see_agent')">
+                                      <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
+                                    </md-button>
+
+                                </legend>
+                                <table ng-table="tablePrestataireagence_p" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.agence_p_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="agence_p in vm.allRecordsAgence_p"  ng-class="{selected: agence_p.$selected}" ng-click="vm.selectionAgence_p(agence_p)">                                       
+                                             <td>
+                                                <span ng-if="agence_p.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Code</label>
+                                                        <input name="Code" type="text" ng-model="agence_p.Code"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!agence_p.$edit">{{agence_p.Code}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="agence_p.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Nom</label>
+                                                        <input name="Nom" type="text" ng-model="agence_p.Nom"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!agence_p.$edit">{{agence_p.Nom}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="agence_p.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Contact</label>
+                                                        <input name="Contact" type="text" ng-model="agence_p.Contact"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!agence_p.$edit">{{agence_p.Contact}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="agence_p.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Telephone</label>
+                                                        <input name="Telephone" type="text" ng-model="agence_p.Telephone"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!agence_p.$edit">{{agence_p.Telephone}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="agence_p.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Representant</label>
+                                                        <input name="Representant" type="text" ng-model="agence_p.Representant"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!agence_p.$edit">{{agence_p.Representant}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="agence_p.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                      <label>Ile</label>
+                                                        <md-select name="ile_id" ng-model="agence_p.ile_id" ng-change="vm.modifierile(agence_p)">
+                                                          <md-option ng-repeat="il in vm.allile" value="{{il.id}}" style="width:90px;overflow: hidden;text-overflow: ellipsis;">
+                                                            {{il.Ile}}
+                                                          </md-option>
+                                                        </md-select>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!agence_p.$edit">{{agence_p.ile.Ile}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="agence_p.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                      <label>Programme</label>
+                                                        <md-select ng-model="agence_p.programme_id" disabled style="width:90px;overflow: hidden;text-overflow: ellipsis;">
+                                                          <md-option ng-repeat="programme in vm.allprogramme" value="{{programme.id}}">
+                                                            {{programme.libelle}}
+                                                          </md-option>
+                                                        </md-select>
+                                                    </md-input-container>  
+                                                </span>
+                                                <span ng-if="!agence_p.$edit">{{agence_p.programme.libelle}}</span>
+                                            </td>
+                                            <td>
+                                                <a ng-if="!agence_p.$edit" ng-click="vm.modifierAgence_p(agence_p)" title="Modifier">
+                                                    <span class="icon-table-edit"></span>
+                                                </a>
+                                                <a ng-if="!agence_p.$edit" ng-click="vm.supprimerAgence_p(agence_p)" title="Supprimer">
+                                                    <span class="icon-delete"></span>
+                                                </a>
+                                                <a ng-if="agence_p.$edit" ng-click="vm.annulerAgence_p(agence_p)" title="Annuler modification">
+                                                    <span class="icon-cancel"></span>
+                                                </a>
+                                                <a ng-if="agence_p.$edit && agence_p.Code && agence_p.Contact && agence_p.Telephone && agence_p.Nom && agence_p.Representant && agence_p.ile_id && agence_p.programme_id" ng-click="vm.ajoutAgence_p(agence_p,0)" title="Sauvegarder">
+                                                    <span class="icon-content-save"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>       
+                    <md-tab label="Cellule de protection sociale" ng-click="vm.Select_table(3)">
+                        <md-tab-body>
+                            <fieldset layout="column" layout-gt-xs="row">
+                                <legend>
+                                        Cellule de protection sociale
+                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterProtection_sociale()">
+                                      <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
+                                    </md-button>
+
+                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('protection_sociale/index','see_celluleprotectionsociale')">
+                                      <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
+                                    </md-button>
+
+
+                                </legend>
+                                <table ng-table="tablePrestatairePsociale" id="tablePrestatairePsociale" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.protection_sociale_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="p_sociale in vm.allProtection_sociale"  ng-class="{selected: p_sociale.$selected}" ng-click="vm.selectionProtection_sociale(p_sociale)">                                       
+                                             <td>
+                                                <span ng-if="p_sociale.$edit">
+                                                    <md-input-container >
+                                                        <label>Code</label>
+                                                        <input name="Code" type="text" ng-model="p_sociale.Code"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!p_sociale.$edit">{{p_sociale.Code}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="p_sociale.$edit">
+                                                    <md-input-container >
+                                                        <label>Nom</label>
+                                                        <input name="Nom" type="text" ng-model="p_sociale.Nom"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!p_sociale.$edit">{{p_sociale.Nom}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="p_sociale.$edit">
+                                                    <md-input-container>
+                                                        <label>Contact</label>
+                                                        <input name="Contact" type="text" ng-model="p_sociale.Contact"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!p_sociale.$edit">{{p_sociale.Contact}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="p_sociale.$edit">
+                                                    <md-input-container>
+                                                        <label>Telephone</label>
+                                                        <input name="NumeroTelephone" type="text" ng-model="p_sociale.NumeroTelephone"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!p_sociale.$edit">{{p_sociale.NumeroTelephone}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="p_sociale.$edit">
+                                                    <md-input-container>
+                                                        <label>Representant</label>
+                                                        <input name="Representant" type="text" ng-model="p_sociale.Representant"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!p_sociale.$edit">{{p_sociale.Representant}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="p_sociale.$edit">
+                                                    <md-input-container >
+                                                      <label>Ile</label>
+                                                        <md-select name="ile_id" ng-model="p_sociale.ile_id" ng-change="vm.modifierileprotection(p_sociale)" style="width:80px;overflow: hidden;text-overflow: ellipsis;">
+                                                          <md-option ng-repeat="il in vm.allile" value="{{il.id}}">
+                                                            {{il.Ile}}
+                                                          </md-option>
+                                                        </md-select>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!p_sociale.$edit">{{p_sociale.ile.Ile}}</span>
+                                            </td>
+                                            <!--td>
+                                                <span ng-if="p_sociale.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                      <label>Prefecture</label>
+                                                        <md-select name="region_id" ng-model="p_sociale.region_id" ng-disabled="vm.ileSelected==false">
+                                                          <md-option ng-repeat="pref in vm.listeprefecture" value="{{pref.id}}">
+                                                            {{pref.Village}}
+                                                          </md-option>
+                                                        </md-select>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!p_sociale.$edit">{{p_sociale.region.Region}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="p_sociale.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                      <label>Commune</label>
+                                                        <md-select name="village_id" ng-model="p_sociale.commune_id" ng-disabled="vm.prefectureSelected==false">
+                                                          <md-option ng-repeat="com in vm.listecommune" value="{{com.id}}">
+                                                            {{com.Commune}}
+                                                          </md-option>
+                                                        </md-select>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!p_sociale.$edit">{{p_sociale.commune.Commune}}</span>
+                                            </td-->
+                                            <td>
+                                                <span ng-if="p_sociale.$edit">
+                                                    <md-input-container>
+                                                      <label>Village</label>
+                                                        <md-select name="village_id" ng-model="p_sociale.village_id" ng-click="vm.nouveauVillage(ev,p_sociale)" disabled style="width:80px;overflow: hidden;text-overflow: ellipsis;">
+                                                          <md-option ng-repeat="vil in vm.listevillage" value="{{vil.id}}">
+                                                            {{vil.Village}}
+                                                          </md-option>
+                                                        </md-select>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!p_sociale.$edit">{{p_sociale.village.Village}}</span>
+                                            </td>
+                                           
+                                            <td>
+                                                <span ng-if="p_sociale.$edit">
+                                                    <md-input-container>
+                                                      <label>Programme</label>
+                                                        <md-select ng-model="p_sociale.programme_id" disabled style="width:80px;overflow: hidden;text-overflow: ellipsis;">
+                                                          <md-option ng-repeat="programme in vm.allprogramme" value="{{programme.id}}">
+                                                            {{programme.libelle}}
+                                                          </md-option>
+                                                        </md-select>
+                                                    </md-input-container>  
+                                                </span>
+                                                <span ng-if="!p_sociale.$edit">{{p_sociale.programme.libelle}}</span>
+                                            </td>
+                                            <td>
+                                                <a ng-if="!p_sociale.$edit" ng-click="vm.modifierProtection_sociale(p_sociale)" title="Modifier">
+                                                    <span class="icon-table-edit"></span>
+                                                </a>
+                                                <a ng-if="!p_sociale.$edit" ng-click="vm.supprimerProtection_sociale(p_sociale)" title="Supprimer">
+                                                    <span class="icon-delete"></span>
+                                                </a>
+                                                <a ng-if="p_sociale.$edit" ng-click="vm.annulerProtection_sociale(p_sociale)" title="Annuler modification">
+                                                    <span class="icon-cancel"></span>
+                                                </a>
+                                                <a ng-if="p_sociale.$edit && p_sociale.Code && p_sociale.Contact && p_sociale.NumeroTelephone && p_sociale.Nom && p_sociale.Representant && p_sociale.ile_id && p_sociale.programme_id && p_sociale.village_id" ng-click="vm.ajoutProtection_sociale(p_sociale,0)" title="Sauvegarder">
+                                                    <span class="icon-content-save"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+					</md-tab>
+                    <md-tab label="Unité de mésure">
+                        <md-tab-body>
+                            <fieldset layout="column" layout-gt-xs="row">
+                                <legend>
+										Unité de mésure
+                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterUnitemesure()">
+                                      <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
+                                    </md-button>
+
+                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('unite_mesure/index','unite_mesure')">
+                                      <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
+                                    </md-button>
+                                </legend>
+                                <table id="tableUnitemesure" ng-table="tableUnitemesure" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.unite_mesure_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="tlog in vm.allRecordsUnitemesure"  ng-class="{selected: tlog.$selected}" ng-click="vm.selectionUnitemesure(tlog)">										
+                                            <td>
+                                                <span ng-if="tlog.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Code</label>
+                                                        <input name="code" type="text" ng-model="tlog.code"/>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!tlog.$edit">{{tlog.code}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="tlog.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Description</label>
+                                                        <input name="description" type="text" ng-model="tlog.description"/>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!tlog.$edit">{{tlog.description}}</span>
+                                            </td>
+                                            <td>		
+                                                <a ng-if="!tlog.$edit" ng-click="vm.modifierUnitemesure(tlog)" title="Modifier">
+                                                    <span class="icon-table-edit"></span>
+                                                </a>
+                                                <a ng-if="!tlog.$edit" ng-click="vm.supprimerUnitemesure(tlog)" title="Supprimer">
+                                                    <span class="icon-delete"></span>
+                                                </a>
+                                                <a ng-if="tlog.$edit" ng-click="vm.annulerUnitemesure(tlog)" title="Annuler modification">
+                                                    <span class="icon-cancel"></span>
+                                                </a>
+                                                <a ng-if="tlog.$edit && tlog.description>''" ng-click="vm.ajoutUnitemesure(tlog,0)" title="Sauvegarder">
+                                                    <span class="icon-content-save"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>		
+					<!-- Fin Saisie unité de mesure-->
+					<!-- Début Saisie type de transfert-->
+                    <md-tab label="Type de transfert">
+                        <md-tab-body>
+							<div layout="row">
+								<div flex="45">
+									<fieldset>
+										<legend>
+											Type de transfert
+											<md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterTypetransfert()">
+											  <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
+											</md-button>
+
+											<md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('type_transfert/index','type_transfert')">
+											  <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
+											</md-button>
+										</legend>
+										<table id="tableTypetransfert" ng-table="tableTypetransfert" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+											<thead>
+												<tr>
+													<th class="secondary-text" ng-repeat="c in ::vm.typetransfert_column">
+														<div class="table-header">
+															<span class="column-title">{{c.titre}}</span>
+														</div>
+													</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="tlog in vm.allRecordsTypetransfert"  ng-class="{selected: tlog.$selected}" ng-click="vm.selectionTypetransfert(tlog)">										
+													<td>
+														<span ng-if="tlog.$edit">
+															<md-input-container style="width:100%;">
+																<label>Code</label>
+																<input name="code" type="text" ng-model="tlog.code" maxlength="5"/>
+															</md-input-container>	
+														</span>
+														<span ng-if="!tlog.$edit">{{tlog.code}}</span>
+													</td>
+													<td>
+														<span ng-if="tlog.$edit">
+															<md-input-container style="width:100%;">
+																<label>Description</label>
+																<input name="description" type="text" ng-model="tlog.description"/>
+															</md-input-container>	
+														</span>
+														<span ng-if="!tlog.$edit">{{tlog.description}}</span>
+													</td>
+													<td>						
+														<a ng-if="!tlog.$edit" ng-click="vm.modifierTypetransfert(tlog)" title="Modifier">
+															<span class="icon-table-edit"></span>
+														</a>
+														<a ng-if="!tlog.$edit" ng-click="vm.supprimerTypetransfert(tlog)" title="Supprimer">
+															<span class="icon-delete"></span>
+														</a>
+														<a ng-if="tlog.$edit" ng-click="vm.annulerTypetransfert(tlog)" title="Annuler modification">
+															<span class="icon-cancel"></span>
+														</a>
+														<a ng-if="tlog.$edit  && tlog.code >'' && tlog.description>''" ng-click="vm.ajoutTypetransfert(tlog,0)" title="Sauvegarder">
+															<span class="icon-content-save"></span>
+														</a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</fieldset>
+								</div>
+								<div flex="55">
+									<fieldset>
+										<legend>
+											Détail par type de transfert
+											<md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central && vm.selectedItemTypetransfert.id" ng-click="vm.ajouterDetailtypetransfert()">
+											  <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
+											</md-button>
+
+											<md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('detail_type_transfert/index','detail_type_transfert')">
+											  <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
+											</md-button>
+										</legend>
+										<table id="tableDetailtypetransfert" ng-table="tableDetailtypetransfert" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+											<thead>
+												<tr>
+													<th class="secondary-text" ng-repeat="c in ::vm.detailtypetransfert_column">
+														<div class="table-header">
+															<span class="column-title">{{c.titre}}</span>
+														</div>
+													</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="tlog in vm.selectedItemTypetransfert.detail_type_transfert"  ng-class="{selected: tlog.$selected}" ng-click="vm.selectionDetailtypetransfert(tlog)">										
+													<td>
+														<span>{{tlog.typedetransfert[0].description}}</span>
+													</td>
+													<td>
+														<span ng-if="tlog.$edit">
+															<md-input-container style="width:100%;">
+																<label>Code</label>
+																<input name="code" type="text" ng-model="tlog.code" maxlength="5"/>
+															</md-input-container>	
+														</span>
+														<span ng-if="!tlog.$edit">{{tlog.code}}</span>
+													</td>
+													<td>
+														<span ng-if="tlog.$edit">
+															<md-input-container style="width:100%;">
+																<label>Description</label>
+																<input name="description" type="text" ng-model="tlog.description"/>
+															</md-input-container>	
+														</span>
+														<span ng-if="!tlog.$edit">{{tlog.description}}</span>
+													</td>
+													<td>
+														<span ng-if="tlog.$edit">
+															<md-input-container style="width:100%;">
+																<label>Unité mésure</label>
+																<md-select ng-model="tlog.id_unite_mesure"  ng-change="vm.modifierTypeunitemesure(tlog)" ng-disabled="!tlog.description">													  
+																  <md-option value="">&nbsp;</md-option>
+																  <md-option ng-repeat="ume in vm.allRecordsUnitemesure" value="{{ume.id}}" >
+																	{{ume.description}}
+																  </md-option>
+																</md-select>
+															</md-input-container>	
+														</span>
+														<span ng-if="!tlog.$edit">{{tlog.unitedemesure[0].description}}</span>
+													</td>
+													<td>
+														<a ng-if="!tlog.$edit"  ng-click="vm.modifierDetailtypetransfert(tlog)" title="Modifier">
+															<span class="icon-table-edit"></span>
+														</a>	
+														<a ng-if="!tlog.$edit" ng-click="vm.supprimerDetailtypetransfert(tlog)" title="Suprimer">	
+															<span class="icon-delete"></span>
+														</a>	
+														<a ng-if="tlog.$edit" ng-click="vm.annulerDetailtypetransfert(tlog)" title="Annuler modification">	
+															<span class="icon-cancel"></span>
+														</a>	
+														<a ng-if="tlog.$edit && tlog.code >'' && tlog.description >'' && tlog.id_unite_mesure >0" ng-click="vm.ajoutDetailtypetransfert(tlog,0)" title="Sauvegarder">	
+															<span class="icon-content-save"></span>
+														</a>	
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</fieldset>
+								</div>
+							</div>						
+                        </md-tab-body>
+                    </md-tab>		
+					<!-- Fin Saisie type de transfert-->
+					<!-- Début Saisie fréquence de transfert-->
+                    <md-tab label="Fréquence de transfert">
+                        <md-tab-body>
+							<fieldset>
+								<legend>
+										Fréquence de transfert
+										<md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterFrequencetransfert()">
+										  <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
+										</md-button>
+
+										<md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('frequence_transfert/index','frequence_transfert')">
+										  <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
+										</md-button>
+								</legend>
+								<table id="tableFrequencetransfert" ng-table="tableFrequencetransfert" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+									<thead>
+										<tr>
+											<th class="secondary-text" ng-repeat="c in ::vm.typetransfert_column">
+												<div class="table-header">
+													<span class="column-title">{{c.titre}}</span>
+												</div>
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="freq in vm.allRecordsFrequencetransfert"  ng-class="{selected: freq.$selected}" ng-click="vm.selectionFrequencetransfert(freq)">										
+											<td>
+												<span ng-if="freq.$edit">
+													<md-input-container style="width:100%;">
+														<label>Code</label>
+														<input name="code" type="text" ng-model="freq.code" maxlength="5"/>
+													</md-input-container>	
+												</span>
+												<span ng-if="!freq.$edit">{{freq.code}}</span>
+											</td>
+											<td>
+												<span ng-if="freq.$edit">
+													<md-input-container style="width:100%;">
+														<label>Description</label>
+														<input name="description" type="text" ng-model="freq.description"/>
+													</md-input-container>	
+												</span>
+												<span ng-if="!freq.$edit">{{freq.description}}</span>
+											</td>
+											<td>
+												<a ng-if="!freq.$edit"  ng-click="vm.modifierFrequencetransfert(freq)" title="Modifier">
+                                                    <span class="icon-table-edit"></span>
+												</a>	
+												<a ng-if="!freq.$edit" ng-click="vm.supprimerFrequencetransfert(freq)" title="Supprimer">	
+                                                    <span class="icon-delete"></span>
+												</a>	
+												<a ng-if="freq.$edit" ng-click="vm.annulerFrequencetransfert(freq)" title="Annuler modification">	
+                                                    <span class="icon-cancel"></span>
+												</a>	
+												<a ng-if="freq.$edit && freq.code >'' && freq.description >''" ng-click="vm.ajoutFrequencetransfert(freq,0)" title="Sauvegarder">	
+                                                    <span class="icon-content-save"></span>
+												</a>	
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</fieldset>
+                        </md-tab-body>
+                    </md-tab>						
+
+                    <md-tab>
+                    </md-tab>
+
+                </md-tabs>
+            </div>
+        </div>
+    </div>
+    

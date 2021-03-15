@@ -1,0 +1,153 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Données de bases</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;"> Type de plainte</span>
+                </div>
+    
+                <div class="title">Type de plainte</div>
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>
+                <md-tabs md-dynamic-height layout="column" flex>
+                    <md-tab label="Type de plainte" ng-click="vm.Select_table(1)" layout="column" flex>
+                        <md-tab-body>
+                            <fieldset style="width: 100%">
+                                <legend>
+                                        Type de plainte
+                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterType_plainte()">
+                                      <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
+                                    </md-button>
+
+                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('type_pl/index','see_typeplainte')">
+                                      <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
+                                    </md-button>
+                                </legend>
+                                <table ng-table="tablePrestataireType_plainte" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="age in ::vm.type_plainte_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{age.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="type_pl in vm.allRecordstypeplainte"  ng-class="{selected: type_pl.$selected}" ng-click="vm.selectionType_plainte(type_pl)">           
+                                            <td>
+                                                <span ng-if="type_pl.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Code</label>
+                                                        <input name="Code" type="text" ng-model="type_pl.Code"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!type_pl.$edit">{{type_pl.Code}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="type_pl.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Libelle</label>
+                                                        <input name="TypePlainte" type="text" ng-model="type_pl.TypePlainte"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!type_pl.$edit">{{type_pl.TypePlainte}}</span>
+                                            </td>
+                                            <td>
+                                                <a ng-if="!type_pl.$edit" ng-click="vm.modifierType_plainte(type_pl)" title="Modifier">
+                                                    <span class="icon-table-edit"></span>
+                                                </a>
+                                                <a ng-if="!type_pl.$edit" ng-click="vm.supprimerType_plainte(type_pl)" title="Supprimer">
+                                                    <span class="icon-delete"></span>
+                                                </a>
+                                                <a ng-if="type_pl.$edit" ng-click="vm.annulerType_plainte(type_pl)" title="Annuler modification">
+                                                    <span class="icon-cancel"></span>
+                                                </a>
+                                                <a ng-if="type_pl.$edit && type_pl.Code && type_pl.TypePlainte>''" ng-click="vm.ajout(type_pl,0)" title="Sauvegarder">
+                                                    <span class="icon-content-save"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>       
+                    <md-tab label="Résultat plainte" ng-click="vm.Select_table(1)" layout="column" flex>
+                        <md-tab-body>
+                            <fieldset style="width: 100%">
+                                <legend>
+                                        Résultat plainte
+                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterResultat_plainte()">
+                                      <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
+                                    </md-button>
+
+                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('type_pl/index','resultat_plainte')">
+                                      <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
+                                    </md-button>
+                                </legend>
+                                <table ng-table="tablePrestataireResultat_plainte" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="age in ::vm.type_plainte_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{age.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="res_pl in vm.allRecordsresultatplainte"  ng-class="{selected: res_pl.$selected}" ng-click="vm.selectionType_plainte(res_pl)">           
+                                            <td>
+                                                <span ng-if="res_pl.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Code</label>
+                                                        <input name="Code_res" type="text" ng-model="res_pl.code"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!res_pl.$edit">{{res_pl.code}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="res_pl.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Libelle</label>
+                                                        <input name="libelle" type="text" ng-model="res_pl.libelle"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!res_pl.$edit">{{res_pl.libelle}}</span>
+                                            </td>
+                                            <td>
+                                                <a ng-if="!res_pl.$edit" ng-click="vm.modifierResultat_plainte(res_pl)" title="Modifier">
+                                                    <span class="icon-table-edit"></span>
+                                                </a>
+                                                <a ng-if="!res_pl.$edit" ng-click="vm.supprimerResultat_plainte(res_pl)" title="Supprimer">
+                                                    <span class="icon-delete"></span>
+                                                </a>
+                                                <a ng-if="res_pl.$edit" ng-click="vm.annulerResultat_plainte(res_pl)" title="Annuler modification">
+                                                    <span class="icon-cancel"></span>
+                                                </a>
+                                                <a ng-if="res_pl.$edit && res_pl.code && res_pl.libelle>''" ng-click="vm.ajoutresultatplainte(res_pl,0)" title="Sauvegarder">
+                                                    <span class="icon-content-save"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>       
+                    <md-tab>       
+                    </md-tab>       
+                </md-tabs>
+            </div>
+        </div>
+    </div>
+    

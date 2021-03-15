@@ -1,0 +1,61 @@
+
+
+  <md-dialog ng-cloak aria-label="dialog_type_effort">
+    <form name="dialogform" class="md-inline-form" novalidate="">
+     <md-subheader style="background-color: rgb(245,245,245)">
+      <h2 mat-dialog-title  style="margin:0px">Selection de village</h2>
+     </md-subheader>
+      <md-dialog-content layout="row" style="padding:30px">
+      <div layout="column" layout-gt-xs="row" flex>     
+        <md-input-container flex="100" flex-gt-xs="33">
+          <label>Préfecture</label>
+          <md-select name="prefecture_id" ng-model="dialog.prefecture_id" ng-change="modifierprefecture(dialog)" required>
+            <md-option ng-repeat="prefecture in PrefectureListe" value='{{prefecture.id}}'>
+                           {{prefecture.Code}} {{prefecture.Region}}
+            </md-option>
+          </md-select>
+          <div ng-messages="dialogform.prefecture_id.$error" role="alert">
+            <div ng-message="required">
+              <span>Préfecture obligatoire.</span>
+            </div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="100" flex-gt-xs="25">
+          <label>Commune</label>
+          <md-select name="commune_id" ng-model="dialog.commune_id" ng-init="dialog.commune_id=''" ng-change="modifiercommune(dialog)" required ng-disabled="!choixprefecture">
+            <md-option ng-repeat="co in CommuneListe" value='{{co.id}}'>
+                   {{co.Code}} {{co.Commune}}
+            </md-option>
+          </md-select>
+          <div ng-messages="dialogform.commune_id.$error" role="alert">
+            <div ng-message="required">
+              <span>Commune obligatoire.</span>
+            </div>
+          </div>
+        </md-input-container>
+        <md-input-container style="width:100%;">
+          <label>Village</label>
+            <md-select name="village_id" ng-model="dialog.village_id" ng-init="dialog.commune_id=''" required ng-disabled="!choixcommune">
+              <md-option ng-repeat="vil in VillageListe" value="{{vil.id}}">
+                                                      {{vil.Code}} {{vil.Village}}
+              </md-option>
+            </md-select>
+            <div ng-messages="dialogform.village_id.$error" role="alert">
+            <div ng-message="required">
+              <span>Village obligatoire.</span>
+            </div>
+          </div>
+        </md-input-container>
+        </div>
+      </md-dialog-content>
+      
+      <md-dialog-actions layout="row" style="background-color: rgb(245,245,245)">
+      <span>
+        <md-button type="submit" class="md-raised md-accent" ng-click="dialogResponse(dialog)" ng-disabled="dialogform.$invalid ">Confirmer</md-button>
+        <md-button type="submit" class="md-raised md-primary" ng-click="cancel()">Annuler</md-button>
+      </span>    
+      </md-dialog-actions>
+    </form>
+  </md-dialog>
+
+

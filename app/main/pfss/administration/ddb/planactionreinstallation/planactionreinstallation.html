@@ -1,0 +1,458 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Administration</span>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Données de bases</span>
+
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent" href="javascript:;">Plan d'action réinstallation / Sous-projet</span>
+            </div>
+
+            <!--div class="title">Plan d'action réinstallation </div-->
+        </div>
+    </div>
+    <!-- / HEADER -->    
+    <!-- CONTENT -->
+    <div class="content" layout="column">
+		<div class="form-wrapper">
+		<md-tabs md-dynamic-height layout="column" flex>
+			<md-tab label="Plan d'action réinstallation" ng-click="vm.Select_table(4)">
+				<md-tab-body>
+					<div class="form-wrapper md-whiteframe-1dp" >
+						<md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('plan_action_reinstallation/index','plan_action_reinstallation')">
+						  <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
+						</md-button>
+						<kendo-grid options="vm.mainGridOptions">
+							<div k-detail-template>
+								<kendo-grid k-options="vm.alldetailplanaction({{dataItem.id}})">
+								</kendo-grid>
+							</div>
+						</kendo-grid>
+					</div>
+				</md-tab-body>
+			</md-tab>
+			<md-tab label="Sous-projet" ng-click="vm.Select_table(4)">
+				<md-tab-body>
+					<fieldset layout="column" layout-gt-xs="row">
+						<legend>
+								Sous-projet
+							<md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterSous_projet()">
+							  <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
+							</md-button>
+
+							<md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('sous_projet/index','sous_projet')">
+							  <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
+							</md-button>
+						</legend>
+						<table ng-table="tableSousProjet" id="tableSousProjet" class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions">
+							<thead>
+								<tr>
+									<th class="secondary-text" ng-repeat="c in ::vm.sous_projet_column">
+										<div class="table-header">
+											<span class="column-title">{{c.titre}}</span>
+										</div>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="ss_p in vm.allRecordsSous_projet"  ng-class="{selected: ss_p.$selected}" ng-click="vm.selectionSous_projet(ss_p)">                                       
+									<td style="width:35% !important;">
+										<span ng-if="ss_p.$edit">
+											<md-input-container style="width:100%;">
+											  <label>P.A.R</label>
+												<md-select ng-model="ss_p.id_par"  style="width:90px;overflow: hidden;text-overflow: ellipsis;" ng-change="vm.modifierPAR(ss_p)">
+													<md-option value=''>&nbsp;</md-option>
+												  <md-option ng-repeat="pla in vm.allRecordsPlan_action" value="{{pla.id}}">
+													{{pla.intitule}}
+												  </md-option>
+												</md-select>
+											</md-input-container>  
+										</span>
+										<span ng-if="!ss_p.$edit">{{ss_p.plan_action_reinstallation}}</span>
+									</td>
+									<td style="width:15% !important;">
+										<span ng-if="ss_p.$edit">
+											<md-input-container style="width:100% !important;">
+												<label>Code</label>
+												<input name="code" type="text" ng-model="ss_p.code"/>
+											</md-input-container>   
+										</span>
+										<span ng-if="!ss_p.$edit">{{ss_p.code}}</span>
+									</td>
+									<td style="width:35% !important;">
+										<span ng-if="ss_p.$edit">
+											<md-input-container style="width:100% !important;">
+												<label>Description</label>
+												<input name="description" type="text" ng-model="ss_p.description"/>
+											</md-input-container>   
+										</span>
+										<span ng-if="!ss_p.$edit">{{ss_p.description}}</span>
+									</td>
+									<td style="width:15% !important;">
+										<a ng-if="!ss_p.$edit" ng-click="vm.modifierSous_projet(ss_p)" title="Modifier">
+											<span class="icon-table-edit"></span>
+										</a>
+										<a ng-if="!ss_p.$edit" ng-click="vm.supprimerSous_projet(ss_p)" title="Supprimer">
+											<span class="icon-delete"></span>
+										</a>
+										<a ng-if="ss_p.$edit" ng-click="vm.annulerSous_projet(ss_p)" title="Annuler modification">
+											<span class="icon-cancel"></span>
+										</a>
+										<a ng-if="ss_p.$edit && ss_p.code && ss_p.description" ng-click="vm.ajoutSous_projet(ss_p,0)" title="Sauvegarder">
+											<span class="icon-content-save"></span>
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</fieldset>
+				</md-tab-body>
+			</md-tab>
+			<md-tab label="Détail sous-projet" ng-click="vm.click_detail_sousprojet()" ng-disabled="!vm.detail_sousprojet">
+				<md-tab-body>
+					<div class="content" layout="column">
+						<div class="form-wrapper md-whiteframe-1dp" >
+							<div style="clear:both;"></div>
+							<div class="page-layout carded left-sidenav" layout="row">
+			
+								<!-- TOP BACKGROUND -->
+								<div class="top-bg md-accent-bg">
+								</div>
+								<!-- / TOP BACKGROUND -->
+							
+								<!-- SIDENAV -->
+								<md-sidenav class="sidenav" md-is-locked-open="$mdMedia('gt-md')" md-component-id="sidenav" ms-scroll
+											ms-sidenav-helper >
+							
+									<!-- SIDENAV HEADER -->
+									<div class="header">
+									</div>
+									<!-- / SIDENAV HEADER -->
+							
+									<!-- SIDENAV CONTENT -->
+									<md-content class="content" flex ms-scroll style=" min-width: 250px !important; max-width: 250px !important;">
+							
+										<!-- DEMO SIDENAV -->
+										<!--div ng-include="'app/main/ui/page-layouts/demo/demo-sidenav.html'"></div-->
+										<div class="demo-sidenav" >
+											<md-list style="overflow-y: scroll; max-height: calc(100vh - 4em - 164px) !important;">
+												<md-subheader class="md-no-sticky">Item</md-subheader>
+												
+												<md-list-item ng-repeat="item in vm.allitem_detail_sousprojet" ng-class="{selected: item.$selected}" ng-click="vm.selectionItem_detail_sousprojet(item)">
+													<p>{{item.nom}}</p>
+										
+													<md-divider></md-divider>
+												</md-list-item>
+										
+												<md-divider></md-divider>
+										
+											</md-list>
+										</div>
+										<!-- / DEMO SIDENAV -->
+							
+									</md-content>
+									<!-- / SIDENAV CONTENT -->
+							
+								</md-sidenav>
+								<!-- / SIDENAV -->
+							
+								<!-- CENTER -->
+								<div class="center" layout="column" flex style="min-height: 600px !important;">
+							
+									<!-- CONTENT HEADER -->
+									<div class="header" layout="row">
+										<!--div>
+											<span class="h2 white-fg">Left sidenav with independent scroll</span>
+										</div-->
+									</div>
+									<!-- / CONTENT HEADER -->
+							
+									<!-- CONTENT CARD -->
+									<div class="content-card" layout="column" flex>
+							
+										<!-- CONTENT TOOLBAR -->
+										<div class="toolbar" layout="row" layout-align="start center">
+											<md-button class="md-icon-button sidenav-toggle" ng-click="vm.toggleSidenav('sidenav')" hide-gt-md
+													   aria-label="Toggle left sidenav">
+												<md-icon md-font-icon="icon-menu" class="icon"></md-icon>
+											</md-button>
+							
+											<p style="font-weight:bold">{{vm.titre_contenu}}</p>
+										</div>
+										<!-- / CONTENT TOOLBAR -->
+							
+										<!-- CONTENT -->
+										<md-content class="content" flex ms-scroll>
+							
+											<!-- DEMO CONTENT -->
+											<!--div ng-include="'app/main/ui/page-layouts/demo/demo-content.html'"></div-->
+											<!-- / DEMO CONTENT -->
+											<div ng-show="vm.selected_itemdetail_sousprojet.id==1">                                    
+												<kendo-grid k-options="vm.mainGridOptionstravaux">
+												</kendo-grid>
+											</div>
+											
+											<div ng-show="vm.selected_itemdetail_sousprojet.id==2">                                    
+												<kendo-grid options="vm.mainGridOptionsO_Materiaux">
+												</kendo-grid>
+											</div>
+											
+											<div ng-show="vm.selected_itemdetail_sousprojet.id==3">                                    
+												<kendo-grid options="vm.mainGridOptionsMain_renume">
+												</kendo-grid>
+											</div>
+											
+											<div ng-show="vm.selected_itemdetail_sousprojet.id==4">                                    
+												<kendo-grid options="vm.mainGridOptionsPlanning">
+												</kendo-grid>
+											</div>
+											
+											<div ng-show="vm.selected_itemdetail_sousprojet.id==5">                                    
+												<kendo-grid options="vm.mainGridOptionsDepenses">
+												</kendo-grid>
+											</div>
+											
+											<div ng-show="vm.selected_itemdetail_sousprojet.id==6">                                    
+												<kendo-grid options="vm.mainGridOptionsIndicateurs">
+												</kendo-grid>
+											</div>
+											
+											<div ng-show="vm.selected_itemdetail_sousprojet.id==7">                                    
+												<kendo-grid options="vm.mainGridOptionsResultats">
+												</kendo-grid>
+											</div>
+											
+											<div ng-show="vm.selected_itemdetail_sousprojet.id==8">                                    
+												<kendo-grid options="vm.mainGridOptionsSauvegarde_env">
+												</kendo-grid>
+											</div>
+											<!--/ Type infrastructure--> 
+							
+										</md-content>
+										<!-- / CONTENT -->
+							
+									</div>
+									<!-- / CONTENT CARD -->
+							
+								</div>
+								<!-- / CENTER -->
+							
+							</div>
+							<!--Type infrastructure  -->
+							<!--kendo-grid options="vm.mainGridOptions">
+								<div k-detail-template>
+								<kendo-grid k-options="vm.allinfrastructure({{dataItem.id}})">
+								</kendo-grid>
+								</div>
+							</kendo-grid-->
+							<!--/ Type infrastructure--> 
+						</div>
+					</div>
+				</md-tab-body>
+			</md-tab>
+			
+			<md-tab label="Sauvegarde environnementale " ng-click="vm.click_sauvegarde_env()" ng-disabled="!vm.detail_sousprojet">
+				<md-tab-body>
+					<div class="form-wrapper md-whiteframe-1dp" >
+						<kendo-grid options="vm.mainGridOptionsSauvegarde_env">
+						</kendo-grid>
+					</div>
+				</md-tab-body>
+			</md-tab>
+			
+			<md-tab label="Filtration environnementale " ng-click="vm.click_filtration_env()" ng-disabled="!vm.detail_sousprojet">
+				<md-tab-body>
+					<div style="overflow: auto; width: 100%;">
+					<fieldset layout="row" layout-gt-xs="row" >
+						<legend>
+								Filtration environnementale
+							<md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterFiltration_env()">
+							  <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
+							</md-button>
+
+							<md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('filtration_env/index','filtration_env')">
+							  <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
+							</md-button>
+						</legend>
+						<table ng-table="tableFiltration_env" id="tableFiltration_env" class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+							<thead>
+								<tr>
+									<th class="secondary-text" ng-repeat="c in ::vm.filtration_env_column">
+										<div class="table-header">
+											<span class="column-title">{{c.titre}}</span>
+										</div>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="filt_env in vm.allFiltration_env"  ng-class="{selected: filt_env.$selected}" ng-click="vm.selectionFiltration_env(filt_env)">                                      
+									
+									<td style="width:15% !important;">
+										<span ng-if="filt_env.$edit">
+											<md-input-container style="width:100% !important;">
+												<label>Nature sous projet</label>
+												<input name="nature_sous_projet" type="text" ng-model="filt_env.nature_sous_projet"/>
+											</md-input-container>   
+										</span>
+										<span ng-if="!filt_env.$edit">{{filt_env.nature_sous_projet}}</span>
+									</td>
+									<td style="width:35% !important;">
+										<span ng-if="filt_env.$edit">
+											<md-input-container style="width:100% !important;">
+												<label>Secretariat</label>
+												<input name="secretariat" type="text" ng-model="filt_env.secretariat"/>
+											</md-input-container>   
+										</span>
+										<span ng-if="!filt_env.$edit">{{filt_env.secretariat}}</span>
+									</td>
+									<td style="width:35% !important;">
+										<span ng-if="filt_env.$edit">
+											<md-input-container style="width:100% !important;">
+												<label>Intitule sous projet</label>
+												<input name="intitule_sous_projet" type="text" ng-model="filt_env.intitule_sous_projet"/>
+											</md-input-container>   
+										</span>
+										<span ng-if="!filt_env.$edit">{{filt_env.intitule_sous_projet}}</span>
+									</td>
+									<td style="width:35% !important;">
+										<span ng-if="filt_env.$edit">
+											<md-input-container style="width:100% !important;">
+												<label>Type sous projet</label>
+												<input name="type_sous_projet" type="text" ng-model="filt_env.type_sous_projet"/>
+											</md-input-container>   
+										</span>
+										<span ng-if="!filt_env.$edit">{{filt_env.type_sous_projet}}</span>
+									</td>
+									<td style="width:35% !important;">
+										<span ng-if="filt_env.$edit">
+											<md-input-container style="width:100% !important;">
+												<label>Localisation</label>
+												<input name="localisation" type="text" ng-model="filt_env.localisation"/>
+											</md-input-container>   
+										</span>
+										<span ng-if="!filt_env.$edit">{{filt_env.localisation}}</span>
+									</td>
+									<td style="width:35% !important;">
+										<span ng-if="filt_env.$edit">
+											<md-input-container style="width:100% !important;">
+												<label>Objectif sous projet</label>
+												<input name="objectif_sous_projet" type="text" ng-model="filt_env.objectif_sous_projet"/>
+											</md-input-container>   
+										</span>
+										<span ng-if="!filt_env.$edit">{{filt_env.objectif_sous_projet}}</span>
+									</td>
+									<td style="width:35% !important;">
+										<span ng-if="filt_env.$edit">
+											<md-input-container style="width:100% !important;">
+												<label>Activite sous projet</label>
+												<input name="activite_sous_projet" type="text" ng-model="filt_env.activite_sous_projet"/>
+											</md-input-container>   
+										</span>
+										<span ng-if="!filt_env.$edit">{{filt_env.activite_sous_projet}}</span>
+									</td>
+									<td style="width:35% !important;">
+										<span ng-if="filt_env.$edit">
+											<md-input-container style="width:100% !important;">
+												<label>Coût estimé sous projet</label>
+												<input name="cout_estime_sous_projet" type="number" ng-model="filt_env.cout_estime_sous_projet"/>
+											</md-input-container>   
+										</span>
+										<span ng-if="!filt_env.$edit">{{filt_env.cout_estime_sous_projet}}</span>
+									</td>
+									<td style="width:35% !important;">
+										<span ng-if="filt_env.$edit">
+											<md-input-container style="width:100% !important;">
+												<label>Envergure sous projet</label>
+												<input name="envergure_sous_projet" type="text" ng-model="filt_env.envergure_sous_projet"/>
+											</md-input-container>   
+										</span>
+										<span ng-if="!filt_env.$edit">{{filt_env.envergure_sous_projet}}</span>
+									</td>
+									<td style="width:35% !important;">
+										<span ng-if="filt_env.$edit">
+											<md-input-container style="width:100% !important;">
+												<label>Ouvrage prevu</label>
+												<input name="ouvrage_prevu" type="text" ng-model="filt_env.ouvrage_prevu"/>
+											</md-input-container>   
+										</span>
+										<span ng-if="!filt_env.$edit">{{filt_env.ouvrage_prevu}}</span>
+									</td>
+									<td style="width:35% !important;">
+										<span ng-if="filt_env.$edit">
+											<md-input-container style="width:100% !important;">
+												<label>Description sous projet</label>
+												<input name="description_sous_projet" type="text" ng-model="filt_env.description_sous_projet"/>
+											</md-input-container>   
+										</span>
+										<span ng-if="!filt_env.$edit">{{filt_env.description_sous_projet}}</span>
+									</td>
+									<td style="width:35% !important;">
+										<span ng-if="filt_env.$edit">
+											<md-input-container style="width:100% !important;">
+												<label>Environnement naturel</label>
+												<input name="environnement_naturel" type="text" ng-model="filt_env.environnement_naturel"/>
+											</md-input-container>   
+										</span>
+										<span ng-if="!filt_env.$edit">{{filt_env.environnement_naturel}}</span>
+									</td>
+									<td style="width:35% !important;">
+										<span ng-if="filt_env.$edit">																						
+											<md-datepicker ng-model="filt_env.date_visa_rt_ibd" md-placeholder="Date visa RT IBD">                       
+											</md-datepicker>   
+										</span>
+										<span ng-if="!filt_env.$edit">{{vm.formatDate(filt_env.date_visa_rt_ibd)}}</span>
+									</td>
+									<td style="width:35% !important;">
+										<span ng-if="filt_env.$edit">											
+											<md-datepicker ng-model="filt_env.date_visa_res" md-placeholder="Date visa RES">                       
+											</md-datepicker>   
+										</span>
+										<span ng-if="!filt_env.$edit">{{vm.formatDate(filt_env.date_visa_res)}}</span>
+									</td>
+									<td style="width:15% !important;">
+										<a ng-if="!filt_env.$edit" ng-click="vm.modifierFiltration_env(filt_env)" title="Modifier">
+											<span class="icon-table-edit"></span>
+										</a>
+										<a ng-if="!filt_env.$edit" ng-click="vm.supprimerFiltration_env(filt_env)" title="Supprimer">
+											<span class="icon-delete"></span>
+										</a>
+										<a ng-if="filt_env.$edit" ng-click="vm.annulerFiltration_env(filt_env)" title="Annuler modification">
+											<span class="icon-cancel"></span>
+										</a>
+										<a ng-if="filt_env.$edit && filt_env.nature_sous_projet && filt_env.secretariat && filt_env.intitule_sous_projet && filt_env.type_sous_projet && filt_env.localisation && filt_env.objectif_sous_projet  && filt_env.activite_sous_projet && filt_env.cout_estime_sous_projet && filt_env.envergure_sous_projet && filt_env.ouvrage_prevu && filt_env.description_sous_projet && filt_env.environnement_naturel && filt_env.date_visa_rt_ibd && filt_env.date_visa_res" ng-click="vm.ajoutFiltration_env(filt_env,0)" title="Sauvegarder">
+											<span class="icon-content-save"></span>
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</fieldset>
+						
+				</div>
+				</md-tab-body>
+			</md-tab>			
+			<md-tab label="Aspects et problèmes environnementaux " ng-click="vm.click_Aspetsetproblemes_env()" ng-disabled="!vm.detail_sousprojet">
+				<md-tab-body>
+					<div class="form-wrapper md-whiteframe-1dp" >
+						<kendo-grid options="vm.mainGridOptionsAspects_env">
+                            <div k-detail-template>
+                                <kendo-grid k-options="vm.allproblemes_env({{dataItem.id}})">
+                                </kendo-grid>
+                            </div>
+						</kendo-grid>
+					</div>
+				</md-tab-body>
+			</md-tab>
+			<md-tab>
+			</md-tab>
+		</md-tabs>
+	</div>
+    </div>
+    <!-- CONTENT -->
+</div>
