@@ -3,11 +3,11 @@
     'use strict';
 
     angular
-        .module('app.population.reporting', [			
-         //  'app.population.reporting.nombrebeneficiaire',
-            'app.population.reporting.environment_et_systeme',
-            'app.population.reporting.carte'
-            //'app.population.reporting.systeme_protection_social',
+        .module('app.pfss.reporting', [			
+         //  'app.pfss.reporting.nombrebeneficiaire',
+            'app.pfss.reporting.environment_et_systeme',
+            'app.pfss.reporting.carte'
+            //'app.pfss.reporting.systeme_protection_social',
             ])
          .run(testPermission)
         .config(config);
@@ -16,7 +16,7 @@
     /** @ngInject */
     function config(msNavigationServiceProvider)
     {
-        msNavigationServiceProvider.saveItem('population.reporting', {
+        msNavigationServiceProvider.saveItem('pfss.reporting', {
             title : 'Suivi Stratégique',
             icon  : 'icon-chart-bar',
             weight: 7,

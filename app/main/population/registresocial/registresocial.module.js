@@ -3,18 +3,18 @@
     'use strict';
 
     angular
-        .module('app.population.registresocial', [])
+        .module('app.pfss.registresocial', [])
         .config(config);
 
     /** @ngInject */
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_registresocial', {
+        $stateProvider.state('app.pfss_registresocial', {
             url      : '/registresocial',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/registresocial/registresocial.html',
+                    templateUrl: 'app/main/pfss/registresocial/registresocial.html',
                     controller : 'RegistresocialController as vm'
                 }
             },
@@ -27,10 +27,10 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('population.registresocial', {
+        msNavigationServiceProvider.saveItem('pfss.registresocial', {
             title: 'Régistre social',
             icon  : 'icon-swap-horizontal',
-            state: 'app.population_registresocial',
+            state: 'app.pfss_registresocial',
 			  weight: 3
         });
     }

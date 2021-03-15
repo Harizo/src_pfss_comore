@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.importdecoupage.importcoordonneescommune')
+        .module('app.pfss.importdecoupage.importcoordonneescommune')
         .controller('ImportcoordonneescommuneController', ImportcoordonneescommuneController);
     /** @ngInject */
     function ImportcoordonneescommuneController($mdDialog, $scope, apiFactory, $state,apiUrl)  {

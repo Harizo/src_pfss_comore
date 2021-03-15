@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.traitement.decaissement')
+        .module('app.pfss.traitement.decaissement')
         .controller('DecaissementController', DecaissementController);
 
     /** @ngInject */

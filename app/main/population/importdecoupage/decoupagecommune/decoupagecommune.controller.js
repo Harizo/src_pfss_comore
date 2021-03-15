@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.importdecoupage.decoupagecommune')
+        .module('app.pfss.importdecoupage.decoupagecommune')
         .controller('DecoupagecommuneController', DecoupagecommuneController);
     /** @ngInject */
     function DecoupagecommuneController($mdDialog, $scope, apiFactory, $state,apiUrl)  {

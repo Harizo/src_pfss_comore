@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.administration.groupe_user', [])
+        .module('app.pfss.administration.groupe_user', [])
         .run(notification)        
         .config(config);
         var vs = {};
@@ -13,11 +13,11 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_admin_groupe_user', {
+        $stateProvider.state('app.pfss_admin_groupe_user', {
             url      : '/administration/groupe_user',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/administration/groupe_user/groupe_user.html',
+                    templateUrl: 'app/main/pfss/administration/groupe_user/groupe_user.html',
                     controller : 'Groupe_userController as vm'
                 }
             },
@@ -32,14 +32,14 @@
         
 
         // Navigation
-        msNavigationServiceProvider.saveItem('population.administration.groupe_user', {
+        msNavigationServiceProvider.saveItem('pfss.administration.groupe_user', {
             title: "Groupes d'utilisateurs",
             icon  : 'icon-account-multiple',
-            state: 'app.population_admin_groupe_user',
-            hidden:function()
-            {
-                    return affichage;
-            },
+            state: 'app.pfss_admin_groupe_user',
+            // hidden:function()
+            // {
+                    // return affichage;
+            // },
 			weight: 1
         });
     }

@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.registresocial')
+        .module('app.pfss.registresocial')
         .controller('RegistresocialController', RegistresocialController);
 
     /** @ngInject */

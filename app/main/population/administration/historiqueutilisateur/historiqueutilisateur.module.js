@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.administration.historiqueutilisateur', [])              
+        .module('app.pfss.administration.historiqueutilisateur', [])              
         .run(testPermission)        
         .config(config);
         var vs ;
@@ -12,11 +12,11 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_admin_historiqueutilisateur', {
+        $stateProvider.state('app.pfss_admin_historiqueutilisateur', {
             url      : '/administration/historiqueutilisateur',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/administration/historiqueutilisateur/historiqueutilisateur.html',
+                    templateUrl: 'app/main/pfss/administration/historiqueutilisateur/historiqueutilisateur.html',
                     controller : 'HistoriqueutilisateurController as vm'
                 }
             },
@@ -31,10 +31,10 @@
         
 
         // Navigation
-        msNavigationServiceProvider.saveItem('population.administration.historiqueutilisateur', {
+        msNavigationServiceProvider.saveItem('pfss.administration.historiqueutilisateur', {
             title: 'Historique utilisateur',
             icon  : 'icon-package-variant',
-            state: 'app.population_admin_historiqueutilisateur',
+            state: 'app.pfss_admin_historiqueutilisateur',
             hidden: function()
             {
                     return vs;

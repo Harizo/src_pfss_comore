@@ -23,11 +23,11 @@
         <!--Geographique  -->
           <kendo-grid options="vm.mainGridOptions">
             <div k-detail-template>
-              <kendo-grid k-options="vm.alldistrict({{dataItem.id}})">
+              <kendo-grid k-options="vm.allregion({{dataItem.id}})">
                 <div k-detail-template>
                   <kendo-grid k-options="vm.allcommune({{dataItem.id}})">
                     <div k-detail-template>
-                      <kendo-grid k-options="vm.allfokontany({{dataItem.id}})">
+                      <kendo-grid k-options="vm.allvillage({{dataItem.id}})">
                       </kendo-grid>
                   </div>
                   </kendo-grid>

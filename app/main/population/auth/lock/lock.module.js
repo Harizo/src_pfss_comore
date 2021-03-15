@@ -3,22 +3,22 @@
     'use strict';
 
     angular
-        .module('app.population.auth.lock', [])
+        .module('app.pfss.auth.lock', [])
         .config(config);
 
     /** @ngInject */
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_auth_lock', {
+        $stateProvider.state('app.pfss_auth_lock', {
             url      : '/auth/lock',
             views    : {
                 'main@'                      : {
                     templateUrl: 'app/core/layouts/content-only.html',
                     controller : 'MainController as vm'
                 },
-                'content@app.population_auth_lock': {
-                    templateUrl: 'app/main/population/auth/lock/lock.html',
+                'content@app.pfss_auth_lock': {
+                    templateUrl: 'app/main/pfss/auth/lock/lock.html',
                     controller : 'LockController as vm'
                 }
             },
@@ -31,7 +31,7 @@
         });
 
         // Translation
-        $translatePartialLoaderProvider.addPart('app/main/population/auth/lock');
+        $translatePartialLoaderProvider.addPart('app/main/pfss/auth/lock');
     }
 
 })();

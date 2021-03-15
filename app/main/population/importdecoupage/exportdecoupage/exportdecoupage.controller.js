@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.importdecoupage.exportdecoupage')
+        .module('app.pfss.importdecoupage.exportdecoupage')
         .controller('ExportdecoupageController', ExportdecoupageController);
     /** @ngInject */
     function ExportdecoupageController($mdDialog, $scope, apiFactory, $state,apiUrl)  {

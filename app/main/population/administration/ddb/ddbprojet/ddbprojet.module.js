@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.ddb_adm.projet', [])
+        .module('app.pfss.ddb_adm.projet', [])
         .run(testPermission)
         .config(config);
         var vs ;
@@ -12,11 +12,11 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_ddb_ddbprojet', {
+        $stateProvider.state('app.pfss_ddb_ddbprojet', {
             url      : '/donnees-de-base/programme',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/administration/ddb/ddbprojet/ddbprojet.html',
+                    templateUrl: 'app/main/pfss/administration/ddb/ddbprojet/ddbprojet.html',
                     controller : 'DdbprojetController as vm'
                 }
             },
@@ -29,14 +29,14 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('population.administration.ddb_adm.ddbprojet', {
+        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.ddbprojet', {
             title: "Variables programme",
             icon  : 'icon-swap-horizontal',
-            state: 'app.population_ddb_ddbprojet',
-            hidden: function()
+            state: 'app.pfss_ddb_ddbprojet',
+          /*  hidden: function()
             {
                     return vs;
-            }
+            }*/
         });
     }
     function testPermission(loginService,$cookieStore,apiFactory)

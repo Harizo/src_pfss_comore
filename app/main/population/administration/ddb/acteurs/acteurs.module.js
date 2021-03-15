@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.ddb_adm.acteurs', [])
+        .module('app.pfss.ddb_adm.acteurs', [])
         .run(testPermission)
         .config(config);
         var vs ;
@@ -13,11 +13,11 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_ddb_acteurs', {
+        $stateProvider.state('app.pfss_ddb_acteurs', {
             url      : '/donnees-de-base/acteurs',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/administration/ddb/acteurs/acteurs.html',
+                    templateUrl: 'app/main/pfss/administration/ddb/acteurs/acteurs.html',
                     controller : 'ActeursController as vm'
                 }
             },
@@ -30,14 +30,14 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('population.administration.ddb_adm.acteurs', {
-            title: "Acteurs/Type transfert",
+        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.acteurs', {
+            title: "Sous-projet/Acteurs/Type transfert",
             icon  : 'icon-swap-horizontal',
-            state: 'app.population_ddb_acteurs',
-            hidden: function()
-            {
-                    return vs;
-            }
+            state: 'app.pfss_ddb_acteurs',
+            // hidden: function()
+            // {
+                    // return vs;
+            // }
         });
     }
 

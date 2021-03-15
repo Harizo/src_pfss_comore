@@ -3,18 +3,18 @@
     'use strict';
 
     angular
-        .module('app.population.ddb.enquetesurmenage', [])
+        .module('app.pfss.ddb.enquetesurmenage', [])
         .config(config);
 
     /** @ngInject */
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_ddb_enquetesurmenage', {
+        $stateProvider.state('app.pfss_ddb_enquetesurmenage', {
             url      : '/donnees-de-base/enquete-sur-menage',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/ddb/enquetesurmenage/enquetesurmenage.html',
+                    templateUrl: 'app/main/pfss/ddb/enquetesurmenage/enquetesurmenage.html',
                     controller : 'EnquetesurmenageController as vm'
                 }
             },
@@ -27,10 +27,10 @@
         });
 
         // Navigation
-        msNavigationServiceProvider.saveItem('population.ddb.enquetesurmenage', {
+        msNavigationServiceProvider.saveItem('pfss.ddb.enquetesurmenage', {
             title: 'Enquête/Ménage',
             icon  : 'icon-tile-four',
-            state: 'app.population_ddb_enquetesurmenage'
+            state: 'app.pfss_ddb_enquetesurmenage'
         });
     }
 

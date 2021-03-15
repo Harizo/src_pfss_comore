@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.recommandation', ['ngCookies'])
+        .module('app.pfss.recommandation', ['ngCookies'])
         // .run(notification)        
         .config(config);
         var vs = {};
@@ -11,11 +11,11 @@
         var hide_menu ;
     /** @ngInject */
    function config($stateProvider,  $translatePartialLoaderProvider, msNavigationServiceProvider)  {
-        $stateProvider.state('app.population_recommandation', {
+        $stateProvider.state('app.pfss_recommandation', {
             url      : '/recommandations',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/recommandation/recommandation.html',
+                    templateUrl: 'app/main/pfss/recommandation/recommandation.html',
                     controller : 'RecommandationController as vm'
                 }
             },
@@ -26,11 +26,11 @@
               page: "Recommandations"
             }
         });
-		msNavigationServiceProvider.saveItem('population.recommandation', {
+		msNavigationServiceProvider.saveItem('pfss.recommandation', {
 			title: 'Recommandations',
 			icon  : 'icon-account-switch',
 			weight: 11,
-			state: 'app.population_recommandation',
+			state: 'app.pfss_recommandation',
 		/*	badge:vs,
             hidden: function()
             {

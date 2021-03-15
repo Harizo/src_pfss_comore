@@ -3,18 +3,18 @@
     'use strict';
 
     angular
-        .module('app.population.accueil', [])
+        .module('app.pfss.accueil', [])
         .config(config);
 
     /** @ngInject */
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_accueil', {
+        $stateProvider.state('app.pfss_accueil', {
             url      : '/accueil',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/accueil/accueil.html',
+                    templateUrl: 'app/main/pfss/accueil/accueil.html',
                     controller : 'AccueilController as vm'
                 }
             },
@@ -27,13 +27,13 @@
         });
 
         // Translation
-        $translatePartialLoaderProvider.addPart('app/main/population/accueil');
+        $translatePartialLoaderProvider.addPart('app/main/pfss/accueil');
 
         // Navigation
-        msNavigationServiceProvider.saveItem('population.accueil', {
+        msNavigationServiceProvider.saveItem('pfss.accueil', {
             title : 'Accueil',
             icon  : 'icon-alarm-check',
-            state : 'app.population_accueil',
+            state : 'app.pfss_accueil',
             translate: 'accueil.menu.titre',
             weight: 1,
             hidden: function ()

@@ -3,18 +3,18 @@
     'use strict';
 
     angular
-        .module('app.population.importdecoupage.decoupageregion', [])
+        .module('app.pfss.importdecoupage.decoupageregion', [])
         .config(config);
 
     /** @ngInject */
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_importdecoupage_decoupageregion', {
+        $stateProvider.state('app.pfss_importdecoupage_decoupageregion', {
             url      : '/importdecoupage/import-region',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/importdecoupage/decoupageregion/decoupageregion.html',
+                    templateUrl: 'app/main/pfss/importdecoupage/decoupageregion/decoupageregion.html',
                     controller : 'DecoupageregionController as vm'
                 }
             },
@@ -27,10 +27,10 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('population.importdecoupage.decoupageregion', {
+        msNavigationServiceProvider.saveItem('pfss.importdecoupage.decoupageregion', {
             title: 'Région',
             icon  : 'icon-swap-horizontal',
-            state: 'app.population_importdecoupage_decoupageregion',
+            state: 'app.pfss_importdecoupage_decoupageregion',
 			weight: 1
         });
     }

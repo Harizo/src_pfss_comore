@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.auth.reset-password')
+        .module('app.pfss.auth.reset-password')
         .controller('ResetPasswordController', ResetPasswordController);
 
     /** @ngInject */

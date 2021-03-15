@@ -3,18 +3,18 @@
     'use strict';
 
     angular
-        .module('app.population.importdecoupage.importcoordonneescommune', [])
+        .module('app.pfss.importdecoupage.importcoordonneescommune', [])
         .config(config);
 
     /** @ngInject */
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_importdecoupage_importcoordonneescommune', {
+        $stateProvider.state('app.pfss_importdecoupage_importcoordonneescommune', {
             url      : '/importdecoupage/import-Coordonnées-commune',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/importdecoupage/importcoordonneescommune/importcoordonneescommune.html',
+                    templateUrl: 'app/main/pfss/importdecoupage/importcoordonneescommune/importcoordonneescommune.html',
                     controller : 'ImportcoordonneescommuneController as vm'
                 }
             },
@@ -27,10 +27,10 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('population.importdecoupage.importcoordonneescommune', {
+        msNavigationServiceProvider.saveItem('pfss.importdecoupage.importcoordonneescommune', {
             title: 'Import coordonnées commune',
             icon  : 'icon-swap-horizontal',
-            state: 'app.population_importdecoupage_importcoordonneescommune',
+            state: 'app.pfss_importdecoupage_importcoordonneescommune',
 			weight: 6
         });
     }

@@ -3,18 +3,18 @@
     'use strict';
 
     angular
-        .module('app.population.beneficiaire', [])
+        .module('app.pfss.beneficiaire', [])
         .config(config);
 
     /** @ngInject */
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_beneficiaire', {
+        $stateProvider.state('app.pfss_beneficiaire', {
             url      : '/beneficiaire',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/beneficiaire/beneficiaire.html',
+                    templateUrl: 'app/main/pfss/beneficiaire/beneficiaire.html',
                     controller : 'BeneficiaireController as vm'
                 }
             },
@@ -27,10 +27,10 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('population.beneficiaire', {
+        msNavigationServiceProvider.saveItem('pfss.beneficiaire', {
             title: 'Bénéficiaire',
             icon  : 'icon-swap-horizontal',
-            state: 'app.population_beneficiaire',
+            state: 'app.pfss_beneficiaire',
 			  weight: 5
         });
     }

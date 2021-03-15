@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.ddb_adm.variable_individu', [])
+        .module('app.pfss.ddb_adm.variable_individu', [])
         .run(testPermission)
         .config(config);
         var vs ;
@@ -12,11 +12,11 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_ddb_enquetesurindividu', {
+        $stateProvider.state('app.pfss_ddb_enquetesurindividu', {
             url      : '/donnees-de-base/enquete-sur-individu',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/administration/ddb/enquetesurindividu/enquetesurindividu.html',
+                    templateUrl: 'app/main/pfss/administration/ddb/enquetesurindividu/enquetesurindividu.html',
                     controller : 'EnquetesurindividuController as vm'
                 }
             },
@@ -29,10 +29,10 @@
         });
 
         // Navigation
-        msNavigationServiceProvider.saveItem('population.administration.ddb_adm.enquetesurindividu', {
+        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.enquetesurindividu', {
             title: "Variable/Individu",
             icon  : 'icon-tile-four',
-            state: 'app.population_ddb_enquetesurindividu',
+            state: 'app.pfss_ddb_enquetesurindividu',
             hidden: function()
             {
                     return vs;

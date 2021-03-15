@@ -2,7 +2,7 @@
 {
     'use strict';
     angular
-        .module('app.population.validationdonnees.validationintervention')
+        .module('app.pfss.validationdonnees.validationintervention')
         .directive('customOnChange', function() {
 			return {
 				restrict: 'A',

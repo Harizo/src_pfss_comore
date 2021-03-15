@@ -3,9 +3,9 @@
     'use strict';
 
     angular
-        .module('app.population.importationdonnees.importationintervention', [])
+        .module('app.pfss.importationdonnees.importationintervention', [])
         .run(testPermission)
-         .run(Donnees_non_importees)
+         // .run(Donnees_non_importees)
         .config(config);
         var vs ;
 	var nombre_non_importes={};
@@ -14,11 +14,11 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_importationdonnees_importationintervention', {
+        $stateProvider.state('app.pfss_importationdonnees_importationintervention', {
             url      : '/importationdonnees/importation-intervention',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/importationdonnees/importationintervention/importationintervention.html',
+                    templateUrl: 'app/main/pfss/importationdonnees/importationintervention/importationintervention.html',
                     controller : 'ImportationinterventionController as vm'
                 }
             },
@@ -31,11 +31,11 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('population.importationdonnees.importationintervention', {
+        msNavigationServiceProvider.saveItem('pfss.importationdonnees.importationintervention', {
             title: 'Suivi Intervention',
             icon  : 'icon-swap-horizontal',
-            state: 'app.population_importationdonnees_importationintervention',
-            badge: nombre_non_importes,
+            state: 'app.pfss_importationdonnees_importationintervention',
+            // badge: nombre_non_importes,
 			weight: 2,
             hidden: function()
             {

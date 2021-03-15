@@ -3,18 +3,18 @@
     'use strict';
 
     angular
-        .module('app.population.importdecoupage.decoupagecommune', [])
+        .module('app.pfss.importdecoupage.decoupagecommune', [])
         .config(config);
 
     /** @ngInject */
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_importdecoupage_decoupagecommune', {
+        $stateProvider.state('app.pfss_importdecoupage_decoupagecommune', {
             url      : '/importdecoupage/import-commune',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/importdecoupage/decoupagecommune/decoupagecommune.html',
+                    templateUrl: 'app/main/pfss/importdecoupage/decoupagecommune/decoupagecommune.html',
                     controller : 'DecoupagecommuneController as vm'
                 }
             },
@@ -27,10 +27,10 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('population.importdecoupage.decoupagecommune', {
+        msNavigationServiceProvider.saveItem('pfss.importdecoupage.decoupagecommune', {
             title: 'Commune',
             icon  : 'icon-swap-horizontal',
-            state: 'app.population_importdecoupage_decoupagecommune',
+            state: 'app.pfss_importdecoupage_decoupagecommune',
 			weight: 3
         });
     }

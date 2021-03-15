@@ -3,7 +3,7 @@
     'use strict';
 	// Historique de navigation de chaque utilisateur
     angular
-        .module('app.population.administration.historiqueutilisateur')
+        .module('app.pfss.administration.historiqueutilisateur')
         .controller('HistoriqueutilisateurController', HistoriqueutilisateurController);
 
     /** @ngInject */

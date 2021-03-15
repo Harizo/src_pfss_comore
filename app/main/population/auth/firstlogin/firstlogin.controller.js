@@ -3,7 +3,7 @@
     'use strict';
 	// Premier login d'un utilisateur
     angular
-        .module('app.population.auth.firstlogin')
+        .module('app.pfss.auth.firstlogin')
         .controller('FirstloginController', FirstloginController);
 
     /** @ngInject */

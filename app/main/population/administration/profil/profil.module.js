@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.administration.profil', [])  
+        .module('app.pfss.administration.profil', [])  
         .config(config);
         var vs = {};
            
@@ -12,11 +12,11 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_admin_profil', {
+        $stateProvider.state('app.pfss_admin_profil', {
             url      : '/administration/profil',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/administration/profil/profil.html',
+                    templateUrl: 'app/main/pfss/administration/profil/profil.html',
                     controller : 'ProfilController as vm'
                 }
             },
@@ -29,13 +29,13 @@
         });
 
         // Translation
-     //   $translatePartialLoaderProvider.addPart('app/main/population/ddb/activite');
+     //   $translatePartialLoaderProvider.addPart('app/main/pfss/ddb/activite');
 
         /*Navigation
-        msNavigationServiceProvider.saveItem('population.administration.utilisateurs.profil', {
+        msNavigationServiceProvider.saveItem('pfss.administration.utilisateurs.profil', {
             title: 'Profil',
             icon  : 'icon-account-key',
-            state: 'app.population_admin_profil'
+            state: 'app.pfss_admin_profil'
         });*/
    
     }

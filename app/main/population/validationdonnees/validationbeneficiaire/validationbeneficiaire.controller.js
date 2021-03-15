@@ -2,7 +2,7 @@
 {
     'use strict';
     angular
-        .module('app.population.validationdonnees.validationbeneficiaire')
+        .module('app.pfss.validationdonnees.validationbeneficiaire')
 		// Directive et service pour upload fichier excel intervention
         .directive('customOnChange', function() {
 			return {

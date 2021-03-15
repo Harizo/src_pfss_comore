@@ -3,13 +3,13 @@
     'use strict';
 
     angular
-        .module('app.population.importdecoupage', [			
-           // 'app.population.importdecoupage.decoupageregion',
-           // 'app.population.importdecoupage.decoupagedistrict',
-           // 'app.population.importdecoupage.decoupagecommune',
-           // 'app.population.importdecoupage.decoupagefokontany',
-           'app.population.importdecoupage.exportdecoupage',
-           'app.population.importdecoupage.importcoordonneescommune',
+        .module('app.pfss.importdecoupage', [			
+           // 'app.pfss.importdecoupage.decoupageregion',
+           // 'app.pfss.importdecoupage.decoupagedistrict',
+           // 'app.pfss.importdecoupage.decoupagecommune',
+           // 'app.pfss.importdecoupage.decoupagefokontany',
+           'app.pfss.importdecoupage.exportdecoupage',
+           'app.pfss.importdecoupage.importcoordonneescommune',
             ])
         // .run(testPermission)
         .config(config);
@@ -18,7 +18,7 @@
     /** @ngInject */
     function config(msNavigationServiceProvider)
     {
-        msNavigationServiceProvider.saveItem('population.importdecoupage', {
+        msNavigationServiceProvider.saveItem('pfss.importdecoupage', {
             title : 'Import découpage admin',
             icon  : 'icon-data',
             weight: 9,

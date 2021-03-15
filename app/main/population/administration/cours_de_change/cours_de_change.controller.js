@@ -3,7 +3,7 @@
     'use strict';
 	// Historique de navigation de chaque utilisateur
     angular
-        .module('app.population.administration.cours_de_change')
+        .module('app.pfss.administration.cours_de_change')
         .controller('CoursdechangeController', CoursdechangeController);
 
     /** @ngInject */
@@ -146,7 +146,7 @@
 			if(!id) return;
 			$mdDialog.show({
 			  controller: DialogController,
-			  templateUrl: 'app/main/population/administration/cours_de_change/ShowTabDialog.html',
+			  templateUrl: 'app/main/pfss/administration/cours_de_change/ShowTabDialog.html',
 			  parent: angular.element(document.body),
 			  targetEvent: ev,
 			  clickOutsideToClose:false

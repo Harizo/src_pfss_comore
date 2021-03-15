@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.auth.lock')
+        .module('app.pfss.auth.lock')
         .controller('LockController', LockController);
 
     /** @ngInject */

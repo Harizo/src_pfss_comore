@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.annuaire', [])
+        .module('app.pfss.annuaire', [])
         .run(testPermission)        
         .config(config);
         var vs ;
@@ -12,11 +12,11 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_annuaire', {
+        $stateProvider.state('app.pfss_annuaire', {
             url      : '/annuaire-intervention',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/annuaire/annuaire.html',
+                    templateUrl: 'app/main/pfss/annuaire/annuaire.html',
                     controller : 'AnnuaireController as vm'
                 }
             },
@@ -29,10 +29,10 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('population.annuaire', {
+        msNavigationServiceProvider.saveItem('pfss.annuaire', {
             title: 'Annuaire Intervention',
             icon  : 'icon-file-multiple',
-            state: 'app.population_annuaire',
+            state: 'app.pfss_annuaire',
 			weight: 6,
             hidden: function()
             {

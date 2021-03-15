@@ -3,9 +3,9 @@
     'use strict';
 
     angular
-        .module('app.population.validationdonnees.validationbeneficiaire', [])
+        .module('app.pfss.validationdonnees.validationbeneficiaire', [])
         .run(testPermission)
-        .run(Donnees_non_validees)
+        // .run(Donnees_non_validees)
         .config(config);
         var vs ;
 	var nombre_non_valides={};
@@ -13,11 +13,11 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_validationdonnees_validationbeneficiaire', {
+        $stateProvider.state('app.pfss_validationdonnees_validationbeneficiaire', {
             url      : '/validationdonnees/validationbeneficiaire',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/validationdonnees/validationbeneficiaire/validationbeneficiaire.html',
+                    templateUrl: 'app/main/pfss/validationdonnees/validationbeneficiaire/validationbeneficiaire.html',
                     controller : 'ValidationbeneficiaireController as vm'
                 }
             },
@@ -30,11 +30,11 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('population.validationdonnees.validationbeneficiaire', {
+        msNavigationServiceProvider.saveItem('pfss.validationdonnees.validationbeneficiaire', {
             title: 'Bénéficiaire',
             icon  : 'icon-swap-horizontal',
-            state: 'app.population_validationdonnees_validationbeneficiaire',
-            badge: nombre_non_valides,
+            state: 'app.pfss_validationdonnees_validationbeneficiaire',
+            // badge: nombre_non_valides,
 			weight: 1,
             hidden: function()
             {

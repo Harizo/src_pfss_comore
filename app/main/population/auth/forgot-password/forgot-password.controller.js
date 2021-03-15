@@ -3,7 +3,7 @@
     'use strict';
 	// Mot de passe oublié : réinitialisation mot de passe
     angular
-        .module('app.population.auth.forgot-password')
+        .module('app.pfss.auth.forgot-password')
         .controller('ForgotPasswordController', ForgotPasswordController);
 
     /** @ngInject */

@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.administration.utilisateur', [])
+        .module('app.pfss.administration.utilisateur', [])
         .run(notification)        
         .config(config);
         var vs = {};
@@ -13,11 +13,11 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_admin_utilisateur', {
+        $stateProvider.state('app.pfss_admin_utilisateur', {
             url      : '/administration/utilisateur',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/administration/utilisateur/utilisateur.html',
+                    templateUrl: 'app/main/pfss/administration/utilisateur/utilisateur.html',
                     controller : 'UserController as vm'
                 }
             },
@@ -32,16 +32,16 @@
         
 
         // Navigation
-        msNavigationServiceProvider.saveItem('population.administration.user', {
+        msNavigationServiceProvider.saveItem('pfss.administration.user', {
             title: 'Gestion Utilisateurs',
             icon  : 'icon-account-key',
-            state: 'app.population_admin_utilisateur',
+            state: 'app.pfss_admin_utilisateur',
             badge:vs,
-            hidden:function()
-            {
-                    return affichage;
-            },
 			weight: 2
+            // hidden:function()
+            // {
+                    // return affichage;
+            // },
         });
     }
 
@@ -70,28 +70,28 @@
             {
 
                 //**************************************************
-                /*$interval(function(){apiFactory.getUserByEnabled("utilisateurs",Number(1)).then(function(result) 
+                $interval(function()
                 {
-                    var resultat = result.data.response;
-
-                    if (vs.content != resultat) 
+                    apiFactory.getUserByEnabled("utilisateurs",Number(1)).then(function(result) 
                     {
-                        vs.content = resultat ;
-                    };
-                    
-                
+                        /*var resultat = result.data.response;
 
-                });},15000) ;*/
+                        if (vs.content != resultat) 
+                        {
+                            vs.content = resultat ;
+                        };*/
+                        var x = result.data.response;
+                        vs.content = x ;
+                        vs.color = '#F44336' ;
+
+                    });
+                },15000) ;
                 //**************************************************
                 var user = result.data.response;
                
 
                 var permission = user.roles;
-                var permissions =   [
-                                        "SPR_ADM",
-                                        
-                                        "GES_USER"
-                                    ];
+                var permissions = ["ADMIN"];
                 affichage =  loginService.gestionMenu(permissions,permission);        
                 
 

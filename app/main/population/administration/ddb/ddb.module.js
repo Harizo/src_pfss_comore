@@ -3,16 +3,22 @@
     'use strict';
 
     var tab = [         
-            'app.population.ddb_adm.variable_individu',
-            'app.population.ddb_adm.acteurs',
-            'app.population.ddb_adm.projet',
-            'app.population.ddb_adm.decoup_admin',
-            'app.population.ddb_adm.variable',
-            'app.population.ddb_adm.nomenclatureintervention',
+            'app.pfss.ddb_adm.variable_individu',
+            'app.pfss.ddb_adm.acteurs',
+            'app.pfss.ddb_adm.projet',
+            'app.pfss.ddb_adm.decoup_admin',
+            'app.pfss.ddb_adm.variable',
+            'app.pfss.ddb_adm.nomenclatureintervention',
+            'app.pfss.ddb_adm.typeplainte',
+            'app.pfss.ddb_adm.planactionreinstallation',
+            'app.pfss.ddb_adm.type_infrastructure',
+            'app.pfss.ddb_adm.indicateur',
+            'app.pfss.ddb_adm.zip',
+            'app.pfss.ddb_adm.phaseexecution',
             ] ;
 
     angular
-        .module('app.population.ddb_adm', tab.sort())
+        .module('app.pfss.ddb_adm', tab.sort())
         .run(testPermission)
         .config(config);
         var vs ;
@@ -20,13 +26,13 @@
     /** @ngInject */
     function config(msNavigationServiceProvider)
     {
-        msNavigationServiceProvider.saveItem('population.administration.ddb_adm', {
+        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm', {
             title : 'Données de Base',
             icon  : 'icon-data',
-            hidden: function()
-            {
-                    return vs;
-            },
+            // hidden: function()
+            // {
+                    // return vs;
+            // },
 			weight: 4
         });
 

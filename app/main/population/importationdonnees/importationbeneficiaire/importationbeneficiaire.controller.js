@@ -2,7 +2,7 @@
 {
     'use strict';
     angular
-        .module('app.population.importationdonnees.importationbeneficiaire')
+        .module('app.pfss.importationdonnees.importationbeneficiaire')
 		// Directive et service pour upload fichier excel bénéficiaire
         .directive('customOnChange', function() {
 			return {

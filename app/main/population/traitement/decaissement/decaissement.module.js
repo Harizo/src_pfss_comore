@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.traitement.decaissement', [])
+        .module('app.pfss.traitement.decaissement', [])
         .run(testPermission)        
         .config(config);
         var vs ;
@@ -12,11 +12,11 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_saisie_decaissement', {
+        $stateProvider.state('app.pfss_saisie_decaissement', {
             url      : '/traitement/décaissement',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/traitement/decaissement/decaissement.html',
+                    templateUrl: 'app/main/pfss/traitement/decaissement/decaissement.html',
                     controller : 'DecaissementController as vm'
                 }
             },
@@ -29,10 +29,10 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('population.decaissement', {
+        msNavigationServiceProvider.saveItem('pfss.decaissement', {
             title: 'Suivi Décaissement',
             icon  : 'icon-cash',
-            state: 'app.population_saisie_decaissement',
+            state: 'app.pfss_saisie_decaissement',
 			weight: 8,
             hidden: function()
             {

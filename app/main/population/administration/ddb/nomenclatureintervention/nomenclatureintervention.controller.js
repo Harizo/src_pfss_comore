@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.ddb_adm.nomenclatureintervention')
+        .module('app.pfss.ddb_adm.nomenclatureintervention')
         .controller('NomenclatureinterventionController', NomenclatureinterventionController);
     /** @ngInject */
     function NomenclatureinterventionController($mdDialog, $scope, apiFactory, $state,apiUrl,$http,$cookieStore)

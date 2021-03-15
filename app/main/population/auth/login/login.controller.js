@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.auth.login')
+        .module('app.pfss.auth.login')
         .controller('LoginController', LoginController);
 
     /** @ngInject */

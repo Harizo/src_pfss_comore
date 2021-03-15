@@ -3,38 +3,38 @@
     'use strict';
 
     var tab = [
-                'app.population.administration.utilisateur',
-                'app.population.administration.profil',
-                'app.population.administration.historiqueutilisateur',
-                'app.population.administration.groupe_user',
-                'app.population.administration.cours_de_change',
-                'app.population.ddb_adm'
+                'app.pfss.administration.utilisateur',
+                'app.pfss.administration.profil',
+                'app.pfss.administration.historiqueutilisateur',
+                'app.pfss.administration.groupe_user',
+                'app.pfss.administration.cours_de_change',
+                'app.pfss.ddb_adm'
 
             ] ;
 
     angular
-        .module('app.population.administration', tab.sort())
-        .run(testPermission)        
+        .module('app.pfss.administration', tab.sort())
+        // .run(testPermission)        
         .config(config);
         var vs ;
 
     /** @ngInject */
     function config(msNavigationServiceProvider)
     {
-        msNavigationServiceProvider.saveItem('population.administration', {
+        msNavigationServiceProvider.saveItem('pfss.administration', {
             title : 'Administration du système',
             icon  : 'icon-cog',
             weight: 1,
-            hidden: function()
-            {
-                    return vs;
-            }
+            // hidden: function()
+            // {
+                    // return vs;
+            // }
         });
 
-       /* msNavigationServiceProvider.saveItem('population.administration.utilisateurs', {
+       /* msNavigationServiceProvider.saveItem('pfss.administration.utilisateurs', {
             title: 'Utilisateurs',
             icon  : 'icon-account-multiple'
-            //state: 'app.population_administration_secteur'
+            //state: 'app.pfss_administration_secteur'
         });*/
     }
 

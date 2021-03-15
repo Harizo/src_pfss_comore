@@ -2,12 +2,13 @@
 {
     'use strict';
     angular
-        .module('app.population.ddb_adm.projet')
+        .module('app.pfss.ddb_adm.projet')
         .controller('DdbprojetController', DdbprojetController);
 
     /** @ngInject */
-    function DdbprojetController(apiFactory, $state, $mdDialog, $scope,$cookieStore) {
+    function DdbprojetController(apiFactory, $state, $mdDialog, $scope,$cookieStore, serveur_central) {
 		var vm = this;
+		vm.serveur_central = serveur_central ;
 		vm.titrepage ="Ajout Tutelle";
 		vm.ajoutDevise = ajoutDevise ;
 		var NouvelItemDevise=false;

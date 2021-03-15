@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.accueil')
+        .module('app.pfss.accueil')
         .controller('AccueilController', AccueilController);
 
     /** @ngInject */

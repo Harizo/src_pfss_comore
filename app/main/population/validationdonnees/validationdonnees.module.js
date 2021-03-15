@@ -3,18 +3,18 @@
     'use strict';
 
     angular
-        .module('app.population.validationdonnees', [			
-           'app.population.validationdonnees.validationbeneficiaire',
-           'app.population.validationdonnees.validationintervention',
+        .module('app.pfss.validationdonnees', [			
+           'app.pfss.validationdonnees.validationbeneficiaire',
+           'app.pfss.validationdonnees.validationintervention',
             ])
         .run(testPermission)
-        .run(Donnees_non_validees)
+        // .run(Donnees_non_validees)
         .config(config);
         var vs ;
 		var nombre_non_valides={};
     /** @ngInject */
     function config(msNavigationServiceProvider) {
-        msNavigationServiceProvider.saveItem('population.validationdonnees', {
+        msNavigationServiceProvider.saveItem('pfss.validationdonnees', {
             title : 'Simulation des données',
             icon  : 'icon-arrow-up-bold-hexagon-outline',
             weight: 4,
@@ -22,7 +22,7 @@
             {
                     return vs;
             },
-			badge:nombre_non_valides
+			// badge:nombre_non_valides
         });
     }
     function testPermission(loginService,$cookieStore,apiFactory) {

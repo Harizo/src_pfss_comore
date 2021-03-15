@@ -3,22 +3,22 @@
     'use strict';
 
     angular
-        .module('app.population.auth.register', [])
+        .module('app.pfss.auth.register', [])
         .config(config);
 
     /** @ngInject */
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_auth_register', {
+        $stateProvider.state('app.pfss_auth_register', {
             url      : '/auth/register',
             views    : {
                 'main@'                          : {
                     templateUrl: 'app/core/layouts/content-only.html',
                     controller : 'MainController as vm'
                 },
-                'content@app.population_auth_register': {
-                    templateUrl: 'app/main/population/auth/register/register.html',
+                'content@app.pfss_auth_register': {
+                    templateUrl: 'app/main/pfss/auth/register/register.html',
                     controller : 'RegisterController as vm'
                 }
             },
@@ -31,7 +31,7 @@
         });
 
         // Translation
-        $translatePartialLoaderProvider.addPart('app/main/population/auth/register');
+        $translatePartialLoaderProvider.addPart('app/main/pfss/auth/register');
     }
 
 })();

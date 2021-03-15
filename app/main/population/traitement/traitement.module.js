@@ -3,10 +3,12 @@
     'use strict';
 
     angular
-        .module('app.population.traitement', [			
-           /*'app.population.traitement.menage',
-           'app.population.traitement.suivi',*/
-           'app.population.traitement.decaissement'
+        .module('app.pfss.traitement', [			
+           'app.pfss.traitement.menageinscrit',
+           'app.pfss.traitement.menagepreselectionne',
+           'app.pfss.traitement.menagebeneficiaire',
+           // 'app.pfss.traitement.suivi',
+           // 'app.pfss.traitement.decaissement'
             ])
         // .run(testPermission)
         .config(config);
@@ -15,15 +17,15 @@
     /** @ngInject */
     function config(msNavigationServiceProvider)
     {
-        /*msNavigationServiceProvider.saveItem('population.traitement', {
+        msNavigationServiceProvider.saveItem('pfss.traitement', {
             title : 'Traitement',
             icon  : 'icon-data',
             weight: 4,
-            hidden: function()
-            {
-                    return vs;
-            }
-        });*/
+            // hidden: function()
+            // {
+                    // return vs;
+            // }
+        });
 
 
     }

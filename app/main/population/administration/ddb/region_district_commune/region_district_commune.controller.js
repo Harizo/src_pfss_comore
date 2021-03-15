@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.ddb_adm.decoup_admin')
+        .module('app.pfss.ddb_adm.decoup_admin')
         .controller('Region_district_communeController', Region_district_communeController);
     /** @ngInject */
     function Region_district_communeController($mdDialog, $scope, apiFactory, $state,apiUrl,$http,$cookieStore)
@@ -27,17 +27,17 @@
 
 /* ***************DEBUT Découpage admninistratif**********************/
       
-      /* ***************Debut region**********************/  
+      /* ***************Debut ile**********************/  
         vm.mainGridOptions =
         {
           dataSource: new kendo.data.DataSource({
              
             transport:
             {   
-              //recuperation region
+              //recuperation ile
                 read: function (e)
                 {
-                    apiFactory.getAll("region/index").then(function success(response)
+                    apiFactory.getAll("ile/index").then(function success(response)
                     {console.log(response.data.response);
                         e.success(response.data.response);
                     }, function error(response)
@@ -45,7 +45,7 @@
                           vm.showAlert('Erreur','Erreur de lecture');
                         });
                 },
-                //modification region
+                //modification ile
                 update : function (e)
                 {
                   var config ={headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
@@ -53,17 +53,17 @@
                   var datas = $.param({
                           supprimer: 0,
                           id:        e.data.models[0].id,      
-                          code:      e.data.models[0].code,
-                          nom:       e.data.models[0].nom               
+                          Code:      e.data.models[0].Code,
+                          Ile:       e.data.models[0].Ile               
                       });
-                  apiFactory.add("region/index",datas, config).success(function (data)
+                  apiFactory.add("ile/index",datas, config).success(function (data)
                   {                
                     e.success(e.data.models);
 
                     /***********Debut add historique***********/
                       var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
                       var datas = $.param({
-                              action:"Modification : Region de nom de " + e.data.models[0].nom,
+                              action:"Modification : Ile de nom de " + e.data.models[0].Ile,
                               id_utilisateur:vm.id_utilisateur
                       });
                             
@@ -77,7 +77,7 @@
                     });                                   
                      
                 },
-                //suppression region
+                //suppression ile
                 destroy: function (e)
                 {
 					// Demande de confirmation de suppression
@@ -96,12 +96,12 @@
 								supprimer: 1,
 								id:        e.data.models[0].id               
 							});
-						apiFactory.add("region/index",datas, config).success(function (data)  {                
+						apiFactory.add("ile/index",datas, config).success(function (data)  {                
 						  e.success(e.data.models);
 						  /***********Debut add historique***********/
 							  var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
 							  var datas = $.param({
-									  action:"Suppression : Region de nom de " + e.data.models[0].nom,
+									  action:"Suppression : Ile de nom de " + e.data.models[0].nom,
 									  id_utilisateur:vm.id_utilisateur
 							  });
 									
@@ -115,7 +115,7 @@
 						// Aucune action = sans suppression
 					});               
                 },
-                //creation region
+                //creation ile
                 create: function(e)
                 {
                     var config ={headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
@@ -123,10 +123,10 @@
                     var datas = $.param({
                             supprimer: 0,
                             id:        0,      
-                            code:      e.data.models[0].code,
-                            nom:       e.data.models[0].nom              
+                            Code:      e.data.models[0].Code,
+                            Ile:       e.data.models[0].Ile              
                         });
-                    apiFactory.add("region/index",datas, config).success(function (data)
+                    apiFactory.add("ile/index",datas, config).success(function (data)
                     { 
                       e.data.models[0].id = String(data.response);               
                       e.success(e.data.models);
@@ -134,7 +134,7 @@
                       /***********Debut add historique***********/
                         var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
                         var datas = $.param({
-                                action:"Creation : Region de nom de " + e.data.models[0].nom,
+                                action:"Creation : Ile de nom de " + e.data.models[0].Ile,
                                 id_utilisateur:vm.id_utilisateur
                         });
                               
@@ -159,8 +159,8 @@
                     id: "id",
                     fields:
                     {
-                        code: {type: "string",validation: {required: true}},
-                        nom: {type: "string", validation: {required: true}}
+                        Code: {type: "string",validation: {required: true}},
+                        Ile: {type: "string", validation: {required: true}}
                     }
                 }
             },
@@ -172,7 +172,7 @@
           
           // height: 550,
           toolbar: [{               
-               template: "<label id='table_titre'>REGION </label>"
+               template: "<label id='table_titre'>ILE </label>"
           },{
                name: "create",
                text:"",
@@ -207,13 +207,13 @@
             //},
           columns: [
             {
-              field: "code",
+              field: "Code",
               title: "Code",
               width: "Auto"
             },
             {
-              field: "nom",
-              title: "Nom",
+              field: "Ile",
+              title: "Ile",
               width: "Auto"
             },
             { 
@@ -233,11 +233,11 @@
                   },{name: "destroy", text: ""}]
             }]
           };
-      /* ***************Fin region**********************/
+      /* ***************Fin ile**********************/
 
-      /* ***************Debut district**********************/
+      /* ***************Debut region**********************/
 
-      vm.alldistrict = function(id_region) {
+      vm.allregion = function(ile_id) {
         return {
           dataSource:
           {
@@ -246,7 +246,7 @@
               //recuperation district
               read: function (e)
               {
-                apiFactory.getAPIgeneraliserREST("district/index","cle_etrangere",id_region).then(function(result)
+                apiFactory.getAPIgeneraliserREST("region/index","cle_etrangere",ile_id).then(function(result)
                 {
                     e.success(result.data.response);
 
@@ -263,9 +263,9 @@
                   var datas = $.param({
                           supprimer: 0,
                           id:        e.data.models[0].id,      
-                          code:      e.data.models[0].code,
-                          nom:       e.data.models[0].nom,
-                          region_id: e.data.models[0].region.id               
+                          Code:      e.data.models[0].Code,
+                          Region:       e.data.models[0].Region,
+                          ile_id: e.data.models[0].ile.id               
                       });
                   apiFactory.add("district/index",datas, config).success(function (data)
                   {                
@@ -274,7 +274,7 @@
                   /***********Debut add historique***********/
                       var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
                       var datas = $.param({
-                              action:"Modification : District de nom de " + e.data.models[0].nom,
+                              action:"Modification : Région de nom de " + e.data.models[0].Region,
                               id_utilisateur:vm.id_utilisateur
                       });
                             
@@ -334,22 +334,22 @@
                   var datas = $.param({
                           supprimer: 0,
                           id:        0,      
-                          code:      e.data.models[0].code,
-                          nom:       e.data.models[0].nom,
-                          region_id: id_region               
+                          Code:      e.data.models[0].Code,
+                          Region:       e.data.models[0].Region,
+                          ile_id: ile_id               
                       });
                   
                   apiFactory.add("district/index",datas, config).success(function (data)
                   { 
                     
                       e.data.models[0].id = String(data.response);                    
-                      e.data.models[0].region={id:id_region};                                 
+                      e.data.models[0].ile={id:ile_id};                                 
                       e.success(e.data.models);
 
                   /***********Debut add historique***********/
                       var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
                       var datas = $.param({
-                              action:"Creation : District de nom de " + e.data.models[0].nom,
+                              action:"Creation : Région de nom de " + e.data.models[0].Region,
                               id_utilisateur:vm.id_utilisateur
                       });
                             
@@ -372,7 +372,7 @@
                     id: "id",
                     fields:
                     {
-                        code: {type: "string",validation: {required: true}},
+                        Code: {type: "string",validation: {required: true}},
                         nom: {type: "string", validation: {required: true}}
                     }
                 }
@@ -383,7 +383,7 @@
             pageSize: 5,
           },
           toolbar: [{               
-               template: "<label id='table_titre'>DISTRICT </label>"
+               template: "<label id='table_titre'>REGION </label>"
           },{
                name: "create",
                text:"",
@@ -416,13 +416,13 @@
                // },
           columns: [
             {
-              field: "code",
+              field: "Code",
               title: "Code",
               width: "Auto"
             },
             {
-              field: "nom",
-              title: "Nom",
+              field: "Region",
+              title: "Region",
               width: "Auto"
             },
             { 
@@ -440,7 +440,7 @@
       /* ***************Fin district**********************/
 
       /* ***************Debut commune**********************/
-      vm.allcommune = function(id_district) {
+      vm.allcommune = function(region_id) {
         return {
           dataSource:
           {
@@ -449,7 +449,7 @@
               //recuperation commune
               read: function (e)
               {
-                apiFactory.getAPIgeneraliserREST("commune/index","cle_etrangere",id_district).then(function(result)
+                apiFactory.getAPIgeneraliserREST("commune/index","cle_etrangere",region_id).then(function(result)
                 {console.log(result.data.response);
                     e.success(result.data.response);
                 }, function error(result)
@@ -465,9 +465,9 @@
                   var datas = $.param({
                           supprimer: 0,
                           id:        e.data.models[0].id,      
-                          code:      e.data.models[0].code,
-                          nom:       e.data.models[0].nom,
-                          district_id: e.data.models[0].district.id               
+                          Code:      e.data.models[0].Code,
+                          Commune:       e.data.models[0].Commune,
+                          region_id: e.data.models[0].region.id               
                       });
                   apiFactory.add("commune/index",datas, config).success(function (data)
                   {                
@@ -476,7 +476,7 @@
                     /***********Debut add historique***********/
                         var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
                         var datas = $.param({
-                                action:"Modification : Commune de nom de " + e.data.models[0].nom,
+                                action:"Modification : Commune de nom de " + e.data.models[0].Commune,
                                 id_utilisateur:vm.id_utilisateur
                         });
                               
@@ -534,9 +534,9 @@
                   var datas = $.param({
                           supprimer: 0,
                           id:        0,      
-                          code:      e.data.models[0].code,
-                          nom:       e.data.models[0].nom,
-                          district_id: id_district              
+                          Code:      e.data.models[0].Code,
+                          Commune:       e.data.models[0].Commune,
+                          region_id: region_id              
                       });
                   
                   apiFactory.add("commune/index",datas, config).success(function (data)
@@ -544,13 +544,13 @@
                     
                     e.data.models[0].id = String(data.response);
                     
-                    e.data.models[0].district={id:id_district};              
+                    e.data.models[0].region={id:region_id};              
                     e.success(e.data.models);
 
                     /***********Debut add historique***********/
                         var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
                         var datas = $.param({
-                                action:"Creation : Commune de nom de " + e.data.models[0].nom,
+                                action:"Creation : Commune de nom de " + e.data.models[0].Commune,
                                 id_utilisateur:vm.id_utilisateur
                         });
                               
@@ -571,8 +571,8 @@
                     id: "id",
                     fields:
                     {
-                        code: {type: "string",validation: {required: true}},
-                        nom: {type: "string", validation: {required: true}}
+                        Code: {type: "string",validation: {required: true}},
+                        Commune: {type: "string", validation: {required: true}}
                     }
                 }
             },
@@ -614,13 +614,13 @@
                // },
           columns: [
             {
-              field: "code",
+              field: "Code",
               title: "Code",
               width: "Auto"
             },
             {
-              field: "nom",
-              title: "Nom",
+              field: "Commune",
+              title: "Commune",
               width: "Auto"
             },
             { 
@@ -637,17 +637,17 @@
       };
     /* ***************Fin commune**********************/
 
-    /* ***************Debut fokontany**********************/
-      vm.allfokontany = function(id_commune) {
+    /* ***************Debut village**********************/
+      vm.allvillage = function(commune_id) {
         return {
           dataSource:
           {
             type: "json",
             transport: {
-              //recuperation fokontany
+              //recuperation village
               read: function (e)
               {
-                apiFactory.getAPIgeneraliserREST("fokontany/index","cle_etrangere",id_commune).then(function(result)
+                apiFactory.getAPIgeneraliserREST("village/index","cle_etrangere",commune_id).then(function(result)
                 {console.log(result.data.response);
                     e.success(result.data.response)
                 }, function error(result)
@@ -655,7 +655,7 @@
                       vm.showAlert('Erreur','Erreur de lecture');
                   })
               },
-              //modification fokontany
+              //modification village
               update : function (e)
               {                  
                   var config ={headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
@@ -663,20 +663,18 @@
                   var datas = $.param({
                           supprimer: 0,
                           id:        e.data.models[0].id,      
-                          code:      e.data.models[0].code,
-                          nom:       e.data.models[0].nom,
-                          latitude:  e.data.models[0].latitude,
-                          longitude: e.data.models[0].longitude,
-                          id_commune: e.data.models[0].commune.id               
+                          Code:      e.data.models[0].Code,
+                          Village:       e.data.models[0].Village,
+                          commune_id: e.data.models[0].commune.id               
                       });
-                  apiFactory.add("fokontany/index",datas, config).success(function (data)
+                  apiFactory.add("village/index",datas, config).success(function (data)
                   {                
                      e.success(e.data.models);
 
                   /***********Debut add historique***********/
                       var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
                       var datas = $.param({
-                              action:"Modification : Fokontany de nom de " + e.data.models[0].nom,
+                              action:"Modification : Village de nom de " + e.data.models[0].Village,
                               id_utilisateur:vm.id_utilisateur
                       });
                             
@@ -688,7 +686,7 @@
                       vm.showAlert('Error','Erreur lors de l\'insertion de donnée');
                     });       
               },
-              //suppression fokontany
+              //suppression village
               destroy : function (e)
               {                 
 					// Demande de confirmation de suppression
@@ -707,7 +705,7 @@
 							  supprimer: 1,
 							  id:        e.data.models[0].id               
 						  });                  
-						apiFactory.add("fokontany/index",datas, config).success(function (data) {                
+						apiFactory.add("village/index",datas, config).success(function (data) {                
 							e.success(e.data.models);                    
 							/***********Debut add historique***********/
 							var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
@@ -725,7 +723,7 @@
 						// Aucune action = sans suppression
 					});					
               },
-              //creation fokontany
+              //creation village
               create : function (e)
               {
                   
@@ -734,24 +732,22 @@
                   var datas = $.param({
                           supprimer: 0,
                           id:        0,      
-                          code:      e.data.models[0].code,
-                          nom:       e.data.models[0].nom,
-                          latitude:  e.data.models[0].latitude,
-                          longitude: e.data.models[0].longitude,
-                          id_commune: id_commune              
+                          Code:      e.data.models[0].Code,
+                          Village:       e.data.models[0].Village,
+                          commune_id: commune_id              
                       });
-                  apiFactory.add("fokontany/index",datas, config).success(function (data)
+                  apiFactory.add("village/index",datas, config).success(function (data)
                   { 
                     
                     e.data.models[0].id = String(data.response);
                     
-                    e.data.models[0].commune={id:id_commune};              
+                    e.data.models[0].commune={id:commune_id};              
                     e.success(e.data.models);
 
                   /***********Debut add historique***********/
                       var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
                       var datas = $.param({
-                              action:"Creation : Fokontany de nom de " + e.data.models[0].nom,
+                              action:"Creation : Village de nom de " + e.data.models[0].Village,
                               id_utilisateur:vm.id_utilisateur
                       });
                             
@@ -772,10 +768,8 @@
                     id: "id",
                     fields:
                     {
-                        code: {type: "string",validation: {required: true}},
-                        nom: {type: "string", validation: {required: true}},
-                        latitude: {type: "number", validation: {required: true}},
-                        longitude: {type: "number", validation: {required: true}}
+                        Code: {type: "string",validation: {required: true}},
+                        Village: {type: "string", validation: {required: true}}
 
                     }
                 }
@@ -786,7 +780,7 @@
             pageSize: 5,
           },
           toolbar: [{               
-               template: "<label id='table_titre'>Fokontany </label>"
+               template: "<label id='table_titre'>VILLAGE </label>"
           },{
                name: "create",
                text:"",
@@ -818,26 +812,15 @@
                // },
           columns: [
             {
-              field: "code",
+              field: "Code",
               title: "Code",
               width: "Auto"
             },
             {
-              field: "nom",
-              title: "Nom",
+              field: "Village",
+              title: "Village",
               width: "Auto"
             },
-            {
-              field: "latitude",
-              title: "Latitude",
-              width: "Auto"
-            },
-            {
-              field: "longitude",
-              title: "Longitude",
-              width: "Auto"
-            }
-            ,
             { 
               title: "Action",
               width: "Auto",
@@ -850,7 +833,7 @@
             }]
         };
       };
-    /* ***************Fin fokontany**********************/
+    /* ***************Fin village**********************/
 /* ***************FIN Découpage admninistratif**********************/
         
         //Alert

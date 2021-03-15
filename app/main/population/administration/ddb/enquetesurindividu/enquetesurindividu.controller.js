@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.ddb_adm.variable_individu')
+        .module('app.pfss.ddb_adm.variable_individu')
         .controller('EnquetesurindividuController', EnquetesurindividuController);
     /** @ngInject */
     function EnquetesurindividuController($mdDialog, $scope, apiFactory, $state,$cookieStore)  {

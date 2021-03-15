@@ -3,12 +3,12 @@
     'use strict';
 
     angular
-        .module('app.population.importationdonnees', [			
-           'app.population.importationdonnees.importationbeneficiaire',
-           'app.population.importationdonnees.importationintervention',
+        .module('app.pfss.importationdonnees', [			
+           'app.pfss.importationdonnees.importationbeneficiaire',
+           'app.pfss.importationdonnees.importationintervention',
             ])
          .run(testPermission)
-         .run(Donnees_non_importees)
+         // .run(Donnees_non_importees)
         .config(config);
         var vs ;
 		var nombre_non_importes={};
@@ -16,7 +16,7 @@
     /** @ngInject */
     function config(msNavigationServiceProvider)
     {
-        msNavigationServiceProvider.saveItem('population.importationdonnees', {
+        msNavigationServiceProvider.saveItem('pfss.importationdonnees', {
             title : 'Importation données',
             icon  : 'icon-arrow-up-bold-circle',
             weight: 5,
@@ -24,7 +24,7 @@
             {
                     return vs;
             },
-            badge: nombre_non_importes
+            // badge: nombre_non_importes
         });
 
 

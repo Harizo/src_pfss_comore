@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.administration.groupe_user')
+        .module('app.pfss.administration.groupe_user')
         .controller('Groupe_userController', Groupe_userController);
 
     /** @ngInject */

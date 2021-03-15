@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.canevas_formate', ['ngCookies'])
+        .module('app.pfss.canevas_formate', ['ngCookies'])
         // .run(notification)        
         .config(config);
         var vs = {};
@@ -11,11 +11,11 @@
         var hide_menu ;
     /** @ngInject */
    function config($stateProvider,  $translatePartialLoaderProvider, msNavigationServiceProvider)  {
-        $stateProvider.state('app.population_canevas_formate', {
+        $stateProvider.state('app.pfss_canevas_formate', {
             url      : '/canevas-formate',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/canevas_formate/canevas_formate.html',
+                    templateUrl: 'app/main/pfss/canevas_formate/canevas_formate.html',
                     controller : 'CanevasformateController as vm'
                 }
             },
@@ -26,11 +26,11 @@
               page: "Canevas Formaté"
             }
         });
-		msNavigationServiceProvider.saveItem('population.canevas_formate', {
+		msNavigationServiceProvider.saveItem('pfss.canevas_formate', {
 			title: 'Canevas Formaté',
 			icon  : 'icon-arrow-down-bold-circle-outline',
 			weight: 10,
-			state: 'app.population_canevas_formate',
+			state: 'app.pfss_canevas_formate',
 		/*	badge:vs,
             hidden: function()
             {

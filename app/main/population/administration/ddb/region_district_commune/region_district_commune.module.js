@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.ddb_adm.decoup_admin', [])
+        .module('app.pfss.ddb_adm.decoup_admin', [])
         .run(testPermission)
         .config(config);
         var vs ;
@@ -12,11 +12,11 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_ddb_region_district_commune', {
+        $stateProvider.state('app.pfss_ddb_region_district_commune', {
             url      : '/donnees-de-base/region_district_commune',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/administration/ddb/region_district_commune/region_district_commune.html',
+                    templateUrl: 'app/main/pfss/administration/ddb/region_district_commune/region_district_commune.html',
                     controller : 'Region_district_communeController as vm'
                 }
             },
@@ -29,14 +29,14 @@
         });
 
         // Navigation
-        msNavigationServiceProvider.saveItem('population.administration.ddb_adm.region_district_commune', {
+        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.region_district_commune', {
             title: "Découpage administratif",
             icon  : 'icon-map-marker-circle',
-            state: 'app.population_ddb_region_district_commune',
-            hidden: function()
-            {
-                    return vs;
-            }
+            state: 'app.pfss_ddb_region_district_commune',
+            // hidden: function()
+            // {
+                    // return vs;
+            // }
         });
     }
 

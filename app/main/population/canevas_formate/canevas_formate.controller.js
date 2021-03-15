@@ -2,7 +2,7 @@
 {
     'use strict';
     angular
-        .module('app.population.canevas_formate')
+        .module('app.pfss.canevas_formate')
 		// Directive et service pour upload fichier excel intervention
         .directive('customOnChange', function() {
 			return {

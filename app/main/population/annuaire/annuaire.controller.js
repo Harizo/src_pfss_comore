@@ -2,7 +2,7 @@
 {
     'use strict';
     angular
-        .module('app.population.annuaire')
+        .module('app.pfss.annuaire')
         .controller('AnnuaireController', AnnuaireController);
 
     /** @ngInject */

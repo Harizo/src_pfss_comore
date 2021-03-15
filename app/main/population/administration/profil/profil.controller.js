@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.administration.profil')
+        .module('app.pfss.administration.profil')
         .controller('ProfilController', ProfilController);
 
     /** @ngInject */

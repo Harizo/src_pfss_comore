@@ -3,18 +3,18 @@
     'use strict';
 
     angular
-        .module('app.population.importdecoupage.exportdecoupage', [])
+        .module('app.pfss.importdecoupage.exportdecoupage', [])
         .config(config);
 
     /** @ngInject */
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_importdecoupage_exportdecoupage', {
+        $stateProvider.state('app.pfss_importdecoupage_exportdecoupage', {
             url      : '/importdecoupage/export-decoupage',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/importdecoupage/exportdecoupage/exportdecoupage.html',
+                    templateUrl: 'app/main/pfss/importdecoupage/exportdecoupage/exportdecoupage.html',
                     controller : 'ExportdecoupageController as vm'
                 }
             },
@@ -27,10 +27,10 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('population.importdecoupage.exportdecoupage', {
+        msNavigationServiceProvider.saveItem('pfss.importdecoupage.exportdecoupage', {
             title: 'Export-Découpage',
             icon  : 'icon-swap-horizontal',
-            state: 'app.population_importdecoupage_exportdecoupage',
+            state: 'app.pfss_importdecoupage_exportdecoupage',
 			weight: 5
         });
     }

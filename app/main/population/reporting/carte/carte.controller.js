@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.reporting.carte')
+        .module('app.pfss.reporting.carte')
         .controller('carteController', carteController);
 
     /** @ngInject */
@@ -157,7 +157,7 @@
 
           //code modifier par harizo
           { 
-            titre:"Effectif par age sexe de la population",
+            titre:"Effectif par age sexe de la pfss",
             id:"req1_theme1",
             category:"theme1"
           },

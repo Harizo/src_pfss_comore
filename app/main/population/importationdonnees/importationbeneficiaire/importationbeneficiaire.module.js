@@ -3,9 +3,9 @@
     'use strict';
 
     angular
-        .module('app.population.importationdonnees.importationbeneficiaire', [])
+        .module('app.pfss.importationdonnees.importationbeneficiaire', [])
         .run(testPermission)
-         .run(Donnees_non_importees)
+         // .run(Donnees_non_importees)
         .config(config);
         var vs ;
 	var nombre_non_importes={};
@@ -14,11 +14,11 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_importationdonnees_importationbeneficiaire', {
+        $stateProvider.state('app.pfss_importationdonnees_importationbeneficiaire', {
             url      : '/importationdonnees/importation-beneficiaire',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/importationdonnees/importationbeneficiaire/importationbeneficiaire.html',
+                    templateUrl: 'app/main/pfss/importationdonnees/importationbeneficiaire/importationbeneficiaire.html',
                     controller : 'ImportationbeneficiaireController as vm'
                 }
             },
@@ -31,11 +31,11 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('population.importationdonnees.importationbeneficiaire', {
+        msNavigationServiceProvider.saveItem('pfss.importationdonnees.importationbeneficiaire', {
             title: 'Bénéficiaire',
             icon  : 'icon-swap-horizontal',
-            state: 'app.population_importationdonnees_importationbeneficiaire',
-            badge: nombre_non_importes,
+            state: 'app.pfss_importationdonnees_importationbeneficiaire',
+            // badge: nombre_non_importes,
 			weight: 1,
             hidden: function()
             {

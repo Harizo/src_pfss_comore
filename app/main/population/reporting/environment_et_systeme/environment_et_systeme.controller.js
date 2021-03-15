@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.reporting.environment_et_systeme')
+        .module('app.pfss.reporting.environment_et_systeme')
         .controller('Environment_et_systemeController', Environment_et_systemeController);
 
     /** @ngInject */
@@ -154,7 +154,7 @@
 
           //code modifier par harizo
           { 
-            titre:"Effectif par age sexe de la population",
+            titre:"Effectif par age sexe de la pfss",
             id:"req1_theme1",
             category:"theme1"
           },

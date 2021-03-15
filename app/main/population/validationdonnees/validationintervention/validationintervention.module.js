@@ -3,9 +3,9 @@
     'use strict';
 
     angular
-        .module('app.population.validationdonnees.validationintervention', [])
+        .module('app.pfss.validationdonnees.validationintervention', [])
         .run(testPermission)
-        .run(Donnees_non_validees)
+        // .run(Donnees_non_validees)
         .config(config);
         var vs ;
 	var nombre_non_valides={};
@@ -14,11 +14,11 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_validationdonnees_validationintervention', {
+        $stateProvider.state('app.pfss_validationdonnees_validationintervention', {
             url      : '/validationdonnees/validationintervention',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/validationdonnees/validationintervention/validationintervention.html',
+                    templateUrl: 'app/main/pfss/validationdonnees/validationintervention/validationintervention.html',
                     controller : 'ValidationinterventionController as vm'
                 }
             },
@@ -31,11 +31,11 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('population.validationdonnees.validationintervention', {
+        msNavigationServiceProvider.saveItem('pfss.validationdonnees.validationintervention', {
             title: 'Suivi Intervention',
             icon  : 'icon-swap-horizontal',
-            state: 'app.population_validationdonnees_validationintervention',
-            badge: nombre_non_valides,
+            state: 'app.pfss_validationdonnees_validationintervention',
+            // badge: nombre_non_valides,
 			weight: 2,
             hidden: function()
             {

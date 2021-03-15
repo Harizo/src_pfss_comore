@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.ddb.enquetesurmenage')
+        .module('app.pfss.ddb.enquetesurmenage')
         .controller('EnquetesurmenageController', EnquetesurmenageController);
     /** @ngInject */
     function EnquetesurmenageController($mdDialog, $scope, apiFactory, $state,$cookieStore)  {

@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.ddb_adm.nomenclatureintervention', [])
+        .module('app.pfss.ddb_adm.nomenclatureintervention', [])
         .run(testPermission)
         .config(config);
         var vs ;
@@ -12,11 +12,11 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_ddb_nomenclatureintervention', {
+        $stateProvider.state('app.pfss_ddb_nomenclatureintervention', {
             url      : '/donnees-de-base/nomenclature-intervention',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/administration/ddb/nomenclatureintervention/nomenclatureintervention.html',
+                    templateUrl: 'app/main/pfss/administration/ddb/nomenclatureintervention/nomenclatureintervention.html',
                     controller : 'NomenclatureinterventionController as vm'
                 }
             },
@@ -29,10 +29,10 @@
         });
 
         // Navigation
-        msNavigationServiceProvider.saveItem('population.administration.ddb_adm.nomenclatureintervention', {
+        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.nomenclatureintervention', {
             title: "Nomenclature intervention",
             icon  : 'icon-map-marker-circle',
-            state: 'app.population_ddb_nomenclatureintervention',
+            state: 'app.pfss_ddb_nomenclatureintervention',
             hidden: function()
             {
                     return vs;

@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.population.registre_beneficiaire', [])
+        .module('app.pfss.registre_beneficiaire', [])
         .run(testPermission)        
         .config(config);
         var vs ;
@@ -12,11 +12,11 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.population_registre_beneficiaire', {
+        $stateProvider.state('app.pfss_registre_beneficiaire', {
             url      : '/registrebeneficiaire',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/registre_beneficiaire/registre_beneficiaire.html',
+                    templateUrl: 'app/main/pfss/registre_beneficiaire/registre_beneficiaire.html',
                     controller : 'registre_beneficiaireController as vm'
                 }
             },
@@ -29,10 +29,10 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('population.registre_beneficiaire', {
+        msNavigationServiceProvider.saveItem('pfss.registre_beneficiaire', {
             title: 'Registre Bénéficiaire',
             icon  : 'icon-swap-horizontal',
-            state: 'app.population_registre_beneficiaire',
+            state: 'app.pfss_registre_beneficiaire',
             weight: 3,
             hidden: function()
             {

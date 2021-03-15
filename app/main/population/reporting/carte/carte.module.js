@@ -3,18 +3,18 @@
     'use strict';
 
     angular
-        .module('app.population.reporting.carte', [])
+        .module('app.pfss.reporting.carte', [])
         .config(config);
 
     /** @ngInject */
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider,uiGmapGoogleMapApiProvider)
     {
         // State
-        $stateProvider.state('app.population_reporting_carte', {
+        $stateProvider.state('app.pfss_reporting_carte', {
             url      : '/reporting/carte',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/population/reporting/carte/carte.html',
+                    templateUrl: 'app/main/pfss/reporting/carte/carte.html',
                     controller : 'carteController as vm'
                 }
             },
@@ -27,10 +27,10 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('population.reporting.carte', {
+        msNavigationServiceProvider.saveItem('pfss.reporting.carte', {
             title: 'Carte',
             icon  : 'icon-google-maps',
-            state: 'app.population_reporting_carte',
+            state: 'app.pfss_reporting_carte',
             weight: 2
         });
 
