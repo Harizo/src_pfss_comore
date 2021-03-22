@@ -16,6 +16,11 @@
         </div>
         <div class="content" layout="column">
             <div class="form-wrapper">
+                <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                    <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                    
+                    <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                </div>
                 <div style="clear:both;"></div>
                 <md-tabs md-dynamic-height layout="column" flex>
                     <md-tab label="Consultant/ONG" ng-click="vm.Select_table(1)" layout="column" flex>
@@ -130,113 +135,173 @@
                             </fieldset>
                         </md-tab-body>
                     </md-tab>       
-                    <md-tab label="Agence d'execution" ng-click="vm.Select_table(1)" layout="column" flex>
+                    <md-tab label="Agence d'execution" ng-click="vm.get_all_agex()" layout="column" flex>
                         <md-tab-body>
-                            <fieldset style="width: 100%">
-                                <legend>
-                                        Agence d'execution
-                                    <!--button ng-click="vm.ajouterAgent_ex()" title="Ajouter un type d'acteur" style="font-size: 24px;font-weight: bold;background-color: rgb(255,255,255);color: rgb(3,155,229);">+</button!-->
+                            
 
-                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterAgent_ex()">
-                                      <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
-                                    </md-button>
+                            <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                                <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                    <div layout="row" layout-align="start center">
+                                    <div class="border-right">
+                                        
+                                      <span class="md-headline">Liste des AGEX</span>
+                                    </div>
+                                      <div class="border-right" ng-if="!vm.selected_agex.id&&!vm.nouvelle_agex">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_agex()">
+                                          <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                          <md-tooltip><span>Ajouter</span></md-tooltip>
+                                        </md-button>
+                                      </div> 
+                                      <div class="border-right" ng-if="vm.selected_agex.id&&!vm.selected_agex.$edit">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_agex()">
+                                          <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                          <md-tooltip><span>Modifier</span></md-tooltip>
+                                        </md-button>
+                                      </div>    
+                                      <div class="border-right" ng-if="vm.selected_agex.id&&!vm.selected_agex.$edit">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_agex()">
+                                          <md-icon md-font-icon="icon-delete"></md-icon>
+                                          <md-tooltip><span>Supprimer</span></md-tooltip>
+                                        </md-button>
+                                      </div>  
 
-                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('agent_ex/index','see_agex')">
-                                      <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
-                                    </md-button>
-                                </legend>
-                                <table ng-table="tablePrestataireAgent_ex" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                      <div class="border-right" ng-if="vm.selected_agex.id">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_agex()">
+                                          <md-icon md-font-icon="icon-cancel"></md-icon>
+                                          <md-tooltip><span>Annuler</span></md-tooltip>
+                                        </md-button>
+                                      </div>   
+
+                                      <div ng-if="vm.selected_agex.$edit">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_agex(0)">
+                                          <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                          <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                        </md-button>
+                                      </div>                
+                                    </div>
+                                </header>
+                                
+                            
+                                <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
                                     <thead>
                                         <tr>
-                                            <th class="secondary-text" ng-repeat="age in ::vm.agent_ex_column">
+                                            <th class="secondary-text" ng-repeat="c in ::vm.agent_ex_column">
                                                 <div class="table-header">
-                                                    <span class="column-title">{{age.titre}}</span>
+                                                    <span class="column-title text-center">{{c.titre}}</span>
                                                 </div>
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="agent_ex in vm.allRecordsAgent_ex"  ng-class="{selected: agent_ex.$selected}" ng-click="vm.selectionAgent_ex(agent_ex)">           
+                                        <tr ng-repeat="cm in vm.all_agex"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_agex(cm)">                                       
+                                            
+                                            
                                             <td>
-                                                <span ng-if="agent_ex.$edit">
+
+                                                <span ng-if="cm.$edit">
                                                     <md-input-container style="width:100%;display: flex !important;">
-                                                        <label>Code</label>
-                                                        <input name="Code" type="text" ng-model="agent_ex.Code"/>
+                                                      <label>Identifiant AGEX</label>
+                                                      
+                                                      <input type="text" name="identifiant_agex"  ng-model="cm.identifiant_agex"/>
                                                     </md-input-container>   
+                                                    
                                                 </span>
-                                                <span ng-if="!agent_ex.$edit">{{agent_ex.Code}}</span>
+                                                <span ng-if="!cm.$edit">
+                                                    {{cm.identifiant_agex}}
+                                                </span>
                                             </td>
                                             <td>
-                                                <span ng-if="agent_ex.$edit">
+
+                                                <span ng-if="cm.$edit">
                                                     <md-input-container style="width:100%;display: flex !important;">
-                                                        <label>Nom</label>
-                                                        <input name="Nom" type="text" ng-model="agent_ex.Nom"/>
+                                                      <label>Dénomination AGEX</label>
+                                                      <input type="text" name="Nom"  ng-model="cm.Nom"/>
                                                     </md-input-container>   
+                                                    
                                                 </span>
-                                                <span ng-if="!agent_ex.$edit">{{agent_ex.Nom}}</span>
+                                                <span ng-if="!cm.$edit">
+                                                    {{cm.Nom}}
+                                                </span>
                                             </td>
                                             <td>
-                                                <span ng-if="agent_ex.$edit">
+
+                                                <span ng-if="cm.$edit">
                                                     <md-input-container style="width:100%;display: flex !important;">
-                                                        <label>Contact</label>
-                                                        <input name="Contact" type="text" ng-model="agent_ex.Contact"/>
+                                                      <label>Intervenant AGEX</label>
+                                                      
+                                                      <md-select ng-model="cm.intervenant_agex" name="intervenant_agex" required>
+                                                        <md-option  value="Consultant">Consultant</md-option>
+                                                        <md-option  value="ONG">ONG</md-option>
+                                                        
+                                                      </md-select>
                                                     </md-input-container>   
+                                                    
                                                 </span>
-                                                <span ng-if="!agent_ex.$edit">{{agent_ex.Contact}}</span>
+                                                <span ng-if="!cm.$edit">
+                                                    {{cm.intervenant_agex}}
+                                                </span>
                                             </td>
                                             <td>
-                                                <span ng-if="agent_ex.$edit">
+
+                                                <span ng-if="cm.$edit">
                                                     <md-input-container style="width:100%;display: flex !important;">
-                                                        <label>Representant</label>
-                                                        <input name="Representant" type="text" ng-model="agent_ex.Representant" />
+                                                      <label>Nom de contact AGEX</label>
+                                                      <input type="text" name="nom_contact_agex"  ng-model="cm.nom_contact_agex"/>
                                                     </md-input-container>   
+                                                    
                                                 </span>
-                                                <span ng-if="!agent_ex.$edit">{{agent_ex.Representant}}</span>
+                                                <span ng-if="!cm.$edit">
+                                                    {{cm.nom_contact_agex}}
+                                                </span>
                                             </td>
                                             <td>
-                                                <span ng-if="agent_ex.$edit">
-                                                    <md-input-container style="width:100%;">
-                                                      <label>Ile</label>
-                                                        <md-select name="ile_id" ng-model="agent_ex.ile_id" ng-change="vm.modifierile(agent_ex)" style="display: inline-block;" style="width:90px;overflow: hidden;text-overflow: ellipsis;">
-                                                          <md-option ng-repeat="il in vm.allile" value="{{il.id}}">
-                                                            {{il.Ile}}
-                                                          </md-option>
-                                                        </md-select>
+
+                                                <span ng-if="cm.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Titre du contact</label>
+                                                      <input type="text" name="titre_contact"  ng-model="cm.titre_contact"/>
                                                     </md-input-container>   
+                                                    
                                                 </span>
-                                                <span ng-if="!agent_ex.$edit">{{agent_ex.ile.Ile}}</span>
+                                                <span ng-if="!cm.$edit">
+                                                    {{cm.titre_contact}}
+                                                </span>
                                             </td>
                                             <td>
-                                                <span ng-if="agent_ex.$edit">
-                                                    <md-input-container style="width:100%;">
-                                                      <label>Programme</label>
-                                                        <md-select ng-model="agent_ex.programme_id" disabled style="width:90px;overflow: hidden;text-overflow: ellipsis;">
-                                                          <md-option ng-repeat="programme in vm.allprogramme" value="{{programme.id}}">
-                                                            {{programme.libelle}}
-                                                          </md-option>
-                                                        </md-select>
-                                                    </md-input-container>  
+
+                                                <span ng-if="cm.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Numéro Tel</label>
+                                                      <input type="text" name="numero_phone_contact"  ng-model="cm.numero_phone_contact"/>
+                                                    </md-input-container>   
+                                                    
                                                 </span>
-                                                <span ng-if="!agent_ex.$edit">{{agent_ex.programme.libelle}}</span>
+                                                <span ng-if="!cm.$edit">
+                                                    {{cm.numero_phone_contact}}
+                                                </span>
                                             </td>
+
                                             <td>
-                                                <a ng-if="!agent_ex.$edit" ng-click="vm.modifierAgent_ex(agent_ex)" title="Modifier">
-                                                    <span class="icon-table-edit"></span>
-                                                </a>
-                                                <a ng-if="!agent_ex.$edit" ng-click="vm.supprimerAgent_ex(agent_ex)" title="Supprimer">
-                                                    <span class="icon-delete"></span>
-                                                </a>
-                                                <a ng-if="agent_ex.$edit" ng-click="vm.annulerAgent_ex(agent_ex)" title="Annuler modification">
-                                                    <span class="icon-cancel"></span>
-                                                </a>
-                                                <a ng-if="agent_ex.$edit && agent_ex.Code && agent_ex.Contact && agent_ex.Nom && agent_ex.Representant && agent_ex.ile_id && agent_ex.programme_id>''" ng-click="vm.ajout(agent_ex,0)" title="Sauvegarder">
-                                                    <span class="icon-content-save"></span>
-                                                </a>
+
+                                                <span ng-if="cm.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Adresse AGEX</label>
+                                                      <input type="text" name="adresse_agex"  ng-model="cm.adresse_agex"/>
+                                                    </md-input-container>   
+                                                    
+                                                </span>
+                                                <span ng-if="!cm.$edit">
+                                                    {{cm.adresse_agex}}
+                                                </span>
                                             </td>
+
+                                            
+                                   
+                                           
                                         </tr>
                                     </tbody>
                                 </table>
-                            </fieldset>
+                            </div>
                         </md-tab-body>
                     </md-tab>       
                     <md-tab label="Agence de paiement" ng-click="vm.Select_table(2)">

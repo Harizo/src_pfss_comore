@@ -10,6 +10,27 @@ $card-header-height: $header-height - $card-toolbar-height;
 $header-height-xs: 160px;
 $card-header-height-sm: $header-height-xs - $card-toolbar-height;
 
+.custum_button{ 
+    color: rgb(255,255,255) !important;
+    background-color: #8e00f4 !important;
+    width: auto !important;
+    font-size: 10px;
+}
+
+.custum_button_new{ 
+    color: rgb(255,255,255) !important;
+    background-color: #619b04 !important;
+    width: auto !important;
+    font-size: 10px;
+}
+
+.custum_button_del{ 
+    color: rgb(255,255,255) !important;
+    background-color: red !important;
+    width: auto !important;
+    font-size: 10px;
+}
+
 .page-layout.simple.fullwidth > .header {
     background-color: #383c48 !important;
     height: 100px !important;
@@ -32,7 +53,7 @@ md-ink-bar {
     color: #f8670d !important;
 }
 
-.custum_button {
+/*.custum_button {
     color: #f8670d !important;
     border : 1px solid #f8670d;
     margin:2px 2px 2px 4px !important;
@@ -52,7 +73,7 @@ md-ink-bar {
     height: 30px !important;
     line-height: 30px !important;
     
-}
+}*/
 
 .page-layout {
     position: relative;
