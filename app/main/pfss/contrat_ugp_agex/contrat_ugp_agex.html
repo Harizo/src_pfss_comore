@@ -1,0 +1,394 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Contrat UGP/AGEX</span>
+                    <span class="parent"> </span>
+                    <!--md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;">Groupe ML/PL</span-->
+                </div>
+    
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>
+                <md-tabs md-dynamic-height>
+                    <md-tab label="Contrat UGP/AGEX">
+                        <div style="widht:100%;">    
+                            <md-button type="submit"class="md-raised custum_button_new" aria-label="Nouveau" ng-click="vm.ajout_contrat_ugp_agex()" style="width:10%;"><md-icon md-font-icon="icon-plus" class="s16 center" style="color: white;"></md-icon>
+                              Nouveau
+                            </md-button>
+                            <md-button type="submit" class="md-raised custum_button" ng-if="vm.selected_contrat_ugp_agex.id" aria-label="Modifier" ng-click="vm.modif_contrat_ugp_agex()" style="width:10%;"><md-icon md-font-icon="icon-table-edit" class="s16" style="color: white;"></md-icon>
+                              Modifier
+                            </md-button>
+                            <md-button type="submit" class="md-raised custum_button_del" ng-if="vm.selected_contrat_ugp_agex.id" aria-label="Supprimer" ng-click="vm.supprimer_contrat_ugp_agex()" style="width:10%;">
+                                <md-icon md-font-icon="icon-close-circle-outline" class="s16" style="color: white;"></md-icon>
+                              Supprimer
+                            </md-button>
+                        </div>
+                        <!--FORM  AGEX-->       
+                         
+                            <form ng-show="vm.affichage_masque" name="form_contrat_ugp_agex" class="md-inline-form" novalidate >
+
+                                <div layout="column" layout-gt-xs="row" flex>
+                                   
+                                        <md-input-container flex="100" flex-gt-xs="40">
+                                          <input  type="text" name="numero_contrat" ng-model="vm.contrat_ugp_agex.numero_contrat"
+                                            placeholder="N° Contrat"    ng-init="vm.contrat_ugp_agex.numero_contrat=''"
+                                            required>
+                                            <div ng-messages="form_contrat_ugp_agex.numero_contrat.$error"
+                                              role="alert">
+                                              <div ng-message="required">
+                                                <span>N° Contrat obligatoire.</span>
+                                              </div>
+                                            </div>
+                                        </md-input-container>
+
+                                        <md-input-container flex="100" flex-gt-xs="30">
+                                            <label>AGEX</label>
+                                            <md-select ng-model="vm.contrat_ugp_agex.id_agex" name="id_agex" >
+                                                <!--md-option value="0">-</md-option!-->
+                                                <md-option ng-repeat="agex in vm.all_agex" value="{{agex.id}}">
+                                                    {{agex.Nom}}
+                                                </md-option>
+                                                
+                                            </md-select>
+                                            <div ng-messages="form_contrat_ugp_agex.id_agex.$error"
+                                                  role="alert">
+                                                  <div ng-message="required">
+                                                    <span>AGEX Obligatoire.</span>
+                                                  </div>
+                                                </div>
+                                        </md-input-container>
+
+                                        <md-input-container flex="100" flex-gt-xs="30">
+                                            <label>Sous-projet</label>
+                                            <md-select ng-model="vm.contrat_ugp_agex.id_sous_projet" name="id_sous_projet" >
+                                                <md-option value="0">-</md-option>
+                                                <md-option ng-repeat="sp in vm.all_sous_projet" value="{{sp.id}}">
+                                                    {{sp.description}}
+                                                </md-option>
+                                                
+                                            </md-select>
+                                            <div ng-messages="form_contrat_ugp_agex.id_sous_projet.$error"
+                                                  role="alert">
+                                                  <div ng-message="required">
+                                                    <span>Sous-projet Obligatoire.</span>
+                                                  </div>
+                                                </div>
+                                        </md-input-container>
+
+                                      
+                                </div>
+                                <div layout="column" layout-gt-xs="row" flex>
+                                    <md-input-container flex="100" flex-gt-xs="100">
+                                        <label>Objet du Contrat</label>
+                                        <textarea name="objet_contrat" ng-model="vm.contrat_ugp_agex.objet_contrat" required md-select-on-focus></textarea>
+                                        <div ng-messages="form_contrat_ugp_agex.objet_contrat.$error"
+                                          role="alert">
+                                          <div ng-message="required">
+                                            <span>Objet du Contrat obligatoire.</span>
+                                          </div>
+                                        </div>
+                                    </md-input-container>
+                   
+                                </div>
+
+                                <div layout="column" layout-gt-xs="row" flex>
+                                    <md-input-container flex="100" flex-gt-xs="10">
+                                      <input  type="number" name="montant_contrat" ng-model="vm.contrat_ugp_agex.montant_contrat"
+                                        placeholder="Montant du Contrat"    ng-init="vm.contrat_ugp_agex.montant_contrat=0"
+                                        required>
+                                        <div ng-messages="form_contrat_ugp_agex.montant_contrat.$error"
+                                          role="alert">
+                                          <div ng-message="required">
+                                            <span>Montant du Contrat obligatoire.</span>
+                                          </div>
+                                        </div>
+                                    </md-input-container>
+
+                                    <div style="margin-top: 14px !important; font-size: 13px !important;">
+                                        <label>Date signature:</label>
+                                        <md-datepicker  ng-model="vm.contrat_ugp_agex.date_signature" md-placeholder="Date signature" md-max-date="vm.date_now" required>                       
+                                        </md-datepicker>
+                                    </div>
+                                    <div style="margin-top: 14px !important; font-size: 13px !important;">
+                                        <label>Fin Contrat :</label>
+                                        <md-datepicker  ng-model="vm.contrat_ugp_agex.date_prevu_fin_contrat" md-placeholder="Date Fin Contrat" md-min-date="vm.contrat_ugp_agex.date_signature" ng-disabled="!vm.contrat_ugp_agex.date_signature" required>                       
+                                        </md-datepicker>
+                                    </div>
+
+                                    <md-input-container flex="100" flex-gt-xs="10">
+                                        <label>Status</label>
+                                        <md-select ng-model="vm.contrat_ugp_agex.status_contrat" name="status_contrat" required>
+                                            <md-option value="En cours">En cours</md-option>
+                                            <md-option value="Terminé">Terminé</md-option>
+                                            <md-option value="Résilié">Résilié</md-option>
+                                            
+                                            
+                                        </md-select>
+                                        <div ng-messages="form_contrat_ugp_agex.status_contrat.$error"
+                                              role="alert">
+                                              <div ng-message="required">
+                                                <span>Status Obligatoire.</span>
+                                              </div>
+                                            </div>
+                                    </md-input-container>
+                                </div>
+
+                                <div layout="column" layout-gt-xs="row" flex ng-show="vm.contrat_ugp_agex.status_contrat=='Résilié'">
+                                    <md-input-container flex="100" flex-gt-xs="100">
+                                        <label>Note de résiliation</label>
+                                        <textarea name="note_resiliation" ng-model="vm.contrat_ugp_agex.note_resiliation"  md-select-on-focus ng-required="vm.contrat_ugp_agex.status_contrat=='Résilié'"></textarea>
+                                        <div ng-messages="form_contrat_ugp_agex.note_resiliation.$error"
+                                          role="alert">
+                                          <div ng-message="required">
+                                            <span>Note de résiliation obligatoire.</span>
+                                          </div>
+                                        </div>
+                                    </md-input-container>
+                   
+                                </div>
+                                <div>
+                                    <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                        ng-disabled="form_contrat_ugp_agex.$invalid||vm.affiche_load " ng-click="vm.save_in_bdd(vm.contrat_ugp_agex,0)">
+                                        Enregistrer
+                                    </md-button>
+                                    <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annuler()">
+                                        Annuler
+                                    </md-button>
+                                </div>
+                            </form>
+                                        
+                        <!--FORM  AGEX--> 
+                        <table class="dataTable row-border hover cell-border text-center" datatable="ng"
+                          dt-options="vm.dtOptions_new" ms-responsive-table>
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::vm.entete_contrat_ugp_agex">
+                                <div class="table-header">
+                                  <span class="column-title text-center">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="cua in vm.all_contrat_ugp_agex"  ng-class="{selected: cua.$selected}" ng-click="vm.selection(cua)">
+                                <td>{{cua.numero_contrat}}</td>
+                                <td>
+                                     <span class="text-truncate">- <b>Dénomination:</b> {{cua.nom_agex}} </span> <br>
+                                     <span class="text-truncate">- <b>Intervenant:</b> {{cua.intervenant_agex}} </span> <br>
+                                     <span class="text-truncate">- <b>Nom de contact:</b> {{cua.nom_contact_agex}} </span> <br>
+                                     <span class="text-truncate">- <b>N° Phone:</b> {{cua.numero_phone_contact}}  </span><br>
+                                     <span class="text-truncate">- <b>Adresse:</b> {{cua.adresse_agex}} </span> <br>
+                                </td>
+                               
+                                <td>{{cua.description_sous_projet}}</td>
+                                <td>{{cua.objet_contrat}}</td>
+                                <td>{{vm.formatMillier(cua.montant_contrat)}} KMF</td>
+                                <td>{{cua.date_signature  | date:'dd/MM/yyyy'}}</td>
+                                <td>{{cua.date_prevu_fin_contrat  | date:'dd/MM/yyyy'}}</td>
+                                <td>{{cua.status_contrat}}</td>
+                                <td>{{cua.note_resiliation}}</td>
+                              <!--   <td>{{vm.aff_validation(cua.etat_validation)}}</td> -->
+                            </tr>
+                          </tbody>
+                        </table>
+                    </md-tab> 
+                    <md-tab label="Signataires | Contrat N° {{vm.selected_contrat_ugp_agex.numero_contrat}}" ng-disabled="!vm.selected_contrat_ugp_agex.id" ng-click="vm.get_all_contrat_ugp_agex_signataires()">
+                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                <div layout="row" layout-align="start center">
+                                <div class="border-right">
+                                    
+                                  <span class="md-headline">Liste des Signataires</span>
+                                </div>
+                                  <div class="border-right" ng-if="!vm.selected_contrat_ugp_agex_signataires.id&&!vm.nouvelle_contrat_ugp_agex_signataires">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_contrat_ugp_agex_signataires()">
+                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                      <md-tooltip><span>Ajouter</span></md-tooltip>
+                                    </md-button>
+                                  </div> 
+                                  <div class="border-right" ng-if="vm.selected_contrat_ugp_agex_signataires.id&&!vm.selected_contrat_ugp_agex_signataires.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_contrat_ugp_agex_signataires()">
+                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                      <md-tooltip><span>Modifier</span></md-tooltip>
+                                    </md-button>
+                                  </div>    
+                                  <div class="border-right" ng-if="vm.selected_contrat_ugp_agex_signataires.id&&!vm.selected_contrat_ugp_agex_signataires.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_contrat_ugp_agex_signataires()">
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Supprimer</span></md-tooltip>
+                                    </md-button>
+                                  </div>  
+
+                                  <div class="border-right" ng-if="vm.selected_contrat_ugp_agex_signataires.id">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_contrat_ugp_agex_signataires()">
+                                      <md-icon md-font-icon="icon-cancel"></md-icon>
+                                      <md-tooltip><span>Annuler</span></md-tooltip>
+                                    </md-button>
+                                  </div>   
+
+                                  <div ng-if="vm.selected_contrat_ugp_agex_signataires.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_contrat_ugp_agex_signataires(0)">
+                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                    </md-button>
+                                  </div>                
+                                </div>
+                            </header>
+                            
+                        
+                            <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                                <thead>
+                                    <tr>
+                                        <th class="secondary-text" ng-repeat="c in ::vm.ontrat_ugp_agex_signataires_column">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">{{c.titre}}</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="cm in vm.all_contrat_ugp_agex_signataires"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_contrat_ugp_agex_signataires(cm)">                                       
+                                        
+                                        
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Nom/Prénom</label>
+                                                  
+                                                  <input type="text" name="nom_signataire"  ng-model="cm.nom_signataire"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.nom_signataire}}
+                                            </span>
+                                        </td>
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Titre</label>
+                                                  <input type="text" name="titre_signatire"  ng-model="cm.titre_signatire"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.titre_signatire}}
+                                            </span>
+                                        </td>
+                                      
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </md-tab> 
+                    <md-tab label="Modalité de payement | Contrat N° {{vm.selected_contrat_ugp_agex.numero_contrat}}" ng-disabled="!vm.selected_contrat_ugp_agex.id" ng-click="vm.get_all_contrat_ugp_agex_modalite_payement()">
+                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                <div layout="row" layout-align="start center">
+                                <div class="border-right">
+                                    
+                                  <span class="md-headline">Liste des paiements effectués</span>
+                                </div>
+                                  <div class="border-right" ng-if="!vm.selected_contrat_ugp_agex_modalite_payement.id&&!vm.nouvelle_contrat_ugp_agex_modalite_payement">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_contrat_ugp_agex_modalite_payement()">
+                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                      <md-tooltip><span>Ajouter</span></md-tooltip>
+                                    </md-button>
+                                  </div> 
+                                  <div class="border-right" ng-if="vm.selected_contrat_ugp_agex_modalite_payement.id&&!vm.selected_contrat_ugp_agex_modalite_payement.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_contrat_ugp_agex_modalite_payement()">
+                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                      <md-tooltip><span>Modifier</span></md-tooltip>
+                                    </md-button>
+                                  </div>    
+                                  <div class="border-right" ng-if="vm.selected_contrat_ugp_agex_modalite_payement.id&&!vm.selected_contrat_ugp_agex_modalite_payement.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_contrat_ugp_agex_modalite_payement()">
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Supprimer</span></md-tooltip>
+                                    </md-button>
+                                  </div>  
+
+                                  <div class="border-right" ng-if="vm.selected_contrat_ugp_agex_modalite_payement.id">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_contrat_ugp_agex_modalite_payement()">
+                                      <md-icon md-font-icon="icon-cancel"></md-icon>
+                                      <md-tooltip><span>Annuler</span></md-tooltip>
+                                    </md-button>
+                                  </div>   
+
+                                  <div ng-if="vm.selected_contrat_ugp_agex_modalite_payement.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_contrat_ugp_agex_modalite_payement(0)">
+                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                    </md-button>
+                                  </div>                
+                                </div>
+                            </header>
+                            
+                        
+                            <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                                <thead>
+                                    <tr>
+                                        <th class="secondary-text" ng-repeat="c in ::vm.ontrat_ugp_agex_modalite_payement_column">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">{{c.titre}}</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="cm in vm.all_contrat_ugp_agex_modalite_payement"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_contrat_ugp_agex_modalite_payement(cm)">                                       
+                                        
+                                        
+                                        <td>
+                                          <span>
+                                              {{vm.affichage_tranche(cm.numero_tranche)}}
+                                          </span>
+                                        </td>
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Pourcentage</label>
+                                                  
+                                                  <input type="number" name="poucentage"  ng-model="cm.poucentage" ng-change="vm.get_montant(cm.poucentage)"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.poucentage}} %
+                                            </span>
+                                        </td>
+                                        <td>
+
+                                            <!-- <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Valeur</label>
+                                                  <input type="text" name="montant"  ng-model="cm.montant"/>
+                                                </md-input-container>   
+                                                
+                                            </span> -->
+                                            <span >
+                                                {{vm.formatMillier(cm.montant)}} KMF
+                                            </span>
+                                        </td>
+                                      
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </md-tab> 
+                </md-tabs>
+            </div>
+        </div>
+    </div>

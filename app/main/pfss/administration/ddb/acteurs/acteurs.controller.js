@@ -11,7 +11,7 @@
 		var vm = this;
 
 		vm.serveur_central = serveur_central ;
-		console.log(vm.serveur_central);
+		
 		vm.titrepage ="Ajout Tutelle";
 		vm.ajout = ajout ;
 		vm.ajoutConsultant_ong = ajoutConsultant_ong ;
@@ -155,7 +155,7 @@
 			};
 			apiFactory.getAll_acteur_serveur_central(controller).then(function(result){
 				var ddb = result.data.response;
-				console.log(ddb);
+				
 				var datas_suppr = $.param({
 						supprimer:1,
 						nom_table: table,
@@ -576,90 +576,320 @@
 					
 		
 		// début Agence dexecution
-        vm.selectionAgent_ex= function (item) {     
-            vm.selectedItemAgent_ex = item;
-        };
-        $scope.$watch('vm.selectedItemAgent_ex', function() {
-			if (!vm.allRecordsAgent_ex) return;
-			vm.allRecordsAgent_ex.forEach(function(item) {
-				item.$selected = false;
-			});
-			vm.selectedItemAgent_ex.$selected = true;
-			//console.log(vm.allRecordsAgent_ex);
-        });
-        //function cache masque de saisie
-        vm.ajouterAgent_ex = function () {
-            vm.selectedItemAgent_ex.$selected = false;
-            NouvelItemAgent_ex = true ;
-		    var items = {
-				$edit: true,
-				$selected: true,
-				supprimer:0,
-                Code: '',
-                Nom: '',
-                Contact: '',
-                Representant: '',
-                ile_id: '',
-                programme_id: ''
-			};
-			vm.allRecordsAgent_ex.push(items);
-		    vm.allRecordsAgent_ex.forEach(function(it) {
-				if(it.$selected==true) {
-					vm.selectedItemAgent_ex = it;
-				}
-			});			
-        };
-        vm.annulerAgent_ex = function(item) {
-			if (!item.id) {
-				vm.allRecordsAgent_ex.pop();
-				return;
-			}          
-			item.$selected=false;
-			item.$edit=false;
-			NouvelItemAgent_ex = false;
-			item.Code = currentItemAgent_ex.Code;
-			item.Nom = currentItemAgent_ex.Nom;
-			item.Contact = currentItemAgent_ex.Contact;
-			item.Representant = currentItemAgent_ex.Representant;
-			item.ile_id = currentItemAgent_ex.ile.id;
-			item.programme_id = currentItemAgent_ex.programme.id;
-			vm.selectedItemAgent_ex = {} ;
-			vm.selectedItemAgent_ex.$selected = false;
-       };
-        vm.modifierAgent_ex = function(item) {
-        	console.log(vm.selectedItemAgent_ex);
-			NouvelItemAgent_ex = false ;
-			vm.selectedItemAgent_ex = item;
-			currentItemAgent_ex = angular.copy(vm.selectedItemAgent_ex);
-			$scope.vm.allRecordsAgent_ex.forEach(function(it) {
-				it.$edit = false;
-			});        
-			item.$edit = true;	
-			item.$selected = true;	
-			item.Code = vm.selectedItemAgent_ex.Code;
-			item.Nom = vm.selectedItemAgent_ex.Nom;
-			item.Contact = vm.selectedItemAgent_ex.Contact;
-			item.Representant = vm.selectedItemAgent_ex.Representant;
-			item.ile_id = vm.selectedItemAgent_ex.ile.id;
-			item.programme_id = vm.selectedItemAgent_ex.programme.id;
-			item.$edit = true;
-			console.log(vm.allRecordsAgent_ex);	
-        };
-        vm.supprimerAgent_ex = function() {
-			var confirm = $mdDialog.confirm()
-                .title('Etes-vous sûr de supprimer cet enregistrement ?')
-                .textContent('')
-                .ariaLabel('Lucky day')
-                .clickOutsideToClose(true)
-                .parent(angular.element(document.body))
-                .ok('supprimer')
-                .cancel('annuler');
-			$mdDialog.show(confirm).then(function() {          
-				ajout(vm.selectedItemAgent_ex,1);
-			}, function() {
-			});
-        }
+	        /*vm.selectionAgent_ex= function (item) {     
+	            vm.selectedItemAgent_ex = item;
+	        };
+	        $scope.$watch('vm.selectedItemAgent_ex', function() {
+				if (!vm.allRecordsAgent_ex) return;
+				vm.allRecordsAgent_ex.forEach(function(item) {
+					item.$selected = false;
+				});
+				vm.selectedItemAgent_ex.$selected = true;
+				//console.log(vm.allRecordsAgent_ex);
+	        });
+	        //function cache masque de saisie
+	        vm.ajouterAgent_ex = function () {
+	            vm.selectedItemAgent_ex.$selected = false;
+	            NouvelItemAgent_ex = true ;
+			    var items = {
+					$edit: true,
+					$selected: true,
+					supprimer:0,
+	                Code: '',
+	                Nom: '',
+	                Contact: '',
+	                Representant: '',
+	                ile_id: '',
+	                programme_id: ''
+				};
+				vm.allRecordsAgent_ex.push(items);
+			    vm.allRecordsAgent_ex.forEach(function(it) {
+					if(it.$selected==true) {
+						vm.selectedItemAgent_ex = it;
+					}
+				});			
+	        };
+	        vm.annulerAgent_ex = function(item) {
+				if (!item.id) {
+					vm.allRecordsAgent_ex.pop();
+					return;
+				}          
+				item.$selected=false;
+				item.$edit=false;
+				NouvelItemAgent_ex = false;
+				item.Code = currentItemAgent_ex.Code;
+				item.Nom = currentItemAgent_ex.Nom;
+				item.Contact = currentItemAgent_ex.Contact;
+				item.Representant = currentItemAgent_ex.Representant;
+				item.ile_id = currentItemAgent_ex.ile.id;
+				item.programme_id = currentItemAgent_ex.programme.id;
+				vm.selectedItemAgent_ex = {} ;
+				vm.selectedItemAgent_ex.$selected = false;
+	       };
+	        vm.modifierAgent_ex = function(item) {
+	        	console.log(vm.selectedItemAgent_ex);
+				NouvelItemAgent_ex = false ;
+				vm.selectedItemAgent_ex = item;
+				currentItemAgent_ex = angular.copy(vm.selectedItemAgent_ex);
+				$scope.vm.allRecordsAgent_ex.forEach(function(it) {
+					it.$edit = false;
+				});        
+				item.$edit = true;	
+				item.$selected = true;	
+				item.Code = vm.selectedItemAgent_ex.Code;
+				item.Nom = vm.selectedItemAgent_ex.Nom;
+				item.Contact = vm.selectedItemAgent_ex.Contact;
+				item.Representant = vm.selectedItemAgent_ex.Representant;
+				item.ile_id = vm.selectedItemAgent_ex.ile.id;
+				item.programme_id = vm.selectedItemAgent_ex.programme.id;
+				item.$edit = true;
+				console.log(vm.allRecordsAgent_ex);	
+	        };
+	        vm.supprimerAgent_ex = function() {
+				var confirm = $mdDialog.confirm()
+	                .title('Etes-vous sûr de supprimer cet enregistrement ?')
+	                .textContent('')
+	                .ariaLabel('Lucky day')
+	                .clickOutsideToClose(true)
+	                .parent(angular.element(document.body))
+	                .ok('supprimer')
+	                .cancel('annuler');
+				$mdDialog.show(confirm).then(function() {          
+					ajout(vm.selectedItemAgent_ex,1);
+				}, function() {
+				});
+	        }*/
 		// fin Agence dexecution
+
+		vm.dtOptions_new =
+		{
+			dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
+			pagingType: 'simple_numbers',
+			retrieve:'true',
+			order:[] 
+		};
+
+		//AGEX NEW CODE
+
+			vm.all_agex = [] ;
+
+			vm.agent_ex_column =
+			[
+				{titre:"Identifiant AGEX"},
+				{titre:"Dénomination AGEX"},
+				{titre:"Intervenant AGEX"},
+				{titre:"Nom de contact AGEX"},
+				{titre:"Titre du contact"},
+				{titre:"Numéro de téléphone contact"},
+				{titre:"Adresse AGEX"}
+			];
+
+			vm.affiche_load = false ;
+
+			vm.get_all_agex = function () 
+			{
+				vm.affiche_load = true ;
+				apiFactory.getAll("Agent_ex/index").then(function(result){
+					vm.all_agex = result.data.response;
+					
+					vm.affiche_load = false ;
+
+				});  
+			}
+
+			//AGEX..
+				
+	    		vm.selected_agex = {} ;
+	    		var current_selected_agex = {} ;
+	    		 vm.nouvelle_agex = false ;
+
+	    	
+				vm.selection_agex = function(item)
+				{
+					vm.selected_agex = item ;
+
+					if (!vm.selected_agex.$edit) //si simple selection
+					{
+						vm.nouvelle_agex = false ;	
+
+					}
+
+				}
+
+				$scope.$watch('vm.selected_agex', function()
+				{
+					if (!vm.all_agex) return;
+					vm.all_agex.forEach(function(item)
+					{
+						item.$selected = false;
+					});
+					vm.selected_agex.$selected = true;
+
+				});
+
+				vm.ajouter_agex = function()
+				{
+					vm.nouvelle_agex = true ;
+					var item = 
+						{
+							
+							$edit: true,
+							$selected: true,
+		              		id:'0',
+		              		identifiant_agex:'',
+		              		Nom:'',
+		              		intervenant_agex:'',
+		              		nom_contact_agex:'',
+		              		titre_contact:'',
+		              		numero_phone_contact:'',
+		              		adresse_agex:''
+		              		
+						} ;
+
+					vm.all_agex.unshift(item);
+		            vm.all_agex.forEach(function(af)
+		            {
+		              if(af.$selected == true)
+		              {
+		                vm.selected_agex = af;
+		                
+		              }
+	            	});
+				}
+
+				vm.modifier_agex = function()
+				{
+					vm.nouvelle_agex = false ;
+					vm.selected_agex.$edit = true;
+				
+					current_selected_agex = angular.copy(vm.selected_agex);
+				}
+
+				vm.supprimer_agex = function()
+				{
+
+					
+					var confirm = $mdDialog.confirm()
+					  .title('Etes-vous sûr de supprimer cet enregistrement ?')
+					  .textContent('Cliquer sur OK pour confirmer')
+					  .ariaLabel('Lucky day')
+					  .clickOutsideToClose(true)
+					  .parent(angular.element(document.body))
+					  .ok('OK')
+					  .cancel('Annuler');
+					$mdDialog.show(confirm).then(function() {
+
+					vm.enregistrer_agex(1);
+					}, function() {
+					//alert('rien');
+					});
+				}
+
+				vm.annuler_agex = function()
+				{
+					if (vm.nouvelle_agex) 
+					{
+						
+						vm.all_agex.shift();
+						vm.selected_agex = {} ;
+						vm.nouvelle_agex = false ;
+					}
+					else
+					{
+						
+
+						if (!vm.selected_agex.$edit) //annuler selection
+						{
+							vm.selected_agex.$selected = false;
+							vm.selected_agex = {};
+						}
+						else
+						{
+							vm.selected_agex.$selected = false;
+							vm.selected_agex.$edit = false;
+							vm.selected_agex.identifiant_agex = current_selected_agex.identifiant_agex ;
+							vm.selected_agex.Nom = current_selected_agex.Nom ;
+							vm.selected_agex.intervenant_agex = current_selected_agex.intervenant_agex ;
+							vm.selected_agex.nom_contact_agex = current_selected_agex.nom_contact_agex ;
+							vm.selected_agex.titre_contact = current_selected_agex.titre_contact ;
+							vm.selected_agex.numero_phone_contact = current_selected_agex.numero_phone_contact ;
+							vm.selected_agex.adresse_agex = current_selected_agex.adresse_agex ;
+							
+							vm.selected_agex = {};
+						}
+
+						
+
+					}
+				}
+
+				vm.enregistrer_agex = function(etat_suppression)
+				{
+					vm.affiche_load = true ;
+					var config = {
+		                headers : {
+		                    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+		                }
+		            };
+
+
+		            var datas = $.param(
+		            {
+		            	
+		                supprimer:etat_suppression,
+		                id:vm.selected_agex.id,
+
+		                identifiant_agex : vm.selected_agex.identifiant_agex ,
+						Nom : vm.selected_agex.Nom ,
+						intervenant_agex : vm.selected_agex.intervenant_agex ,
+						nom_contact_agex : vm.selected_agex.nom_contact_agex ,
+						titre_contact : vm.selected_agex.titre_contact ,
+						numero_phone_contact : vm.selected_agex.numero_phone_contact ,
+						adresse_agex : vm.selected_agex.adresse_agex 
+		                
+		                
+		            });
+
+		            apiFactory.add("Agent_ex/index",datas, config).success(function (data)
+	        		{
+	        			vm.affiche_load = false ;
+	        			if (!vm.nouvelle_agex) 
+	        			{
+	        				if (etat_suppression == 0) 
+	        				{
+	        					vm.selected_agex.$edit = false ;
+	        					vm.selected_agex.$selected = false ;
+	        					vm.selected_agex = {} ;
+	        				}
+	        				else
+	        				{
+	        					vm.all_agex = vm.all_agex.filter(function(obj)
+								{
+									return obj.id !== vm.selected_agex.id;
+								});
+
+								vm.selected_agex = {} ;
+	        				}
+
+	        			}
+	        			else
+	        			{
+	        				vm.selected_agex.$edit = false ;
+	        				vm.selected_agex.$selected = false ;
+	        				vm.selected_agex.id = String(data.response) ;
+
+	        				vm.nouvelle_agex = false ;
+	        				vm.selected_agex = {};
+
+	        			}
+	        		})
+	        		.error(function (data) {alert("Une erreur s'est produit");});
+				}
+
+			
+
+			//fin AGEX..
+		//FIN AGEX NEW CODE
 		
         vm.modifierile = function (item) 
         {
