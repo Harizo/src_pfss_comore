@@ -132,7 +132,7 @@ apiFactory.getAll("commune/index").then(function(result){
             intitule: ss_p.intitule, 
             nature: ss_p.nature,  
             type: ss_p.type,      
-            description_sousprojet:   ss_p.description_sousprojet,
+            description:   ss_p.description,
             description_activite:     ss_p.description_activite, 
             presentantion_communaute: ss_p.presentantion_communaute, 
             ref_dgsc:                 ss_p.ref_dgsc, 
@@ -183,7 +183,7 @@ apiFactory.getAll("commune/index").then(function(result){
 					  vm.selectedItemSous_projet.intitule = ss_p.intitule;
 					  vm.selectedItemSous_projet.nature = ss_p.nature;
 					  vm.selectedItemSous_projet.type = ss_p.type;
-					  vm.selectedItemSous_projet.description_sousprojet   = ss_p.description_sousprojet;
+					  vm.selectedItemSous_projet.description   = ss_p.description;
 					  vm.selectedItemSous_projet.description_activite     = ss_p.description_activite;
 					  vm.selectedItemSous_projet.presentantion_communaute = ss_p.presentantion_communaute;
 					  vm.selectedItemSous_projet.ref_dgsc = ss_p.ref_dgsc;
@@ -264,7 +264,7 @@ apiFactory.getAll("commune/index").then(function(result){
                       intitule: '',
                       nature: '',
                       type: '',
-                      description_sousprojet: '',
+                      description: '',
                       description_activite: '',
                       presentantion_communaute: '',                
                       ref_dgsc : '',
@@ -294,7 +294,7 @@ apiFactory.getAll("commune/index").then(function(result){
             item.intitule = currentItemSous_projet.intitule;
             item.nature = currentItemSous_projet.nature;
             item.type = currentItemSous_projet.type;
-            item.description_sousprojet   = currentItemSous_projet.description_sousprojet;
+            item.description   = currentItemSous_projet.description;
             item.description_activite     = currentItemSous_projet.description_activite;
             item.presentantion_communaute = currentItemSous_projet.presentantion_communaute;
             item.ref_dgsc = currentItemSous_projet.ref_dgsc;
@@ -332,7 +332,7 @@ apiFactory.getAll("commune/index").then(function(result){
           item.intitule = vm.selectedItemSous_projet.intitule;
           item.nature = vm.selectedItemSous_projet.nature;
           item.type = vm.selectedItemSous_projet.type;
-          item.description_sousprojet   = vm.selectedItemSous_projet.description_sousprojet;
+          item.description   = vm.selectedItemSous_projet.description;
           item.description_activite     = vm.selectedItemSous_projet.description_activite;
           item.presentantion_communaute = vm.selectedItemSous_projet.presentantion_communaute;
           item.ref_dgsc = vm.selectedItemSous_projet.ref_dgsc;
@@ -389,7 +389,7 @@ apiFactory.getAll("commune/index").then(function(result){
                   ||(ag[0].intitule != currentItemSous_projet.intitule)
                   ||(ag[0].nature != currentItemSous_projet.nature)
                   ||(ag[0].type != currentItemSous_projet.type)
-                  ||(ag[0].description_sousprojet != currentItemSous_projet.description_sousprojet)
+                  ||(ag[0].description != currentItemSous_projet.description)
                   ||(ag[0].description_activite != currentItemSous_projet.description_activite)
                   ||(ag[0].presentantion_communaute != currentItemSous_projet.presentantion_communaute)
                   ||(ag[0].ref_dgsc != currentItemSous_projet.ref_dgsc)
