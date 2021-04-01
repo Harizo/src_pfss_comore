@@ -28,6 +28,8 @@
             'app.pfss.mereleaderpereleader',
             'app.pfss.contratconsultant',
             // 'app.pfss.enquete',
+            'app.pfss.contrat_ugp_agex',
+            'app.pfss.gerer_mdp'
        ])
         .config(config);
 

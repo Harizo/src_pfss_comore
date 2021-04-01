@@ -83,8 +83,8 @@
                         width: 100px;
                         height: 100px;
                         box-sizing: border-box;
-                        border: 10px solid #4285F4;
-                        border-bottom-color: #f8670d;
+                        border: 10px solid #f7f7f7;
+                        border-bottom-color: #5c935c;
                         border-radius: 50%;
                     }
                 }
@@ -94,7 +94,7 @@
 
                     .half-circle {
                         left: 0;
-                        border-right-color: #f8670d;
+                        border-right-color: #5c935c;
                         animation: left-wobble 1.3125s cubic-bezier(0.35, 0, 0.25, 1) infinite;
                         -webkit-animation: left-wobble 1.3125s cubic-bezier(0.35, 0, 0.25, 1) infinite;
                     }
@@ -105,7 +105,7 @@
 
                     .half-circle {
                         right: 0;
-                        border-left-color: #f8670d;
+                        border-left-color: #5c935c;
                         animation: right-wobble 1.3125s cubic-bezier(0.35, 0, 0.25, 1) infinite;
                         -webkit-animation: right-wobble 1.3125s cubic-bezier(0.35, 0, 0.25, 1) infinite;
                     }

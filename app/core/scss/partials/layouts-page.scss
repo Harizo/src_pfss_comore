@@ -10,6 +10,32 @@ $card-header-height: $header-height - $card-toolbar-height;
 $header-height-xs: 160px;
 $card-header-height-sm: $header-height-xs - $card-toolbar-height;
 
+.md-button.md-default-theme.md-accent.md-raised, .md-button.md-accent.md-raised{
+    color: rgb(255,255,255) !important;
+    background-color:  #5c935c !important;
+}
+
+.custum_button{ 
+    color: rgb(255,255,255) !important;
+    background-color: #8e00f4 !important;
+    width: auto !important;
+    font-size: 10px;
+}
+
+.custum_button_new{ 
+    color: rgb(255,255,255) !important;
+    background-color: #619b04 !important;
+    width: auto !important;
+    font-size: 10px;
+}
+
+.custum_button_del{ 
+    color: rgb(255,255,255) !important;
+    background-color: red !important;
+    width: auto !important;
+    font-size: 10px;
+}
+
 .page-layout.simple.fullwidth > .header {
     background-color: #383c48 !important;
     height: 100px !important;
@@ -24,17 +50,21 @@ table.dataTable tbody tr.selected {
 }
 
 md-ink-bar {
-    color: #f8670d !important;
-    background:#f8670d !important;
+    color: #5c935c !important;
+    background:#5c935c !important;
 }
+
+.md-accent-bg {
+      background-color: #5c935c !important;
+    }
 
  md-tabs.md-default-theme .md-tab.md-active, md-tabs .md-tab.md-active{
-    color: #f8670d !important;
+    color: #5c935c !important;
 }
 
-.custum_button {
-    color: #f8670d !important;
-    border : 1px solid #f8670d;
+/*.custum_button {
+    color: #5c935c !important;
+    border : 1px solid #5c935c;
     margin:2px 2px 2px 4px !important;
     font-size: 9px !important;
     height: 30px !important;
@@ -44,7 +74,7 @@ md-ink-bar {
 
 .custum_button:hover {
     color: #65371a !important;
-    background-color: #f8670d !important;
+    background-color: #5c935c !important;
     font-style: italic;
     font-weight: bold;
     margin:2px 2px 2px 4px !important;
@@ -52,7 +82,7 @@ md-ink-bar {
     height: 30px !important;
     line-height: 30px !important;
     
-}
+}*/
 
 .page-layout {
     position: relative;
@@ -81,11 +111,11 @@ md-ink-bar {
             margin-bottom: 16px;
             font-weight: 500;
            /* color: rgba(0, 0, 0, 0.54);*/
-           color: #f8670d !important;
+           color: #5c935c !important;
 
             md-icon {
                 margin: 0;
-                color: #f8670d !important;
+                color: #5c935c !important;
             }
 
             .separator {
