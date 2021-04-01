@@ -303,13 +303,133 @@
                                 </table>
                             </div>
                         </md-tab-body>
+                    </md-tab>
+                           
+                    <md-tab label="Agence de paiement" ng-click="vm.clickTabAgep()" layout="column" flex>
+                        <md-tab-body>
+                            
+
+                            <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                                <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                    <div layout="row" layout-align="start center">
+                                    <div class="border-right">                                        
+                                      <span class="md-headline">AGEP &nbsp</span>
+                                    </div>
+                                      <div class="border-right" ng-if="!vm.selectedItemAgep.id&&!vm.nouvelleItemAgep">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterAgep()">
+                                          <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                          <md-tooltip><span>Ajouter</span></md-tooltip>
+                                        </md-button>
+                                      </div> 
+                                      <div class="border-right" ng-if="vm.selectedItemAgep.id&&!vm.selectedItemAgep.$edit">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierAgep()">
+                                          <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                          <md-tooltip><span>Modifier</span></md-tooltip>
+                                        </md-button>
+                                      </div>    
+                                      <div class="border-right" ng-if="vm.selectedItemAgep.id&&!vm.selectedItemAgep.$edit">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerAgep()">
+                                          <md-icon md-font-icon="icon-delete"></md-icon>
+                                          <md-tooltip><span>Supprimer</span></md-tooltip>
+                                        </md-button>
+                                      </div>  
+
+                                      <div class="border-right" ng-if="vm.selectedItemAgep.id">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerAgep()">
+                                          <md-icon md-font-icon="icon-cancel"></md-icon>
+                                          <md-tooltip><span>Annuler</span></md-tooltip>
+                                        </md-button>
+                                      </div>   
+
+                                      <div ng-if="vm.selectedItemAgep.$edit">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerAgep(0)">
+                                          <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                          <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                        </md-button>
+                                      </div>                
+                                    </div>
+                                </header>
+                                
+                            
+                                <table ng-table="agep" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.agep_column">
+                                                <div class="table-header">
+                                                    <span class="column-title text-center">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="agp in vm.allAgep"  ng-class="{selected: agp.$selected}" ng-click="vm.selection_agep(agp)">
+                                            <td>
+                                                <span ng-if="agp.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Identifiant AGEP</label>                                                      
+                                                      <input type="text" name="identifiant"  ng-model="agp.identifiant"/>
+                                                    </md-input-container>
+                                                </span>
+                                                <span ng-if="!agp.$edit">{{agp.identifiant}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="agp.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Raison sociale AGEP</label>
+                                                      <input type="text" name="raison_social"  ng-model="agp.raison_social"/>
+                                                    </md-input-container>
+                                                </span>
+                                                <span ng-if="!agp.$edit">{{agp.raison_social}} </span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="agp.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Nom de contact AGEP</label>
+                                                      <input type="text" name="nom_contact"  ng-model="agp.nom_contact"/>
+                                                    </md-input-container>
+                                                </span>
+                                                <span ng-if="!agp.$edit">{{agp.nom_contact}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="agp.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Titre du contact</label>
+                                                      <input type="text" name="titre_contact"  ng-model="agp.titre_contact"/>
+                                                    </md-input-container>
+                                                </span>
+                                                <span ng-if="!agp.$edit">{{agp.titre_contact}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="agp.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Numéro Tel</label>
+                                                      <input type="text" name="numero_phone_contact"  ng-model="agp.numero_phone_contact"/>
+                                                    </md-input-container> 
+                                                </span>
+                                                <span ng-if="!agp.$edit">{{agp.numero_phone_contact}}</span>
+                                            </td>
+
+                                            <td>
+                                                <span ng-if="agp.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Adresse AGEP</label>
+                                                      <input type="text" name="adresse"  ng-model="agp.adresse"/>
+                                                    </md-input-container>
+                                                </span>
+                                                <span ng-if="!agp.$edit">{{agp.adresse}}</span>
+                                            </td> 
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </md-tab-body>
                     </md-tab>       
-                    <md-tab label="Agence de paiement" ng-click="vm.Select_table(2)">
+                    <!--md-tab label="Agence de paiement" ng-click="vm.Select_table(2)">
                         <md-tab-body>
                             <fieldset>
                                 <legend>
                                         Agence de paiement
-                                    <!--button ng-click="vm.ajouterAgence_p()" title="Ajouter un agence de paiement" style="font-size: 24px;font-weight: bold;background-color: rgb(255,255,255);color: rgb(3,155,229);">+</button!-->
+                                    <button ng-click="vm.ajouterAgence_p()" title="Ajouter un agence de paiement" style="font-size: 24px;font-weight: bold;background-color: rgb(255,255,255);color: rgb(3,155,229);">+</button>
 
                                     <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterAgence_p()">
                                       <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
@@ -422,7 +542,7 @@
                                 </table>
                             </fieldset>
                         </md-tab-body>
-                    </md-tab>       
+                    </md-tab-->       
                     <md-tab label="Cellule de protection sociale" ng-click="vm.Select_table(3)">
                         <md-tab-body>
                             <fieldset layout="column" layout-gt-xs="row">

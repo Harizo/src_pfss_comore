@@ -50,7 +50,14 @@
 		vm.allPlan_gestion_env = [] ;
     vm.show_botton_ajout_fiche = false; 
 		vm.selected_itemdetail_sousprojet = {};
-		
+		//style
+    vm.dtOptions = {
+      dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
+      pagingType: 'simple',
+      autoWidth: false,
+      responsive: true,
+      order:[]          
+    };
 		    		
 		apiFactory.getAll("plan_action_reinstallation/index").then(function(result){
 			vm.allPlan_action_reinstallation = result.data.response;
@@ -408,7 +415,7 @@ apiFactory.getAll("commune/index").then(function(result){
                       else
                       { 
                         item.$selected=false;
-						item.$edit=false;
+						            item.$edit=false;
                       }
                 }
             }

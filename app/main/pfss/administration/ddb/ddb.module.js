@@ -15,6 +15,7 @@
             'app.pfss.ddb_adm.indicateur',
             'app.pfss.ddb_adm.zip',
             'app.pfss.ddb_adm.phaseexecution',
+            'app.pfss.ddb_adm.pac',
             ] ;
 
     angular

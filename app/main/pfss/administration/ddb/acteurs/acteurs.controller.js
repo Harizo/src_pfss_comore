@@ -15,7 +15,7 @@
 		vm.titrepage ="Ajout Tutelle";
 		vm.ajout = ajout ;
 		vm.ajoutConsultant_ong = ajoutConsultant_ong ;
-		vm.ajoutAgence_p = ajoutAgence_p ;
+		//vm.ajoutAgence_p = ajoutAgence_p ;
 		vm.ajoutProtection_sociale = ajoutProtection_sociale ;
 		vm.ajoutTypetransfert = ajoutTypetransfert ;
 		vm.ajoutUnitemesure = ajoutUnitemesure ;
@@ -23,7 +23,8 @@
 		vm.ajoutFrequencetransfert = ajoutFrequencetransfert ;
 		var NouvelItemConsultant_ong=false;
 		var NouvelItemAgent_ex=false;
-		var NouvelItemAgence_p=false;
+		//var NouvelItemAgence_p=false;
+		var nouvelleItemAgep =false;
 		var NouvelItemProtection_sociale=false;
 		var NouvelItemUnitemesure=false;
 		var NouvelItemTypetransfert=false;
@@ -31,11 +32,13 @@
 		var NouvelItemFrequencetransfert=false;
 		var currentItemConsultant_ong;
 		var currentItemAgent_ex;
-		var currentItemAgence_p;
+		//var currentItemAgence_p;
+		var currentItemAgep;
 		var currentItemProtection_sociale;
 		vm.selectedItemConsultant_ong = {} ;
 		vm.selectedItemAgent_ex = {} ;
-		vm.selectedItemAgence_p = {} ;
+		//vm.selectedItemAgence_p = {} ;
+		vm.selectedItemAgep = {} ;
 		vm.selectedItemProtection_sociale = {};
 		vm.selectedItemTypetransfert = {} ;     
 		vm.selectedItemUnitemesure = {} ;   
@@ -889,240 +892,201 @@
 			
 
 			//fin AGEX..
-		//FIN AGEX NEW CODE
-		
-        vm.modifierile = function (item) 
-        {
-          var ile = vm.allile.filter(function(obj)
-          {
-              return obj.id == item.ile_id;
-          });
-          //console.log(ile);
-          item.programme_id=ile[0].programme.id;
-        }
-        function test_existence (item,suppression)
-        {
-			if (suppression!=1) 
-            {
-                var ag = vm.allRecordsAgent_ex.filter(function(obj)
-                {
-                   return obj.id == item.id;
-                });
-                if(ag[0])
-                {
-                  if((ag[0].Code!=currentItemAgent_ex.Code)
-                        ||(ag[0].Nom!=currentItemAgent_ex.Nom)
-                        ||(ag[0].Contact!=currentItemAgent_ex.Contact)
-                        ||(ag[0].Representant!=currentItemAgent_ex.Representant)
-                        ||(ag[0].ile.id!=currentItemAgent_ex.ile_id)
-                        ||(ag[0].programme.id!=currentItemAgent_ex.programme_id))                    
-                      { 
-                         insert_in_base(item,suppression);                         
-                      }
-                      else
-                      { 
-                        item.$selected=false;
-						item.$edit=false;
-                      }
-                }
-            }
-            else
-              insert_in_base(item,suppression);		
-        }
-		
-	// ACTEURS	
-		function ajoutAgence_p(agence_p,suppression) {
-            	
-            if (NouvelItemAgence_p==false) 
-              {
-                test_existenceAgence_p (agence_p,suppression); 
-              }
-              else
-              {
-                insert_in_baseAgence_p(agence_p,suppression);
-              }
+		//FIN AGEX NEW CODE		
+    
+		//DEBUT AGEP
 
-        }
-        function insert_in_baseAgence_p(entite,suppression) {  
-			//add
-			var config = {
-				headers : {
-					'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
-				}
-			};
-			var getId = 0;
-			if (NouvelItemAgence_p==false) {
-			   getId = vm.selectedItemAgence_p.id; 
-			} 
-			var datas = $.param({
-				supprimer:suppression,
-				id:getId,      
-				Code: entite.Code,      
-				Nom: entite.Nom,      
-				Contact: entite.Contact,
-				Telephone: entite.Telephone,      
-				Representant: entite.Representant,      
-				ile_id: entite.ile_id,      
-				programme_id: entite.programme_id
-			});       
-			//factory
-			apiFactory.add("agence_p/index",datas, config).success(function (data)
-			{	
-				var prog = vm.allprogramme.filter(function(obj)
-                {
-                    return obj.id == entite.programme_id;
-                });
-            	//console.log(prog[0]);
-                var il = vm.allile.filter(function(obj)
-                {
-                    return obj.id == entite.ile_id;
-                });
-				if (NouvelItemAgence_p == false) {
-					// Update or delete: id exclu                   
-					if(suppression==0) {
-					   vm.selectedItemAgence_p.Code = entite.Code;
-					  vm.selectedItemAgence_p.Nom = entite.Nom;
-					  vm.selectedItemAgence_p.Contact = entite.Contact;
-					  vm.selectedItemAgence_p.Telephone = entite.Telephone;
-					  vm.selectedItemAgence_p.Representant = entite.Representant;
-					  vm.selectedItemAgence_p.ile = il[0];
-					  vm.selectedItemAgence_p.programme = prog[0];
-					  vm.selectedItemAgence_p.$selected = false;
-					  vm.selectedItemAgence_p.$edit = false;
-					  vm.selectedItemAgence_p ={};
-					  vm.selectedItemAgence_p.$selected = false;
-					  vm.selectedItemAgence_p.$edit = false;
-					  vm.selectedItemAgence_p ={};
-					} else {    
-						vm.allRecordsAgence_p = vm.allRecordsAgence_p.filter(function(obj) {
-							return obj.id !== vm.selectedItemAgence_p.id;
-						});
+			vm.allAgep = [] ;
+
+			vm.agep_column =
+			[
+				{titre:"Identifiant AGEP"},
+				{titre:"Raison social AGEP"},
+				{titre:"Nom de contact AGEP"},
+				{titre:"Titre du contact"},
+				{titre:"Numéro de téléphone contact"},
+				{titre:"Adresse AGEP"}
+			];
+
+			vm.affiche_load = false ;
+
+			vm.clickTabAgep = function () 
+			{
+				vm.affiche_load = true ;
+				apiFactory.getAll("Agence_p/index").then(function(result)
+				{
+					vm.allAgep = result.data.response;					
+					vm.affiche_load = false ;
+				});  
+			}				
+	    		vm.selectedItemAgep = {} ;
+	    		var currentItemAgep = {} ;
+	    		vm.nouvelleItemAgep = false ;
+
+	    	
+				vm.selection_agep = function(item)
+				{
+					vm.selectedItemAgep = item ;
+					if (!vm.selectedItemAgep.$edit)
+					{
+						vm.nouvelleItemAgep = false ;
 					}
-				} else {
-					entite.id=data.response;
-					entite.programme=prog[0];
-					entite.ile=il[0];	
-					NouvelItemAgence_p=false;
+
 				}
-				entite.$selected=false;
-				entite.$edit=false;
-			}).error(function (data) {
-				vm.showAlert('Erreur lors de la sauvegarde','Veuillez corriger le(s) erreur(s) !');
-			});  
-        }
-        vm.selectionAgence_p= function (item) {     
-            vm.selectedItemAgence_p = item;
-        };
-        $scope.$watch('vm.selectedItemAgence_p', function() {
-			if (!vm.allRecordsAgence_p) return;
-			vm.allRecordsAgence_p.forEach(function(item) {
-				item.$selected = false;
-			});
-			vm.selectedItemAgence_p.$selected = true;
-        });
-        vm.ajouterAgence_p = function () {
-            vm.selectedItemAgence_p.$selected = false;
-            NouvelItemAgence_p = true ;
-		    var items = {
-				$edit: true,
-				$selected: true,
-				supprimer:0,
-                Code: '',
-                Nom: '',
-                Contact: '',
-                Telephone: '',
-                Representant: '',
-                ile_id: '',
-                programme_id: ''
-			};
-			vm.allRecordsAgence_p.push(items);
-		    vm.allRecordsAgence_p.forEach(function(it) {
-				if(it.$selected==true) {
-					vm.selectedItemAgence_p = it;
+
+				$scope.$watch('vm.selectedItemAgep', function()
+				{
+					if (!vm.allAgep) return;
+					vm.allAgep.forEach(function(item)
+					{
+						item.$selected = false;
+					});
+					vm.selectedItemAgep.$selected = true;
+
+				});
+
+				vm.ajouterAgep = function()
+				{
+					vm.nouvelleItemAgep = true ;
+					var item = 
+						{							
+							$edit: true,
+							$selected: true,
+		              		id:'0',
+		              		identifiant:'',
+		              		raison_social:'',
+		              		nom_contact:'',
+		              		titre_contact:'',
+		              		numero_phone_contact:'',
+		              		adresse:''		              		
+						} ;
+
+					vm.allAgep.unshift(item);
+		            vm.allAgep.forEach(function(ag)
+		            {
+		              if(ag.$selected == true)
+		              {
+		                vm.selectedItemAgep = ag;
+		                
+		              }
+	            	});
 				}
-			});			
-        };
-        vm.annulerAgence_p = function(item) {
-			if (!item.id) {
-				vm.allRecordsAgence_p.pop();
-				return;
-			}          
-			item.$selected=false;
-			item.$edit=false;
-			NouvelItemAgence_p = false;
-			item.Code = currentItemAgence_p.Code;
-			item.Nom = currentItemAgence_p.Nom;
-			item.Contact = currentItemAgence_p.Contact;
-			item.Telephone = currentItemAgence_p.Telephone;
-			item.Representant = currentItemAgence_p.Representant;
-			item.ile_id = currentItemAgence_p.ile.id;
-			item.programme_id = currentItemAgence_p.programme.id;
-			vm.selectedItemActeur = {} ;
-			vm.selectedItemActeur.$selected = false;
-       };
-        vm.modifierAgence_p = function(item) {
-			NouvelItemAgence_p = false ;
-			vm.selectedItemAgence_p = item;			
-			currentItemAgence_p = angular.copy(vm.selectedItemAgence_p);
-			$scope.vm.allRecordsAgence_p.forEach(function(it) {
-				it.$edit = false;
-			});        
-			item.$edit = true;	
-			item.$selected = true;	
-			item.Code = vm.selectedItemAgence_p.Code;
-			item.Nom = vm.selectedItemAgence_p.Nom;
-			item.Contact = vm.selectedItemAgence_p.Contact;
-			item.Telephone = vm.selectedItemAgence_p.Telephone;
-			item.Representant = vm.selectedItemAgence_p.Representant;
-			item.ile_id = vm.selectedItemAgence_p.ile.id;
-			item.programme_id = vm.selectedItemAgence_p.programme.id;
-			
-			vm.selectedItemAgence_p.$edit = true;	
-        };
-        vm.supprimerAgence_p = function() {
-			var confirm = $mdDialog.confirm()
-                .title('Etes-vous sûr de supprimer cet enregistrement ?')
-                .textContent('')
-                .ariaLabel('Lucky day')
-                .clickOutsideToClose(true)
-                .parent(angular.element(document.body))
-                .ok('supprimer')
-                .cancel('annuler');
-			$mdDialog.show(confirm).then(function() {          
-				ajoutAgence_p(vm.selectedItemAgence_p,1);
-			}, function() {
-			});
-        }
-        function test_existenceAgence_p (item,suppression)
-        {
-			if (suppression!=1) 
-            {
-                var ag = vm.allRecordsAgence_p.filter(function(obj)
-                {
-                   return obj.id == currentItemAgence_p.id;
-                });
-                if(ag[0])
-                {
-                   if((ag[0].Code!=currentItemAgence_p.Code)
-                        ||(ag[0].Nom!=currentItemAgence_p.Nom)
-                        ||(ag[0].Contact!=currentItemAgence_p.Contact)
-                        ||(ag[0].Telephone!=currentItemAgence_p.Telephone)
-                        ||(ag[0].Representant!=currentItemAgence_p.Representant)
-                        ||(ag[0].ile.id!=currentItemAgence_p.ile_id)
-                        ||(ag[0].programme.id!=currentItemAgence_p.programme_id))                    
-                      { 
-                        insert_in_baseAgence_p(item,suppression);
-                      }
-                      else
-                      {
-                        item.$selected=false;
-						item.$edit=false;
-                      }                    
-                }
-            }
-            else
-              insert_in_baseAgence_p(item,suppression);			
-        }		
+
+				vm.modifierAgep = function()
+				{
+					vm.nouvelleItemAgep = false ;
+					vm.selectedItemAgep.$edit = true;				
+					currentItemAgep = angular.copy(vm.selectedItemAgep);
+				}
+
+				vm.supprimerAgep = function()
+				{					
+					var confirm = $mdDialog.confirm()
+					  .title('Etes-vous sûr de supprimer cet enregistrement ?')
+					  .textContent('Cliquer sur OK pour confirmer')
+					  .ariaLabel('Lucky day')
+					  .clickOutsideToClose(true)
+					  .parent(angular.element(document.body))
+					  .ok('OK')
+					  .cancel('Annuler');
+					$mdDialog.show(confirm).then(function() {
+
+					vm.enregistrerAgep(1);
+					}, function() {
+					//alert('rien');
+					});
+				}
+
+				vm.annulerAgep = function()
+				{
+					if (vm.nouvelleItemAgep) 
+					{						
+						vm.allAgep.shift();
+						vm.selectedItemAgep = {} ;
+						vm.nouvelleItemAgep = false ;
+					}
+					else
+					{
+						if (!vm.selectedItemAgep.$edit)
+						{
+							vm.selectedItemAgep.$selected = false;
+							vm.selectedItemAgep = {};
+						}
+						else
+						{
+							vm.selectedItemAgep.$selected = false;
+							vm.selectedItemAgep.$edit = false;
+							vm.selectedItemAgep.identifiant = currentItemAgep.identifiant ;
+							vm.selectedItemAgep.raison_social = currentItemAgep.raison_social ;
+							vm.selectedItemAgep.nom_contact = currentItemAgep.nom_contact ;
+							vm.selectedItemAgep.titre_contact = currentItemAgep.titre_contact ;
+							vm.selectedItemAgep.numero_phone_contact = currentItemAgep.numero_phone_contact ;
+							vm.selectedItemAgep.adresse = currentItemAgep.adresse ;							
+							vm.selectedItemAgep = {};
+						}					
+
+					}
+				}
+
+				vm.enregistrerAgep = function(etat_suppression)
+				{
+					vm.affiche_load = true ;
+					var config = {
+		                headers : {
+		                    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+		                }
+		            };
+
+
+		            var datas = $.param(
+		            {		            	
+		                supprimer:etat_suppression,
+		                id:vm.selectedItemAgep.id,
+		                identifiant : vm.selectedItemAgep.identifiant ,
+						raison_social : vm.selectedItemAgep.raison_social ,
+						nom_contact : vm.selectedItemAgep.nom_contact ,
+						titre_contact : vm.selectedItemAgep.titre_contact ,
+						numero_phone_contact : vm.selectedItemAgep.numero_phone_contact ,
+						adresse : vm.selectedItemAgep.adresse 	                
+		                
+		            });
+
+		            apiFactory.add("Agence_p/index",datas, config).success(function (data)
+	        		{
+	        			vm.affiche_load = false ;
+	        			if (!vm.nouvelleItemAgep) 
+	        			{
+	        				if (etat_suppression == 0) 
+	        				{
+	        					vm.selectedItemAgep.$edit = false ;
+	        					vm.selectedItemAgep.$selected = false ;
+	        					vm.selectedItemAgep = {} ;
+	        				}
+	        				else
+	        				{
+	        					vm.allAgep = vm.allAgep.filter(function(obj)
+								{
+									return obj.id !== vm.selectedItemAgep.id;
+								});
+
+								vm.selectedItemAgep = {} ;
+	        				}
+
+	        			}
+	        			else
+	        			{
+	        				vm.selectedItemAgep.$edit = false ;
+	        				vm.selectedItemAgep.$selected = false ;
+	        				vm.selectedItemAgep.id = String(data.response) ;
+	        				vm.nouvelleItemAgep = false ;
+	        				vm.selectedItemAgep = {};
+
+	        			}
+	        		})
+	        		.error(function (data) {alert("Une erreur s'est produit");});
+				}
+		
+		//FIN AGEP
 	// ACTEURS REGIONAL	
 		function ajoutProtection_sociale(entite,suppression) {
            
