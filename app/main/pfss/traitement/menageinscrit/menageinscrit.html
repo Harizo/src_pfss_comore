@@ -282,7 +282,7 @@
 									</md-input-container>
 								</div>
 								<div layout="column" layout-gt-xs="row" flex>
-									<md-input-container flex-gt-xs="30" ng-show="vm.affichage_masque">
+									<md-input-container flex-gt-xs="20" ng-show="vm.affichage_masque">
 										<input type="text"  name="NomTravailleur" ng-model="vm.filtre.NomTravailleur"
 										placeholder="Nom travailleur" required>
 										<div ng-messages="filtrepardateform.NomTravailleur.$error"
@@ -292,9 +292,17 @@
 											</div>
 										</div>
 									</md-input-container>
-									<md-input-container  flex="100" flex-gt-xs="10" ng-show="vm.affichage_masque">
+									<div layout="column" layout-gt-xs="row" ng-show="vm.affichage_masque">
+										<md-input-container>
+										<span>Date naissance</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.datedenaissancetravailleur" md-max-date="vm.date_now"  md-placeholder="Date de naissance" >                       
+										</md-datepicker>
+								   
+									</div>
+									<md-input-container  flex="100" flex-gt-xs="5" ng-show="vm.affichage_masque">
 									  <input type="number"  name="agetravailleur" ng-model="vm.filtre.agetravailleur"
-									  placeholder="Age travailleur" >
+									  placeholder="Age" >
 									  <div ng-messages="filtrepardateform.agetravailleur.$error"
 										  role="alert">
 										  <div ng-message="required">
@@ -303,7 +311,7 @@
 									  </div>
 									</md-input-container>								  
 									<md-input-container flex="100" flex-gt-xs="10"ng-show="vm.affichage_masque">
-									  <label>Sexe travailleur</label>
+									  <label>Sexe</label>
 										<md-select ng-model="vm.filtre.SexeTravailleur" name="SexeTravailleur"  >
 										  <md-option  value="">&nbsp;</md-option>
 										  <md-option  value="M">Homme</md-option>
@@ -316,7 +324,7 @@
 										  </div>
 										</div>
 									</md-input-container>
-									<md-input-container flex-gt-xs="30" ng-show="vm.affichage_masque">
+									<md-input-container flex-gt-xs="20" ng-show="vm.affichage_masque">
 										<input type="text"  name="NomTravailleurSuppliant" ng-model="vm.filtre.NomTravailleurSuppliant"
 										placeholder="Nom travailleur suppléant" required>
 										<div ng-messages="filtrepardateform.NomTravailleurSuppliant.$error"
@@ -326,9 +334,17 @@
 											</div>
 										</div>
 									</md-input-container>
+									<div layout="column" layout-gt-xs="row" ng-show="vm.affichage_masque">
+										<md-input-container>
+										<span>Date naissance</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.datedenaissancesuppliant" md-max-date="vm.date_now"  md-placeholder="Date de naissance" >                       
+										</md-datepicker>
+								   
+									</div>
 									<md-input-container  flex="100" flex-gt-xs="10" ng-show="vm.affichage_masque">
 									  <input type="number"  name="agesuppliant" ng-model="vm.filtre.agesuppliant"
-									  placeholder="Age travailleur suppléant" >
+									  placeholder="Age" >
 									  <div ng-messages="filtrepardateform.agesuppliant.$error"
 										  role="alert">
 										  <div ng-message="required">
@@ -337,7 +353,7 @@
 									  </div>
 									</md-input-container>								  
 									<md-input-container flex="100" flex-gt-xs="10"ng-show="vm.affichage_masque">
-									  <label>Sexe travailleur suppléant</label>
+									  <label>Sexe</label>
 										<md-select ng-model="vm.filtre.SexeTravailleurSuppliant" name="SexeTravailleurSuppliant"  >
 										  <md-option  value="">&nbsp;</md-option>
 										  <md-option  value="M">Homme</md-option>
@@ -629,11 +645,11 @@
 								</md-input-container>
 								<md-input-container flex-gt-xs="15">
 									<input type="number"  name="nombre_personne_plus_soixantedixans" ng-model="vm.filtre.nombre_personne_plus_soixantedixans"
-									placeholder="o	Nombre de personnes de plus de70 ans" >
+									placeholder="o	Nbr personnes plus de70 ans" >
 									<div ng-messages="filtrepardateform.nombre_personne_plus_soixantedixans.$error"
 										role="alert">
 										<div ng-message="required">
-											<span>Nombre de personnes de plus de70 ans </span>
+											<span>Nbr personnes plus de70 ans </span>
 										</div>
 									</div>
 								</md-input-container>
@@ -649,31 +665,31 @@
 								</md-input-container>
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_enfant_moins_quinze_ans" ng-model="vm.filtre.nombre_enfant_moins_quinze_ans"
-									placeholder="Enfants moins de 15 ans" >
+									placeholder="Enf moins de 15 ans" >
 									<div ng-messages="filtrepardateform.nombre_enfant_moins_quinze_ans.$error"
 										role="alert">
 										<div ng-message="required">
-											<span>Enfants moins de 15 ans </span>
+											<span>Enf moins de 15 ans </span>
 										</div>
 									</div>
 								</md-input-container>
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_enfant_non_scolarise" ng-model="vm.filtre.nombre_enfant_non_scolarise"
-									placeholder="Enfants de 6-14 ans non scolarisé " >
+									placeholder="6-14 ans non scolarisé " >
 									<div ng-messages="filtrepardateform.nombre_enfant_non_scolarise.$error"
 										role="alert">
 										<div ng-message="required">
-											<span>Enfants de 6-14 ans non scolarisé </span>
+											<span>6-14 ans non scolarisé </span>
 										</div>
 									</div>
 								</md-input-container>
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_enfant_scolarise" ng-model="vm.filtre.nombre_enfant_scolarise"
-									placeholder="Enfants de 6-14 ans scolarisé " >
+									placeholder="Enf 6-14 ans scolarisé " >
 									<div ng-messages="filtrepardateform.nombre_enfant_scolarise.$error"
 										role="alert">
 										<div ng-message="required">
-											<span>Enfants de 6-14 ans scolarisé </span>
+											<span>Enf 6-14 ans scolarisé </span>
 										</div>
 									</div>
 								</md-input-container>
@@ -699,11 +715,11 @@
 								</md-input-container>
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_membre_a_etranger" ng-model="vm.filtre.nombre_membre_a_etranger"
-									placeholder="Nombre membres vivant à l’étranger" >
+									placeholder="Membres à l’étranger" >
 									<div ng-messages="filtrepardateform.nombre_membre_a_etranger.$error"
 										role="alert">
 										<div ng-message="required">
-											<span>Nombre membres vivant à l’étranger</span>
+											<span>Membres à l’étranger</span>
 										</div>
 									</div>
 								</md-input-container>
@@ -931,8 +947,6 @@
                         </div>
                         <form name="individu_form" class="md-inline-form" novalidate >
                           <div layout="column" layout-gt-xs="row" flex>
-                            
-
                             <md-input-container flex="100" flex-gt-xs="15" ng-show="vm.affichage_masque_individu">
                               <input type="text"  name="nom" ng-model="vm.individu_masque.nom"
                                 placeholder="Nom ">
@@ -982,6 +996,29 @@
 								  </div>
 								</div>
 							</md-input-container>
+                            <md-input-container flex="100" flex-gt-xs="5"ng-show="vm.affichage_masque_individu">
+                              <label>Scolarisé</label>
+                                <md-select ng-model="vm.individu_masque.scolarise" name="scolarise"  >
+                                  <md-option  value="Oui">Oui</md-option>
+                                  <md-option  value="Non">Non</md-option>
+                                </md-select>
+                                <div ng-messages="individu_form.scolarise.$error"
+                                  role="alert">
+                                  <div ng-message="required">
+                                    <span>Scolarisé obligatoire</span>
+                                  </div>
+                                </div>
+                            </md-input-container>
+                            <div layout="column" layout-gt-xs="row" ng-show="vm.affichage_masque_individu">
+                                <md-input-container>
+                                <span>Date de naissance</span>
+                                </md-input-container>
+                                <md-datepicker ng-model="vm.individu_masque.date_naissance" md-max-date="vm.date_now"  md-placeholder="Date de naissance" >                       
+                                </md-datepicker>
+                           
+                            </div>
+                          </div>
+                          <div layout="column" layout-gt-xs="row" flex>
                             <md-input-container flex="100" flex-gt-xs="10" ng-show="vm.affichage_masque_individu">
                               <input type="text"  name="activite" ng-model="vm.individu_masque.activite"
                                 placeholder="Activite" >
@@ -997,8 +1034,6 @@
                                 <md-select ng-model="vm.individu_masque.aptitude" name="aptitude"  >
                                   <md-option  value="Oui">Oui</md-option>
                                   <md-option  value="Non">Non</md-option>
-                                  
-
                                 </md-select>
                                 <div ng-messages="individu_form.aptitude.$error"
                                   role="alert">
@@ -1022,15 +1057,6 @@
                                   </div>
                                 </div>
                             </md-input-container>
-                            <div layout="column" layout-gt-xs="row" ng-show="vm.affichage_masque_individu">
-                                <md-input-container>
-                                <span>Date de naissance</span>
-                                </md-input-container>
-                                <md-datepicker ng-model="vm.individu_masque.date_naissance" md-max-date="vm.date_now"  md-placeholder="Date de naissance" >                       
-                                </md-datepicker>
-                           
-                            </div>
-
                           </div>
                           <section layout="row" layout-sm="column" layout-align="left" layout-wrap>
                      
@@ -1063,6 +1089,7 @@
                               <td>{{indiv.date_naissance | date:'dd/MM/yyyy'}}</td>
                               <td>{{vm.affiche_sexe(indiv.sexe)}}</td>
                               <td>{{indiv.lien_de_parente}}</td>
+                              <td>{{indiv.scolarise}}</td>
                               <td>{{indiv.activite}}</td>
                               <td>{{indiv.aptitude}}</td>
                               <td>{{indiv.travailleur}}</td>

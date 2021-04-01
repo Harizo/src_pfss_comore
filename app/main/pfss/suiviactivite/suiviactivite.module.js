@@ -4,7 +4,8 @@
 
     angular
         .module('app.pfss.suiviactivite', [			
-           'app.pfss.suiviactivite.fichepresence',
+           'app.pfss.suiviactivite.exportficheetat',
+           'app.pfss.suiviactivite.importetat',
             ])
         // .run(testPermission)
         .config(config);

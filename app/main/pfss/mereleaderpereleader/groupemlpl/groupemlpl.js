@@ -17,7 +17,7 @@
       };
 
       vm.groupe_mlpl_column = [{titre:"Date création"},{titre:"Chef Village"},{titre:"Nom groupe"}];
-      vm.liste_mlpl_column = [{titre:"Nom et prénom"},{titre:"Adresse"},{titre:"Contact"},{titre:"Fonction"}];
+      vm.liste_mlpl_column = [{titre:"ML/PL"},{titre:"Nom et prénom"},{titre:"Adresse"},{titre:"Contact"},{titre:"Fonction"}];
       vm.listemenage_mlpl_column = [{titre:"Chef de ménage"},{titre:"Conjoint(e)"},{titre:"Adresse"},
 	  {titre:"-6 ans"},{titre:"+6 ans non scolarisé"},{titre:"+6 ans scolarisé"},{titre:"Actions"}];
       //initialisation variable
@@ -111,7 +111,7 @@
         });
       }
 		// Début Fonction Groupe ML/PL	
-		vm.save_groupe_mlpl = function(groupe_mlpl) {
+		vm.save_groupe_mlpl = function(groupe_mlpl,suppression) {
 			vm.disable_button = true ;
 			var config =  {
                         headers : {
@@ -124,7 +124,7 @@
 			}       
 			var datas = $.param(
                     {    
-                      supprimer:0,
+                      supprimer:suppression,
                       id: id_mng ,
                       village_id: groupe_mlpl.village_id,
                       date_creation: formatDateBDD(groupe_mlpl.date_creation),
@@ -145,11 +145,18 @@
 					}
 					vm.all_groupe_mlpl.push(mng) ;
 				} else {
-					vm.affichage_masque_liste_mlpl = false ;
-					vm.selectedItem.date_creation =  vm.filtre.date_creation ;
-					vm.selectedItem.village_id = vm.filtre.village_id  ;
-					vm.selectedItem.chef_village = vm.filtre.chef_village  ;
-					vm.selectedItem.nom_groupe = vm.filtre.nom_groupe  ;
+					if(suppression==1) {
+						vm.all_groupe_mlpl = vm.all_groupe_mlpl.filter(function(obj) {
+							return obj.id !== vm.currentItem.id;
+						});	
+						vm.selectedItem	={};
+					} else {
+						vm.affichage_masque_liste_mlpl = false ;
+						vm.selectedItem.date_creation =  vm.filtre.date_creation ;
+						vm.selectedItem.village_id = vm.filtre.village_id  ;
+						vm.selectedItem.chef_village = vm.filtre.chef_village  ;
+						vm.selectedItem.nom_groupe = vm.filtre.nom_groupe  ;
+					}      
   				}      
 			}).error(function (data) {
 				vm.disable_button = false ;
@@ -194,10 +201,27 @@
 			vm.nouvelle_element = false ;
 			vm.affichage_masque = false ;
 		}
+		vm.supprimer = function() {
+			vm.nouvelle_element = false ;
+			var confirm = $mdDialog.confirm()
+                .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                .textContent('')
+                .ariaLabel('Lucky day')
+                .clickOutsideToClose(true)
+                .parent(angular.element(document.body))
+                .ok('ok')
+                .cancel('annuler');
+
+			$mdDialog.show(confirm).then(function() {           
+				vm.save_groupe_mlpl(vm.selectedItem,1);
+			}, function() {
+            //alert('rien');
+			});
+        };	  
 		// Fin Fonction Groupe ML/PL
 		
 		// Début Fonction Liste ML/PL	
-		vm.save_liste_mlpl = function(liste_mlpl) {
+		vm.save_liste_mlpl = function(liste_mlpl,suppression) {
 			vm.disable_button = true ;
 			var config =  {
                         headers : {
@@ -211,9 +235,10 @@
 			}
 			var datas = $.param(
                     {    
-                      supprimer:0,
+                      supprimer:suppression,
                       id: id_idv ,
                       id_groupe_ml_pl: vm.selectedItem.id,
+                      menage_id:liste_mlpl.menage_id,
                       nom_prenom: liste_mlpl.nom_prenom,
                       adresse: liste_mlpl.adresse,
                       contact: liste_mlpl.contact,
@@ -227,18 +252,42 @@
 					var indiv = {
 							id:data.response ,
 							id_groupe_ml_pl: vm.selectedItem.id,
+							menage_id: liste_mlpl.menage_id,
 							nom_prenom: liste_mlpl.nom_prenom,
 							adresse: liste_mlpl.adresse,
 							contact: liste_mlpl.contact,
 							fonction: liste_mlpl.fonction,
+							NumeroEnregistrement: liste_mlpl.NumeroEnregistrement,
+							nomchefmenage: liste_mlpl.nomchefmenage,
+							nom_conjoint: liste_mlpl.nom_conjoint,
+							Addresse: liste_mlpl.Addresse,
+							nombre_enfant_non_scolarise: liste_mlpl.nombre_enfant_non_scolarise,
+							nombre_enfant_moins_six_ans: liste_mlpl.nombre_enfant_moins_six_ans,
+							nombre_enfant_scolarise: liste_mlpl.nombre_enfant_scolarise,
 						}
 						vm.all_liste_mlpl.push(indiv);
 				} else {
-					vm.affichage_masque_liste_mlpl = false ;
-					vm.selectedItem_liste_mlpl.nom_prenom = vm.liste_mlpl_masque.nom_prenom  ;
-					vm.selectedItem_liste_mlpl.adresse = vm.liste_mlpl_masque.adresse  ;
-					vm.selectedItem_liste_mlpl.contact = vm.liste_mlpl_masque.contact  ;
-					vm.selectedItem_liste_mlpl.fonction = vm.liste_mlpl_masque.fonction  ;
+					if(suppression==1) {
+						vm.all_liste_mlpl = vm.all_liste_mlpl.filter(function(obj) {
+							return obj.id !== vm.selectedItem_liste_mlpl.id;
+						});	
+						vm.selectedItem_liste_mlpl={};	
+					} else {
+						vm.affichage_masque_liste_mlpl = false ;
+						vm.selectedItem_liste_mlpl.id_groupe_ml_pl = vm.selectedItem.id  ;
+						vm.selectedItem_liste_mlpl.menage_id = liste_mlpl.menage_id  ;
+						vm.selectedItem_liste_mlpl.nom_prenom = liste_mlpl.nom_prenom  ;
+						vm.selectedItem_liste_mlpl.adresse = liste_mlpl.adresse  ;
+						vm.selectedItem_liste_mlpl.contact = liste_mlpl.contact  ;
+						vm.selectedItem_liste_mlpl.fonction = liste_mlpl.fonction  ;
+						vm.selectedItem_liste_mlpl.NumeroEnregistrement=liste_mlpl.NumeroEnregistrement;
+						vm.selectedItem_liste_mlpl.nomchefmenage=liste_mlpl.nomchefmenage;
+						vm.selectedItem_liste_mlpl.nom_conjoint=liste_mlpl.nom_conjoint;
+						vm.selectedItem_liste_mlpl.Addresse=liste_mlpl.Addresse;
+						vm.selectedItem_liste_mlpl.nombre_enfant_non_scolarise=liste_mlpl.nombre_enfant_non_scolarise;
+						vm.selectedItem_liste_mlpl.nombre_enfant_moins_six_ans=liste_mlpl.nombre_enfant_moins_six_ans;
+						vm.selectedItem_liste_mlpl.nombre_enfant_scolarise=liste_mlpl.nombre_enfant_scolarise;
+					}	
 				}       
 			}).error(function (data) {
 				vm.disable_button = false ;
@@ -247,7 +296,6 @@
 			});
 		}
 		vm.selection_liste_mlpl= function (item) {
-			console.log(item);
 			if (!vm.affichage_masque_liste_mlpl)  {
 				vm.selectedItem_liste_mlpl = item;
 				vm.nouvelItem_liste_mlpl   = item;
@@ -269,15 +317,40 @@
 			vm.nouvelle_element_liste_mlpl = false ;
 			vm.affichage_masque_liste_mlpl = true ;
 			vm.liste_mlpl_masque={};
+			vm.liste_mlpl_masque.menage_id = vm.selectedItem_liste_mlpl.menage_id ;
 			vm.liste_mlpl_masque.nom_prenom = vm.selectedItem_liste_mlpl.nom_prenom ;
 			vm.liste_mlpl_masque.adresse = vm.selectedItem_liste_mlpl.adresse ;
 			vm.liste_mlpl_masque.contact = vm.selectedItem_liste_mlpl.contact ;
 			vm.liste_mlpl_masque.fonction = vm.selectedItem_liste_mlpl.fonction ;
+			vm.liste_mlpl_masque.NumeroEnregistrement=vm.selectedItem_liste_mlpl.NumeroEnregistrement;
+			vm.liste_mlpl_masque.nomchefmenage=vm.selectedItem_liste_mlpl.nomchefmenage;
+			vm.liste_mlpl_masque.nom_conjoint=vm.selectedItem_liste_mlpl.nom_conjoint;
+			vm.liste_mlpl_masque.Addresse=vm.selectedItem_liste_mlpl.Addresse;
+			vm.liste_mlpl_masque.nombre_enfant_non_scolarise=vm.selectedItem_liste_mlpl.nombre_enfant_non_scolarise;
+			vm.liste_mlpl_masque.nombre_enfant_moins_six_ans=vm.selectedItem_liste_mlpl.nombre_enfant_moins_six_ans;
+			vm.liste_mlpl_masque.nombre_enfant_scolarise=vm.selectedItem_liste_mlpl.nombre_enfant_scolarise;
 		}
 		vm.annuler_liste_mlpl = function()  {
 			vm.nouvelle_element_liste_mlpl = false ;
 			vm.affichage_masque_liste_mlpl = false ;
 		}
+		vm.supprimer_liste_mlpl = function() {
+			vm.nouvelle_element = false ;
+			var confirm = $mdDialog.confirm()
+                .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                .textContent('')
+                .ariaLabel('Lucky day')
+                .clickOutsideToClose(true)
+                .parent(angular.element(document.body))
+                .ok('ok')
+                .cancel('annuler');
+
+			$mdDialog.show(confirm).then(function() {           
+				vm.save_liste_mlpl(vm.selectedItem_liste_mlpl,1);
+			}, function() {
+            //alert('rien');
+			});
+        };	  
 		// Fin Fonction Liste ML/PL	
 		
 		// Début Fonction Liste ménage ML/PL	
@@ -320,7 +393,6 @@
 			});
 		}
 		vm.selection_listemenage_mlpl= function (item) {
-			console.log(item);
 			if (!vm.affichage_masque_listemenage_mlpl)  {
 				vm.selectedItem_listemenage_mlpl = item;
 				vm.nouvelItem_listemenage_mlpl   = item;
@@ -378,10 +450,24 @@
 			vm.nouvelle_element_listemenage_mlpl = false ;
 			
 			 item.menage_id = currentItem.menage_id;
-			vm.selectedItemRaisonvisitedomicile = {} ;
+			vm.selectedItem_listemenage_mlpl = {} ;
 			vm.selectedItem_listemenage_mlpl.$selected = false;
 			
 		}
+        vm.supprimer_listemenage_mlpl = function() {
+			var confirm = $mdDialog.confirm()
+                .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                .textContent('')
+                .ariaLabel('Lucky day')
+                .clickOutsideToClose(true)
+                .parent(angular.element(document.body))
+                .ok('supprimer')
+                .cancel('annuler');
+			$mdDialog.show(confirm).then(function() {          
+				vm.save_listemenage_mlpl(vm.selectedItem_listemenage_mlpl,1);
+			}, function() {
+			});
+        }
 		// Fin Fonction Liste ménage ML/PL			
 		// Début Fonction filtre par découpage admin et detail par groupe ML/PM	
 		vm.filtrer = function()	{
@@ -390,7 +476,6 @@
 			apiFactory.getAPIgeneraliserREST("groupe_mlpl/index","cle_etrangere",vm.filtre.village_id).then(function(result) { 				
 				vm.all_groupe_mlpl = result.data.response;    
 				vm.affiche_load = false ;
-				console.log(vm.all_groupe_mlpl);
 			});
 		}
 		vm.get_liste_mlpl_by_groupe = function(id_groupe_ml_pl) {
@@ -407,7 +492,6 @@
 			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"statut","BENEFICIAIRE").then(function(result) { 
 				vm.all_menages =[];
 				vm.all_menages = result.data.response;   
-				console.log(vm.all_menages);
 				apiFactory.getAPIgeneraliserREST("liste_menage_mlpl/index","cle_etrangere",id_groupe_ml_pl).then(function(result) 	{ 
 					vm.all_listemenage_mlpl =[];
 					vm.all_listemenage_mlpl = result.data.response; 
@@ -415,7 +499,7 @@
 				});
 			});
 		}
-		vm.modifier_membre_menage =function(item) {
+		vm.modifier_membre_menage =function(item,rang) {
 			vm.all_menages.forEach(function(mng) {
 				if(parseInt(mng.id)==parseInt(item.menage_id)) {
 					item.menage_id = mng.id; 
@@ -426,15 +510,17 @@
 					item.nombre_enfant_non_scolarise=mng.nombre_enfant_non_scolarise;
 					item.nombre_enfant_moins_six_ans=mng.nombre_enfant_moins_six_ans;
 					item.nombre_enfant_scolarise=mng.nombre_enfant_scolarise;
-					
-					vm.selectedItem_listemenage_mlpl.menage_id = mng.id; 
-					vm.selectedItem_listemenage_mlpl.NumeroEnregistrement=mng.NumeroEnregistrement;
-					vm.selectedItem_listemenage_mlpl.nomchefmenage=mng.nomchefmenage;
-					vm.selectedItem_listemenage_mlpl.nom_conjoint=mng.nom_conjoint;
-					vm.selectedItem_listemenage_mlpl.Addresse=mng.Addresse;
-					vm.selectedItem_listemenage_mlpl.nombre_enfant_non_scolarise=mng.nombre_enfant_non_scolarise;
-					vm.selectedItem_listemenage_mlpl.nombre_enfant_moins_six_ans=mng.nombre_enfant_moins_six_ans;
-					vm.selectedItem_listemenage_mlpl.nombre_enfant_scolarise=mng.nombre_enfant_scolarise;
+					if( rang==2) {
+						// Saisie en ligne (menage ML/PL) l'autre c'est dans une forme(ML/PL)
+						vm.selectedItem_listemenage_mlpl.menage_id = mng.id; 
+						vm.selectedItem_listemenage_mlpl.NumeroEnregistrement=mng.NumeroEnregistrement;
+						vm.selectedItem_listemenage_mlpl.nomchefmenage=mng.nomchefmenage;
+						vm.selectedItem_listemenage_mlpl.nom_conjoint=mng.nom_conjoint;
+						vm.selectedItem_listemenage_mlpl.Addresse=mng.Addresse;
+						vm.selectedItem_listemenage_mlpl.nombre_enfant_non_scolarise=mng.nombre_enfant_non_scolarise;
+						vm.selectedItem_listemenage_mlpl.nombre_enfant_moins_six_ans=mng.nombre_enfant_moins_six_ans;
+						vm.selectedItem_listemenage_mlpl.nombre_enfant_scolarise=mng.nombre_enfant_scolarise;
+					}	
 					vm.nontrouvee=false;
 				}
 			});			

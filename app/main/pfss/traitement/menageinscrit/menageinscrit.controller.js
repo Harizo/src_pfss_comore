@@ -6,7 +6,7 @@
         .controller('MenageinscritController', MenageinscritController);
 
     /** @ngInject */
-    function MenageinscritController(apiFactory, $state, $mdDialog, $scope,$cookieStore) {
+    function MenageinscritController(apiFactory, $state, $mdDialog, $scope,$cookieStore,apiUrlbase) {
 		var vm = this;
 	   vm.dtOptions =
       {
@@ -20,33 +20,12 @@
       {titre:"Age chef de ménage"},{titre:"Sexe"},{titre:"Addresse"},{titre:"Personne inscrire"},{titre:"Etat envoie"}];
       // vm.menage_column = [{titre:"Numero d'enregistrement"},{titre:"Chef Ménage"},
       // {titre:"Age chef de ménage"},{titre:"Sexe"},{titre:"Addresse"},{titre:"Personne inscrire"},{titre:"Etat envoie"}];
-      vm.individu_column = [{titre:"Nom et prénom"},{titre:"Date de naissance"},{titre:"Sexe"},{titre:"Lien de parenté"},{titre:"Activite"},{titre:"Aptitude"},{titre:"Travailleur"}];
+      vm.individu_column = [{titre:"Nom et prénom"},{titre:"Date de naissance"},{titre:"Sexe"},{titre:"Lien de parenté"},{titre:"Scolarisé"},{titre:"Activite"},{titre:"Aptitude"},{titre:"Travailleur"}];
       //initialisation variable
         vm.affiche_load = false ;
         vm.selectedItem = {} ;
         vm.selectedItem_individu = {} ;
-		
-        vm.tab_reponse_revetement_toit = [] ;
-        vm.tab_reponse_revetement_sol = [] ;
-        vm.tab_reponse_revetement_mur = [] ;
-        vm.tab_reponse_source_eclairage = [] ;
-        vm.tab_reponse_combustible = [] ;
-        vm.tab_reponse_toilette = [] ;
-        vm.tab_reponse_source_eau = [] ;
-        vm.tab_reponse_bien_equipement = [] ;
-        vm.tab_reponse_moyen_production = [] ;
-        vm.tab_reponse_source_revenu = [] ;
-        vm.tab_reponse_elevage = [] ;
-        vm.tab_reponse_culture = [] ;
-        vm.tab_reponse_aliment = [] ;
-        vm.tab_source_aliment = [] ;
-        vm.tab_strategie_alimentaire = [] ;
-        vm.tab_probleme_sur_revenu = [] ;
-        vm.tab_strategie_sur_revenu = [] ;
-        vm.tab_activite_recours = [] ;
-        vm.tab_service_beneficie = [] ;
-        vm.tab_infrastructure_frequente = [] ;
-		
+		  vm.apiUrlbase=apiUrlbase; 		
         vm.tab_intervention = [] ;//liste intervention associé au menage
         vm.tab_intervention_individu = [] ;//liste intervention associé au individu
         vm.reponse_individu = {} ;
@@ -368,9 +347,11 @@
 			vm.filtre.inapte  = '0' ;
 			vm.filtre.NomTravailleur  = "" ;
 			vm.filtre.SexeTravailleur  = null ;
+			vm.filtre.datedenaissancetravailleur  = new Date() ;
 			vm.filtre.agetravailleur  =null  ;
 			vm.filtre.NomTravailleurSuppliant  =""  ;
 			vm.filtre.SexeTravailleurSuppliant  = null ;
+			vm.filtre.datedenaissancesuppliant  = new Date() ;
 			vm.filtre.agesuppliant  = null ;
 			vm.filtre.quartier  = null ;
 			vm.filtre.milieu  = null ;
@@ -413,9 +394,19 @@
 			vm.filtre.statut  =  vm.selectedItem.statut ;
 			vm.filtre.NomTravailleur  =  vm.selectedItem.NomTravailleur ;
 			vm.filtre.SexeTravailleur  =  vm.selectedItem.SexeTravailleur ;
+			if(vm.selectedItem.datedenaissancetravailleur) {
+				vm.filtre.datedenaissancetravailleur  =  new Date(vm.selectedItem.datedenaissancetravailleur) ;
+			} else {
+				vm.filtre.datedenaissancetravailleur  =  new Date();
+			}
 			vm.filtre.agetravailleur  =  parseInt(vm.selectedItem.agetravailleur) ;
 			vm.filtre.NomTravailleurSuppliant  =  vm.selectedItem.NomTravailleurSuppliant ;
 			vm.filtre.SexeTravailleurSuppliant  =  vm.selectedItem.SexeTravailleurSuppliant ;
+			if(vm.selectedItem.datedenaissancesuppliant) {
+				vm.filtre.datedenaissancesuppliant  =  new Date(vm.selectedItem.datedenaissancesuppliant) ;
+			} else {
+				vm.filtre.datedenaissancesuppliant  =  new Date();
+			}
 			vm.filtre.agesuppliant  =  parseInt(vm.selectedItem.agesuppliant) ;
 			vm.filtre.quartier  =  vm.selectedItem.quartier ;
 			vm.filtre.milieu  =  vm.selectedItem.milieu ;
@@ -535,6 +526,7 @@
 			vm.individu_masque.sexe = vm.selectedItem_individu.sexe ;
 			vm.individu_masque.activite = vm.selectedItem_individu.activite ;
 			vm.individu_masque.travailleur = vm.selectedItem_individu.travailleur ;
+			vm.individu_masque.scolarise = vm.selectedItem_individu.scolarise ;
 			vm.individu_masque.date_naissance = new Date(vm.selectedItem_individu.date_naissance) ;
 		}
 		vm.generer_ref = function()  {
@@ -955,9 +947,11 @@
                       rang_obtenu: menage.rang_obtenu,
                       NomTravailleur: menage.NomTravailleur,
                       SexeTravailleur: menage.SexeTravailleur,
+                      datedenaissancetravailleur: formatDateBDD(menage.datedenaissancetravailleur),
                       agetravailleur: menage.agetravailleur,
                       NomTravailleurSuppliant: menage.NomTravailleurSuppliant,
                       SexeTravailleurSuppliant: menage.SexeTravailleurSuppliant,
+                      datedenaissancesuppliant: formatDateBDD(menage.datedenaissancesuppliant),
                       agesuppliant: menage.agesuppliant,
                       quartier: menage.quartier,
                       milieu: menage.milieu,
@@ -1025,9 +1019,11 @@
 						statut: menage.statut,
 						NomTravailleur: menage.NomTravailleur,
 						SexeTravailleur: menage.SexeTravailleur,
+						datedenaissancetravailleur: menage.datedenaissancetravailleur,
 						agetravailleur: menage.agetravailleur,
 						NomTravailleurSuppliant: menage.NomTravailleurSuppliant,
 						SexeTravailleurSuppliant: menage.SexeTravailleurSuppliant,
+						datedenaissancesuppliant: menage.datedenaissancesuppliant,
 						agesuppliant: menage.agesuppliant,
 						quartier: menage.quartier,
 						milieu: menage.milieu,
@@ -1091,9 +1087,11 @@
 					vm.selectedItem.statut = vm.filtre.statut  ;
 					vm.selectedItem.NomTravailleur = vm.filtre.NomTravailleur  ;
 					vm.selectedItem.SexeTravailleur = vm.filtre.SexeTravailleur  ;
+					vm.selectedItem.datedenaissancetravailleur = vm.filtre.datedenaissancetravailleur  ;
 					vm.selectedItem.agetravailleur = vm.filtre.agetravailleur  ;
 					vm.selectedItem.NomTravailleurSuppliant = vm.filtre.NomTravailleurSuppliant  ;
 					vm.selectedItem.SexeTravailleurSuppliant = vm.filtre.SexeTravailleurSuppliant  ;
+					vm.selectedItem.datedenaissancesuppliant = vm.filtre.datedenaissancesuppliant  ;
 					vm.selectedItem.agesuppliant = vm.filtre.agesuppliant  ;
 					vm.selectedItem.quartier = vm.filtre.quartier  ;
 					vm.selectedItem.milieu = vm.filtre.milieu  ;
@@ -1130,6 +1128,8 @@
                       prenom: individu.prenom,
                       lienparental: individu.lienparental,
                       aptitude: individu.aptitude,
+                      scolarise: individu.scolarise,
+                      a_ete_modifie: 0,
                     
                                                  
                     });
@@ -1148,7 +1148,10 @@
 							nom: individu.nom,
 							prenom: individu.prenom,
 							lienparental: individu.lienparental,
+							lien_de_parente: individu.lien_de_parente,
 							aptitude: individu.aptitude,
+							scolarise: individu.scolarise,
+							a_ete_modifie: 0,
 						}
 						vm.all_individus.push(indiv);
 				} else {
@@ -1162,6 +1165,8 @@
 					vm.selectedItem_individu.travailleur = vm.individu_masque.travailleur  ;
 					vm.selectedItem_individu.sexe = vm.individu_masque.sexe  ;
 					vm.selectedItem_individu.date_naissance = vm.individu_masque.date_naissance   ;
+					vm.selectedItem_individu.scolarise = vm.individu_masque.scolarise   ;
+					vm.selectedItem_individu.a_ete_modifie = 0;
 				}       
 			}).error(function (data) {
 				vm.disable_button = false ;

@@ -2,11 +2,11 @@
 {
     'use strict';
     angular
-        .module('app.pfss.traitement.menagebeneficiaire')
-        .controller('MenagebeneficiaireController', MenagebeneficiaireController);
+        .module('app.pfss.traitement.menagepreselectionne')
+        .controller('MenagepreselectionneController', MenagepreselectionneController);
 
     /** @ngInject */
-    function MenagebeneficiaireController(apiFactory, $state, $mdDialog, $scope,$cookieStore) {
+    function MenagepreselectionneController(apiFactory, $state, $mdDialog, $scope,$cookieStore) {
 		var vm = this;
 	   vm.dtOptions =
       {
@@ -20,7 +20,7 @@
       {titre:"Age chef de ménage"},{titre:"Sexe"},{titre:"Addresse"},{titre:"Personne inscrire"},{titre:"Etat envoie"}];
       // vm.menage_column = [{titre:"Numero d'enregistrement"},{titre:"Chef Ménage"},
       // {titre:"Age chef de ménage"},{titre:"Sexe"},{titre:"Addresse"},{titre:"Personne inscrire"},{titre:"Etat envoie"}];
-      vm.individu_column = [{titre:"Nom et prénom"},{titre:"Date de naissance"},{titre:"Sexe"},{titre:"Lien de parenté"},{titre:"Activite"},{titre:"Aptitude"},{titre:"Travailleur"}];
+      vm.individu_column = [{titre:"Nom et prénom"},{titre:"Date de naissance"},{titre:"Sexe"},{titre:"Lien de parenté"},{titre:"Scolarisé"},{titre:"Activite"},{titre:"Aptitude"},{titre:"Travailleur"}];
       //initialisation variable
         vm.affiche_load = false ;
         vm.selectedItem = {} ;
@@ -368,9 +368,11 @@
 			vm.filtre.inapte  = '0' ;
 			vm.filtre.NomTravailleur  = "" ;
 			vm.filtre.SexeTravailleur  = null ;
+			vm.filtre.datedenaissancetravailleur  = new Date() ;
 			vm.filtre.agetravailleur  =null  ;
 			vm.filtre.NomTravailleurSuppliant  =""  ;
 			vm.filtre.SexeTravailleurSuppliant  = null ;
+			vm.filtre.datedenaissancesuppliant  = new Date() ;
 			vm.filtre.agesuppliant  = null ;
 			vm.filtre.quartier  = null ;
 			vm.filtre.milieu  = null ;
@@ -413,9 +415,19 @@
 			vm.filtre.statut  =  vm.selectedItem.statut ;
 			vm.filtre.NomTravailleur  =  vm.selectedItem.NomTravailleur ;
 			vm.filtre.SexeTravailleur  =  vm.selectedItem.SexeTravailleur ;
+			if(vm.selectedItem.datedenaissancetravailleur) {
+				vm.filtre.datedenaissancetravailleur  =  new Date(vm.selectedItem.datedenaissancetravailleur) ;
+			} else {
+				vm.filtre.datedenaissancetravailleur  =  new Date();
+			}
 			vm.filtre.agetravailleur  =  parseInt(vm.selectedItem.agetravailleur) ;
 			vm.filtre.NomTravailleurSuppliant  =  vm.selectedItem.NomTravailleurSuppliant ;
 			vm.filtre.SexeTravailleurSuppliant  =  vm.selectedItem.SexeTravailleurSuppliant ;
+			if(vm.selectedItem.datedenaissancesuppliant) {
+				vm.filtre.datedenaissancesuppliant  =  new Date(vm.selectedItem.datedenaissancesuppliant) ;
+			} else {
+				vm.filtre.datedenaissancesuppliant  =  new Date();
+			}
 			vm.filtre.agesuppliant  =  parseInt(vm.selectedItem.agesuppliant) ;
 			vm.filtre.quartier  =  vm.selectedItem.quartier ;
 			vm.filtre.milieu  =  vm.selectedItem.milieu ;
@@ -467,53 +479,59 @@
 			vm.get_max_id_generer_ref();
 		}
 		vm.modifier_statut = function (etat_statut) {
-			if(etat_statut=='INSCRIT') {
-				vm.titre_statut="retourner dans la liste des inscrits "
-			} else {
-				vm.titre_statut="bénéficier "				
-			}
-			var temp = "Etes-vous sûr de faire " + vm.titre_statut + " le ménage, " + vm.selectedItem.NumeroEnregistrement + "  chef ménage : " + vm.selectedItem.nomchefmenage + " ?";
-			var confirm = $mdDialog.confirm()
-                .title(temp)
-                .textContent('')
-                .ariaLabel('Lucky day')
-                .clickOutsideToClose(true)
-                .parent(angular.element(document.body))
-                .ok('ok')
-                .cancel('annuler');
+			if(parseInt(vm.selectedItem.id_sous_projet)>0) {						
+				if(etat_statut=='INSCRIT') {
+					vm.titre_statut="retourner dans la liste des inscrits "
+				} else {
+					vm.titre_statut="bénéficier "				
+				}
+				var temp = "Etes-vous sûr de faire " + vm.titre_statut + " le ménage, " + vm.selectedItem.NumeroEnregistrement + "  chef ménage : " + vm.selectedItem.nomchefmenage + " ?";
+				var confirm = $mdDialog.confirm()
+					.title(temp)
+					.textContent('')
+					.ariaLabel('Lucky day')
+					.clickOutsideToClose(true)
+					.parent(angular.element(document.body))
+					.ok('ok')
+					.cancel('annuler');
 
-			$mdDialog.show(confirm).then(function() {           
-				var config =  {
-							headers : {
-							  'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
-								}
-							};
-				var datas = $.param({    
-						  supprimer:0,
-						  id: vm.selectedItem.id ,
-						  mise_a_jour_statut: 1,
-						  statut: etat_statut,
-						  identifiant_menage: vm.filtre.identifiant_menage,
-						});
-					vm.filtre.statut=etat_statut;	
-				apiFactory.add("menage/index",datas, config).success(function (data)  {
-					// Enlever de la liste inscrit
-						vm.all_menages = vm.all_menages.filter(function(obj) {
-							return obj.id !== vm.selectedItem.id;
-						});
-						vm.selectedItem={};
-					vm.disable_button = false ;
-					vm.showAlert("Information",'Enregistrement réussi!');
-				}).error(function (data) {
-					vm.disable_button = false ;
-					console.log('erreur '+data);
-					vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
-				});         
-			}, function() {
-            //alert('rien');
-			});
-			
-			
+				$mdDialog.show(confirm).then(function() {           
+					var config =  {
+								headers : {
+								  'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+									}
+								};
+					var datas = $.param({    
+							  supprimer:0,
+							  id: vm.selectedItem.id ,
+							  mise_a_jour_statut: 1,
+							  statut: etat_statut,
+							  menage_id: vm.selectedItem.id,
+							  identifiant_menage: vm.filtre.identifiant_menage,
+							  id_sous_projet: vm.selectedItem.id_sous_projet,
+							  DateInscription: vm.selectedItem.DateInscription,
+							});
+						vm.filtre.statut=etat_statut;	
+					apiFactory.add("menage/index",datas, config).success(function (data)  {
+						// Enlever de la liste inscrit
+							vm.all_menages = vm.all_menages.filter(function(obj) {
+								return obj.id !== vm.selectedItem.id;
+							});
+							vm.selectedItem={};
+						vm.disable_button = false ;
+						vm.showAlert("Information",'Enregistrement réussi!');
+					}).error(function (data) {
+						vm.disable_button = false ;
+						console.log('erreur '+data);
+						vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
+					});         
+				}, function() {
+				//alert('rien');
+				});
+			} else {
+				vm.showAlert("Information",'Veuillez choisir le sous-projet à affecter à ce ménage !');		
+			}	
+				
 		}	
 		vm.annuler = function () {
 			vm.nouvelle_element = false ;
@@ -540,6 +558,7 @@
 			vm.individu_masque.sexe = vm.selectedItem_individu.sexe ;
 			vm.individu_masque.activite = vm.selectedItem_individu.activite ;
 			vm.individu_masque.travailleur = vm.selectedItem_individu.travailleur ;
+			vm.individu_masque.scolarise = vm.selectedItem_individu.scolarise ;
 			vm.individu_masque.date_naissance = new Date(vm.selectedItem_individu.date_naissance) ;
 		}
 		vm.generer_ref = function()  {
@@ -960,9 +979,11 @@
                       rang_obtenu: menage.rang_obtenu,
                       NomTravailleur: menage.NomTravailleur,
                       SexeTravailleur: menage.SexeTravailleur,
+                      datedenaissancetravailleur: formatDateBDD(menage.datedenaissancetravailleur),
                       agetravailleur: menage.agetravailleur,
                       NomTravailleurSuppliant: menage.NomTravailleurSuppliant,
                       SexeTravailleurSuppliant: menage.SexeTravailleurSuppliant,
+                      datedenaissancesuppliant: formatDateBDD(menage.datedenaissancesuppliant),
                       agesuppliant: menage.agesuppliant,
                       quartier: menage.quartier,
                       milieu: menage.milieu,
@@ -1030,9 +1051,11 @@
 						statut: menage.statut,
 						NomTravailleur: menage.NomTravailleur,
 						SexeTravailleur: menage.SexeTravailleur,
+						datedenaissancetravailleur: menage.datedenaissancetravailleur,
 						agetravailleur: menage.agetravailleur,
 						NomTravailleurSuppliant: menage.NomTravailleurSuppliant,
 						SexeTravailleurSuppliant: menage.SexeTravailleurSuppliant,
+						datedenaissancesuppliant: menage.datedenaissancesuppliant,
 						agesuppliant: menage.agesuppliant,
 						quartier: menage.quartier,
 						milieu: menage.milieu,
@@ -1096,9 +1119,11 @@
 					vm.selectedItem.statut = vm.filtre.statut  ;
 					vm.selectedItem.NomTravailleur = vm.filtre.NomTravailleur  ;
 					vm.selectedItem.SexeTravailleur = vm.filtre.SexeTravailleur  ;
+					vm.selectedItem.datedenaissancetravailleur = vm.filtre.datedenaissancetravailleur  ;
 					vm.selectedItem.agetravailleur = vm.filtre.agetravailleur  ;
 					vm.selectedItem.NomTravailleurSuppliant = vm.filtre.NomTravailleurSuppliant  ;
 					vm.selectedItem.SexeTravailleurSuppliant = vm.filtre.SexeTravailleurSuppliant  ;
+					vm.selectedItem.datedenaissancesuppliant = vm.filtre.datedenaissancesuppliant  ;
 					vm.selectedItem.agesuppliant = vm.filtre.agesuppliant  ;
 					vm.selectedItem.quartier = vm.filtre.quartier  ;
 					vm.selectedItem.milieu = vm.filtre.milieu  ;
@@ -1135,6 +1160,8 @@
                       prenom: individu.prenom,
                       lienparental: individu.lienparental,
                       aptitude: individu.aptitude,
+                      scolarise: individu.scolarise,
+                      a_ete_modifie: 0,
                     
                                                  
                     });
@@ -1153,7 +1180,10 @@
 							nom: individu.nom,
 							prenom: individu.prenom,
 							lienparental: individu.lienparental,
+							lien_de_parente: individu.lien_de_parente,
 							aptitude: individu.aptitude,
+							scolarise: individu.scolarise,
+							a_ete_modifie: 0,
 						}
 						vm.all_individus.push(indiv);
 				} else {
@@ -1167,6 +1197,8 @@
 					vm.selectedItem_individu.travailleur = vm.individu_masque.travailleur  ;
 					vm.selectedItem_individu.sexe = vm.individu_masque.sexe  ;
 					vm.selectedItem_individu.date_naissance = vm.individu_masque.date_naissance   ;
+					vm.selectedItem_individu.scolarise = vm.individu_masque.scolarise   ;
+					vm.selectedItem_individu.a_ete_modifie = 0;
 				}       
 			}).error(function (data) {
 				vm.disable_button = false ;

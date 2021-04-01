@@ -137,11 +137,11 @@
 						id : data.response ,
 						id_groupe_ml_pl: groupe_mlpl.id_groupe_ml_pl,
 						numero: groupe_mlpl.numero,
-						date_visite1: formatDateListe(groupe_mlpl.date_visite1),
+						date_visite1: vm.formatDateListe(groupe_mlpl.date_visite1),
 						menage_id: groupe_mlpl.menage_id,
 						objet_visite: groupe_mlpl.objet_visite,
 						nom_prenom_mlpl: groupe_mlpl.nom_prenom_mlpl,
-						date_visite2: formatDateListe(groupe_mlpl.date_visite2),
+						date_visite2: vm.formatDateListe(groupe_mlpl.date_visite2),
 						resultat_visite: groupe_mlpl.resultat_visite,
 						recommandation: groupe_mlpl.recommandation,
 						NumeroEnregistrement: groupe_mlpl.NumeroEnregistrement,
@@ -149,8 +149,11 @@
 					}
 					vm.all_visite_domicile.push(mng) ;
 				} else {
-					if(parseInt(suppression)==0) {
-						
+					if(parseInt(suppression==1)) {
+						vm.all_visite_domicile = vm.all_visite_domicile.filter(function(obj) {
+							return obj.id !== vm.currentItem.id;
+						});						
+						vm.selectedItem={};
 					} else {
 						vm.affichage_masque_liste_mlpl = false ;
 						vm.selectedItem.date_visite1 =  vm.filtre.date_visite1 ;
@@ -231,7 +234,7 @@
                 .cancel('annuler');
 
 			$mdDialog.show(confirm).then(function() {           
-				save_visite_domicile(vm.selectedItem,1);
+				vm.save_visite_domicile(vm.selectedItem,1);
 			}, function() {
             //alert('rien');
 			});

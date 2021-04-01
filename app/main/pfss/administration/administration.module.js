@@ -6,8 +6,8 @@
                 'app.pfss.administration.utilisateur',
                 'app.pfss.administration.profil',
                 'app.pfss.administration.historiqueutilisateur',
-                'app.pfss.administration.groupe_user',
-                'app.pfss.administration.cours_de_change',
+               // 'app.pfss.administration.groupe_user',
+               // 'app.pfss.administration.cours_de_change',
                 'app.pfss.ddb_adm'
 
             ] ;

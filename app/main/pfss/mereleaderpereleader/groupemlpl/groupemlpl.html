@@ -30,7 +30,7 @@
                             <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised md-blue-800-bg" aria-label="Modifier" ng-click="vm.modifier()" style="width:10%;">
                               Modifier
                             </md-button>
-                            <md-button type="submit" ng-show="vm.afficherboutonModifSupr==1" ng-disabled="vm.selectedItem.utilisateur_id!=vm.user_id" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimer()" style="width:10%;">
+                            <md-button type="submit" ng-show="vm.selectedItem.id" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimer()" style="width:10%;">
                               Supprimer
                             </md-button>
                           
@@ -143,7 +143,7 @@
 										  Actualiser
 									  </md-button>
 									  <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
-										  ng-if="vm.affichage_masque" ng-disabled="(filtrepardateform.$invalid)||(vm.disable_button)" ng-click="vm.save_groupe_mlpl(vm.filtre)">
+										  ng-if="vm.affichage_masque" ng-disabled="(filtrepardateform.$invalid)||(vm.disable_button)" ng-click="vm.save_groupe_mlpl(vm.filtre,0)">
 										  Enregistrer
 									  </md-button>
 									  <md-button type="submit" class="md-raised md-primary" aria-label="Enregistrer"
@@ -184,11 +184,22 @@
                             <md-button type="submit" ng-if="!vm.affichage_masque_liste_mlpl"  ng-show="(vm.selectedItem_liste_mlpl.id)" class="md-raised md-blue-800-bg" aria-label="Modifier" ng-click="vm.modifier_liste_mlpl()" style="width:10%;">
                               Modifier
                             </md-button>
+                            <md-button type="submit" ng-show="vm.selectedItem_liste_mlpl.id" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimer_liste_mlpl()" style="width:10%;">
+                              Supprimer
+                            </md-button>
                         </div>
                         <form name="listemlpl_form" class="md-inline-form" novalidate >
 							<fieldset ng-if="vm.affichage_masque_liste_mlpl">
 								<label><b>Information concernant le membre ML/PL</b></label>
 								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex="100" flex-gt-xs="30">
+									<label>Membre groupe ML/PL</label>
+										<md-select ng-model="vm.liste_mlpl_masque.menage_id" ng-change="vm.modifier_membre_menage(vm.liste_mlpl_masque,2)" required>										 
+											<md-option ng-repeat="mn in vm.all_menages" value="{{mn.id}}" >
+												{{mn.NumeroEnregistrement}} - {{mn.nomchefmenage}}
+											</md-option>
+										</md-select>
+									</md-input-container>
 									<md-input-container flex="100" flex-gt-xs="15" ng-show="vm.affichage_masque_liste_mlpl">
 									  <input type="text"  name="nom_prenom" ng-model="vm.liste_mlpl_masque.nom_prenom"
 										placeholder="Nom et prénom " required>
@@ -232,7 +243,7 @@
 								</div>
 								<section layout="row" layout-sm="column" layout-align="left" layout-wrap>
 								  <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
-									  ng-if="vm.affichage_masque_liste_mlpl" ng-disabled="(listemlpl_form.$invalid)||(vm.disable_button)" ng-click="vm.save_liste_mlpl(vm.liste_mlpl_masque)">
+									  ng-if="vm.affichage_masque_liste_mlpl" ng-disabled="(listemlpl_form.$invalid)||(vm.disable_button)" ng-click="vm.save_liste_mlpl(vm.liste_mlpl_masque,0)">
 									  Enregistrer
 								  </md-button>
 								  <md-button type="submit" class="md-raised md-primary" aria-label="Enregistrer"
@@ -255,6 +266,7 @@
                           </thead>
                           <tbody>
                             <tr ng-repeat="indiv in vm.all_liste_mlpl  track by $index"  ng-class="{selected: indiv.$selected}" ng-click="vm.selection_liste_mlpl(indiv)">
+                              <td>{{indiv.NumeroEnregistrement}} | {{indiv.nomchefmenage}} | {{indiv.nom_conjoint}}</td>
                               <td>{{indiv.nom_prenom}}</td>
                               <td>{{indiv.adresse}}</td>
                               <td>{{indiv.contact}}</td>
@@ -295,16 +307,16 @@
 								<tr ng-repeat="mngpl in vm.all_listemenage_mlpl  track by $index"  ng-class="{selected: mngpl.$selected}" ng-click="vm.selection_listemenage_mlpl(mngpl)">
 									<td>
 										<span ng-if="mngpl.$edit">
-											<md-input-container flex="100" flex-gt-xs="90">
-											<label>Ménage membre groupe ML/PL</label>
-												<md-select ng-model="mngpl.menage_id" ng-change="vm.modifier_membre_menage(mngpl)" required>										 
-													<md-option ng-repeat="mn in vm.all_menages" value="{{mn.id}}" >
-														{{mn.NumeroEnregistrement}} - {{mn.nomchefmenage}}
+											<md-input-container flex="100" flex-gt-xs="100">
+											<label>ML/PL</label>
+												<md-select ng-model="mngpl.menage_id" ng-change="vm.modifier_membre_menage(mngpl,1)" required>										 
+													<md-option ng-repeat="lmn in vm.all_menages" value="{{lmn.id}}" >
+														{{lmn.NumeroEnregistrement}} - {{lmn.nomchefmenage}}
 													</md-option>
 												</md-select>
 											</md-input-container>
 										</span>
-										<span ng-if="!mngpl.$edit">{{mn.NumeroEnregistrement}} - {{mn.nomchefmenage}}</span>
+										<span ng-if="!mngpl.$edit">{{mngpl.NumeroEnregistrement}} - {{mngpl.nomchefmenage}}</span>
 									</td>
 									<td>{{mngpl.nom_conjoint}}</td>
 									<td>{{mngpl.Addresse}}</td>
@@ -315,7 +327,7 @@
 										<a ng-if="!mngpl.$edit" ng-click="vm.modifier_listemenage_mlpl(mngpl)" title="Modifier">
 											<span class="icon-table-edit"></span>
 										</a>
-										<a ng-if="!mngpl.$edit" ng-click="vm.save_listemenage_mlpl(mngpl,1)" title="Supprimer">
+										<a ng-if="!mngpl.$edit" ng-click="vm.supprimer_listemenage_mlpl(mngpl)" title="Supprimer">
 											<span class="icon-delete"></span>
 										</a>
 										<a ng-if="mngpl.$edit" ng-click="vm.annuler_listemenage_mlpl(mngpl)" title="Annuler modification">
