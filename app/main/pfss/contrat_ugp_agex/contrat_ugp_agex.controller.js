@@ -13,7 +13,7 @@
     	var vm = this ;
     	vm.selected_contrat_ugp_agex = {};
         vm.all_contrat_ugp_agex = [];
-
+        vm.date_now = new Date();
         vm.dtOptions_new =
         {
             dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
@@ -297,7 +297,7 @@
 
         //CONTRAT UGP / AGEX
 
-        //contrat_ugp_agex_signataires NEW CODE
+        //contrat_ugp_agex_signataires 
 
             vm.all_contrat_ugp_agex_signataires = [] ;
 
@@ -359,7 +359,7 @@
                             $edit: true,
                             $selected: true,
                             id:'0',
-                            id_contrat_ugp_agex:vm.selected_contrat_ugp_agex,
+                            id_contrat_ugp_agex:vm.selected_contrat_ugp_agex.id,
                             nom_signataire:'',
                             titre_signatire:''
                             
@@ -500,9 +500,9 @@
             
 
             //fin contrat_ugp_agex_signataires..
-        //FIN contrat_ugp_agex_signataires NEW CODE
+        //FIN contrat_ugp_agex_signataires 
 
-        //contrat_ugp_agex_modalite_payement NEW CODE
+        //contrat_ugp_agex_modalite_payement 
 
             vm.all_contrat_ugp_agex_modalite_payement = [] ;
 
@@ -624,7 +624,7 @@
                             $selected: true,
                             id:'0',
                             numero_tranche:nbr,
-                            id_contrat_ugp_agex:vm.selected_contrat_ugp_agex,
+                            id_contrat_ugp_agex:vm.selected_contrat_ugp_agex.id,
                             poucentage:prc,
                             montant:(vm.selected_contrat_ugp_agex.montant_contrat * prc) / 100
                             
@@ -768,6 +768,868 @@
             
 
             //fin contrat_ugp_agex_modalite_payement..
-        //FIN contrat_ugp_agex_modalite_payement NEW CODE
+        //FIN contrat_ugp_agex_modalite_payement 
+
+        //depense_agex 
+
+            vm.all_depense_agex = [] ;
+
+            vm.depense_agex_column =
+            [
+                {titre:"Date"},
+                {titre:"Objet de la dépense"},
+                {titre:"Montant catégorie 1"},
+                {titre:"Montant catégorie 2"}
+            ];
+
+            vm.affiche_load = false ;
+
+            vm.get_all_depense_agex = function () 
+            {
+                vm.affiche_load = true ;
+                apiFactory.getAPIgeneraliserREST("depense_agex/index","id_contrat_ugp_agex",vm.selected_contrat_ugp_agex.id).then(function(result){
+                    vm.all_depense_agex = result.data.response;
+                    
+                    vm.affiche_load = false ;
+
+                });  
+            }
+
+            //depense_agex..
+                
+                vm.selected_depense_agex = {} ;
+                var current_selected_depense_agex = {} ;
+                 vm.nouvelle_depense_agex = false ;
+
+            
+                vm.selection_depense_agex = function(item)
+                {
+                    vm.selected_depense_agex = item ;
+
+                    if (!vm.selected_depense_agex.$edit) //si simple selection
+                    {
+                        vm.nouvelle_depense_agex = false ;  
+
+                    }
+
+                }
+
+                $scope.$watch('vm.selected_depense_agex', function()
+                {
+                    if (!vm.all_depense_agex) return;
+                    vm.all_depense_agex.forEach(function(item)
+                    {
+                        item.$selected = false;
+                    });
+                    vm.selected_depense_agex.$selected = true;
+
+                });
+
+                vm.ajouter_depense_agex = function()
+                {
+                    vm.nouvelle_depense_agex = true ;
+                    var item = 
+                        {
+                            
+                            $edit: true,
+                            $selected: true,
+                            id:'0',
+                            id_contrat_ugp_agex:vm.selected_contrat_ugp_agex.id,
+                            date:new Date(),
+                            objet_depense:'',
+                            montant_categ_un:0,
+                            montant_categ_deux:0
+                            
+                        } ;
+
+                    vm.all_depense_agex.unshift(item);
+                    vm.all_depense_agex.forEach(function(af)
+                    {
+                      if(af.$selected == true)
+                      {
+                        vm.selected_depense_agex = af;
+                        
+                      }
+                    });
+                }
+
+                vm.modifier_depense_agex = function()
+                {
+                    vm.nouvelle_depense_agex = false ;
+                    vm.selected_depense_agex.$edit = true;
+                
+                    current_selected_depense_agex = angular.copy(vm.selected_depense_agex);
+                    vm.selected_depense_agex.date = new Date(vm.selected_depense_agex.date);
+                    vm.selected_depense_agex.montant_categ_un = Number(vm.selected_depense_agex.montant_categ_un);
+                    vm.selected_depense_agex.montant_categ_deux = Number(vm.selected_depense_agex.montant_categ_deux);
+
+                }
+
+                vm.supprimer_depense_agex = function()
+                {
+
+                    
+                    var confirm = $mdDialog.confirm()
+                      .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                      .textContent('Cliquer sur OK pour confirmer')
+                      .ariaLabel('Lucky day')
+                      .clickOutsideToClose(true)
+                      .parent(angular.element(document.body))
+                      .ok('OK')
+                      .cancel('Annuler');
+                    $mdDialog.show(confirm).then(function() {
+
+                    vm.enregistrer_depense_agex(1);
+                    }, function() {
+                    //alert('rien');
+                    });
+                }
+
+                vm.annuler_depense_agex = function()
+                {
+                    if (vm.nouvelle_depense_agex) 
+                    {
+                        
+                        vm.all_depense_agex.shift();
+                        vm.selected_depense_agex = {} ;
+                        vm.nouvelle_depense_agex = false ;
+                    }
+                    else
+                    {
+                        
+
+                        if (!vm.selected_depense_agex.$edit) //annuler selection
+                        {
+                            vm.selected_depense_agex.$selected = false;
+                            vm.selected_depense_agex = {};
+                        }
+                        else
+                        {
+                            vm.selected_depense_agex.$selected = false;
+                            vm.selected_depense_agex.$edit = false;
+                            vm.selected_depense_agex.date = current_selected_depense_agex.date ;
+                            vm.selected_depense_agex.objet_depense = current_selected_depense_agex.objet_depense ;
+                            vm.selected_depense_agex.montant_categ_un = current_selected_depense_agex.montant_categ_un ;
+                            vm.selected_depense_agex.montant_categ_deux = current_selected_depense_agex.montant_categ_deux ;
+                            
+                            vm.selected_depense_agex = {};
+                        }
+
+                        
+
+                    }
+                }
+
+                vm.enregistrer_depense_agex = function(etat_suppression)
+                {
+                    vm.affiche_load = true ;
+                    var config = {
+                        headers : {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                        }
+                    };
+
+
+                    var datas = $.param(
+                    {
+                        
+                        supprimer:etat_suppression,
+                        id:vm.selected_depense_agex.id,
+                        id_contrat_ugp_agex:vm.selected_contrat_ugp_agex.id,
+
+                        date : convert_to_date_sql(vm.selected_depense_agex.date) ,
+                        objet_depense : vm.selected_depense_agex.objet_depense ,
+                        montant_categ_un : vm.selected_depense_agex.montant_categ_un ,
+                        montant_categ_deux : vm.selected_depense_agex.montant_categ_deux 
+                        
+                        
+                        
+                    });
+
+                    apiFactory.add("depense_agex/index",datas, config).success(function (data)
+                    {
+                        vm.affiche_load = false ;
+                        if (!vm.nouvelle_depense_agex) 
+                        {
+                            if (etat_suppression == 0) 
+                            {
+                                vm.selected_depense_agex.$edit = false ;
+                                vm.selected_depense_agex.$selected = false ;
+                                vm.selected_depense_agex = {} ;
+                            }
+                            else
+                            {
+                                vm.all_depense_agex = vm.all_depense_agex.filter(function(obj)
+                                {
+                                    return obj.id !== vm.selected_depense_agex.id;
+                                });
+
+                                vm.selected_depense_agex = {} ;
+                            }
+
+                        }
+                        else
+                        {
+                            vm.selected_depense_agex.$edit = false ;
+                            vm.selected_depense_agex.$selected = false ;
+                            vm.selected_depense_agex.id = String(data.response) ;
+
+                            vm.nouvelle_depense_agex = false ;
+                            vm.selected_depense_agex = {};
+
+                        }
+                    })
+                    .error(function (data) {alert("Une erreur s'est produit");});
+                }
+
+            
+
+            //fin depense_agex..
+        //FIN depense_agex
+
+        //etat_paiement_depense 
+
+            vm.all_etat_paiement_depense = [] ;
+
+            vm.etat_paiement_depense_column =
+            [
+                {titre:"Du"},
+                {titre:"Au"},
+                {titre:"Désignation toute catégorie Conf"},
+                {titre:"Montant reçu"},
+                {titre:"Montant dépensé"},
+                {titre:"Reliquat"}
+            ];
+
+            vm.affiche_load = false ;
+
+            vm.get_all_etat_paiement_depense = function () 
+            {
+                vm.affiche_load = true ;
+                apiFactory.getAPIgeneraliserREST("etat_paiement_depense/index","id_contrat_ugp_agex",vm.selected_contrat_ugp_agex.id).then(function(result){
+                    vm.all_etat_paiement_depense = result.data.response;
+                    
+                    vm.affiche_load = false ;
+
+                });  
+            }
+
+            //etat_paiement_depense..
+                
+                vm.selected_etat_paiement_depense = {} ;
+                var current_selected_etat_paiement_depense = {} ;
+                 vm.nouvelle_etat_paiement_depense = false ;
+
+            
+                vm.selection_etat_paiement_depense = function(item)
+                {
+                    vm.selected_etat_paiement_depense = item ;
+
+                    if (!vm.selected_etat_paiement_depense.$edit) //si simple selection
+                    {
+                        vm.nouvelle_etat_paiement_depense = false ;  
+
+                    }
+
+                }
+
+                $scope.$watch('vm.selected_etat_paiement_depense', function()
+                {
+                    if (!vm.all_etat_paiement_depense) return;
+                    vm.all_etat_paiement_depense.forEach(function(item)
+                    {
+                        item.$selected = false;
+                    });
+                    vm.selected_etat_paiement_depense.$selected = true;
+
+                });
+
+                vm.ajouter_etat_paiement_depense = function()
+                {
+                    vm.nouvelle_etat_paiement_depense = true ;
+                    var item = 
+                        {
+                            
+                            $edit: true,
+                            $selected: true,
+                            id:'0',
+                            id_contrat_ugp_agex:vm.selected_contrat_ugp_agex.id,
+                            
+                            date_debut:new Date(),
+                            date_fin:new Date(),
+                            designation:'',
+                            montant_recu:0,
+                            montant_depense:0,
+                            reliquat:0
+                            
+                        } ;
+
+                    vm.all_etat_paiement_depense.unshift(item);
+                    vm.all_etat_paiement_depense.forEach(function(af)
+                    {
+                      if(af.$selected == true)
+                      {
+                        vm.selected_etat_paiement_depense = af;
+                        
+                      }
+                    });
+                }
+
+                vm.modifier_etat_paiement_depense = function()
+                {
+                    vm.nouvelle_etat_paiement_depense = false ;
+                    vm.selected_etat_paiement_depense.$edit = true;
+                
+                    current_selected_etat_paiement_depense = angular.copy(vm.selected_etat_paiement_depense);
+                    vm.selected_etat_paiement_depense.date_debut = new Date(vm.selected_etat_paiement_depense.date_debut);
+                    vm.selected_etat_paiement_depense.date_fin = new Date(vm.selected_etat_paiement_depense.date_fin);
+                    vm.selected_etat_paiement_depense.montant_recu = Number(vm.selected_etat_paiement_depense.montant_recu);
+                    vm.selected_etat_paiement_depense.montant_depense = Number(vm.selected_etat_paiement_depense.montant_depense);
+                    vm.selected_etat_paiement_depense.reliquat = Number(vm.selected_etat_paiement_depense.reliquat);
+
+                }
+
+                vm.supprimer_etat_paiement_depense = function()
+                {
+
+                    
+                    var confirm = $mdDialog.confirm()
+                      .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                      .textContent('Cliquer sur OK pour confirmer')
+                      .ariaLabel('Lucky day')
+                      .clickOutsideToClose(true)
+                      .parent(angular.element(document.body))
+                      .ok('OK')
+                      .cancel('Annuler');
+                    $mdDialog.show(confirm).then(function() {
+
+                    vm.enregistrer_etat_paiement_depense(1);
+                    }, function() {
+                    //alert('rien');
+                    });
+                }
+
+                vm.annuler_etat_paiement_depense = function()
+                {
+                    if (vm.nouvelle_etat_paiement_depense) 
+                    {
+                        
+                        vm.all_etat_paiement_depense.shift();
+                        vm.selected_etat_paiement_depense = {} ;
+                        vm.nouvelle_etat_paiement_depense = false ;
+                    }
+                    else
+                    {
+                        
+
+                        if (!vm.selected_etat_paiement_depense.$edit) //annuler selection
+                        {
+                            vm.selected_etat_paiement_depense.$selected = false;
+                            vm.selected_etat_paiement_depense = {};
+                        }
+                        else
+                        {
+                            vm.selected_etat_paiement_depense.$selected = false;
+                            vm.selected_etat_paiement_depense.$edit = false;
+                            vm.selected_etat_paiement_depense.date_debut = current_selected_etat_paiement_depense.date_debut ;
+                            vm.selected_etat_paiement_depense.date_fin = current_selected_etat_paiement_depense.date_fin ;
+                            vm.selected_etat_paiement_depense.designation = current_selected_etat_paiement_depense.designation ;
+                            vm.selected_etat_paiement_depense.montant_recu = current_selected_etat_paiement_depense.montant_recu ;
+                            vm.selected_etat_paiement_depense.montant_depense = current_selected_etat_paiement_depense.montant_depense ;
+                            vm.selected_etat_paiement_depense.reliquat = current_selected_etat_paiement_depense.reliquat ;
+                            
+                            vm.selected_etat_paiement_depense = {};
+                        }
+
+                        
+
+                    }
+                }
+
+                vm.enregistrer_etat_paiement_depense = function(etat_suppression)
+                {
+                    vm.affiche_load = true ;
+                    var config = {
+                        headers : {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                        }
+                    };
+
+
+                    var datas = $.param(
+                    {
+                        
+                        supprimer:etat_suppression,
+                        id:vm.selected_etat_paiement_depense.id,
+                        id_contrat_ugp_agex:vm.selected_contrat_ugp_agex.id,
+
+                        date_debut : convert_to_date_sql(vm.selected_etat_paiement_depense.date_debut) ,
+                        date_fin : convert_to_date_sql(vm.selected_etat_paiement_depense.date_fin) ,
+                        designation : vm.selected_etat_paiement_depense.designation ,
+                        montant_recu : vm.selected_etat_paiement_depense.montant_recu ,
+                        montant_depense : vm.selected_etat_paiement_depense.montant_depense ,
+                        reliquat : vm.selected_etat_paiement_depense.reliquat 
+                        
+                        
+                        
+                    });
+
+                    apiFactory.add("etat_paiement_depense/index",datas, config).success(function (data)
+                    {
+                        vm.affiche_load = false ;
+                        if (!vm.nouvelle_etat_paiement_depense) 
+                        {
+                            if (etat_suppression == 0) 
+                            {
+                                vm.selected_etat_paiement_depense.$edit = false ;
+                                vm.selected_etat_paiement_depense.$selected = false ;
+                                vm.selected_etat_paiement_depense = {} ;
+                            }
+                            else
+                            {
+                                vm.all_etat_paiement_depense = vm.all_etat_paiement_depense.filter(function(obj)
+                                {
+                                    return obj.id !== vm.selected_etat_paiement_depense.id;
+                                });
+
+                                vm.selected_etat_paiement_depense = {} ;
+                            }
+
+                        }
+                        else
+                        {
+                            vm.selected_etat_paiement_depense.$edit = false ;
+                            vm.selected_etat_paiement_depense.$selected = false ;
+                            vm.selected_etat_paiement_depense.id = String(data.response) ;
+
+                            vm.nouvelle_etat_paiement_depense = false ;
+                            vm.selected_etat_paiement_depense = {};
+
+                        }
+                    })
+                    .error(function (data) {alert("Une erreur s'est produit");});
+                }
+
+            
+
+            //fin etat_paiement_depense..
+        //FIN etat_paiement_depense
+
+        //contrat_ugp_agex_pv_remise 
+
+            vm.all_contrat_ugp_agex_pv_remise = [] ;
+
+            vm.ontrat_ugp_agex_pv_remise_column =
+            [
+                {titre:"Date de remise"},
+                {titre:"Nom représentant CPS"}
+            ];
+
+            vm.affiche_load = false ;
+
+            vm.get_all_contrat_ugp_agex_pv_remise = function () 
+            {
+                vm.affiche_load = true ;
+                apiFactory.getAPIgeneraliserREST("Contrat_ugp_agex_pv_remise/index","id_contrat_ugp_agex",vm.selected_contrat_ugp_agex.id).then(function(result){
+                    vm.all_contrat_ugp_agex_pv_remise = result.data.response;
+                    
+                    vm.affiche_load = false ;
+
+                });  
+            }
+
+            //contrat_ugp_agex_pv_remise..
+                
+                vm.selected_contrat_ugp_agex_pv_remise = {} ;
+                var current_selected_contrat_ugp_agex_pv_remise = {} ;
+                 vm.nouvelle_contrat_ugp_agex_pv_remise = false ;
+
+            
+                vm.selection_contrat_ugp_agex_pv_remise = function(item)
+                {
+                    vm.selected_contrat_ugp_agex_pv_remise = item ;
+
+                    if (!vm.selected_contrat_ugp_agex_pv_remise.$edit) //si simple selection
+                    {
+                        vm.nouvelle_contrat_ugp_agex_pv_remise = false ;  
+
+                    }
+
+                }
+
+                $scope.$watch('vm.selected_contrat_ugp_agex_pv_remise', function()
+                {
+                    if (!vm.all_contrat_ugp_agex_pv_remise) return;
+                    vm.all_contrat_ugp_agex_pv_remise.forEach(function(item)
+                    {
+                        item.$selected = false;
+                    });
+                    vm.selected_contrat_ugp_agex_pv_remise.$selected = true;
+
+                });
+
+                vm.ajouter_contrat_ugp_agex_pv_remise = function()
+                {
+                    vm.nouvelle_contrat_ugp_agex_pv_remise = true ;
+                    var item = 
+                        {
+                            
+                            $edit: true,
+                            $selected: true,
+                            id:'0',
+                            id_contrat_ugp_agex:vm.selected_contrat_ugp_agex.id,
+                            nom_representant_cps:'',
+                            date_remise:new Date()
+                            
+                        } ;
+
+                    vm.all_contrat_ugp_agex_pv_remise.unshift(item);
+                    vm.all_contrat_ugp_agex_pv_remise.forEach(function(af)
+                    {
+                      if(af.$selected == true)
+                      {
+                        vm.selected_contrat_ugp_agex_pv_remise = af;
+                        
+                      }
+                    });
+                }
+
+                vm.modifier_contrat_ugp_agex_pv_remise = function()
+                {
+                    vm.nouvelle_contrat_ugp_agex_pv_remise = false ;
+                    vm.selected_contrat_ugp_agex_pv_remise.$edit = true;
+                
+                    current_selected_contrat_ugp_agex_pv_remise = angular.copy(vm.selected_contrat_ugp_agex_pv_remise);
+                }
+
+                vm.supprimer_contrat_ugp_agex_pv_remise = function()
+                {
+
+                    
+                    var confirm = $mdDialog.confirm()
+                      .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                      .textContent('Cliquer sur OK pour confirmer')
+                      .ariaLabel('Lucky day')
+                      .clickOutsideToClose(true)
+                      .parent(angular.element(document.body))
+                      .ok('OK')
+                      .cancel('Annuler');
+                    $mdDialog.show(confirm).then(function() {
+
+                    vm.enregistrer_contrat_ugp_agex_pv_remise(1);
+                    }, function() {
+                    //alert('rien');
+                    });
+                }
+
+                vm.annuler_contrat_ugp_agex_pv_remise = function()
+                {
+                    if (vm.nouvelle_contrat_ugp_agex_pv_remise) 
+                    {
+                        
+                        vm.all_contrat_ugp_agex_pv_remise.shift();
+                        vm.selected_contrat_ugp_agex_pv_remise = {} ;
+                        vm.nouvelle_contrat_ugp_agex_pv_remise = false ;
+                    }
+                    else
+                    {
+                        
+
+                        if (!vm.selected_contrat_ugp_agex_pv_remise.$edit) //annuler selection
+                        {
+                            vm.selected_contrat_ugp_agex_pv_remise.$selected = false;
+                            vm.selected_contrat_ugp_agex_pv_remise = {};
+                        }
+                        else
+                        {
+                            vm.selected_contrat_ugp_agex_pv_remise.$selected = false;
+                            vm.selected_contrat_ugp_agex_pv_remise.$edit = false;
+                            vm.selected_contrat_ugp_agex_pv_remise.nom_representant_cps = current_selected_contrat_ugp_agex_pv_remise.nom_representant_cps ;
+                            vm.selected_contrat_ugp_agex_pv_remise.date_remise = current_selected_contrat_ugp_agex_pv_remise.date_remise ;
+                            
+                            vm.selected_contrat_ugp_agex_pv_remise = {};
+                        }
+
+                        
+
+                    }
+                }
+
+                vm.enregistrer_contrat_ugp_agex_pv_remise = function(etat_suppression)
+                {
+                    vm.affiche_load = true ;
+                    var config = {
+                        headers : {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                        }
+                    };
+
+
+                    var datas = $.param(
+                    {
+                        
+                        supprimer:etat_suppression,
+                        id:vm.selected_contrat_ugp_agex_pv_remise.id,
+                        id_contrat_ugp_agex:vm.selected_contrat_ugp_agex.id,
+
+                        nom_representant_cps : vm.selected_contrat_ugp_agex_pv_remise.nom_representant_cps ,
+                        date_remise : convert_to_date_sql(vm.selected_contrat_ugp_agex_pv_remise.date_remise) 
+                        
+                        
+                        
+                    });
+
+                    apiFactory.add("Contrat_ugp_agex_pv_remise/index",datas, config).success(function (data)
+                    {
+                        vm.affiche_load = false ;
+                        if (!vm.nouvelle_contrat_ugp_agex_pv_remise) 
+                        {
+                            if (etat_suppression == 0) 
+                            {
+                                vm.selected_contrat_ugp_agex_pv_remise.$edit = false ;
+                                vm.selected_contrat_ugp_agex_pv_remise.$selected = false ;
+                                vm.selected_contrat_ugp_agex_pv_remise = {} ;
+                            }
+                            else
+                            {
+                                vm.all_contrat_ugp_agex_pv_remise = vm.all_contrat_ugp_agex_pv_remise.filter(function(obj)
+                                {
+                                    return obj.id !== vm.selected_contrat_ugp_agex_pv_remise.id;
+                                });
+
+                                vm.selected_contrat_ugp_agex_pv_remise = {} ;
+                            }
+
+                        }
+                        else
+                        {
+                            vm.selected_contrat_ugp_agex_pv_remise.$edit = false ;
+                            vm.selected_contrat_ugp_agex_pv_remise.$selected = false ;
+                            vm.selected_contrat_ugp_agex_pv_remise.id = String(data.response) ;
+
+                            vm.nouvelle_contrat_ugp_agex_pv_remise = false ;
+                            vm.selected_contrat_ugp_agex_pv_remise = {};
+
+                        }
+                    })
+                    .error(function (data) {alert("Une erreur s'est produit");});
+                }
+
+            
+
+            //fin contrat_ugp_agex_pv_remise..
+        //FIN contrat_ugp_agex_pv_remise 
+
+        //contrat_ugp_agex_pv_remise_details 
+
+            vm.all_contrat_ugp_agex_pv_remise_details = [] ;
+
+            vm.ontrat_ugp_agex_pv_remise_details_column =
+            [
+                {titre:"Intitulé"},
+                {titre:"Nombre"},
+                {titre:"Observation"}
+            ];
+
+            vm.affiche_load = false ;
+
+            vm.get_all_contrat_ugp_agex_pv_remise_details = function () 
+            {
+                vm.affiche_load = true ;
+                apiFactory.getAPIgeneraliserREST("Contrat_ugp_agex_pv_remise_details/index","id_pv_remise_agex",vm.selected_contrat_ugp_agex_pv_remise.id).then(function(result){
+                    vm.all_contrat_ugp_agex_pv_remise_details = result.data.response;
+                    
+                    vm.affiche_load = false ;
+
+                });  
+            }
+
+            //contrat_ugp_agex_pv_remise_details..
+                
+                vm.selected_contrat_ugp_agex_pv_remise_details = {} ;
+                var current_selected_contrat_ugp_agex_pv_remise_details = {} ;
+                 vm.nouvelle_contrat_ugp_agex_pv_remise_details = false ;
+
+            
+                vm.selection_contrat_ugp_agex_pv_remise_details = function(item)
+                {
+                    vm.selected_contrat_ugp_agex_pv_remise_details = item ;
+
+                    if (!vm.selected_contrat_ugp_agex_pv_remise_details.$edit) //si simple selection
+                    {
+                        vm.nouvelle_contrat_ugp_agex_pv_remise_details = false ;  
+
+                    }
+
+                }
+
+                $scope.$watch('vm.selected_contrat_ugp_agex_pv_remise_details', function()
+                {
+                    if (!vm.all_contrat_ugp_agex_pv_remise_details) return;
+                    vm.all_contrat_ugp_agex_pv_remise_details.forEach(function(item)
+                    {
+                        item.$selected = false;
+                    });
+                    vm.selected_contrat_ugp_agex_pv_remise_details.$selected = true;
+
+                });
+
+                vm.ajouter_contrat_ugp_agex_pv_remise_details = function()
+                {
+                    vm.nouvelle_contrat_ugp_agex_pv_remise_details = true ;
+                    var item = 
+                        {
+                            
+                            $edit: true,
+                            $selected: true,
+                            id:'0',
+                            id_pv_remise_agex:vm.selected_contrat_ugp_agex_pv_remise.id,
+                            intitule:'',
+                            nombre:0,
+                            observation:''
+                            
+                        } ;
+
+                    vm.all_contrat_ugp_agex_pv_remise_details.unshift(item);
+                    vm.all_contrat_ugp_agex_pv_remise_details.forEach(function(af)
+                    {
+                      if(af.$selected == true)
+                      {
+                        vm.selected_contrat_ugp_agex_pv_remise_details = af;
+                        
+                      }
+                    });
+                }
+
+                vm.modifier_contrat_ugp_agex_pv_remise_details = function()
+                {
+                    vm.nouvelle_contrat_ugp_agex_pv_remise_details = false ;
+                    vm.selected_contrat_ugp_agex_pv_remise_details.$edit = true;
+                
+                    current_selected_contrat_ugp_agex_pv_remise_details = angular.copy(vm.selected_contrat_ugp_agex_pv_remise_details);
+
+                    vm.selected_contrat_ugp_agex_pv_remise_details.nombre = Number(vm.selected_contrat_ugp_agex_pv_remise_details.nombre);
+
+                }
+
+                vm.supprimer_contrat_ugp_agex_pv_remise_details = function()
+                {
+
+                    
+                    var confirm = $mdDialog.confirm()
+                      .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                      .textContent('Cliquer sur OK pour confirmer')
+                      .ariaLabel('Lucky day')
+                      .clickOutsideToClose(true)
+                      .parent(angular.element(document.body))
+                      .ok('OK')
+                      .cancel('Annuler');
+                    $mdDialog.show(confirm).then(function() {
+
+                    vm.enregistrer_contrat_ugp_agex_pv_remise_details(1);
+                    }, function() {
+                    //alert('rien');
+                    });
+                }
+
+                vm.annuler_contrat_ugp_agex_pv_remise_details = function()
+                {
+                    if (vm.nouvelle_contrat_ugp_agex_pv_remise_details) 
+                    {
+                        
+                        vm.all_contrat_ugp_agex_pv_remise_details.shift();
+                        vm.selected_contrat_ugp_agex_pv_remise_details = {} ;
+                        vm.nouvelle_contrat_ugp_agex_pv_remise_details = false ;
+                    }
+                    else
+                    {
+                        
+
+                        if (!vm.selected_contrat_ugp_agex_pv_remise_details.$edit) //annuler selection
+                        {
+                            vm.selected_contrat_ugp_agex_pv_remise_details.$selected = false;
+                            vm.selected_contrat_ugp_agex_pv_remise_details = {};
+                        }
+                        else
+                        {
+                            vm.selected_contrat_ugp_agex_pv_remise_details.$selected = false;
+                            vm.selected_contrat_ugp_agex_pv_remise_details.$edit = false;
+                            vm.selected_contrat_ugp_agex_pv_remise_details.intitule = current_selected_contrat_ugp_agex_pv_remise_details.intitule ;
+                            vm.selected_contrat_ugp_agex_pv_remise_details.nombre = current_selected_contrat_ugp_agex_pv_remise_details.nombre ;
+                            vm.selected_contrat_ugp_agex_pv_remise_details.observation = current_selected_contrat_ugp_agex_pv_remise_details.observation ;
+                            
+                            vm.selected_contrat_ugp_agex_pv_remise_details = {};
+                        }
+
+                        
+
+                    }
+                }
+
+                vm.enregistrer_contrat_ugp_agex_pv_remise_details = function(etat_suppression)
+                {
+                    vm.affiche_load = true ;
+                    var config = {
+                        headers : {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                        }
+                    };
+
+
+                    var datas = $.param(
+                    {
+                        
+                        supprimer:etat_suppression,
+                        id:vm.selected_contrat_ugp_agex_pv_remise_details.id,
+                        id_pv_remise_agex:vm.selected_contrat_ugp_agex_pv_remise.id,
+
+                        intitule : vm.selected_contrat_ugp_agex_pv_remise_details.intitule ,
+                        nombre : vm.selected_contrat_ugp_agex_pv_remise_details.nombre ,
+                        observation : vm.selected_contrat_ugp_agex_pv_remise_details.observation 
+                        
+                        
+                        
+                    });
+
+                    apiFactory.add("Contrat_ugp_agex_pv_remise_details/index",datas, config).success(function (data)
+                    {
+                        vm.affiche_load = false ;
+                        if (!vm.nouvelle_contrat_ugp_agex_pv_remise_details) 
+                        {
+                            if (etat_suppression == 0) 
+                            {
+                                vm.selected_contrat_ugp_agex_pv_remise_details.$edit = false ;
+                                vm.selected_contrat_ugp_agex_pv_remise_details.$selected = false ;
+                                vm.selected_contrat_ugp_agex_pv_remise_details = {} ;
+                            }
+                            else
+                            {
+                                vm.all_contrat_ugp_agex_pv_remise_details = vm.all_contrat_ugp_agex_pv_remise_details.filter(function(obj)
+                                {
+                                    return obj.id !== vm.selected_contrat_ugp_agex_pv_remise_details.id;
+                                });
+
+                                vm.selected_contrat_ugp_agex_pv_remise_details = {} ;
+                            }
+
+                        }
+                        else
+                        {
+                            vm.selected_contrat_ugp_agex_pv_remise_details.$edit = false ;
+                            vm.selected_contrat_ugp_agex_pv_remise_details.$selected = false ;
+                            vm.selected_contrat_ugp_agex_pv_remise_details.id = String(data.response) ;
+
+                            vm.nouvelle_contrat_ugp_agex_pv_remise_details = false ;
+                            vm.selected_contrat_ugp_agex_pv_remise_details = {};
+
+                        }
+                    })
+                    .error(function (data) {alert("Une erreur s'est produit");});
+                }
+
+            
+
+            //fin contrat_ugp_agex_pv_remise_details..
+        //FIN contrat_ugp_agex_pv_remise_details 
     }
 })();

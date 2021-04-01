@@ -1,11 +1,9 @@
 <div id="register" class="flex-scrollable" layout="column" ms-scroll>
     <div id="register-form-wrapper" layout="column" layout-align="center center">
         <div id="register-form" class="md-whiteframe-8dp">
+            
             <div>
-                <span><img src="logo_MPPSPF.png"></span>
-            </div>
-            <div>
-                <span><img src="logo_comores.png"></span>
+                <span><img src="logo_comore.png"></span>
             </div>
 
             <div class="title" translate="REGISTER.TITLE">Create an account</div>
@@ -79,13 +77,13 @@
                 </md-input-container>
 
 
-                <div class="terms" layout="row" layout-align="center center">
+                <!-- <div class="terms" layout="row" layout-align="center center">
                     <md-checkbox name="terms" ng-model="data.cb1" aria-label="I read and accept" required></md-checkbox>
                     <div layout="row" layout-sm="column" layout-align="start center">
                         <span translate="REGISTER.READ_ACCEPT">I read and accept</span>
                         <a href="#" class="md-accent-color" translate="REGISTER.TERMS_COND">terms and conditions</a>
                     </div>
-                </div>
+                </div> -->
 
                 <md-button type="submit" class="md-raised md-accent submit-button" aria-label="CREATE MY ACCOUNT"
                            ng-disabled="registerForm.$invalid || registerForm.$pristine || (vm.registerForm.password!=vm.registerForm.password_verif)"
@@ -98,7 +96,7 @@
 
             <div class="registerForm" layout="row" layout-sm="column" layout-align="center center">
                 <span class="text" translate="REGISTER.ALREADY_HAVE">Already have an account?</span>
-                <a class="link" ui-sref="app.population_auth_login" translate="REGISTER.LOGIN">Log in </a>
+                <a class="link" ui-sref="app.pfss_auth_login" style="color:#0eaf3b !important;" translate="REGISTER.LOGIN">Log in </a>
             </div>
         </div>
     </div>
