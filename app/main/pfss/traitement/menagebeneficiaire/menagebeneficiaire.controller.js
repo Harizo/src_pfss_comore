@@ -3,10 +3,47 @@
     'use strict';
     angular
         .module('app.pfss.traitement.menagebeneficiaire')
+        .directive('customOnChange', function() {
+			return {
+				restrict: 'A',
+				link: function (scope, element, attrs) {
+					var onChangeHandler = scope.$eval(attrs.customOnChange);
+					element.bind('change', onChangeHandler);
+				}
+			};
+		})
+        .directive('fileModel', ['$parse', function ($parse) {
+			return {
+				restrict: 'A',
+				link: function(scope, element, attrs) {
+					var model = $parse(attrs.fileModel);
+					var modelSetter = model.assign;        
+					element.bind('change', function(){
+						scope.$apply(function(){
+							modelSetter(scope, element[0].files[0]);
+							// console.log(element[0].files[0]);
+						});
+					});
+				}
+			};
+		}])
+		.service('fileUpload', ['$http', function ($http) {
+			this.uploadFileToUrl = function(file, uploadUrl){
+				var fd = new FormData();
+				var rep='test';
+				fd.append('file', file);
+				$http.post(uploadUrl, fd,{
+					transformRequest: angular.identity,
+					headers: {'Content-Type': undefined}
+				}).success(function(){
+				}).error(function(){
+				});
+			}
+		}])
         .controller('MenagebeneficiaireController', MenagebeneficiaireController);
 
     /** @ngInject */
-    function MenagebeneficiaireController(apiFactory, $state, $mdDialog, $scope,$cookieStore) {
+    function MenagebeneficiaireController(apiFactory, $state, $mdDialog, $scope,$cookieStore,$http,apiUrl,apiUrlExcel ,apiUrlbase) {
 		var vm = this;
 	   vm.dtOptions =
       {
@@ -20,33 +57,12 @@
       {titre:"Age chef de ménage"},{titre:"Sexe"},{titre:"Addresse"},{titre:"Personne inscrire"},{titre:"Etat envoie"}];
       // vm.menage_column = [{titre:"Numero d'enregistrement"},{titre:"Chef Ménage"},
       // {titre:"Age chef de ménage"},{titre:"Sexe"},{titre:"Addresse"},{titre:"Personne inscrire"},{titre:"Etat envoie"}];
-      vm.individu_column = [{titre:"Nom et prénom"},{titre:"Date de naissance"},{titre:"Sexe"},{titre:"Lien de parenté"},{titre:"Activite"},{titre:"Aptitude"},{titre:"Travailleur"}];
+      vm.individu_column = [{titre:"Nom et prénom"},{titre:"Date de naissance"},{titre:"Sexe"},{titre:"Lien de parenté"},{titre:"Scolarisé"},{titre:"Activite"},{titre:"Aptitude"},{titre:"Travailleur"}];
       //initialisation variable
         vm.affiche_load = false ;
         vm.selectedItem = {} ;
         vm.selectedItem_individu = {} ;
-		
-        vm.tab_reponse_revetement_toit = [] ;
-        vm.tab_reponse_revetement_sol = [] ;
-        vm.tab_reponse_revetement_mur = [] ;
-        vm.tab_reponse_source_eclairage = [] ;
-        vm.tab_reponse_combustible = [] ;
-        vm.tab_reponse_toilette = [] ;
-        vm.tab_reponse_source_eau = [] ;
-        vm.tab_reponse_bien_equipement = [] ;
-        vm.tab_reponse_moyen_production = [] ;
-        vm.tab_reponse_source_revenu = [] ;
-        vm.tab_reponse_elevage = [] ;
-        vm.tab_reponse_culture = [] ;
-        vm.tab_reponse_aliment = [] ;
-        vm.tab_source_aliment = [] ;
-        vm.tab_strategie_alimentaire = [] ;
-        vm.tab_probleme_sur_revenu = [] ;
-        vm.tab_strategie_sur_revenu = [] ;
-        vm.tab_activite_recours = [] ;
-        vm.tab_service_beneficie = [] ;
-        vm.tab_infrastructure_frequente = [] ;
-		
+		  vm.apiUrlbase=apiUrlbase; 		
         vm.tab_intervention = [] ;//liste intervention associé au menage
         vm.tab_intervention_individu = [] ;//liste intervention associé au individu
         vm.reponse_individu = {} ;
@@ -64,115 +80,79 @@
         vm.disable_button = false ;
       //initialisation variable
 
-      //test check radio button
-
-		var type_logement_checked = 0 ;
-		var occupation_logement_checked = 0 ;
-		var toillete_checked = 0 ;
-		var checked_id_lien_parente = 0 ;
-		var checked_situation_matrimoniale = 0 ;
-		var checked_id_handicap_visuel = 0 ;
-		var checked_id_handicap_parole = 0 ;
-		var checked_id_handicap_auditif = 0 ;
-		var checked_id_handicap_mental = 0 ;
-		var checked_id_handicap_moteur = 0 ;
-		var checked_id_langue = 0 ;
-		var checked_id_type_ecole = 0 ;
-		var checked_id_niveau_de_classe = 0 ;
-		var checked_id_groupe_appartenace = 0 ;
-        vm.tab_reponse_langue = [] ;
-		vm.test_check_type_logement = function() {
-			if (type_logement_checked == vm.id_type_logement) {
-				vm.id_type_logement = null ;
-			}  else {
-				type_logement_checked = vm.id_type_logement ;
-			}
-		}
-		vm.test_check_occupation_logement = function() {
-			if (occupation_logement_checked == vm.id_occupation_logement) {
-				vm.id_occupation_logement = null ;
-			}  else {
-				occupation_logement_checked = vm.id_occupation_logement ;
-			}
-		}
-		vm.test_check_id_lien_parente = function() {
-			if (checked_id_lien_parente == vm.reponse_individu.id_lien_de_parente) {
-				vm.reponse_individu.id_lien_de_parente = null ;
+		// Upload fichier excel bénéficiaire
+		$scope.uploadFile = function(event){
+			var files = event.target.files;
+			vm.myFile=files;  
+			vm.monfichier = vm.myFile[0].name;
+		};
+		// Upload fichier excel bénéficiaire
+ 		vm.uploadFile = function (item,qui) {
+			var file =vm.myFile[0];
+			var repertoire = "images/";
+			var uploadUrl = apiUrl + "upload_fichier/upload_file";
+			var name = $scope.name;
+			var fd = new FormData();
+			fd.append('file', file);
+			fd.append('repertoire',repertoire);
+			fd.append('id_ile',vm.filtre.id_ile);
+			fd.append('id_region',vm.filtre.id_region);
+			fd.append('id_commune',vm.filtre.id_commune);
+			fd.append('village_id',vm.filtre.village_id);
+			if(file) { 
+				var upl=   $http.post(uploadUrl, fd, {
+					transformRequest: angular.identity,
+					headers: {'Content-Type': undefined}
+				}).success(function(data){
+					vm.fichier=data["nom_fichier"];
+					vm.repertoire=data["repertoire"];
+					if(qui=="chef_menage") {
+						vm.filtre.photo=  vm.repertoire + vm.fichier;
+						console.log(vm.filtre.photo);
+					} else if(qui=="travailleur"){
+						vm.filtre.phototravailleur=   vm.repertoire + vm.fichier;
+					} else {
+						vm.filtre.phototravailleursuppliant=  vm.repertoire + vm.fichier;
+					}
+					if(data["reponse"]=="OK") {
+						vm.Mise_a_jour_chemin_photo();
+					} else {
+						vm.showAlert("INFORMATION","Erreur lors de  l'importation du fichier.Merci");
+					}	
+				}).error(function(){
+					// console.log("Rivotra");
+				});
 			} else {
-				checked_id_lien_parente = vm.reponse_individu.id_lien_de_parente ;
+				// vm.sauverDocument(item,0);
 			}
 		}
-		vm.test_check_situation_matrimoniale = function() {
-			if (checked_situation_matrimoniale == vm.reponse_individu.situation_matrimoniale) {
-				vm.reponse_individu.situation_matrimoniale = null ;
-			} else {
-			checked_situation_matrimoniale = vm.reponse_individu.situation_matrimoniale ;
-			}
+		vm.Mise_a_jour_chemin_photo= function () {
+			vm.affiche_load = true ;
+			var config =  {
+                        headers : {
+                          'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+							}
+						};
+			var datas = $.param({    
+                      supprimer:0,
+                      id: vm.selectedItem.id ,
+					  photo:vm.filtre.photo,
+					  phototravailleur:vm.filtre.phototravailleur,
+                      phototravailleursuppliant: vm.filtre.phototravailleursuppliant,                              
+                      mise_a_jour_photo:1,
+                    });
+			apiFactory.add("menage/index",datas, config).success(function (data)  {
+				vm.disable_button = false ;
+				vm.showAlert("Information",'Enregistrement réussi!');
+				if (vm.id_enquete_menage == 0) {
+					vm.id_enquete_menage = data.response ;
+				}        
+			}).error(function (data) {
+				vm.disable_button = false ;
+				console.log('erreur '+data);
+				vm.showAlert("Attention","Erreur lors de l'enregistrement!");
+			});         
 		}
-		vm.test_check_id_handicap_visuel = function() {
-			if (checked_id_handicap_visuel == vm.reponse_individu.id_handicap_visuel) {
-				vm.reponse_individu.id_handicap_visuel = null ;
-			} else {
-				checked_id_handicap_visuel = vm.reponse_individu.id_handicap_visuel ;
-			}
-		}
-		vm.test_check_id_handicap_parole = function()  {
-			if (checked_id_handicap_parole == vm.reponse_individu.id_handicap_parole) {
-				vm.reponse_individu.id_handicap_parole = null ;
-			} else {
-				checked_id_handicap_parole = vm.reponse_individu.id_handicap_parole ;
-			}
-		}
-		vm.test_check_id_handicap_auditif = function() {
-			if (checked_id_handicap_auditif == vm.reponse_individu.id_handicap_auditif) {
-				vm.reponse_individu.id_handicap_auditif = null ;
-			} else {
-				checked_id_handicap_auditif = vm.reponse_individu.id_handicap_auditif ;
-			}
-		}
-		vm.test_check_id_handicap_mental = function() {
-			if (checked_id_handicap_mental == vm.reponse_individu.id_handicap_mental) {
-				vm.reponse_individu.id_handicap_mental = null ;
-			} else {
-				checked_id_handicap_mental = vm.reponse_individu.id_handicap_mental ;
-			}
-		}
-		vm.test_check_id_handicap_moteur = function() {
-			if (checked_id_handicap_moteur == vm.reponse_individu.id_handicap_moteur) {
-				vm.reponse_individu.id_handicap_moteur = null ;
-			} else {
-				checked_id_handicap_moteur = vm.reponse_individu.id_handicap_moteur ;
-			}
-		}
-		vm.test_check_langue = function() {
-			if (checked_id_langue == vm.reponse_individu.langue) {
-				vm.reponse_individu.id_langue = null ;
-			} else {
-				checked_langue = vm.reponse_individu.langue ;
-			}
-		}
-		vm.test_check_id_type_ecole = function() {
-			if (checked_id_type_ecole == vm.reponse_individu.id_type_ecole) {
-				vm.reponse_individu.id_type_ecole = null ;
-			} else {
-				checked_id_type_ecole = vm.reponse_individu.id_type_ecole ;
-			}
-		}
-		vm.test_check_id_niveau_de_classe = function() {
-			if (checked_id_niveau_de_classe == vm.reponse_individu.id_niveau_de_classe) {
-				vm.reponse_individu.id_niveau_de_classe = null ;
-			} else {
-				checked_id_niveau_de_classe = vm.reponse_individu.id_niveau_de_classe ;
-			}
-		}
-		vm.test_check_id_groupe_appartenace = function() {
-			if (checked_id_groupe_appartenace == vm.reponse_individu.id_groupe_appartenace) {
-				vm.reponse_individu.id_groupe_appartenace = null ;
-			} else {
-				checked_id_groupe_appartenace = vm.reponse_individu.id_groupe_appartenace ;
-			}
-		}
-      //fin test check radio button
       //chargement clé etrangère et données de bases
         vm.id_user_cookies = $cookieStore.get('id');
 		apiFactory.getOne("utilisateurs/index",vm.id_user_cookies).then(function(result) { 
@@ -368,18 +348,23 @@
 			vm.filtre.inapte  = '0' ;
 			vm.filtre.NomTravailleur  = "" ;
 			vm.filtre.SexeTravailleur  = null ;
+			vm.filtre.datedenaissancetravailleur  = new Date() ;
 			vm.filtre.agetravailleur  =null  ;
 			vm.filtre.NomTravailleurSuppliant  =""  ;
 			vm.filtre.SexeTravailleurSuppliant  = null ;
+			vm.filtre.datedenaissancesuppliant  = new Date() ;
 			vm.filtre.agesuppliant  = null ;
 			vm.filtre.quartier  = null ;
 			vm.filtre.milieu  = null ;
 			vm.filtre.zip  = null ;
+			vm.filtre.photo  = null ;
+			vm.filtre.phototravailleur  = null ;
+			vm.filtre.phototravailleursuppliant  = null ;
 			vm.get_max_id_generer_ref();		  
 		}
 		vm.modifier = function()  {
 			vm.nouvelle_element = false ;
-			vm.essai={};
+			// vm.filtre={};
 			vm.filtre.DateInscription = new Date(vm.selectedItem.DateInscription);
 			vm.filtre.village_id = vm.selectedItem.village_id ;
 			vm.filtre.nomchefmenage = vm.selectedItem.nomchefmenage ;
@@ -413,9 +398,19 @@
 			vm.filtre.statut  =  vm.selectedItem.statut ;
 			vm.filtre.NomTravailleur  =  vm.selectedItem.NomTravailleur ;
 			vm.filtre.SexeTravailleur  =  vm.selectedItem.SexeTravailleur ;
+			if(vm.selectedItem.datedenaissancetravailleur) {
+				vm.filtre.datedenaissancetravailleur  =  new Date(vm.selectedItem.datedenaissancetravailleur) ;
+			} else {
+				vm.filtre.datedenaissancetravailleur  =  new Date();
+			}
 			vm.filtre.agetravailleur  =  parseInt(vm.selectedItem.agetravailleur) ;
 			vm.filtre.NomTravailleurSuppliant  =  vm.selectedItem.NomTravailleurSuppliant ;
 			vm.filtre.SexeTravailleurSuppliant  =  vm.selectedItem.SexeTravailleurSuppliant ;
+			if(vm.selectedItem.datedenaissancesuppliant) {
+				vm.filtre.datedenaissancesuppliant  =  new Date(vm.selectedItem.datedenaissancesuppliant) ;
+			} else {
+				vm.filtre.datedenaissancesuppliant  =  new Date();
+			}
 			vm.filtre.agesuppliant  =  parseInt(vm.selectedItem.agesuppliant) ;
 			vm.filtre.quartier  =  vm.selectedItem.quartier ;
 			vm.filtre.milieu  =  vm.selectedItem.milieu ;
@@ -463,6 +458,9 @@
 			if(vm.selectedItem.rang_obtenu)
 			vm.filtre.rang_obtenu  =  parseInt(vm.selectedItem.rang_obtenu) ;
 			if(vm.selectedItem.inapte) 
+			vm.filtre.photo  =vm.selectedItem.photo ;
+			vm.filtre.phototravailleur  =vm.selectedItem.phototravailleur ;
+			vm.filtre.phototravailleursuppliant  =vm.selectedItem.phototravailleursuppliant ;
 			vm.affichage_masque = true ;
 			vm.get_max_id_generer_ref();
 		}
@@ -493,7 +491,9 @@
 						  id: vm.selectedItem.id ,
 						  mise_a_jour_statut: 1,
 						  statut: etat_statut,
-						  identifiant_menage: vm.filtre.identifiant_menage,
+						  menage_id: vm.selectedItem.id,
+						  identifiant_menage: vm.selectedItem.identifiant_menage,
+						  id_sous_projet: vm.selectedItem.id_sous_projet,
 						});
 					vm.filtre.statut=etat_statut;	
 				apiFactory.add("menage/index",datas, config).success(function (data)  {
@@ -518,6 +518,7 @@
 		vm.annuler = function () {
 			vm.nouvelle_element = false ;
 			vm.affichage_masque = false ;
+			vm.selectedItem={};
 		}
 		vm.annuler_individu = function()  {
 			vm.nouvelle_element_individu = false ;
@@ -540,6 +541,7 @@
 			vm.individu_masque.sexe = vm.selectedItem_individu.sexe ;
 			vm.individu_masque.activite = vm.selectedItem_individu.activite ;
 			vm.individu_masque.travailleur = vm.selectedItem_individu.travailleur ;
+			vm.individu_masque.scolarise = vm.selectedItem_individu.scolarise ;
 			vm.individu_masque.date_naissance = new Date(vm.selectedItem_individu.date_naissance) ;
 		}
 		vm.generer_ref = function()  {
@@ -547,8 +549,12 @@
 		}
 		vm.filtrer = function()	{
 			vm.affiche_load = true ;
-			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"statut","BENEFICIAIRE").then(function(result) { 
-				vm.all_menages = result.data.response;    
+			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"statut","BENEFICIAIRE","id_sous_projet",vm.filtre.id_sous_projet).then(function(result) { 
+				vm.all_menages = result.data.response;   
+				if(result.data.response.length==0) {
+					vm.showAlert("INFORMATION","Aucun ménage bénéficiaire pour le filtre choisi !.");
+				}	
+				console.log(vm.all_menages);	
 				vm.affiche_load = false ;
 			});
 		}
@@ -661,6 +667,49 @@
 					vm.acteur.lienparental = null; 
 					vm.acteur.lien_de_parente=null;
 			}
+		}
+		vm.export_carte_beneficiaire = function(filtre) {
+			vm.affiche_load = true ;
+			apiFactory.getAPIgeneraliserREST("requete_export/index",
+                                                "id_ile",vm.filtre.id_ile,
+                                                "id_region",vm.filtre.id_region,                                               
+                                                "id_commune",vm.filtre.id_commune,
+                                                "village_id",vm.filtre.village_id,
+                                                "id_sous_projet",vm.filtre.id_sous_projet,
+                                                "apiUrlbase",vm.apiUrlbase,
+                                                "carte_beneficiaire",1,
+                                                "export",1
+                                                ).then(function(result) {               
+					vm.status =  result.data.status ;
+					if(vm.status)  {
+						// console.log(result.data.response);
+						var ile =	result.data.ile;
+						var region =result.data.region;
+						var commune =result.data.commune;
+						var village =result.data.village;
+						var nom_ile =result.data.nom_ile;
+						var microprojet =result.data.microprojet;
+						var date_edition=result.data.date_edition;
+						var chemin=result.data.chemin;
+						var name_file1=result.data.name_file1;
+						var name_file2=result.data.name_file2;
+						/*Ménage Apte*/
+						if(result.data.fichier1=="OK") {
+							window.location = apiUrlExcel + chemin + name_file1; 
+						}	
+						/*Ménage INAPTE*/
+						if(result.data.fichier2=="OK") {						
+							window.location = apiUrlExcel + chemin + name_file2;  
+						}	
+						vm.affiche_load =false; 
+					} else {
+						vm.affiche_load =false;
+						console.log(result.data);
+						var message=result.data.message;
+						var message=result.data.nom_file;
+						vm.showAlert('Export en excel',message);
+					}                      
+			});
 		}
 		
 		vm.selection= function (item)  {
@@ -960,15 +1009,20 @@
                       rang_obtenu: menage.rang_obtenu,
                       NomTravailleur: menage.NomTravailleur,
                       SexeTravailleur: menage.SexeTravailleur,
+                      datedenaissancetravailleur: formatDateBDD(menage.datedenaissancetravailleur),
                       agetravailleur: menage.agetravailleur,
                       NomTravailleurSuppliant: menage.NomTravailleurSuppliant,
                       SexeTravailleurSuppliant: menage.SexeTravailleurSuppliant,
+                      datedenaissancesuppliant: formatDateBDD(menage.datedenaissancesuppliant),
                       agesuppliant: menage.agesuppliant,
                       quartier: menage.quartier,
                       milieu: menage.milieu,
                       zip: menage.zip,
                       statut: menage.statut,
                       inapte: menage.inapte,
+                      photo: menage.photo,
+                      phototravailleur: menage.phototravailleur,
+                      phototravailleursuppliant: menage.phototravailleursuppliant,
                                                  
                     });
 			apiFactory.add("menage/index",datas, config).success(function (data) {
@@ -1030,14 +1084,19 @@
 						statut: menage.statut,
 						NomTravailleur: menage.NomTravailleur,
 						SexeTravailleur: menage.SexeTravailleur,
+						datedenaissancetravailleur: menage.datedenaissancetravailleur,
 						agetravailleur: menage.agetravailleur,
 						NomTravailleurSuppliant: menage.NomTravailleurSuppliant,
 						SexeTravailleurSuppliant: menage.SexeTravailleurSuppliant,
+						datedenaissancesuppliant: menage.datedenaissancesuppliant,
 						agesuppliant: menage.agesuppliant,
 						quartier: menage.quartier,
 						milieu: menage.milieu,
 						zip: menage.zip,
 						inapte: menage.inapte,
+						photo: menage.photo,
+						phototravailleur: menage.phototravailleur,
+						phototravailleursuppliant: menage.phototravailleursuppliant,
 					}
 						   console.log(menage);
 					vm.all_menages.push(mng) ;
@@ -1096,13 +1155,18 @@
 					vm.selectedItem.statut = vm.filtre.statut  ;
 					vm.selectedItem.NomTravailleur = vm.filtre.NomTravailleur  ;
 					vm.selectedItem.SexeTravailleur = vm.filtre.SexeTravailleur  ;
+					vm.selectedItem.datedenaissancetravailleur = vm.filtre.datedenaissancetravailleur  ;
 					vm.selectedItem.agetravailleur = vm.filtre.agetravailleur  ;
 					vm.selectedItem.NomTravailleurSuppliant = vm.filtre.NomTravailleurSuppliant  ;
 					vm.selectedItem.SexeTravailleurSuppliant = vm.filtre.SexeTravailleurSuppliant  ;
+					vm.selectedItem.datedenaissancesuppliant = vm.filtre.datedenaissancesuppliant  ;
 					vm.selectedItem.agesuppliant = vm.filtre.agesuppliant  ;
 					vm.selectedItem.quartier = vm.filtre.quartier  ;
 					vm.selectedItem.milieu = vm.filtre.milieu  ;
 					vm.selectedItem.zip = vm.filtre.zip  ;
+					vm.selectedItem.photo = vm.filtre.photo  ;
+					vm.selectedItem.phototravailleur = vm.filtre.phototravailleur  ;
+					vm.selectedItem.phototravailleursuppliant = vm.filtre.phototravailleursuppliant  ;
   				}      
 			}).error(function (data) {
 				vm.disable_button = false ;
@@ -1135,6 +1199,8 @@
                       prenom: individu.prenom,
                       lienparental: individu.lienparental,
                       aptitude: individu.aptitude,
+                      scolarise: individu.scolarise,
+                      a_ete_modifie: 0,
                     
                                                  
                     });
@@ -1153,7 +1219,10 @@
 							nom: individu.nom,
 							prenom: individu.prenom,
 							lienparental: individu.lienparental,
+							lien_de_parente: individu.lien_de_parente,
 							aptitude: individu.aptitude,
+							scolarise: individu.scolarise,
+							a_ete_modifie: 0,
 						}
 						vm.all_individus.push(indiv);
 				} else {
@@ -1167,6 +1236,8 @@
 					vm.selectedItem_individu.travailleur = vm.individu_masque.travailleur  ;
 					vm.selectedItem_individu.sexe = vm.individu_masque.sexe  ;
 					vm.selectedItem_individu.date_naissance = vm.individu_masque.date_naissance   ;
+					vm.selectedItem_individu.scolarise = vm.individu_masque.scolarise   ;
+					vm.selectedItem_individu.a_ete_modifie = 0;
 				}       
 			}).error(function (data) {
 				vm.disable_button = false ;

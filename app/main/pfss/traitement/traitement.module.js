@@ -18,7 +18,7 @@
     function config(msNavigationServiceProvider)
     {
         msNavigationServiceProvider.saveItem('pfss.traitement', {
-            title : 'Traitement',
+            title : 'Ménage',
             icon  : 'icon-data',
             weight: 4,
             // hidden: function()

@@ -15,7 +15,7 @@
             views    : {
                 'content@app': {
                     templateUrl: 'app/main/pfss/traitement/menagepreselectionne/menagepreselectionne.html',
-                    controller : 'MenagebeneficiaireController as vm'
+                    controller : 'MenagepreselectionneController as vm'
                 }
             },
             bodyClass: 'menagepreselectionne',

@@ -7,6 +7,7 @@
            'app.pfss.mereleaderpereleader.ddbmlpl',
            'app.pfss.mereleaderpereleader.groupemlpl',
            'app.pfss.mereleaderpereleader.visitedomicile',
+           'app.pfss.mereleaderpereleader.rapportmensuelmlpl',
             ])
         // .run(testPermission)
         .config(config);

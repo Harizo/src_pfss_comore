@@ -29,7 +29,7 @@
                             <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised md-blue-800-bg" aria-label="Modifier" ng-click="vm.modifier()" style="width:10%;">
                               Modifier
                             </md-button>
-                            <md-button type="submit" ng-show="vm.afficherboutonModifSupr==1" ng-disabled="vm.selectedItem.utilisateur_id!=vm.user_id" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimer()" style="width:10%;">
+                            <md-button type="submit" ng-show="!vm.affichage_masque && vm.selectedItem.id" ng-disabled="vm.selectedItem.utilisateur_id!=vm.user_id" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimer()" style="width:10%;">
                               Supprimer
                             </md-button>
                           
@@ -39,8 +39,24 @@
 								<label><b>Information concernant le contrat du consultant</b></label>
 								<div layout="column" layout-gt-xs="row" flex>
 									<md-input-container flex="100" flex-gt-xs="25">
+									  <label>Consultant</label>
+										<md-select ng-model="vm.filtre.id_consultant" name="consultant" ng-change="vm.modifierConsultant(vm.filtre)"required>
+										 
+										  <md-option ng-repeat="co in vm.all_consultant" value="{{co.id}}" >
+											{{co.raison_social}}
+										  </md-option>
+
+										</md-select>
+										<div ng-messages="filtrepardateform.consultant.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Sous projet obligatoire</span>
+										  </div>
+										</div>
+									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="25">
 									  <label>Sous projet</label>
-										<md-select ng-model="vm.filtre.id_sous_projet" name="ssp" required>
+										<md-select ng-model="vm.filtre.id_sous_projet" name="ssp" ng-change="vm.modifierSous_projet(vm.filtre)"required>
 										 
 										  <md-option ng-repeat="ssp in vm.all_sous_projet" value="{{ssp.id}}" >
 											{{ssp.description}}
@@ -67,7 +83,7 @@
 									<md-input-container>
 									<span>Date contrat</span>
 									</md-input-container>
-									<md-datepicker ng-model="vm.date_contrat"   md-placeholder="Enter date contrat" >                       
+									<md-datepicker ng-model="vm.filtre.date_contrat"   md-placeholder="Enter date contrat" >                       
 									</md-datepicker>
 									<md-input-container flex-gt-xs="25" ng-show="vm.affichage_masque">
 										<input type="text"  name="objet" ng-model="vm.filtre.objet"
@@ -84,7 +100,7 @@
 								<div>                            
 									<section layout="row" layout-sm="column" layout-align="left" layout-wrap>
 									  <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
-										  ng-if="vm.affichage_masque" ng-disabled="(filtrepardateform.$invalid)||(vm.disable_button)" ng-click="vm.save_contrat_consultant(vm.filtre)">
+										  ng-if="vm.affichage_masque" ng-disabled="(filtrepardateform.$invalid)||(vm.disable_button)" ng-click="vm.save_contrat_consultant(vm.filtre,0)">
 										  Enregistrer
 									  </md-button>
 									  <md-button type="submit" class="md-raised md-primary" aria-label="Enregistrer"
@@ -109,6 +125,7 @@
                           </thead>
                           <tbody>
                             <tr ng-repeat="grp_mlpl in vm.all_contrat_consultant track by $index"  ng-class="{selected: grp_mlpl.$selected}" ng-click="vm.selection(grp_mlpl)">
+                              <td>{{grp_mlpl.consultant}}</td>
                               <td>{{grp_mlpl.sous_projet}}</td>
                               <td>{{grp_mlpl.reference}}</td>
                               <td>{{grp_mlpl.date_contrat  | date:'dd/MM/yyyy'}}</td>
@@ -117,64 +134,46 @@
                           </tbody>
                         </table>
                     </md-tab>   
-
-                   <md-tab label="Liste ML/PL" ng-disabled="!vm.selectedItem.id">
-                        <div style="widht:100%;">    
+                   <md-tab label="Livrable  Contrat : {{vm.selectedItem.reference}}" ng-disabled="!vm.selectedItem.id">
+                        <div style="widht:100%;">  
                             <md-button type="submit" ng-if="!vm.affichage_masque_livrable_consultant" class="md-raised md-green-800-bg" aria-label="Nouveau" ng-click="vm.ajout_livrable_consultant()" style="width:10%;">
                               Nouveau
                             </md-button>
                             <md-button type="submit" ng-if="!vm.affichage_masque_livrable_consultant"  ng-show="(vm.selectedItem_livrable_consultant.id)" class="md-raised md-blue-800-bg" aria-label="Modifier" ng-click="vm.modifier_livrable_consultant()" style="width:10%;">
                               Modifier
                             </md-button>
+                            <md-button type="submit" ng-show="!vm.affichage_masque_livrable_consultant && vm.selectedItem_livrable_consultant.id" ng-disabled="vm.selectedItem.utilisateur_id!=vm.user_id" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimer_livrable_consultant()" style="width:10%;">
+                              Supprimer
+                            </md-button>
                         </div>
                         <form name="listemlpl_form" class="md-inline-form" novalidate >
 							<fieldset ng-if="vm.affichage_masque_livrable_consultant">
-								<label><b>Information concernant le membre ML/PL</b></label>
+								<label><b>Information concernant le livrable</b></label>
 								<div layout="column" layout-gt-xs="row" flex>
 									<md-input-container flex="100" flex-gt-xs="15" ng-show="vm.affichage_masque_livrable_consultant">
-									  <input type="text"  name="nom_prenom" ng-model="vm.livrable_consultant_masque.nom_prenom"
-										placeholder="Nom et prénom " required>
-									  <div ng-messages="listemlpl_form.nom_prenom.$error"
+									  <input type="text"  name="intitule" ng-model="vm.livrable_consultant_masque.intitule"
+										placeholder="Intitulé livrable" required>
+									  <div ng-messages="listemlpl_form.intitule.$error"
 										role="alert"> 
 										<div ng-message="required">
-										  <span>Nom et prénom obligatoire.</span>
+										  <span>Intitulé livrable obligatoire.</span>
 										</div>
 									  </div>
 									</md-input-container>
-									<md-input-container flex="100" flex-gt-xs="15" ng-show="vm.affichage_masque_livrable_consultant">
-									  <input type="text"  name="adresse" ng-model="vm.livrable_consultant_masque.adresse"
-										placeholder="Adresse " required>
-									  <div ng-messages="listemlpl_form.adresse.$error"
-										role="alert">
-										<div ng-message="required">
-										  <span>Adresse obligatoire.</span>
-										</div>
-									  </div>
+									<md-input-container>
+										<span>Date prévue remise</span>
 									</md-input-container>
-									<md-input-container flex="100" flex-gt-xs="15" ng-show="vm.affichage_masque_livrable_consultant">
-									  <input type="text"  name="contact" ng-model="vm.livrable_consultant_masque.contact"
-										placeholder="Contact " required>
-									  <div ng-messages="listemlpl_form.contact.$error"
-										role="alert">
-										<div ng-message="required">
-										  <span>Contact obligatoire.</span>
-										</div>
-									  </div>
+									<md-datepicker ng-model="vm.livrable_consultant_masque.date_prevue_remise"   md-placeholder="Entrer date prévu remise" >                       
+									</md-datepicker>
+									<md-input-container>
+										<span>Date effective reception</span>
 									</md-input-container>
-									<md-input-container flex="100" flex-gt-xs="10" ng-show="vm.affichage_masque_livrable_consultant">
-									  <input type="text"  name="fonction" ng-model="vm.livrable_consultant_masque.fonction"
-										placeholder="Fonction" >
-									  <div ng-messages="listemlpl_form.fonction.$error"
-										role="alert">
-										<div ng-message="required">
-										  <span>Fonction obligatoire.</span>
-										</div>
-									  </div>
-									</md-input-container>
+									<md-datepicker ng-model="vm.livrable_consultant_masque.date_effective_reception"   md-placeholder="Entrer date prévu remise" >                       
+									</md-datepicker>
 								</div>
 								<section layout="row" layout-sm="column" layout-align="left" layout-wrap>
 								  <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
-									  ng-if="vm.affichage_masque_livrable_consultant" ng-disabled="(listemlpl_form.$invalid)||(vm.disable_button)" ng-click="vm.save_livrable_consultant(vm.livrable_consultant_masque)">
+									  ng-if="vm.affichage_masque_livrable_consultant" ng-disabled="(listemlpl_form.$invalid)||(vm.disable_button)" ng-click="vm.save_livrable_consultant(vm.livrable_consultant_masque,0)">
 									  Enregistrer
 								  </md-button>
 								  <md-button type="submit" class="md-raised md-primary" aria-label="Enregistrer"
@@ -197,33 +196,24 @@
                           </thead>
                           <tbody>
                             <tr ng-repeat="indiv in vm.all_livrable_consultant  track by $index"  ng-class="{selected: indiv.$selected}" ng-click="vm.selection_livrable_consultant(indiv)">
-                              <td>{{indiv.nom_prenom}}</td>
-                              <td>{{indiv.adresse}}</td>
-                              <td>{{indiv.contact}}</td>
-                              <td>{{indiv.fonction}}</td>
+                              <td>{{indiv.intitule}}</td>
+                              <td>{{indiv.date_prevue_remise  | date:'dd/MM/yyyy'}}</td>
+                              <td>{{indiv.date_effective_reception  | date:'dd/MM/yyyy'}}</td>
                             </tr>
                           </tbody>
                         </table>
                     </md-tab> 
-                   <md-tab label="Liste Ménage ML/PL" ng-disabled="!vm.selectedItem.id">
+                   <md-tab label="Point contrôle  : Livrable {{vm.selectedItem_livrable_consultant.intitule}}" ng-disabled="!vm.selectedItem_livrable_consultant.id">
 						<fieldset layout="column" layout-gt-xs="row">
 							<legend>
-									Liste Ménage ML/PL
+									Point contrôle
 								<md-button class="md-fab md-mini " aria-label="Use Android" ng-click="vm.ajout_point_controle()">
 								  <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
 								</md-button>
 							</legend>
-							<!--div style="widht:100%;">    
-								<md-button type="submit" ng-if="!vm.affichage_masque_livrable_consultant" class="md-raised md-green-800-bg" aria-label="Nouveau" ng-click="vm.ajout_livrable_consultant()" style="width:10%;">
-								  Nouveau
-								</md-button>
-								<md-button type="submit" ng-if="!vm.affichage_masque_livrable_consultant"  ng-show="(vm.selectedItem_livrable_consultant.id)" class="md-raised md-blue-800-bg" aria-label="Modifier" ng-click="vm.modifier_livrable_consultant()" style="width:10%;">
-								  Modifier
-								</md-button>
-							</div-->
 							<div style="clear:both;"></div>
 							<table id="Table_menage_mlpl" class="dataTable row-border hover cell-border text-center" datatable="ng"
-							  dt-options="vm.dtOptions" ng-show="!vm.affichage_masque_livrable_consultant" style="width:100% !important">
+							  dt-options="vm.dtOptions" style="width:100% !important">
 							  <thead>
 								<tr>
 								  <th class="secondary-text" ng-repeat="re in ::vm.point_controle_column">
@@ -234,36 +224,291 @@
 								</tr>
 							  </thead>
 							  <tbody>
-								<tr ng-repeat="mngpl in vm.all_point_controle  track by $index"  ng-class="{selected: mngpl.$selected}" ng-click="vm.selection_point_controle(mngpl)">
+								<tr ng-repeat="pt in vm.all_point_controle  track by $index"  ng-class="{selected: pt.$selected}" ng-click="vm.selection_point_controle(pt)">
 									<td>
-										<span ng-if="mngpl.$edit">
-											<md-input-container flex="100" flex-gt-xs="90">
-											<label>Ménage membre groupe ML/PL</label>
-												<md-select ng-model="mngpl.menage_id" ng-change="vm.modifier_membre_menage(mngpl)" required>										 
-													<md-option ng-repeat="mn in vm.all_menages" value="{{mn.id}}" >
-														{{mn.NumeroEnregistrement}} - {{mn.nomchefmenage}}
-													</md-option>
-												</md-select>
+										<span ng-if="pt.$edit">
+											<md-input-container flex="100" flex-gt-xs="100" >
+											  <input type="text"  name="intitule" ng-model="pt.intitule"
+												placeholder="Intitulé point contrôle" required>
+											  <div ng-messages="listemlpl_form.intitule.$error"
+												role="alert"> 
+												<div ng-message="required">
+												  <span>Intitulé point contrôle obligatoire.</span>
+												</div>
+											  </div>
 											</md-input-container>
 										</span>
-										<span ng-if="!mngpl.$edit">{{mn.NumeroEnregistrement}} - {{mn.nomchefmenage}}</span>
+										<span ng-if="!pt.$edit">{{pt.intitule}}</span>
 									</td>
-									<td>{{mngpl.nom_conjoint}}</td>
-									<td>{{mngpl.Addresse}}</td>
-									<td>{{mngpl.nombre_enfant_moins_six_ans}}</td>
-									<td>{{mngpl.nombre_enfant_non_scolarise}}</td>
-									<td>{{mngpl.nombre_enfant_scolarise}}</td>
 									<td>
-										<a ng-if="!mngpl.$edit" ng-click="vm.modifier_point_controle(mngpl)" title="Modifier">
+										<span ng-if="pt.$edit">
+											<md-input-container flex="100" flex-gt-xs="100" >
+											  <input type="text"  name="resultat" ng-model="pt.resultat"
+												placeholder="Résultat point contrôle" required>
+											  <div ng-messages="listemlpl_form.resultat.$error"
+												role="alert"> 
+												<div ng-message="required">
+												  <span>Résultat point contrôle obligatoire.</span>
+												</div>
+											  </div>
+											</md-input-container>
+										</span>
+										<span ng-if="!pt.$edit">{{pt.resultat}}</span>									
+									</td>
+									<td>
+										<a ng-if="!pt.$edit" ng-click="vm.modifier_point_controle(pt)" title="Modifier">
 											<span class="icon-table-edit"></span>
 										</a>
-										<a ng-if="!mngpl.$edit" ng-click="vm.save_point_controle(mngpl,1)" title="Supprimer">
+										<a ng-if="!pt.$edit" ng-click="vm.supprimer_point_controle(pt)" title="Supprimer">
 											<span class="icon-delete"></span>
 										</a>
-										<a ng-if="mngpl.$edit" ng-click="vm.annuler_point_controle(mngpl)" title="Annuler modification">
+										<a ng-if="pt.$edit" ng-click="vm.annuler_point_controle(pt)" title="Annuler modification">
 											<span class="icon-cancel"></span>
 										</a>
-										<a ng-if="mngpl.$edit && mngpl.menage_id >''" ng-click="vm.save_point_controle(mngpl,0)" title="Sauvegarder">
+										<a ng-if="pt.$edit && pt.intitule >'' && pt.resultat>''" ng-click="vm.save_point_controle(pt,0)" title="Sauvegarder">
+											<span class="icon-content-save"></span>
+										</a>
+									</td>
+								</tr>
+							  </tbody>
+							</table>
+						</fieldset>	
+                    </md-tab> 
+                   <md-tab label="Fiche Supérvision  Contrat : {{vm.selectedItem.reference}}" ng-disabled="!vm.selectedItem.id">
+                        <div style="widht:100%;">  
+                            <md-button type="submit" ng-if="!vm.affichage_masque_fiche_supervision" class="md-raised md-green-800-bg" aria-label="Nouveau" ng-click="vm.ajout_fiche_supervision()" style="width:10%;">
+                              Nouveau
+                            </md-button>
+                            <md-button type="submit" ng-if="!vm.affichage_masque_fiche_supervision"  ng-show="(vm.selectedItem_fiche_supervision.id)" class="md-raised md-blue-800-bg" aria-label="Modifier" ng-click="vm.modifier_fiche_supervision()" style="width:10%;">
+                              Modifier
+                            </md-button>
+                            <md-button type="submit" ng-show="!vm.affichage_masque_fiche_supervision && vm.selectedItem_fiche_supervision.id" ng-disabled="vm.selectedItem.utilisateur_id!=vm.user_id" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimer_fiche_supervision()" style="width:10%;">
+                              Supprimer
+                            </md-button>
+                        </div>
+                        <form name="listemlpl_form" class="md-inline-form" novalidate >
+							<fieldset ng-if="vm.affichage_masque_fiche_supervision">
+								<label><b>Information concernant le fiche supérvision</b></label>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex="100" flex-gt-xs="15" ng-show="vm.affichage_masque_fiche_supervision">
+									  <input type="text"  name="type_supervision" ng-model="vm.fiche_supervision_masque.type_supervision"
+										placeholder="Intitulé livrable" required>
+									  <div ng-messages="listemlpl_form.type_supervision.$error"
+										role="alert"> 
+										<div ng-message="required">
+										  <span>Intitulé livrable obligatoire.</span>
+										</div>
+									  </div>
+									</md-input-container>
+									<md-input-container>
+										<span>Date supérvision</span>
+									</md-input-container>
+									<md-datepicker ng-model="vm.fiche_supervision_masque.date_supervision"   md-placeholder="Entrer date prévu remise" >                       
+									</md-datepicker>
+									<md-input-container>
+										<span>Date prévue début</span>
+									</md-input-container>
+									<md-datepicker ng-model="vm.fiche_supervision_masque.date_prevue_debut"   md-placeholder="Entrer date prévu remise" >                       
+									</md-datepicker>
+								</div>
+								<section layout="row" layout-sm="column" layout-align="left" layout-wrap>
+								  <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+									  ng-if="vm.affichage_masque_fiche_supervision" ng-disabled="(listemlpl_form.$invalid)||(vm.disable_button)" ng-click="vm.save_fiche_supervision(vm.fiche_supervision_masque,0)">
+									  Enregistrer
+								  </md-button>
+								  <md-button type="submit" class="md-raised md-primary" aria-label="Enregistrer"
+									  ng-if="vm.affichage_masque_fiche_supervision"  ng-click="vm.annuler_fiche_supervision()">
+									  Annuler
+								  </md-button>                              
+								</section>
+							</fieldset>	
+                        </form>
+                        <table class="dataTable row-border hover cell-border text-center" datatable="ng"
+                          dt-options="vm.dtOptions" ng-show="!vm.affichage_masque_fiche_supervision">
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::vm.fiche_supervision_column">
+                                <div class="table-header">
+                                  <span class="column-title text-center">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="ficsup in vm.all_fiche_supervision  track by $index"  ng-class="{selected: ficsup.$selected}" ng-click="vm.selection_fiche_supervision(ficsup)">
+                              <td>{{ficsup.type_supervision}}</td>
+                              <td>{{ficsup.date_supervision  | date:'dd/MM/yyyy'}}</td>
+                              <td>{{ficsup.date_prevue_debut  | date:'dd/MM/yyyy'}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </md-tab> 
+                   <md-tab label="Point vérifiés  Du : {{vm.selectedItem_fiche_supervision.date_supervision | date:'dd/MM/yyyy'}}" ng-disabled="!vm.selectedItem_fiche_supervision.id">
+                        <div style="widht:100%;">  
+                            <md-button type="submit" ng-if="!vm.affichage_masque_point_verifie" class="md-raised md-green-800-bg" aria-label="Nouveau" ng-click="vm.ajout_point_verifie()" style="width:10%;">
+                              Nouveau
+                            </md-button>
+                            <md-button type="submit" ng-if="!vm.affichage_masque_point_verifie"  ng-show="(vm.selectedItem_fiche_supervision_point_verifie.id)" class="md-raised md-blue-800-bg" aria-label="Modifier" ng-click="vm.modifier_point_verifie()" style="width:10%;">
+                              Modifier
+                            </md-button>
+                            <md-button type="submit" ng-show="!vm.affichage_masque_point_verifie && vm.selectedItem_fiche_supervision_point_verifie.id" ng-disabled="vm.selectedItem_fiche_supervision.utilisateur_id!=vm.user_id" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimer_point_verifie()" style="width:10%;">
+                              Supprimer
+                            </md-button>
+                        </div>
+                        <form name="point_verifie_form" class="md-inline-form" novalidate >
+							<fieldset ng-if="vm.affichage_masque_point_verifie">
+								<label><b>Information concernant les points vérifiés</b></label>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex="100" flex-gt-xs="50" ng-show="vm.affichage_masque_point_verifie">
+									  <input type="text"  name="theme_activite" ng-model="vm.point_verifie_masque.theme_activite"
+										placeholder="Thème activité" required>
+									  <div ng-messages="point_verifie_form.theme_activite.$error"
+										role="alert"> 
+										<div ng-message="required">
+										  <span>Thème activité obligatoire.</span>
+										</div>
+									  </div>
+									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="50" ng-show="vm.affichage_masque_point_verifie">
+									  <input type="text"  name="intitule_verifie" ng-model="vm.point_verifie_masque.intitule_verifie"
+										placeholder="Description point vérifié" required>
+									  <div ng-messages="point_verifie_form.intitule_verifie.$error"
+										role="alert"> 
+										<div ng-message="required">
+										  <span>Description point vérifié obligatoire.</span>
+										</div>
+									  </div>
+									</md-input-container>
+								</div>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex="100" flex-gt-xs="30" ng-show="vm.affichage_masque_point_verifie">
+									  <input type="text"  name="prevision" ng-model="vm.point_verifie_masque.prevision"
+										placeholder="Prévision" required>
+									  <div ng-messages="point_verifie_form.prevision.$error"
+										role="alert"> 
+										<div ng-message="required">
+										  <span>Prévision obligatoire.</span>
+										</div>
+									  </div>
+									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="30" ng-show="vm.affichage_masque_point_verifie">
+									  <input type="text"  name="reelle" ng-model="vm.point_verifie_masque.reelle"
+										placeholder="Description point vérifié" required>
+									  <div ng-messages="point_verifie_form.reelle.$error"
+										role="alert"> 
+										<div ng-message="required">
+										  <span>Description point vérifié obligatoire.</span>
+										</div>
+									  </div>
+									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="40" ng-show="vm.affichage_masque_point_verifie">
+									  <input type="text"  name="reelle" ng-model="vm.point_verifie_masque.reelle"
+										placeholder="Observation" required>
+									  <div ng-messages="point_verifie_form.reelle.$error"
+										role="alert"> 
+										<div ng-message="required">
+										  <span>Observation obligatoire.</span>
+										</div>
+									  </div>
+									</md-input-container>
+								</div>
+								<section layout="row" layout-sm="column" layout-align="left" layout-wrap>
+								  <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+									  ng-if="vm.affichage_masque_point_verifie" ng-disabled="(point_verifie_form.$invalid)||(vm.disable_button)" ng-click="vm.save_point_verifie(vm.point_verifie_masque,0)">
+									  Enregistrer
+								  </md-button>
+								  <md-button type="submit" class="md-raised md-primary" aria-label="Enregistrer"
+									  ng-if="vm.affichage_masque_point_verifie"  ng-click="vm.annuler_point_verifie()">
+									  Annuler
+								  </md-button>                              
+								</section>
+							</fieldset>	
+                        </form>
+                        <table class="dataTable row-border hover cell-border text-center" datatable="ng"
+                          dt-options="vm.dtOptions" ng-show="!vm.affichage_masque_point_verifie">
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::vm.point_verifie_column">
+                                <div class="table-header">
+                                  <span class="column-title text-center">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="indiv in vm.all_point_verifie  track by $index"  ng-class="{selected: indiv.$selected}" ng-click="vm.selection_point_verifie(indiv)">
+                              <td>{{indiv.theme_activite}}</td>
+                              <td>{{indiv.intitule_verifie}}</td>
+                              <td>{{indiv.prevision}}</td>
+                              <td>{{indiv.reelle}}</td>
+                              <td>{{indiv.observation}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </md-tab> 
+                   <md-tab label="Problème/Solution  Du : {{vm.selectedItem_fiche_supervision.date_supervision | date:'dd/MM/yyyy'}}" ng-disabled="!vm.selectedItem_fiche_supervision.id">
+						<fieldset layout="column" layout-gt-xs="row">
+							<legend>
+									Problème/Solution
+								<md-button class="md-fab md-mini " aria-label="Use Android" ng-click="vm.ajout_probleme_solution()">
+								  <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
+								</md-button>
+							</legend>
+							<div style="clear:both;"></div>
+							<table class="dataTable row-border hover cell-border text-center" datatable="ng"
+							  dt-options="vm.dtOptions" ng-show="!vm.affichage_masque_point_verifie">
+							  <thead>
+								<tr>
+								  <th class="secondary-text" ng-repeat="re in ::vm.point_verifie_column">
+									<div class="table-header">
+									  <span class="column-title text-center">{{re.titre}}</span>
+									</div>
+								  </th>
+								</tr>
+							  </thead>
+							  <tbody>
+								<tr ng-repeat="pbsl in vm.all_point_verifie  track by $index"  ng-class="{selected: pbsl.$selected}" ng-click="vm.selection_point_verifie(pbsl)">
+									<td>
+										<span ng-if="pbsl.$edit">
+											<md-input-container flex="100" flex-gt-xs="100" >
+											  <input type="text"  name="probleme_constate" ng-model="pbsl.probleme_constate"
+												placeholder="Problème constaté" required>
+											  <div ng-messages="probleme_constate.$error"
+												role="alert"> 
+												<div ng-message="required">
+												  <span>Problème constaté obligatoire.</span>
+												</div>
+											  </div>
+											</md-input-container>
+										</span>
+										<span ng-if="!pbsl.$edit">{{pbsl.probleme_constate}}</span>
+									</td>
+									<td>
+										<span ng-if="pbsl.$edit">
+											<md-input-container flex="100" flex-gt-xs="100" >
+											  <input type="text"  name="solution_proposee" ng-model="pbsl.solution_proposee"
+												placeholder="Solution proposée" required>
+											  <div ng-messages="listemlpl_form.solution_proposee.$error"
+												role="alert"> 
+												<div ng-message="required">
+												  <span>Solution proposée obligatoire.</span>
+												</div>
+											  </div>
+											</md-input-container>
+										</span>
+										<span ng-if="!pbsl.$edit">{{pbsl.solution_proposee}}</span>									
+									</td>
+									<td>
+										<a ng-if="!pbsl.$edit" ng-click="vm.modifier_probleme_solution(pbsl)" title="Modifier">
+											<span class="icon-table-edit"></span>
+										</a>
+										<a ng-if="!pbsl.$edit" ng-click="vm.supprimer_probleme_solution(pbsl)" title="Supprimer">
+											<span class="icon-delete"></span>
+										</a>
+										<a ng-if="pbsl.$edit" ng-click="vm.annuler_probleme_solution(pbsl)" title="Annuler modification">
+											<span class="icon-cancel"></span>
+										</a>
+										<a ng-if="pbsl.$edit && pbsl.probleme_constate >'' && pbsl.solution_proposee>''" ng-click="vm.save_probleme_solution(pbsl,0)" title="Sauvegarder">
 											<span class="icon-content-save"></span>
 										</a>
 									</td>

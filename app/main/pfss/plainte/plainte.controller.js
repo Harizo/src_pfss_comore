@@ -76,6 +76,8 @@
 		vm.all_type_plainte=[];
 		vm.all_resultat_plainte=[];
 		vm.allProtection_sociale =[];
+		vm.allSous_projet = [];
+		vm.allMenages =[];
 		vm.affiche_load=false;
 		vm.saisie={};
 		vm.affichage_masque=false;
@@ -87,7 +89,7 @@
         responsive: true
         };
         // vm.activite_col = [{"titre":"Type de document"}];
-        vm.col_plainte = [{"titre":"Village"},{"titre":"Cellule"},{"titre":"Type"},{"titre":"Résultat"},{"titre":"Objet"},{"titre":"Date dépot"},{"titre":"Réf"},{"titre":"Nom"},{"titre":"Adresse"},{"titre":"Date résolution"}];           
+        vm.col_plainte = [{"titre":"Village"},{"titre":"Cellule"},{"titre":"Type"},{"titre":"Résultat"},{"titre":"Objet"},{"titre":"Sous-prj"},{"titre":"Date dépot"},{"titre":"Réf"},{"titre":"Nom"},{"titre":"Adresse"},{"titre":"Date résolution"}];           
         var id_user = $cookieStore.get('id');
 		vm.utilisateur_id = id_user;
 		console.log(vm.utilisateur_id);
@@ -103,6 +105,9 @@
         });  
 		apiFactory.getAll("protection_sociale/index").then(function(result){
 			vm.allProtection_sociale = result.data.response;
+		});    
+		apiFactory.getAll("sous_projet/index").then(function(result){
+			vm.allSous_projet = result.data.response;
 		});    
         apiFactory.getAll("ile/index").then(function(result)
         { 
@@ -139,16 +144,20 @@
           
         });
       }
-		vm.filtrer = function()
-      {
-        vm.affiche_load = true ;
-      	apiFactory.getAPIgeneraliserREST("plainte/index","cle_etrangere",vm.filtre.village_id).then(function(result)
-        { 
-          vm.allPlainte = result.data.response;    
-          vm.affiche_load = false ;
-		  console.log(vm.allPlainte);
-        });
-      }
+		vm.filtrer = function()  {
+			vm.affiche_load = true ;
+			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id).then(function(result) { 
+				vm.allMenages = result.data.response;    
+				apiFactory.getAPIgeneraliserREST("plainte/index","cle_etrangere",vm.filtre.village_id).then(function(result) { 
+					vm.allPlainte = result.data.response;   
+					if(vm.allPlainte ==0) {
+						vm.showAlert('INFORMATION','Aucune plainte enregistré pour ce filtre !');
+					}	
+					vm.affiche_load = false ;
+					console.log(vm.allPlainte);
+				});
+			});
+		}
 
 		// apiFactory.getAll("plainte/index").then(function(result) {
 			// vm.allPlainte = result.data.response;
@@ -209,7 +218,7 @@
                 statut:vm.saisie.statut,
                 a_ete_modifie:vm.saisie.a_ete_modifie,
                 supprime:vm.saisie.supprime,
-                userid:vm.saisie.userid,
+                userid:vm.utilisateur_id,
                 datemodification:vm.saisie.datemodification,
             });
             //factory
@@ -278,6 +287,8 @@
 				vm.saisie.id=0;
 				vm.saisie.id_serveur_centrale=null;
 				vm.saisie.menage_id=null;
+				vm.saisie.NumeroEnregistrement='';
+				vm.saisie.nomchefmenage='';
 				vm.saisie.activite_id=null;
 				vm.saisie.cellulederecours_id=null;
 				vm.saisie.typeplainte_id=null;
@@ -291,12 +302,15 @@
 				vm.saisie.adresseplaignant=null;		
 				vm.saisie.responsableenregistrement=null;		
 				vm.saisie.mesureprise=null;	
-				vm.saisie.dateresolution=null;		
+				vm.saisie.dateresolution=new Date();	
 				vm.saisie.statut=null;		
 				vm.saisie.a_ete_modifie=0;		
 				vm.saisie.supprime=0;		
 				vm.saisie.userid=null;		
 				vm.saisie.datemodification=null;		
+				vm.saisie.id_sous_projet=null;		
+				vm.saisie.sous_projet='';		
+				vm.saisie.code_sous_projet='';		
 			vm.affichage_masque=true;
 		}
 		// Annulation modification d'un item  plainte
@@ -325,10 +339,17 @@
         };
 		// Modification d'un item plainte
 		vm.modifierPlainte = function() {
- 				// vm.saisie.supprimer=0;
+ 				// vm.saisie.supprimer=0;responsableenregistrement mesureprise
 				vm.saisie.id=vm.selectedPlainteItem.id;
 				vm.saisie.id_serveur_centrale=vm.selectedPlainteItem.id_serveur_centrale;
-				vm.saisie.menage_id=vm.selectedPlainteItem.menage_id;
+				vm.saisie.code=vm.selectedPlainteItem.code;
+				vm.saisie.type_plainte=vm.selectedPlainteItem.type_plainte;
+				vm.saisie.resultat_plainte=vm.selectedPlainteItem.resultat_plainte;
+				if(vm.selectedPlainteItem.menage_id) { 
+					vm.saisie.menage_id=parseInt(vm.selectedPlainteItem.menage_id);
+				} 
+				vm.saisie.NumeroEnregistrement=vm.selectedPlainteItem.NumeroEnregistrement;
+				vm.saisie.nomchefmenage=vm.selectedPlainteItem.nomchefmenage;
 				vm.saisie.activite_id=vm.selectedPlainteItem.activite_id;
 				if(vm.selectedPlainteItem.cellulederecours_id) { 
 					vm.saisie.cellulederecours_id=parseInt(vm.selectedPlainteItem.cellulederecours_id);
@@ -360,8 +381,14 @@
 				if(vm.selectedPlainteItem.datemodification) { 
 					vm.saisie.datemodification=new Date(vm.selectedPlainteItem.datemodification);	
 				}	
+				if(vm.selectedPlainteItem.id_sous_projet) { 
+					vm.saisie.id_sous_projet=parseInt(vm.selectedPlainteItem.id_sous_projet);		
+				}	
+				vm.saisie.sous_projet=vm.selectedPlainteItem.sous_projet;	
+				vm.saisie.code_sous_projet=vm.selectedPlainteItem.code_sous_projet;	
             NouvelPlainteItem = false ;
 			vm.affichage_masque=true;
+			console.log(vm.saisie);
         };
 		// Sauvegarde dans la BDD la liste des documents
 		vm.sauverPlainte = function (item,suppression) {
@@ -386,6 +413,7 @@
                 id:getId,
                 id_serveur_centrale: vm.saisie.id_serveur_centrale,
                 menage_id: vm.saisie.menage_id,            
+                id_sous_projet: vm.saisie.id_sous_projet,            
                 activite_id: vm.saisie.activite_id,            
                 cellulederecours_id: vm.saisie.cellulederecours_id,            
                 typeplainte_id: vm.saisie.typeplainte_id,            
@@ -393,17 +421,17 @@
                 village_id: vm.filtre.village_id,            
                 programme_id: vm.saisie.programme_id,            
                 Objet: vm.saisie.Objet,            
-                datedepot: vm.saisie.datedepot,            
+                datedepot: formatDateBDD(vm.saisie.datedepot),            
                 reference: vm.saisie.reference,            
                 nomplaignant: vm.saisie.nomplaignant,            
                 adresseplaignant: vm.saisie.adresseplaignant,            
                 responsableenregistrement: vm.saisie.responsableenregistrement,            
                 mesureprise: vm.saisie.mesureprise,            
-                dateresolution: vm.saisie.dateresolution,            
+                dateresolution: formatDateBDD(vm.saisie.dateresolution),            
                 statut: vm.saisie.statut,            
                 a_ete_modifie: modifie,            
                 supprime: 0,            
-                userid: vm.saisie,            
+                userid: vm.utilisateur_id,            
                 datemodification: vm.saisie.datemodification,             				
            });
             apiFactory.add("plainte/index",datas, config).success(function (data) {
@@ -413,6 +441,8 @@
 						vm.selectedPlainteItem.id=getId;
 						vm.selectedPlainteItem.id_serveur_centrale= vm.saisie.id_serveur_centrale;
 						vm.selectedPlainteItem.menage_id= vm.saisie.menage_id;            
+						vm.selectedPlainteItem.NumeroEnregistrement= vm.saisie.NumeroEnregistrement;            
+						vm.selectedPlainteItem.nomchefmenage= vm.saisie.nomchefmenage;            
 						vm.selectedPlainteItem.activite_id= vm.saisie.activite_id;          
 						vm.selectedPlainteItem.cellulederecours_id= vm.saisie.cellulederecours_id;           
 						vm.selectedPlainteItem.code= vm.saisie.code;           
@@ -423,18 +453,21 @@
 						vm.selectedPlainteItem.village_id= vm.filtre.village_id;          
 						vm.selectedPlainteItem.programme_id= vm.saisie.programme_id;            
 						vm.selectedPlainteItem.Objet= vm.saisie.Objet;            
-						vm.selectedPlainteItem.datedepot= vm.saisie.datedepot            
+						vm.selectedPlainteItem.datedepot= vm.formatDateListe(vm.saisie.datedepot);            
 						vm.selectedPlainteItem.reference= vm.saisie.reference;            
 						vm.selectedPlainteItem.nomplaignant= vm.saisie.nomplaignant;            
 						vm.selectedPlainteItem.adresseplaignant= vm.saisie.adresseplaignant;           
 						vm.selectedPlainteItem.responsableenregistrement= vm.saisie.responsableenregistrement;            
 						vm.selectedPlainteItem.mesureprise= vm.saisie.mesureprise;           
-						vm.selectedPlainteItem.dateresolution= vm.saisie.dateresolution;            
+						vm.selectedPlainteItem.dateresolution= vm.formatDateListe(vm.saisie.dateresolution);            
 						vm.selectedPlainteItem.statut= vm.saisie.statut;            
 						vm.selectedPlainteItem.a_ete_modifie= modifie;            
 						vm.selectedPlainteItem.supprime= 0;           
 						vm.selectedPlainteItem.userid= vm.utilisateur_id;           
-						vm.selectedPlainteItem.datemodification= vm.saisie.datemodification;            									
+						vm.selectedPlainteItem.datemodification= vm.formatDateListe(vm.saisie.datemodification);            									
+						vm.selectedPlainteItem.id_sous_projet= vm.saisie.id_sous_projet;            									
+						vm.selectedPlainteItem.code_sous_projet= vm.saisie.code_sous_projet;            									
+						vm.selectedPlainteItem.sous_projet= vm.saisie.sous_projet;            									
 						vm.selectedPlainteItem.$selected = false;
 						vm.selectedPlainteItem ={};
                     } else {    
@@ -450,6 +483,8 @@
 						id:String(data.response) ,
 						id_serveur_centrale:vm.saisie.id_serveur_centrale,
 						menage_id:vm.saisie.menage_id,
+						NumeroEnregistrement:vm.saisie.NumeroEnregistrement,
+						nomchefmenage:vm.saisie.nomchefmenage,
 						activite_id:vm.saisie.activite_id,
 						cellulederecours_id:vm.saisie.cellulederecours_id,
 						code:vm.saisie.code,
@@ -460,23 +495,27 @@
 						village_id:vm.filtre.village_id,
 						programme_id:vm.saisie.programme_id,
 						Objet:vm.saisie.Objet,
-						datedepot:vm.saisie.datedepot,
+						datedepot:vm.formatDateListe(vm.saisie.datedepot),
 						reference:vm.saisie.reference,
 						nomplaignant:vm.saisie.nomplaignant,
 						adresseplaignant:vm.saisie.adresseplaignant,
 						responsableenregistrement:vm.saisie.responsableenregistrement,
 						mesureprise:vm.saisie.mesureprise,
-						dateresolution:vm.saisie.dateresolution,
+						dateresolution:vm.formatDateListe(vm.saisie.dateresolution),
 						statut:vm.saisie.statut,
 						a_ete_modifie:0,
 						supprime:0,
 						userid:vm.utilisateur_id,
 						datemodification:vm.saisie.datemodification,
+						id_sous_projet:vm.saisie.id_sous_projet,
+						code_sous_projet:vm.saisie.code_sous_projet,
+						sous_projet:vm.saisie.sous_projet,
 					}
        				vm.allPlainte.unshift(item) ;
 					vm.selectedPlainteItem ={};
 					
                 }
+				vm.affichage_masque=false;
 				vm.disable=false;
             }).error(function (data) {
                 alert('Erreur');
@@ -517,8 +556,6 @@
 						window.location = data;
 					});
 		}
-		vm.modifierCPS= function(item) {
-		}
 		vm.modifierCPS = function (item) { 
 			vm.nontrouvee=true;
 			vm.allProtection_sociale.forEach(function(ax) {
@@ -547,6 +584,38 @@
 					vm.saisie.type_plainte='';
 			}
 		}
+		vm.modifierMenage = function (item) { 
+			vm.nontrouvee=true;
+			vm.allMenages.forEach(function(ax) {
+				if(parseInt(ax.id)==parseInt(item.menage_id)) {
+					vm.saisie.menage_id = ax.id; 
+					vm.saisie.NumeroEnregistrement=ax.NumeroEnregistrement;
+					vm.saisie.nomchefmenage=ax.nomchefmenage;
+					vm.nontrouvee=false;
+				}
+			});
+			if(vm.nontrouvee==true) {				
+					vm.saisie.menage_id = null; 
+					vm.saisie.NumeroEnregistrement='';
+					vm.saisie.nomchefmenage='';
+			}
+		}
+		vm.modifierSSP = function (item) { 
+			vm.nontrouvee=true;
+			vm.allSous_projet.forEach(function(ax) {
+				if(parseInt(ax.id)==parseInt(item.id_sous_projet)) {
+					vm.saisie.id_sous_projet = ax.id; 
+					vm.saisie.sous_projet=ax.description;
+					vm.saisie.code_sous_projet=ax.code;
+					vm.nontrouvee=false;
+				}
+			});
+			if(vm.nontrouvee==true) {				
+					vm.saisie.id_sous_projet = null; 
+					vm.saisie.sous_projet='';
+					vm.saisie.code_sous_projet='';
+			}
+		}
 		vm.modifierSOLUTION = function (item) { 
 			vm.nontrouvee=true;
 			vm.all_resultat_plainte.forEach(function(ax) {
@@ -561,6 +630,21 @@
 					vm.saisie.resultat_plainte='';
 			}
 		}
-		
+		function formatDateBDD(dat) {
+			if (dat) {
+				var date = new Date(dat);
+				var mois = date.getMonth()+1;
+				var dates = (date.getFullYear()+"-"+mois+"-"+date.getDate());
+				return dates;
+			}          
+		}
+		vm.formatDateListe = function (dat) {
+			if (dat) {
+				var date = new Date(dat);
+				var mois = date.getMonth()+1;
+				var dates = (date.getDate()+"-"+mois+"-"+date.getFullYear());
+				return dates;
+			}          
+		}		
     }
 })();
