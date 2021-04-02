@@ -104,6 +104,7 @@ apiFactory.getAll("commune/index").then(function(result){
       ];
       vm.click_tab_sousprojet = function()
       {
+        vm.detail_sousprojet = false;
         apiFactory.getAPIgeneraliserREST("sous_projet/index","menu","getsousprojetbypar","id_par",vm.selectedItemPlan_action_reinstallation.id).then(function(result){
           vm.allRecordsSous_projet = result.data.response;
         });
@@ -203,6 +204,7 @@ apiFactory.getAll("commune/index").then(function(result){
 					  vm.selectedItemSous_projet.communaute = co[0];
 					  vm.selectedItemSous_projet.commune = com[0];
 					  vm.selectedItemSous_projet ={};
+
 					} else {    
 						vm.allRecordsSous_projet = vm.allRecordsSous_projet.filter(function(obj)
             {
@@ -239,6 +241,7 @@ apiFactory.getAll("commune/index").then(function(result){
 				}
 				ss_p.$selected=false;
 				ss_p.$edit=false;
+        vm.detail_sousprojet = false;
 			}).error(function (data)
       {
 				vm.showAlert('Erreur lors de la sauvegarde','Veuillez corriger le(s) erreur(s) !');
@@ -4831,7 +4834,8 @@ function insert_in_baseFiche_env(entite,suppression)
          NouvelItemFiche_env=false;
         //entite.ile       = il[0];
         //entite.id_region    = reg[0];                 
-        //entite.id_commune   = co[0]; 
+        //entite.id_commune   = co[0];
+        vm.selectedItemFiche_env ={}; 
        }
        entite.$selected=false;
        entite.$edit=false;

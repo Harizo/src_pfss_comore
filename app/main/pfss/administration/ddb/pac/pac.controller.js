@@ -190,9 +190,11 @@ vm.pac_column =[
           entite.zip         = zp[0];
           entite.id=data.response;	
           NouvelItemPac=false; 
+          vm.selectedItemPac ={};
         }
         entite.$selected=false;
         entite.$edit=false;
+        vm.showtab_calendrier = false;
       }).error(function (data) {
         vm.showAlert('Erreur lors de la sauvegarde','Veuillez corriger le(s) erreur(s) !');
       });  
@@ -376,6 +378,7 @@ vm.pac_column =[
                   {
                       item.$selected=false;
                       item.$edit=false;
+                      vm.showtab_calendrier = false;
                   }                    
               }
             }
@@ -607,7 +610,7 @@ vm.calendrier_activites_column =[
 
   /* ***************Debut tableau recapitulatif*********************/
   vm.click_tableau_recap_pac = function()
-  {
+  { vm.showtab_activite_agr = false;
     apiFactory.getAPIgeneraliserREST("tableau_recap_pac/index","menu","gettableau_recap_pacbypac","id_pac",vm.selectedItemPac.id).then(function(result)
    {
        vm.allTableau_recap_pac= result.data.response ;
@@ -801,6 +804,8 @@ vm.calendrier_activites_column =[
                     {
                         item.$selected=false;
                         item.$edit=false;
+                        vm.showtab_activite_agr = false;
+                        vm.selectedItemTableau_recap_pac ={};
                     }                    
                 }
               }
