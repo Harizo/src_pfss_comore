@@ -168,7 +168,7 @@
                                     <md-select ng-model="vm.filtre.agep_id" name="agence_paie" ng-disabled="!vm.filtre.id_fichepresence">
                                       <md-option value=''>&nbsp;</md-option>
                                       <md-option ng-repeat="gep in vm.all_agep" value="{{gep.id}}" >
-                                        {{gep.Nom}}
+                                        {{gep.identifiant}} - {{gep.raison_social}}
                                       </md-option>
                                     </md-select>
                                     <div ng-messages="filtrepardateform.agence_paie.$error"

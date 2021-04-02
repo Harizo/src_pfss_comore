@@ -30,9 +30,9 @@
             // 'app.pfss.enquete',
             'app.pfss.contrat_ugp_agex',
 
-            'app.pfss.contrat_agep'
+            'app.pfss.contrat_agep',
 
-            'app.pfss.gerer_mdp'
+            'app.pfss.gerer_mdp',
  
        ])
         .config(config);
