@@ -104,7 +104,8 @@
 				vm.all_agex= result.data.response;    
 			});
 			apiFactory.getAll("agence_p/index").then(function(result) { 
-				vm.all_agep= result.data.response;    
+				vm.all_agep= result.data.response; 
+				console.log(vm.all_agep);	
 			});
 			apiFactory.getAll("phaseexecution/index").then(function(result) { 
 				vm.all_etape = result.data.response;    
