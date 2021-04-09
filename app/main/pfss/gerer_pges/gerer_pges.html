@@ -1,0 +1,323 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Contrat AGEP</span>
+                    <span class="parent"> </span>
+                    <!--md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;">Groupe ML/PL</span-->
+                </div>
+    
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>
+                <md-tabs md-dynamic-height>                   
+                  <md-tab label="PGES">
+                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                <div layout="row" layout-align="start center">
+                                <div class="border-right">
+                                    
+                                  <span class="md-headline">PGES &nbsp</span>
+                                </div>
+                                  <div class="border-right" ng-if="!vm.selectedItemPges.id && !vm.nouvelleItemPges">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterPges()">
+                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                      <md-tooltip><span>Ajouter</span></md-tooltip>
+                                    </md-button>
+                                  </div> 
+                                  <div class="border-right" ng-if="vm.selectedItemPges.id && !vm.selectedItemPges.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierPges()">
+                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                      <md-tooltip><span>Modifier</span></md-tooltip>
+                                    </md-button>
+                                  </div>    
+                                  <div class="border-right" ng-if="vm.selectedItemPges.id && !vm.selectedItemPges.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerPges()">
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Supprimer</span></md-tooltip>
+                                    </md-button>
+                                  </div>  
+
+                                  <div class="border-right" ng-if="vm.selectedItemPges.id">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerPges()">
+                                      <md-icon md-font-icon="icon-cancel"></md-icon>
+                                      <md-tooltip><span>Annuler</span></md-tooltip>
+                                    </md-button>
+                                  </div>   
+
+                                  <div ng-if="vm.selectedItemPges.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerPges(0)">
+                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                    </md-button>
+                                  </div>                
+                                </div>
+                            </header>
+                            
+                        
+                            <table ng-table="agep" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                                <thead>
+                                    <tr>
+                                        <th class="secondary-text" ng-repeat="c in ::vm.pges_column">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">{{c.titre}}</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="paie in vm.allPges"  ng-class="{selected: paie.$selected}" ng-click="vm.selectionPges(paie)">                                       
+                                                                                
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Bureau d'etude</label>                                                
+                                                <input type="text" name="bureau_etude"  ng-model="paie.bureau_etude"/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!paie.$edit"> {{paie.bureau_etude}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Référence contrat</label>                                                
+                                                <input type="text" name="ref_contrat"  ng-model="paie.ref_contrat"/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!paie.$edit"> {{paie.ref_contrat}}</span>
+                                        </td>
+                                        <td>
+                                            <span ng-if="paie.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Sous projet</label>
+                                                  <md-select ng-model="paie.id_sous_projet" name="id_sous_projet">
+                                                      <md-option ng-repeat="mena in vm.allSous_projet" value="{{mena.id}}">
+                                                          {{mena.description}}
+                                                      </md-option>                                                
+                                                  </md-select>
+                                              </md-input-container> 
+                                            </span>
+                                            <span ng-if="!paie.$edit"> {{paie.sous_projet.description}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Description environnementale</label>                                                
+                                                <input type="text" name="description_env"  ng-model="paie.description_env"/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!paie.$edit"> {{paie.description_env}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Composante zone susceptible</label>                                                
+                                                <input type="text" name="composante_zone_susce"  ng-model="paie.composante_zone_susce"/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!paie.$edit"> {{paie.composante_zone_susce}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Problèmes environnementaux</label>                                                
+                                                <input type="text" name="probleme_env"  ng-model="paie.probleme_env" />
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!paie.$edit"> {{paie.probleme_env}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Mésures envisagées</label>                                                
+                                                <input type="text" name="mesure_envisage"  ng-model="paie.mesure_envisage"/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!paie.$edit"> {{paie.mesure_envisage}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                            <md-datepicker ng-model="paie.date_etablissement" md-placeholder="Date d’établissement" md-max-date="vm.datenow" required>                       
+                                            </md-datepicker>
+                                          </span>                          
+                                          <span ng-if="!paie.$edit">{{vm.formatDate(paie.date_etablissement)}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Nom et prénoms de celui qui a établi</label>                                                
+                                                <input type="text" name="nom_prenom_etablissement"  ng-model="paie.nom_prenom_etablissement"/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!paie.$edit"> {{paie.nom_prenom_etablissement}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Nom et prénoms du Responsable de la validation</label>                                                
+                                                <input type="text" name="nom_prenom_validation"  ng-model="paie.nom_prenom_validation"/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!paie.$edit"> {{paie.nom_prenom_validation}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                            <md-datepicker ng-model="paie.date_visa_ugp" md-placeholder="Date de visa UGP" md-max-date="vm.datenow" required>                       
+                                            </md-datepicker>
+                                          </span>                          
+                                          <span ng-if="!paie.$edit">{{vm.formatDate(paie.date_visa_ugp)}}</span>
+                                        </td>
+                                        
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Nom et prénoms du responsable UGP</label>                                                
+                                                <input type="text" name="nom_prenom_ugp"  ng-model="paie.nom_prenom_ugp"/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!paie.$edit"> {{paie.nom_prenom_ugp}}</span>
+                                        </td> 
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>observation</label>                                                
+                                                <input type="text" name="observation"  ng-model="paie.observation"/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!paie.$edit"> {{paie.observation}}</span>
+                                        </td>                                    
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </md-tab> 
+                    <md-tab label=" phases PGES" ng-disabled="!vm.tab_pges_phase" ng-click="vm.click_tab_phases()">
+                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                <div layout="row" layout-align="start center">
+                                <div class="border-right">
+                                    
+                                  <span class="md-headline">PHASE &nbsp</span>
+                                </div>
+                                  <div class="border-right" ng-if="!vm.selectedItemPges_phases.id && !vm.nouvelleItemPges_phases">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterPges_phases()">
+                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                      <md-tooltip><span>Ajouter</span></md-tooltip>
+                                    </md-button>
+                                  </div> 
+                                  <div class="border-right" ng-if="vm.selectedItemPges_phases.id && !vm.selectedItemPges_phases.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierPges_phases()">
+                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                      <md-tooltip><span>Modifier</span></md-tooltip>
+                                    </md-button>
+                                  </div>    
+                                  <div class="border-right" ng-if="vm.selectedItemPges_phases.id && !vm.selectedItemPges_phases.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerPges_phases()">
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Supprimer</span></md-tooltip>
+                                    </md-button>
+                                  </div>  
+
+                                  <div class="border-right" ng-if="vm.selectedItemPges_phases.id">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerPges_phases()">
+                                      <md-icon md-font-icon="icon-cancel"></md-icon>
+                                      <md-tooltip><span>Annuler</span></md-tooltip>
+                                    </md-button>
+                                  </div>   
+
+                                  <div ng-if="vm.selectedItemPges_phases.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerPges_phases(0)">
+                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                    </md-button>
+                                  </div>                
+                                </div>
+                            </header>
+                            
+                        
+                            <table ng-table="agep" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                                <thead>
+                                    <tr>
+                                        <th class="secondary-text" ng-repeat="c in ::vm.pges_phases_column">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">{{c.titre}}</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="paie in vm.allPges_phases"  ng-class="{selected: paie.$selected}" ng-click="vm.selectionPges_phases(paie)">                                       
+                                                                                
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Description</label>                                                
+                                                <input type="text" name="description"  ng-model="paie.description"/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!paie.$edit"> {{paie.description}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>impacts</label>                                                
+                                                <input type="text" name="impacts"  ng-model="paie.impacts"/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!paie.$edit"> {{paie.impacts}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>mesures</label>                                                
+                                                <input type="text" name="mesures"  ng-model="paie.mesures"/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!paie.$edit"> {{paie.mesures}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>responsable</label>                                                
+                                                <input type="text" name="responsable"  ng-model="paie.responsable"/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!paie.$edit"> {{paie.responsable}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>calendrier_execution</label>                                                
+                                                <input type="text" name="calendrier_execution"  ng-model="paie.calendrier_execution" />
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!paie.$edit"> {{paie.calendrier_execution}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>cout_estimatif</label>                                                
+                                                <input type="number" name="cout_estimatif"  ng-model="paie.cout_estimatif"/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!paie.$edit"> {{paie.cout_estimatif}}</span>
+                                        </td>                                                                           
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </md-tab> 
+                    <md-tab>
+                    </md-tab>
+                </md-tabs>
+            </div>
+        </div>
+    </div>

@@ -3,34 +3,34 @@
     'use strict';
 
     angular
-        .module('app.pfss.contrat_agep', [])
+        .module('app.pfss.gerer_pges', [])
         .config(config);
 
     /** @ngInject */
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.pfss_contrat_agep', {
-            url      : '/contrat_agep',
+        $stateProvider.state('app.pfss_gerer_pges', {
+            url      : '/gerer_pges',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/pfss/contrat_agep/contrat_agep.html',
-                    controller : 'Contrat_agepController as vm'
+                    templateUrl: 'app/main/pfss/gerer_pges/gerer_pges.html',
+                    controller : 'Gerer_pgesController as vm'
                 }
             },
-            bodyClass: 'contratagep',
+            bodyClass: 'gerer_pges',
             data : {
               authorizer : true,
               permitted : ["USER","PERSONNEL","ADMIN"],
-              page: "Contrat agep"
+              page: "Gérer PGES"
             }
         });
 
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.contrat_agep', {
-            title: 'Gérer AGEP',
+        msNavigationServiceProvider.saveItem('pfss.gerer_pges', {
+            title: 'Gérer PGES',
             icon  : 'icon-data',
-            state: 'app.pfss_contrat_agep',
+            state: 'app.pfss_gerer_pges',
 			weight:8,
         });
     }

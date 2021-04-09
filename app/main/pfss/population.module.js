@@ -33,6 +33,8 @@
             'app.pfss.contrat_agep',
 
             'app.pfss.gerer_mdp',
+
+            'app.pfss.gerer_pges',
  
        ])
         .config(config);
