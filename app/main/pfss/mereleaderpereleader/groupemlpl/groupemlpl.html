@@ -692,6 +692,319 @@
                             </table>
                         </div>
                     </md-tab> 
+					 
+                    <md-tab label=" Problème et solution mlpl" ng-disabled="!vm.selectedItemFiche_supervision_mlpl.id" ng-click="vm.click_tab_probleme_solution_mlpl()">
+                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                <div layout="row" layout-align="start center">
+                                <div class="border-right">
+                                    
+                                  <span class="md-headline">Problème et solution &nbsp</span>
+                                </div>
+                                  <div class="border-right" ng-if="!vm.selectedItemProbleme_solution_mlpl.id && !vm.nouvelItemProbleme_solution_mlpl">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterProbleme_solution_mlpl()">
+                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                      <md-tooltip><span>Ajouter</span></md-tooltip>
+                                    </md-button>
+                                  </div> 
+                                  <div class="border-right" ng-if="vm.selectedItemProbleme_solution_mlpl.id && !vm.selectedItemProbleme_solution_mlpl.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierProbleme_solution_mlpl()">
+                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                      <md-tooltip><span>Modifier</span></md-tooltip>
+                                    </md-button>
+                                  </div>    
+                                  <div class="border-right" ng-if="vm.selectedItemProbleme_solution_mlpl.id && !vm.selectedItemProbleme_solution_mlpl.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerProbleme_solution_mlpl()">
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Supprimer</span></md-tooltip>
+                                    </md-button>
+                                  </div>  
+
+                                  <div class="border-right" ng-if="vm.selectedItemProbleme_solution_mlpl.id">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerProbleme_solution_mlpl()">
+                                      <md-icon md-font-icon="icon-cancel"></md-icon>
+                                      <md-tooltip><span>Annuler</span></md-tooltip>
+                                    </md-button>
+                                  </div>   
+
+                                  <div ng-if="vm.selectedItemProbleme_solution_mlpl.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerProbleme_solution_mlpl(0)">
+                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                    </md-button>
+                                  </div>                
+                                </div>
+                            </header>
+                            
+                        
+                            <table ng-table="agep" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                                <thead>
+                                    <tr>
+                                        <th class="secondary-text" ng-repeat="c in ::vm.probleme_solution_mlpl_column">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">{{c.titre}}</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="probleme_solu in vm.allProbleme_solution_mlpl"  ng-class="{selected: probleme_solu.$selected}" ng-click="vm.selectionProbleme_solution_mlpl(probleme_solu)">                                       
+                                        
+                                        
+                                      <td>
+                                          <span ng-if="probleme_solu.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Problème</label>                                                
+                                                <input type="text" name="probleme"  ng-model="probleme_solu.probleme"/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!probleme_solu.$edit"> {{probleme_solu.probleme}}</span>
+                                        </td>
+                                          <td>
+                                              <span ng-if="probleme_solu.$edit">
+                                                  <md-input-container style="width:100%;display: flex !important;">
+                                                    <label>Solution</label>                                                
+                                                    <input type="text" name="solution"  ng-model="probleme_solu.solution"/>
+                                                  </md-input-container>
+                                              </span>
+                                              <span ng-if="!probleme_solu.$edit"> {{probleme_solu.solution}}</span>
+                                            </td>                                                                                                                        
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </md-tab>
+                    <md-tab label=" Livrable MLPL" ng-disabled="!vm.selectedItem.id" ng-click="vm.click_tab_livrable_mlpl()">
+                      <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                          <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                              <div layout="row" layout-align="start center">
+                              <div class="border-right">
+                                  
+                                <span class="md-headline">Livrable MLPL &nbsp</span>
+                              </div>
+                                <div class="border-right" ng-if="!vm.selectedItemLivrable_mlpl.id && !vm.nouvelItemLivrable_mlpl">
+                                  <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterLivrable_mlpl()">
+                                    <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                    <md-tooltip><span>Ajouter</span></md-tooltip>
+                                  </md-button>
+                                </div> 
+                                <div class="border-right" ng-if="vm.selectedItemLivrable_mlpl.id && !vm.selectedItemLivrable_mlpl.$edit">
+                                  <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierLivrable_mlpl()">
+                                    <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                    <md-tooltip><span>Modifier</span></md-tooltip>
+                                  </md-button>
+                                </div>    
+                                <div class="border-right" ng-if="vm.selectedItemLivrable_mlpl.id && !vm.selectedItemLivrable_mlpl.$edit">
+                                  <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerLivrable_mlpl()">
+                                    <md-icon md-font-icon="icon-delete"></md-icon>
+                                    <md-tooltip><span>Supprimer</span></md-tooltip>
+                                  </md-button>
+                                </div>  
+
+                                <div class="border-right" ng-if="vm.selectedItemLivrable_mlpl.id">
+                                  <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerLivrable_mlpl()">
+                                    <md-icon md-font-icon="icon-cancel"></md-icon>
+                                    <md-tooltip><span>Annuler</span></md-tooltip>
+                                  </md-button>
+                                </div>   
+
+                                <div ng-if="vm.selectedItemLivrable_mlpl.$edit">
+                                  <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerLivrable_mlpl(0)">
+                                    <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                    <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                  </md-button>
+                                </div>                
+                              </div>
+                          </header>
+                          
+                      
+                          <table ng-table="agep" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                              <thead>
+                                  <tr>
+                                      <th class="secondary-text" ng-repeat="c in ::vm.livrable_mlpl_column">
+                                          <div class="table-header">
+                                              <span class="column-title text-center">{{c.titre}}</span>
+                                          </div>
+                                      </th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr ng-repeat="livrable in vm.allLivrable_mlpl"  ng-class="{selected: livrable.$selected}" ng-click="vm.selectionLivrable_mlpl(livrable)">                                       
+                                      
+                                      
+                                    <td>
+                                      <span ng-if="livrable.$edit">
+                                          <md-input-container style="width:100%;display: flex !important;">
+                                            <label>Contrat consultant</label> 
+                                              <md-select ng-model="livrable.id_contrat_consultant" required>										 
+                                                <md-option ng-repeat="consu in vm.allContrat_consultant" value="{{consu.id}}" >
+                                                  {{consu.reference}}
+                                                </md-option>
+                                              </md-select>
+                                          </md-input-container>
+                                      </span>
+                                      <span ng-if="!livrable.$edit"> {{livrable.contrat_consultant.reference}}</span>
+                                    </td>
+                                    <td>
+                                        <span ng-if="livrable.$edit">
+                                            <md-input-container style="width:100%;display: flex !important;">
+                                              <label>Activite concernée</label>                                                
+                                              <input type="text" name="activite_concernee"  ng-model="livrable.activite_concernee"/>
+                                            </md-input-container>
+                                        </span>
+                                        <span ng-if="!livrable.$edit"> {{livrable.activite_concernee}}</span>
+                                      </td>
+                                      <td>
+                                          <span ng-if="livrable.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Intitulé livrable</label>                                                
+                                                <input type="text" name="intitule_livrable"  ng-model="livrable.intitule_livrable"/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!livrable.$edit"> {{livrable.intitule_livrable}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="livrable.$edit">
+                                            <md-datepicker ng-model="livrable.date_prevue_remise" md-placeholder="Date prevue remise" md-max-date="vm.datenow" required>                       
+                                            </md-datepicker>
+                                          </span>
+                                          <span ng-if="!livrable.$edit"> {{vm.formatDateListe(livrable.date_prevue_remise)}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="livrable.$edit">
+                                            <md-datepicker ng-model="livrable.date_effective_reception" md-placeholder="Date effective reception" md-max-date="vm.datenow" required>                       
+                                            </md-datepicker>
+                                          </span>
+                                          <span ng-if="!livrable.$edit"> {{vm.formatDateListe(livrable.date_effective_reception)}}</span>
+                                        </td>
+                                        <td>
+                                            <span ng-if="livrable.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Intervenant</label>                                                
+                                                  <input type="text" name="intervenant"  ng-model="livrable.intervenant"/>
+                                                </md-input-container>
+                                            </span>
+                                            <span ng-if="!livrable.$edit"> {{livrable.intervenant}}</span>
+                                          </td>
+                                          <td>
+                                              <span ng-if="livrable.$edit">
+                                                  <md-input-container style="width:100%;display: flex !important;">
+                                                    <label>Nombre de commune touchée</label>                                                
+                                                    <input type="number" name="nbr_commune_touchee"  ng-model="livrable.nbr_commune_touchee"/>
+                                                  </md-input-container>
+                                              </span>
+                                              <span ng-if="!livrable.$edit"> {{livrable.nbr_commune_touchee}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="livrable.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Nombre de village touchée</label>                                                
+                                                      <input type="number" name="nbr_village_touchee"  ng-model="livrable.nbr_village_touchee"/>
+                                                    </md-input-container>
+                                                </span>
+                                                <span ng-if="!livrable.$edit"> {{livrable.nbr_village_touchee}}</span>
+                                            </td>  
+                                            <td>
+                                                <span ng-if="livrable.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Observation</label>                                                
+                                                      <input type="text" name="observation"  ng-model="livrable.observation"/>
+                                                    </md-input-container>
+                                                </span>
+                                                <span ng-if="!livrable.$edit"> {{livrable.observation}}</span>
+                                            </td>                                                                           
+
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </md-tab>
+                  <md-tab label=" Points de contrôle mlpl" ng-disabled="!vm.selectedItemLivrable_mlpl.id" ng-click="vm.click_tab_point_controle_mlpl()">
+                    <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                        <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                            <div layout="row" layout-align="start center">
+                            <div class="border-right">
+                                
+                              <span class="md-headline">Points de contrôle &nbsp</span>
+                            </div>
+                              <div class="border-right" ng-if="!vm.selectedItemPoint_controle_mlpl.id && !vm.nouvelItemPoint_controle_mlpl">
+                                <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterPoint_controle_mlpl()">
+                                  <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                  <md-tooltip><span>Ajouter</span></md-tooltip>
+                                </md-button>
+                              </div> 
+                              <div class="border-right" ng-if="vm.selectedItemPoint_controle_mlpl.id && !vm.selectedItemPoint_controle_mlpl.$edit">
+                                <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierPoint_controle_mlpl()">
+                                  <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                  <md-tooltip><span>Modifier</span></md-tooltip>
+                                </md-button>
+                              </div>    
+                              <div class="border-right" ng-if="vm.selectedItemPoint_controle_mlpl.id && !vm.selectedItemPoint_controle_mlpl.$edit">
+                                <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerPoint_controle_mlpl()">
+                                  <md-icon md-font-icon="icon-delete"></md-icon>
+                                  <md-tooltip><span>Supprimer</span></md-tooltip>
+                                </md-button>
+                              </div>  
+
+                              <div class="border-right" ng-if="vm.selectedItemPoint_controle_mlpl.id">
+                                <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerPoint_controle_mlpl()">
+                                  <md-icon md-font-icon="icon-cancel"></md-icon>
+                                  <md-tooltip><span>Annuler</span></md-tooltip>
+                                </md-button>
+                              </div>   
+
+                              <div ng-if="vm.selectedItemPoint_controle_mlpl.$edit">
+                                <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerPoint_controle_mlpl(0)">
+                                  <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                  <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                </md-button>
+                              </div>                
+                            </div>
+                        </header>
+                        
+                    
+                        <table ng-table="agep" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                            <thead>
+                                <tr>
+                                    <th class="secondary-text" ng-repeat="c in ::vm.point_controle_mlpl_column">
+                                        <div class="table-header">
+                                            <span class="column-title text-center">{{c.titre}}</span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="point_con in vm.allPoint_controle_mlpl"  ng-class="{selected: point_con.$selected}" ng-click="vm.selectionPoint_controle_mlpl(point_con)">                                       
+                                    
+                                    
+                                  <td>
+                                      <span ng-if="point_con.$edit">
+                                          <md-input-container style="width:100%;display: flex !important;">
+                                            <label>Intitule</label>                                                
+                                            <input type="text" name="intitule"  ng-model="point_con.intitule"/>
+                                          </md-input-container>
+                                      </span>
+                                      <span ng-if="!point_con.$edit"> {{point_con.intitule}}</span>
+                                    </td>
+                                      <td>
+                                          <span ng-if="point_con.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Resultat</label>                                                
+                                                <md-select ng-model="point_con.resultat" required>										 
+                                                  <md-option value="OUI" >OUI</md-option>
+                                                  <md-option value="NON" >NON</md-option>
+                                                </md-select>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!point_con.$edit"> {{point_con.resultat}}</span>
+                                        </td>                                                                                                                        
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </md-tab> 
                     <md-tab> 
                     </md-tab> 
                 </md-tabs>
