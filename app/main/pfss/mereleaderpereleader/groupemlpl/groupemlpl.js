@@ -13,7 +13,7 @@
         dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
         pagingType: 'simple',
         autoWidth: false,
-        responsive: true
+        order: []
       };
 
       vm.groupe_mlpl_column = [{titre:"Date création"},{titre:"Chef Village"},{titre:"Nom groupe"}];
@@ -40,6 +40,21 @@
         vm.date_now = new Date() ;
 
         vm.disable_button = false ;
+
+		vm.selectedItemFichepresencebienetre = {} ;
+        var current_selectedItemFichepresencebienetre = {} ;
+        vm.nouvelItemFichepresencebienetre = false ;
+        vm.allFichepresencebienetre = [] ;
+
+		vm.selectedItemFiche_supervision_mlpl = {} ;
+        var current_selectedItemFiche_supervision_mlpl = {} ;
+        vm.nouvelItemFiche_supervision_mlpl = false ;
+        vm.allFiche_supervision_mlpl = [] ;
+
+		vm.selectedItemPoint_a_verifier_mlpl = {} ;
+        var current_selectedItemPoint_a_verifier_mlpl = {} ;
+        vm.nouvelItemPoint_a_verifier_mlpl = false ;
+        vm.allPoint_a_verifier_mlpl = [] ;
       //initialisation variable
 
       //chargement clé etrangère et données de bases
@@ -85,6 +100,10 @@
           vm.filtre.id_commune = null ; 
           vm.filtre.village_id = null ; 
           
+        });
+		apiFactory.getAPIgeneraliserREST("consultant_ong/index","cle_etrangere",vm.filtre.id_ile).then(function(result)
+        { 
+          vm.allConsultant_ong = result.data.response;
         });
 
       }
@@ -525,7 +544,664 @@
 				}
 			});			
 		}
-		// Fin Fonction filtre par découpage admin et detail par groupe ML/PM	
+		// Fin Fonction filtre par découpage admin et detail par groupe ML/PM
+
+		//DEBUT FICHE PRESENCE BIEN ETRE
+
+		vm.fichepresencebienetre_column = 
+		[
+			{titre:"Numero ligne"},
+			{titre:"Menage"},
+			{titre:"Nombre enfant moins six ans"},
+			{titre:"Date présence"}
+		]; 
+
+		vm.selectionFichepresencebienetre = function(item)
+		{
+			vm.selectedItemFichepresencebienetre = item ;
+
+			if (!vm.selectedItemFichepresencebienetre.$edit) 
+			{
+				vm.nouvelItemFichepresencebienetre = false ;
+			}
+
+		}
+
+		$scope.$watch('vm.selectedItemFichepresencebienetre', function()
+		{
+			if (!vm.allFichepresencebienetre) return;
+			vm.allFichepresencebienetre.forEach(function(item)
+			{
+				item.$selected = false;
+			});
+			vm.selectedItemFichepresencebienetre.$selected = true;
+
+		});
+
+		vm.ajouterFichepresencebienetre = function()
+		{
+			vm.nouvelItemFichepresencebienetre = true ;
+			var item = 
+				{                            
+					$edit: true,
+					$selected: true,
+					id:'0',
+					numero_ligne: '',
+					menage_id: null,
+					enfant_moins_six_ans: '',
+					date_presence: '' 
+					
+				} ;
+
+			vm.allFichepresencebienetre.unshift(item);
+			vm.allFichepresencebienetre.forEach(function(af)
+			{
+			  if(af.$selected == true)
+			  {
+				vm.selectedItemFichepresencebienetre = af;
+				
+			  }
+			});
+		}
+
+		vm.modifierFichepresencebienetre = function()
+		{
+			vm.nouvelItemFichepresencebienetre = false ;
+			vm.selectedItemFichepresencebienetre.$edit = true;
+		
+			current_selectedItemFichepresencebienetre = angular.copy(vm.selectedItemFichepresencebienetre);
+			
+			vm.selectedItemFichepresencebienetre.numero_ligne      = vm.selectedItemFichepresencebienetre.numero_ligne;
+			vm.selectedItemFichepresencebienetre.menage_id      = vm.selectedItemFichepresencebienetre.menage.id;
+			vm.selectedItemFichepresencebienetre.enfant_moins_six_ans  = vm.selectedItemFichepresencebienetre.enfant_moins_six_ans;      
+			vm.selectedItemFichepresencebienetre.date_presence    = new Date(vm.selectedItemFichepresencebienetre.date_presence);  
+		}
+
+		vm.supprimerFichepresencebienetre = function()
+		{
+
+			
+			var confirm = $mdDialog.confirm()
+			  .title('Etes-vous sûr de supprimer cet enregistrement ?')
+			  .textContent('Cliquer sur OK pour confirmer')
+			  .ariaLabel('Lucky day')
+			  .clickOutsideToClose(true)
+			  .parent(angular.element(document.body))
+			  .ok('OK')
+			  .cancel('Annuler');
+			$mdDialog.show(confirm).then(function() {
+
+			vm.enregistrer_Fichepresencebienetre(1);
+			}, function() {
+			//alert('rien');
+			});
+		}
+
+		vm.annulerFichepresencebienetre = function()
+		{
+			if (vm.nouvelItemFichepresencebienetre) 
+			{
+				
+				vm.allFichepresencebienetre.shift();
+				vm.selectedItemFichepresencebienetre = {} ;
+				vm.nouvelItemFichepresencebienetre = false ;
+			}
+			else
+			{
+				
+
+				if (!vm.selectedItemFichepresencebienetre.$edit) //annuler selection
+				{
+					vm.selectedItemFichepresencebienetre.$selected = false;
+					vm.selectedItemFichepresencebienetre = {};
+				}
+				else
+				{
+					vm.selectedItemFichepresencebienetre.$selected = false;
+					vm.selectedItemFichepresencebienetre.$edit = false;
+
+					vm.selectedItemFichepresencebienetre.numero_ligne      = current_selectedItemFichepresencebienetre.numero_ligne;
+					vm.selectedItemFichepresencebienetre.menage_id      = current_selectedItemFichepresencebienetre.menage.id;
+					vm.selectedItemFichepresencebienetre.enfant_moins_six_ans  = current_selectedItemFichepresencebienetre.enfant_moins_six_ans;      
+					vm.selectedItemFichepresencebienetre.date_presence    = current_selectedItemFichepresencebienetre.date_presence; 
+					
+					vm.selectedItemFichepresencebienetre = {};
+				}
+
+				
+
+			}
+		}
+
+		vm.enregistrerFichepresencebienetre = function(etat_suppression)
+		{
+			vm.affiche_load = true ;
+			var config = {
+				headers : {
+					'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+				}
+			};
+
+
+			var datas = $.param(
+			{                        
+				supprimer        :etat_suppression,
+				id               : vm.selectedItemFichepresencebienetre.id,
+				numero_ligne     : vm.selectedItemFichepresencebienetre.numero_ligne,      
+				menage_id        : vm.selectedItemFichepresencebienetre.menage_id,
+				enfant_moins_six_ans    : vm.selectedItemFichepresencebienetre.enfant_moins_six_ans, 
+				date_presence    : formatDateBDD(vm.selectedItemFichepresencebienetre.date_presence),       
+				id_groupe_ml_pl  : vm.selectedItem.id
+
+
+			});
+
+			apiFactory.add("fichepresence_bienetre/index",datas, config).success(function (data)
+			{
+				vm.affiche_load = false ;
+				if (!vm.nouvelItemFichepresencebienetre) 
+				{
+					if (etat_suppression == 0) 
+					{    var men = vm.all_menages.filter(function(obj)
+						{
+							return obj.id == vm.selectedItemFichepresencebienetre.menage_id;
+						});                             
+						vm.selectedItemFichepresencebienetre.menage = men[0] ;                             
+						vm.selectedItemFichepresencebienetre.$edit = false ;
+						vm.selectedItemFichepresencebienetre.$selected = false ;
+						vm.selectedItemFichepresencebienetre = {} ;
+					}
+					else
+					{
+						vm.allFichepresencebienetre = vm.allFichepresencebienetre.filter(function(obj)
+						{
+							return obj.id !== vm.selectedItemFichepresencebienetre.id;
+						});
+
+						vm.selectedItemFichepresencebienetre = {} ;
+					}
+
+				}
+				else
+				{   
+					var men = vm.all_menages.filter(function(obj)
+					{
+						return obj.id == vm.selectedItemFichepresencebienetre.menage_id;
+					});                             
+					
+					vm.selectedItemFichepresencebienetre.menage = men[0] ;
+					vm.selectedItemFichepresencebienetre.$edit = false ;
+					vm.selectedItemFichepresencebienetre.$selected = false ;
+					vm.selectedItemFichepresencebienetre.id = String(data.response) ;
+
+					vm.nouvelItemFichepresencebienetre = false ;
+					vm.selectedItemFichepresencebienetre = {};
+
+				}
+			})
+			.error(function (data) {alert("Une erreur s'est produit");});
+		}
+
+		vm.click_tab_fichepresencebienetre = function()
+		{
+			vm.affiche_load = true ;
+			apiFactory.getAPIgeneraliserREST("fichepresence_bienetre/index","menu","getfichepresencebygroupe","id_groupe_ml_pl",vm.selectedItem.id).then(function(result){
+				vm.allFichepresencebienetre= result.data.response;
+				console.log(vm.allFichepresencebienetre);
+				vm.affiche_load = false ;
+
+			});
+		}
+		vm.modifier_menage = function(item)
+		{ 	
+			item.nombre_enfant_moins_six_ans = 0;
+			var men = vm.all_menages.filter(function(obj)
+			{
+				return obj.id == item.menage_id;
+			});
+			console.log(men[0]);
+			if (parseInt(men[0].nombre_enfant_moins_six_ans)>0)
+			{
+				item.enfant_moins_six_ans = men[0].nombre_enfant_moins_six_ans;
+			}
+			
+		}
+		//FIN FICHE PRESENCE BIEN ETRE
+
+		//DEBUT FICHE SUPERVISION MLPL
+
+		vm.fiche_supervision_mlpl_column = 
+		[
+			{titre:"Consultant ONG"},
+			{titre:"Type supervision"},
+			{titre:"Personne rencontree"},
+			{titre:"Organisation consultant"},
+			{titre:"Planning activite consultant"},
+			{titre:"Nom missionnaire"},
+			{titre:"Date supervision"},
+			{titre:"Date prevue debut"},
+			{titre:"Date prevue fin"},
+			{titre:"Nom representant"}
+		]; 
+
+		vm.selectionFiche_supervision_mlpl = function(item)
+		{
+			vm.selectedItemFiche_supervision_mlpl = item ;
+
+			if (!vm.selectedItemFiche_supervision_mlpl.$edit) 
+			{
+				vm.nouvelItemFiche_supervision_mlpl = false ;
+			}
+
+		}
+
+		$scope.$watch('vm.selectedItemFiche_supervision_mlpl', function()
+		{
+			if (!vm.allFiche_supervision_mlpl) return;
+			vm.allFiche_supervision_mlpl.forEach(function(item)
+			{
+				item.$selected = false;
+			});
+			vm.selectedItemFiche_supervision_mlpl.$selected = true;
+
+		});
+
+		vm.ajouterFiche_supervision_mlpl = function()
+		{
+			vm.nouvelItemFiche_supervision_mlpl = true ;
+			var item = 
+				{                            
+					$edit: true,
+					$selected: true,
+					id:'0',
+					id_consultant_ong: '',
+					type_supervision: '',
+					personne_rencontree: '',
+					organisation_consultant: '',
+					planning_activite_consultant: '',
+					nom_missionnaire: '',
+					date_supervision: null,
+					date_prevue_debut: null,
+					date_prevue_fin: null,
+					nom_representant_mlpl: '' 
+					
+				} ;
+
+			vm.allFiche_supervision_mlpl.unshift(item);
+			vm.allFiche_supervision_mlpl.forEach(function(af)
+			{
+			  if(af.$selected == true)
+			  {
+				vm.selectedItemFiche_supervision_mlpl = af;
+				
+			  }
+			});
+		}
+
+		vm.modifierFiche_supervision_mlpl = function()
+		{
+			vm.nouvelItemFiche_supervision_mlpl = false ;
+			vm.selectedItemFiche_supervision_mlpl.$edit = true;
+		
+			current_selectedItemFiche_supervision_mlpl = angular.copy(vm.selectedItemFiche_supervision_mlpl);
+			
+			vm.selectedItemFiche_supervision_mlpl.id_consultant_ong 	= vm.selectedItemFiche_supervision_mlpl.consultant_ong.id;
+			vm.selectedItemFiche_supervision_mlpl.type_supervision 		= vm.selectedItemFiche_supervision_mlpl.type_supervision;
+			vm.selectedItemFiche_supervision_mlpl.personne_rencontree 	= vm.selectedItemFiche_supervision_mlpl.personne_rencontree;
+			vm.selectedItemFiche_supervision_mlpl.organisation_consultant = vm.selectedItemFiche_supervision_mlpl.organisation_consultant;
+			vm.selectedItemFiche_supervision_mlpl.planning_activite_consultant = vm.selectedItemFiche_supervision_mlpl.planning_activite_consultant;
+			vm.selectedItemFiche_supervision_mlpl.nom_missionnaire 		= vm.selectedItemFiche_supervision_mlpl.nom_missionnaire;
+			vm.selectedItemFiche_supervision_mlpl.date_supervision 		= new Date(vm.selectedItemFiche_supervision_mlpl.date_supervision);
+			vm.selectedItemFiche_supervision_mlpl.date_prevue_debut 	= new Date(vm.selectedItemFiche_supervision_mlpl.date_prevue_debut);
+			vm.selectedItemFiche_supervision_mlpl.date_prevue_fin 		= new Date(vm.selectedItemFiche_supervision_mlpl.date_prevue_fin);
+			vm.selectedItemFiche_supervision_mlpl.nom_representant_mlpl = vm.selectedItemFiche_supervision_mlpl.nom_representant_mlpl;
+		}
+
+		vm.supprimerFiche_supervision_mlpl = function()
+		{
+
+			
+			var confirm = $mdDialog.confirm()
+			  .title('Etes-vous sûr de supprimer cet enregistrement ?')
+			  .textContent('Cliquer sur OK pour confirmer')
+			  .ariaLabel('Lucky day')
+			  .clickOutsideToClose(true)
+			  .parent(angular.element(document.body))
+			  .ok('OK')
+			  .cancel('Annuler');
+			$mdDialog.show(confirm).then(function() {
+
+			vm.enregistrer_Fiche_supervision_mlpl(1);
+			}, function() {
+			//alert('rien');
+			});
+		}
+
+		vm.annulerFiche_supervision_mlpl = function()
+		{
+			if (vm.nouvelItemFiche_supervision_mlpl) 
+			{
+				
+				vm.allFiche_supervision_mlpl.shift();
+				vm.selectedItemFiche_supervision_mlpl = {} ;
+				vm.nouvelItemFiche_supervision_mlpl = false ;
+			}
+			else
+			{
+				
+
+				if (!vm.selectedItemFiche_supervision_mlpl.$edit) //annuler selection
+				{
+					vm.selectedItemFiche_supervision_mlpl.$selected = false;
+					vm.selectedItemFiche_supervision_mlpl = {};
+				}
+				else
+				{
+					vm.selectedItemFiche_supervision_mlpl.$selected = false;
+					vm.selectedItemFiche_supervision_mlpl.$edit = false;
+
+					vm.selectedItemFiche_supervision_mlpl.id_consultant_ong 	= current_selectedItemFiche_supervision_mlpl.consultant_ong.id;
+					vm.selectedItemFiche_supervision_mlpl.type_supervision 		= current_selectedItemFiche_supervision_mlpl.type_supervision;
+					vm.selectedItemFiche_supervision_mlpl.personne_rencontree 	= current_selectedItemFiche_supervision_mlpl.personne_rencontree;
+					vm.selectedItemFiche_supervision_mlpl.organisation_consultant = current_selectedItemFiche_supervision_mlpl.organisation_consultant;
+					vm.selectedItemFiche_supervision_mlpl.planning_activite_consultant = current_selectedItemFiche_supervision_mlpl.planning_activite_consultant;
+					vm.selectedItemFiche_supervision_mlpl.nom_missionnaire 		= current_selectedItemFiche_supervision_mlpl.nom_missionnaire;
+					vm.selectedItemFiche_supervision_mlpl.date_supervision 		= current_selectedItemFiche_supervision_mlpl.date_supervision;
+					vm.selectedItemFiche_supervision_mlpl.date_prevue_debut 	= current_selectedItemFiche_supervision_mlpl.date_prevue_debut;
+					vm.selectedItemFiche_supervision_mlpl.date_prevue_fin 		= current_selectedItemFiche_supervision_mlpl.date_prevue_fin;
+					vm.selectedItemFiche_supervision_mlpl.nom_representant_mlpl = current_selectedItemFiche_supervision_mlpl.nom_representant_mlpl;
+					
+					vm.selectedItemFiche_supervision_mlpl = {};
+				}
+
+				
+
+			}
+		}
+
+		vm.enregistrerFiche_supervision_mlpl = function(etat_suppression)
+		{
+			vm.affiche_load = true ;
+			var config = {
+				headers : {
+					'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+				}
+			};
+
+
+			var datas = $.param(
+			{                        
+				supprimer        :etat_suppression,
+				id               : vm.selectedItemFiche_supervision_mlpl.id,
+				id_consultant_ong 	: vm.selectedItemFiche_supervision_mlpl.id_consultant_ong,
+				type_supervision 		: vm.selectedItemFiche_supervision_mlpl.type_supervision,
+				personne_rencontree 	: vm.selectedItemFiche_supervision_mlpl.personne_rencontree,
+				organisation_consultant : vm.selectedItemFiche_supervision_mlpl.organisation_consultant,
+				planning_activite_consultant : vm.selectedItemFiche_supervision_mlpl.planning_activite_consultant,
+				nom_missionnaire 		: vm.selectedItemFiche_supervision_mlpl.nom_missionnaire,
+				date_supervision 		: formatDateBDD(vm.selectedItemFiche_supervision_mlpl.date_supervision),
+				date_prevue_debut 		: formatDateBDD(vm.selectedItemFiche_supervision_mlpl.date_prevue_debut),
+				date_prevue_fin 		: formatDateBDD(vm.selectedItemFiche_supervision_mlpl.date_prevue_fin),
+				nom_representant_mlpl : vm.selectedItemFiche_supervision_mlpl.nom_representant_mlpl,
+				id_groupemlpl  		: vm.selectedItem.id
+
+			});
+
+			apiFactory.add("fiche_supervision_mlpl/index",datas, config).success(function (data)
+			{
+				vm.affiche_load = false ;
+				if (!vm.nouvelItemFiche_supervision_mlpl) 
+				{
+					if (etat_suppression == 0) 
+					{    var consu = vm.allConsultant_ong.filter(function(obj)
+						{
+							return obj.id == vm.selectedItemFiche_supervision_mlpl.id_consultant_ong;
+						});                             
+						vm.selectedItemFiche_supervision_mlpl.consultant_ong = consu[0] ;                             
+						vm.selectedItemFiche_supervision_mlpl.$edit = false ;
+						vm.selectedItemFiche_supervision_mlpl.$selected = false ;
+						vm.selectedItemFiche_supervision_mlpl = {} ;
+					}
+					else
+					{
+						vm.allFiche_supervision_mlpl = vm.allFiche_supervision_mlpl.filter(function(obj)
+						{
+							return obj.id !== vm.selectedItemFiche_supervision_mlpl.id;
+						});
+
+						vm.selectedItemFiche_supervision_mlpl = {} ;
+					}
+
+				}
+				else
+				{   
+					var consu = vm.allConsultant_ong.filter(function(obj)
+					{
+						return obj.id == vm.selectedItemFiche_supervision_mlpl.id_consultant_ong;
+					});                             
+					vm.selectedItemFiche_supervision_mlpl.consultant_ong = consu[0] ; 
+					vm.selectedItemFiche_supervision_mlpl.$edit = false ;
+					vm.selectedItemFiche_supervision_mlpl.$selected = false ;
+					vm.selectedItemFiche_supervision_mlpl.id = String(data.response) ;
+
+					vm.nouvelItemFiche_supervision_mlpl = false ;
+					vm.selectedItemFiche_supervision_mlpl = {};
+
+				}
+			})
+			.error(function (data) {alert("Une erreur s'est produit");});
+		}
+
+		vm.click_tab_fiche_supervision_mlpl = function()
+		{
+			vm.affiche_load = true ;
+			apiFactory.getAPIgeneraliserREST("fiche_supervision_mlpl/index","menu","getfiche_previsionbygroupe","id_groupemlpl",vm.selectedItem.id).then(function(result){
+				vm.allFiche_supervision_mlpl= result.data.response;
+				console.log(vm.allFiche_supervision_mlpl);
+				vm.affiche_load = false ;
+
+			});
+		}
+		//FIN FICHE SUPERVISION MLPL
+		
+		//DEBUT POINT A VERIFIER MLPL
+
+		vm.point_a_verifier_mlpl_column = 
+		[
+			{titre:"Intitulé du point à vérifier"},
+			{titre:"Appréciation"},
+			{titre:"Solution/Recommandation"},
+			{titre:"Observation"}
+		]; 
+
+		vm.selectionPoint_a_verifier_mlpl = function(item)
+		{
+			vm.selectedItemPoint_a_verifier_mlpl = item ;
+
+			if (!vm.selectedItemPoint_a_verifier_mlpl.$edit) 
+			{
+				vm.nouvelItemPoint_a_verifier_mlpl = false ;
+			}
+
+		}
+
+		$scope.$watch('vm.selectedItemPoint_a_verifier_mlpl', function()
+		{
+			if (!vm.allPoint_a_verifier_mlpl) return;
+			vm.allPoint_a_verifier_mlpl.forEach(function(item)
+			{
+				item.$selected = false;
+			});
+			vm.selectedItemPoint_a_verifier_mlpl.$selected = true;
+
+		});
+
+		vm.ajouterPoint_a_verifier_mlpl = function()
+		{
+			vm.nouvelItemPoint_a_verifier_mlpl = true ;
+			var item = 
+				{                            
+					$edit: true,
+					$selected: true,
+					id:'0',
+					intitule_verifie: '',
+					appreciation: '',
+					solution: '',
+					observation: '' 
+					
+				} ;
+
+			vm.allPoint_a_verifier_mlpl.unshift(item);
+			vm.allPoint_a_verifier_mlpl.forEach(function(af)
+			{
+			  if(af.$selected == true)
+			  {
+				vm.selectedItemPoint_a_verifier_mlpl = af;
+				
+			  }
+			});
+		}
+
+		vm.modifierPoint_a_verifier_mlpl = function()
+		{
+			vm.nouvelItemPoint_a_verifier_mlpl = false ;
+			vm.selectedItemPoint_a_verifier_mlpl.$edit = true;
+		
+			current_selectedItemPoint_a_verifier_mlpl = angular.copy(vm.selectedItemPoint_a_verifier_mlpl);
+			
+			/*vm.selectedItemPoint_a_verifier_mlpl.id_fiche_supervision_mlpl 	= vm.selectedItemPoint_a_verifier_mlpl.fiche_supervision_mlpl.id;
+			vm.selectedItemPoint_a_verifier_mlpl.intitule_verifie 		= vm.selectedItemPoint_a_verifier_mlpl.intitule_verifie;
+			vm.selectedItemPoint_a_verifier_mlpl.appreciation 	= vm.selectedItemPoint_a_verifier_mlpl.appreciation;
+			vm.selectedItemPoint_a_verifier_mlpl.solution = vm.selectedItemPoint_a_verifier_mlpl.solution;
+			vm.selectedItemPoint_a_verifier_mlpl.observation = vm.selectedItemPoint_a_verifier_mlpl.observation;*/
+		}
+
+		vm.supprimerPoint_a_verifier_mlpl = function()
+		{
+
+			
+			var confirm = $mdDialog.confirm()
+			  .title('Etes-vous sûr de supprimer cet enregistrement ?')
+			  .textContent('Cliquer sur OK pour confirmer')
+			  .ariaLabel('Lucky day')
+			  .clickOutsideToClose(true)
+			  .parent(angular.element(document.body))
+			  .ok('OK')
+			  .cancel('Annuler');
+			$mdDialog.show(confirm).then(function() {
+
+			vm.enregistrer_Point_a_verifier_mlpl(1);
+			}, function() {
+			//alert('rien');
+			});
+		}
+
+		vm.annulerPoint_a_verifier_mlpl = function()
+		{
+			if (vm.nouvelItemPoint_a_verifier_mlpl) 
+			{
+				
+				vm.allPoint_a_verifier_mlpl.shift();
+				vm.selectedItemPoint_a_verifier_mlpl = {} ;
+				vm.nouvelItemPoint_a_verifier_mlpl = false ;
+			}
+			else
+			{
+				
+
+				if (!vm.selectedItemPoint_a_verifier_mlpl.$edit) //annuler selection
+				{
+					vm.selectedItemPoint_a_verifier_mlpl.$selected = false;
+					vm.selectedItemPoint_a_verifier_mlpl = {};
+				}
+				else
+				{
+					vm.selectedItemPoint_a_verifier_mlpl.$selected = false;
+					vm.selectedItemPoint_a_verifier_mlpl.$edit = false;
+
+					vm.selectedItemPoint_a_verifier_mlpl.intitule_verifie 		= current_selectedItemPoint_a_verifier_mlpl.intitule_verifie;
+					vm.selectedItemPoint_a_verifier_mlpl.appreciation 	= current_selectedItemPoint_a_verifier_mlpl.appreciation;
+					vm.selectedItemPoint_a_verifier_mlpl.solution = current_selectedItemPoint_a_verifier_mlpl.solution;
+					vm.selectedItemPoint_a_verifier_mlpl.observation = current_selectedItemPoint_a_verifier_mlpl.observation;
+					
+					vm.selectedItemPoint_a_verifier_mlpl = {};
+				}
+
+				
+
+			}
+		}
+
+		vm.enregistrerPoint_a_verifier_mlpl = function(etat_suppression)
+		{
+			vm.affiche_load = true ;
+			var config = {
+				headers : {
+					'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+				}
+			};
+
+
+			var datas = $.param(
+			{                        
+				supprimer        :etat_suppression,
+				id               : vm.selectedItemPoint_a_verifier_mlpl.id,
+				intitule_verifie 			: vm.selectedItemPoint_a_verifier_mlpl.intitule_verifie,
+				appreciation 				: vm.selectedItemPoint_a_verifier_mlpl.appreciation,
+				solution 					: vm.selectedItemPoint_a_verifier_mlpl.solution,
+				observation 				: vm.selectedItemPoint_a_verifier_mlpl.observation,
+				id_fiche_supervision_mlpl  	: vm.selectedItemFiche_supervision_mlpl.id
+
+			});
+
+			apiFactory.add("point_a_verifier_mlpl/index",datas, config).success(function (data)
+			{
+				vm.affiche_load = false ;
+				if (!vm.nouvelItemPoint_a_verifier_mlpl) 
+				{
+					if (etat_suppression == 0) 
+					{                                
+						vm.selectedItemPoint_a_verifier_mlpl.$edit = false ;
+						vm.selectedItemPoint_a_verifier_mlpl.$selected = false ;
+						vm.selectedItemPoint_a_verifier_mlpl = {} ;
+					}
+					else
+					{
+						vm.allPoint_a_verifier_mlpl = vm.allPoint_a_verifier_mlpl.filter(function(obj)
+						{
+							return obj.id !== vm.selectedItemPoint_a_verifier_mlpl.id;
+						});
+
+						vm.selectedItemPoint_a_verifier_mlpl = {} ;
+					}
+
+				}
+				else
+				{  
+					vm.selectedItemPoint_a_verifier_mlpl.$edit = false ;
+					vm.selectedItemPoint_a_verifier_mlpl.$selected = false ;
+					vm.selectedItemPoint_a_verifier_mlpl.id = String(data.response) ;
+
+					vm.nouvelItemPoint_a_verifier_mlpl = false ;
+					vm.selectedItemPoint_a_verifier_mlpl = {};
+
+				}
+			})
+			.error(function (data) {alert("Une erreur s'est produit");});
+		}
+
+		vm.click_tab_point_a_verifier_mlpl = function()
+		{
+			vm.affiche_load = true ;
+			apiFactory.getAPIgeneraliserREST("point_a_verifier_mlpl/index","menu","getpoint_a_verifierbyfichesupervision","id_fiche_supervision_mlpl",vm.selectedItemFiche_supervision_mlpl.id).then(function(result){
+				vm.allPoint_a_verifier_mlpl= result.data.response;
+				console.log(vm.allPoint_a_verifier_mlpl);
+				vm.affiche_load = false ;
+
+			});
+		}
+		//FIN POINT A VERIFIER MLPL
+
 		// DEBUT FONCTION UTILITAIRE
 		vm.showAlert = function(titre,textcontent) {         
           $mdDialog.show(

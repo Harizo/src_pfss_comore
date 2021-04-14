@@ -409,7 +409,7 @@
                             vm.selectedItemPges_phases.calendrier_execution    = current_selectedItemPges_phases.calendrier_execution;      
                             vm.selectedItemPges_phases.cout_estimatif  = current_selectedItemPges_phases.cout_estimatif;
                             
-                            vm.selectedItemPges = {};
+                            vm.selectedItemPges_phases = {};
                         }
 
                         
@@ -445,7 +445,7 @@
                     apiFactory.add("pges_phases/index",datas, config).success(function (data)
                     {
                         vm.affiche_load = false ;
-                        if (!vm.nouvelItemPges) 
+                        if (!vm.nouvelItemPges_phases) 
                         {
                             if (etat_suppression == 0) 
                             {                                  
@@ -455,7 +455,7 @@
                             }
                             else
                             {
-                                vm.allPges = vm.allPges.filter(function(obj)
+                                vm.allPges_phases = vm.allPges_phases.filter(function(obj)
                                 {
                                     return obj.id !== vm.selectedItemPges_phases.id;
                                 });
