@@ -212,7 +212,8 @@
 				vm.get_liste_mlpl_by_groupe(item.id);
 				vm.get_listemenage_mlpl_by_groupe(item.id);
 			} 
-			vm.selectedItemFiche_supervision_mlpl = {};      
+			vm.selectedItemFiche_supervision_mlpl = {}; 
+			vm.selectedItemLivrable_mlpl = {};     
 		}
 		$scope.$watch('vm.selectedItem', function() {
 			if (!vm.all_groupe_mlpl) return;

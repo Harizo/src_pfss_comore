@@ -35,6 +35,7 @@
             'app.pfss.gerer_mdp',
 
             'app.pfss.gerer_pges',
+            'app.pfss.communaute_idb',
  
        ])
         .config(config);
