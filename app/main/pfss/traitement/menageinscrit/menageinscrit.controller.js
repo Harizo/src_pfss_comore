@@ -16,8 +16,8 @@
         responsive: true
       };
 
-      vm.menage_column = [{titre:"Numero d'enregistrement"},{titre:"Chef Ménage"},
-      {titre:"Age chef de ménage"},{titre:"Sexe"},{titre:"Addresse"},{titre:"Personne inscrire"},{titre:"Etat envoie"}];
+      vm.menage_column = [{titre:"Identifiant"},{titre:"N° d'enreg"},{titre:"Chef Ménage"},{titre:"Age"},{titre:"Sexe"},{titre:"Conjoint"},
+      {titre:"Addresse"},{titre:"Personne inscrire"},{titre:"Etat envoie"}];
       // vm.menage_column = [{titre:"Numero d'enregistrement"},{titre:"Chef Ménage"},
       // {titre:"Age chef de ménage"},{titre:"Sexe"},{titre:"Addresse"},{titre:"Personne inscrire"},{titre:"Etat envoie"}];
       vm.individu_column = [{titre:"Nom et prénom"},{titre:"Date de naissance"},{titre:"Sexe"},{titre:"Lien de parenté"},{titre:"Scolarisé"},{titre:"Activite"},{titre:"Aptitude"},{titre:"Travailleur"}];
@@ -44,114 +44,6 @@
       //initialisation variable
 
       //test check radio button
-
-		var type_logement_checked = 0 ;
-		var occupation_logement_checked = 0 ;
-		var toillete_checked = 0 ;
-		var checked_id_lien_parente = 0 ;
-		var checked_situation_matrimoniale = 0 ;
-		var checked_id_handicap_visuel = 0 ;
-		var checked_id_handicap_parole = 0 ;
-		var checked_id_handicap_auditif = 0 ;
-		var checked_id_handicap_mental = 0 ;
-		var checked_id_handicap_moteur = 0 ;
-		var checked_id_langue = 0 ;
-		var checked_id_type_ecole = 0 ;
-		var checked_id_niveau_de_classe = 0 ;
-		var checked_id_groupe_appartenace = 0 ;
-        vm.tab_reponse_langue = [] ;
-		vm.test_check_type_logement = function() {
-			if (type_logement_checked == vm.id_type_logement) {
-				vm.id_type_logement = null ;
-			}  else {
-				type_logement_checked = vm.id_type_logement ;
-			}
-		}
-		vm.test_check_occupation_logement = function() {
-			if (occupation_logement_checked == vm.id_occupation_logement) {
-				vm.id_occupation_logement = null ;
-			}  else {
-				occupation_logement_checked = vm.id_occupation_logement ;
-			}
-		}
-		vm.test_check_id_lien_parente = function() {
-			if (checked_id_lien_parente == vm.reponse_individu.id_lien_de_parente) {
-				vm.reponse_individu.id_lien_de_parente = null ;
-			} else {
-				checked_id_lien_parente = vm.reponse_individu.id_lien_de_parente ;
-			}
-		}
-		vm.test_check_situation_matrimoniale = function() {
-			if (checked_situation_matrimoniale == vm.reponse_individu.situation_matrimoniale) {
-				vm.reponse_individu.situation_matrimoniale = null ;
-			} else {
-			checked_situation_matrimoniale = vm.reponse_individu.situation_matrimoniale ;
-			}
-		}
-		vm.test_check_id_handicap_visuel = function() {
-			if (checked_id_handicap_visuel == vm.reponse_individu.id_handicap_visuel) {
-				vm.reponse_individu.id_handicap_visuel = null ;
-			} else {
-				checked_id_handicap_visuel = vm.reponse_individu.id_handicap_visuel ;
-			}
-		}
-		vm.test_check_id_handicap_parole = function()  {
-			if (checked_id_handicap_parole == vm.reponse_individu.id_handicap_parole) {
-				vm.reponse_individu.id_handicap_parole = null ;
-			} else {
-				checked_id_handicap_parole = vm.reponse_individu.id_handicap_parole ;
-			}
-		}
-		vm.test_check_id_handicap_auditif = function() {
-			if (checked_id_handicap_auditif == vm.reponse_individu.id_handicap_auditif) {
-				vm.reponse_individu.id_handicap_auditif = null ;
-			} else {
-				checked_id_handicap_auditif = vm.reponse_individu.id_handicap_auditif ;
-			}
-		}
-		vm.test_check_id_handicap_mental = function() {
-			if (checked_id_handicap_mental == vm.reponse_individu.id_handicap_mental) {
-				vm.reponse_individu.id_handicap_mental = null ;
-			} else {
-				checked_id_handicap_mental = vm.reponse_individu.id_handicap_mental ;
-			}
-		}
-		vm.test_check_id_handicap_moteur = function() {
-			if (checked_id_handicap_moteur == vm.reponse_individu.id_handicap_moteur) {
-				vm.reponse_individu.id_handicap_moteur = null ;
-			} else {
-				checked_id_handicap_moteur = vm.reponse_individu.id_handicap_moteur ;
-			}
-		}
-		vm.test_check_langue = function() {
-			if (checked_id_langue == vm.reponse_individu.langue) {
-				vm.reponse_individu.id_langue = null ;
-			} else {
-				checked_langue = vm.reponse_individu.langue ;
-			}
-		}
-		vm.test_check_id_type_ecole = function() {
-			if (checked_id_type_ecole == vm.reponse_individu.id_type_ecole) {
-				vm.reponse_individu.id_type_ecole = null ;
-			} else {
-				checked_id_type_ecole = vm.reponse_individu.id_type_ecole ;
-			}
-		}
-		vm.test_check_id_niveau_de_classe = function() {
-			if (checked_id_niveau_de_classe == vm.reponse_individu.id_niveau_de_classe) {
-				vm.reponse_individu.id_niveau_de_classe = null ;
-			} else {
-				checked_id_niveau_de_classe = vm.reponse_individu.id_niveau_de_classe ;
-			}
-		}
-		vm.test_check_id_groupe_appartenace = function() {
-			if (checked_id_groupe_appartenace == vm.reponse_individu.id_groupe_appartenace) {
-				vm.reponse_individu.id_groupe_appartenace = null ;
-			} else {
-				checked_id_groupe_appartenace = vm.reponse_individu.id_groupe_appartenace ;
-			}
-		}
-      //fin test check radio button
       //chargement clé etrangère et données de bases
         vm.id_user_cookies = $cookieStore.get('id');
 		apiFactory.getOne("utilisateurs/index",vm.id_user_cookies).then(function(result) { 
@@ -194,7 +86,7 @@
           vm.filtre.id_region = null ; 
           vm.filtre.id_commune = null ; 
           vm.filtre.village_id = null ; 
-          vm.get_max_id_generer_ref();
+          // vm.get_max_id_generer_ref();
           
         });
 
@@ -207,14 +99,14 @@
           vm.all_commune = result.data.response; 
           vm.filtre.id_commune = null ; 
           vm.filtre.village_id = null ; 
-          vm.get_max_id_generer_ref();  
+          // vm.get_max_id_generer_ref();  
           
         });
       }
 
       vm.generer_ref = function()
       {
-        vm.get_max_id_generer_ref();
+        // vm.get_max_id_generer_ref();
       }
 
       vm.filtre_village = function()
@@ -287,7 +179,7 @@
 			vm.filtre.SexeChefMenage = '' ;
 			vm.filtre.Addresse = '' ;
 			vm.filtre.DateInscription = new Date() ;
-			vm.get_max_id_generer_ref();
+			// vm.get_max_id_generer_ref();
 		}
 		vm.ajouter_menage = function() {
 			vm.nouvelle_element = true ;
@@ -356,11 +248,11 @@
 			vm.filtre.quartier  = null ;
 			vm.filtre.milieu  = null ;
 			vm.filtre.zip  = null ;
-			vm.get_max_id_generer_ref();		  
+			// vm.get_max_id_generer_ref();		  
 		}
 		vm.modifier = function()  {
 			vm.nouvelle_element = false ;
-			vm.essai={};
+			// vm.filtre={};
 			vm.filtre.DateInscription = new Date(vm.selectedItem.DateInscription);
 			vm.filtre.village_id = vm.selectedItem.village_id ;
 			vm.filtre.nomchefmenage = vm.selectedItem.nomchefmenage ;
@@ -455,7 +347,7 @@
 			vm.filtre.rang_obtenu  =  parseInt(vm.selectedItem.rang_obtenu) ;
 			if(vm.selectedItem.inapte) 
 			vm.affichage_masque = true ;
-			vm.get_max_id_generer_ref();
+			// vm.get_max_id_generer_ref();
 		}
 		vm.faire_preselectionner = function () {
 			var temp = "Etes-vous sûr de faire Présélecttionner le menage " + vm.selectedItem.NumeroEnregistrement + "  chef ménage : " + vm.selectedItem.nomchefmenage + " ?";
@@ -479,7 +371,7 @@
 						  id: vm.selectedItem.id ,
 						  mise_a_jour_statut: 1,
 						  statut: "PRESELECTIONNE",
-						  identifiant_menage: vm.filtre.identifiant_menage,
+						  identifiant_menage: vm.selectedItem.identifiant_menage,
 						});
 					vm.filtre.statut="PRESELECTIONNE";	
 				apiFactory.add("menage/index",datas, config).success(function (data)  {
@@ -504,6 +396,7 @@
 		vm.annuler = function () {
 			vm.nouvelle_element = false ;
 			vm.affichage_masque = false ;
+			vm.selectedItem={};
 		}
 		vm.annuler_individu = function()  {
 			vm.nouvelle_element_individu = false ;
@@ -530,19 +423,22 @@
 			vm.individu_masque.date_naissance = new Date(vm.selectedItem_individu.date_naissance) ;
 		}
 		vm.generer_ref = function()  {
-			vm.get_max_id_generer_ref();
+			// vm.get_max_id_generer_ref();
 		}
 		vm.filtrer = function()	{
 			vm.affiche_load = true ;
-			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"statut","INSCRIT").then(function(result) { 
-				vm.all_menages = result.data.response;    
+			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"statut","INSCRIT","id_sous_projet",vm.filtre.id_sous_projet).then(function(result) { 
+				vm.all_menages = result.data.response;   
+				var msg ="Aucun ménage inscrit dans le village de " +vm.filtre.village + " pour le sous-projet/Activité : " + vm.filtre.sous_projet + ". Merci !";				
+				if(result.data.response.length==0) {
+					vm.showAlert("INFORMATION",msg);
+				}	
 				vm.affiche_load = false ;
 			});
 		}
 		vm.get_individus_by_menage = function(menage_id) {
 			vm.affiche_load = true ;
 			apiFactory.getAPIgeneraliserREST("individu/index","cle_etrangere",menage_id).then(function(result) 	{ 
-				vm.all_individus =[];
 				vm.all_individus = result.data.response; 
 				vm.all_individus.forEach(function(obj) {
 					vm.lien_de_parente="";
@@ -552,8 +448,8 @@
 						}
 					});
 					obj.lien_de_parente=vm.lien_de_parente;
-				});				
-				console.log(vm.all_individus);
+				});
+				// console.log(vm.all_individus);
 				vm.affiche_load = false ;
 			});
 		}
@@ -649,20 +545,28 @@
 					vm.acteur.lien_de_parente=null;
 			}
 		}
-		
+		vm.modifierSousProjet = function(filtre) {
+			vm.all_sous_projet.forEach(function(ssp) {
+				if(parseInt(ssp.id)==parseInt(vm.filtre.id_sous_projet)) {
+					vm.filtre.sous_projet = ssp.description; 
+					vm.nontrouvee=false;
+				}
+			});			
+		}
+		vm.modifierVillage = function(filtre) {
+			vm.all_village.forEach(function(vil) {
+				if(parseInt(vil.id)==parseInt(vm.filtre.village_id)) {
+					vm.filtre.village = vil.Village; 
+					vm.nontrouvee=false;
+				}
+			});			
+		}
 		vm.selection= function (item)  {
 			if ((!vm.affiche_load)&&(!vm.affichage_masque))  {
-				//vidage tab reponse
-				vm.all_individus = [] ;
-				//vidage tab reponse
 				vm.selectedItem_individu = {} ;//raz individu_selected
 				vm.selectedItem = item;
-				console.log(vm.selectedItem);
-				//get individu
 				vm.get_individus_by_menage(item.id);
 				vm.charger_detail_reponse_menage(item);
-				vm.get_menage_intervetion_by_menage(item.id);
-				//get individu
 			}       
 		}
 		$scope.$watch('vm.selectedItem', function() {
@@ -963,6 +867,7 @@
 			apiFactory.add("menage/index",datas, config).success(function (data) {
 				vm.affichage_masque = false ;
 				vm.disable_button = false ;
+				vm.affiche_load = false ;
 				vm.showAlert("Information",'Enregistrement réussi!');
 				if (vm.nouvelle_element) {
 					var mng={
@@ -1096,6 +1001,10 @@
 					vm.selectedItem.quartier = vm.filtre.quartier  ;
 					vm.selectedItem.milieu = vm.filtre.milieu  ;
 					vm.selectedItem.zip = vm.filtre.zip  ;
+					vm.selectedItem.$selected=false;
+					vm.selectedItem.$edit=false;
+					vm.selectedItem={};
+					vm.all_individus=[];
   				}      
 			}).error(function (data) {
 				vm.disable_button = false ;
@@ -1177,32 +1086,33 @@
 		vm.charger_detail_reponse_menage= function(item) {
 				vm.affiche_load=true;
 				apiFactory.getAPIgeneraliser("reponse_menage/index","cle_etrangere",vm.selectedItem.id).then(function(result) {
-					console.log(result.data.response);
-					item.detail_reponse_menage_multiple = result.data.response.variable_choix_multiple; 
-					item.detail_reponse_menage_unique = result.data.response.variable_choix_unique; 
-					vm.selectedItem.detail_reponse_menage_multiple = result.data.response.variable_choix_multiple; 
-					vm.selectedItem.detail_reponse_menage_unique = result.data.response.variable_choix_unique; 
-					vm.menage_prevu=result.data.response.menage_prevu;
-					vm.individu_prevu=result.data.response.individu_prevu;
-					vm.groupe_prevu=result.data.response.groupe_prevu;
-					if(parseInt(vm.menage_prevu)==1) {
-						vm.afficher_cible="MENAGE";
-					} else if(parseInt(vm.individu_prevu)==1) {
-						vm.afficher_cible="INDIVIDU";
-					} else {
-						vm.afficher_cible="GROUPE";
-					}
+					// console.log(result.data.response);
+					// item.detail_reponse_menage_unique = result.data.response.variable_choix_unique; 
+					// vm.selectedItem.detail_reponse_menage_unique = result.data.response.variable_choix_unique; 
+					// item.detail_reponse_menage_multiple = result.data.response.variable_choix_multiple; 
+					// vm.selectedItem.detail_reponse_menage_multiple = result.data.response.variable_choix_multiple; 
+					// vm.menage_prevu=result.data.response.menage_prevu;
+					// vm.individu_prevu=result.data.response.individu_prevu;
+					// vm.groupe_prevu=result.data.response.groupe_prevu;
+					// if(parseInt(vm.menage_prevu)==1) {
+						// vm.afficher_cible="MENAGE";
+					// } else if(parseInt(vm.individu_prevu)==1) {
+						// vm.afficher_cible="INDIVIDU";
+					// } else {
+						// vm.afficher_cible="GROUPE";
+					// }
 					vm.tab_reponse_variable=[];
 					vm.choix_unique=[];
-					if(item.detail_reponse_menage_multiple.length >0 || item.detail_reponse_menage_unique.length >0) {
+					// if(item.detail_reponse_menage_multiple.length >0 || item.detail_reponse_menage_unique.length >0) {
+					if(result.data.response.variable_choix_multiple.length >0 || result.data.response.variable_choix_unique.length >0) {
 						vm.tab_reponse_variable = result.data.response.variable_choix_multiple; 
 						vm.choix_unique=result.data.response.variable_choix_unique;
 						vm.id_enquete_menage=1;
 					} else {
 						vm.id_enquete_menage=1;
 					}
-					item.detail_variable_charge=1;
-					vm.selectedItem.detail_variable_charge=1;
+					// item.detail_variable_charge=1;
+					// vm.selectedItem.detail_variable_charge=1;
 					if(vm.selectedItem.nombre_personne_plus_soixantedixans)
 					vm.filtre.nombre_personne_plus_soixantedixans =  parseInt(vm.selectedItem.nombre_personne_plus_soixantedixans) ;
 					if(vm.selectedItem.taille_menage)

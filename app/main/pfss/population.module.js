@@ -33,6 +33,7 @@
             'app.pfss.contrat_agep',
 
             'app.pfss.gerer_mdp',
+            'app.pfss.importationmenage',
  
        ])
         .config(config);
