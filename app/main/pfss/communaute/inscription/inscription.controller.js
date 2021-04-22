@@ -119,7 +119,7 @@
         {  
             if (NouvelItem == false)
             {          
-                item.$selected=false;
+                //item.$selected=false;
                 item.$edit=false;
                 NouvelItem = false;
                 item.id_zip   = currentItem.zip.id;

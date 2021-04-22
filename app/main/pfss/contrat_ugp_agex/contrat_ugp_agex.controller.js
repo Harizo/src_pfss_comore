@@ -122,6 +122,13 @@
                 vm.affichage_masque = true ;
                 vm.contrat_ugp_agex.status_contrat = "En cours";
                 nouvelle_contrat_ugp_agex = true;
+
+            }
+
+            vm.annuler = function () 
+            {
+                vm.affichage_masque = false ;
+                nouvelle_contrat_ugp_agex = false;
             }
 
             vm.modif_contrat_ugp_agex = function () 
@@ -244,7 +251,7 @@
                                 vm.selected_contrat_ugp_agex.note_resiliation = data_masque.note_resiliation ;
                                 
 
-                                
+                                vm.contrat_ugp_agex = {} ;
 
                                 
                             }
@@ -287,6 +294,7 @@
                             }
 
                             vm.all_contrat_ugp_agex.unshift(item) ;
+                            vm.contrat_ugp_agex = {} ;
                         }
                         nouvelle_contrat_ugp_agex = false ;
                         vm.affichage_masque = false ;

@@ -25,7 +25,7 @@
 						<md-button class="md-fab md-mini " aria-label="Ajout" ng-click="vm.ajouter()">
 						  <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
 						</md-button>
-						<md-button class="md-fab md-mini" style="background-color: green;" aria-label="Ajout" ng-click="vm.preselectionner()" ng-show="vm.show_bouton_preselection">
+						<md-button class="md-fab md-mini" style="background-color: green;" aria-label="Ajout" ng-click="vm.preselectionner()" ng-show="vm.show_bouton_preselection && vm.selectedItem.id">
 						  <md-icon md-font-icon="icon-check-circle" ></md-icon>
 						  <md-tooltip><span>Faire présélection</span></md-tooltip>
 						</md-button>
