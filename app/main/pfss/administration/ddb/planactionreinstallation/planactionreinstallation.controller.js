@@ -104,6 +104,7 @@ apiFactory.getAll("commune/index").then(function(result){
       ];
       vm.click_tab_sousprojet = function()
       {
+        vm.detail_sousprojet = false;
         apiFactory.getAPIgeneraliserREST("sous_projet/index","menu","getsousprojetbypar","id_par",vm.selectedItemPlan_action_reinstallation.id).then(function(result){
           vm.allRecordsSous_projet = result.data.response;
         });
@@ -203,6 +204,7 @@ apiFactory.getAll("commune/index").then(function(result){
 					  vm.selectedItemSous_projet.communaute = co[0];
 					  vm.selectedItemSous_projet.commune = com[0];
 					  vm.selectedItemSous_projet ={};
+
 					} else {    
 						vm.allRecordsSous_projet = vm.allRecordsSous_projet.filter(function(obj)
             {
@@ -239,6 +241,7 @@ apiFactory.getAll("commune/index").then(function(result){
 				}
 				ss_p.$selected=false;
 				ss_p.$edit=false;
+        vm.detail_sousprojet = false;
 			}).error(function (data)
       {
 				vm.showAlert('Erreur lors de la sauvegarde','Veuillez corriger le(s) erreur(s) !');
@@ -4716,8 +4719,8 @@ vm.fiche_env_column =[
  //{titre:"Region"},
  //{titre:"Commune"},
  {titre:"Composante sous projet"},
- {titre:"Localisation sous projet"},
- {titre:"Localisation géographique"},
+ //{titre:"Localisation sous projet"},
+ //{titre:"Localisation géographique"},
  {titre:"Composante zone susceptible"},
  {titre:"Problèmes environnementaux"},
  {titre:"Mésures envisagées"},
@@ -4766,8 +4769,8 @@ function insert_in_baseFiche_env(entite,suppression)
        //id_region: entite.id_region,      
        //id_commune: entite.id_commune,       
        composante_sousprojet: entite.composante_sousprojet,      
-       localisation_sousprojet: entite.localisation_sousprojet,      
-       localisation_geo: entite.localisation_geo,      
+       //localisation_sousprojet: entite.localisation_sousprojet,      
+       //localisation_geo: entite.localisation_geo,      
        composante_zone_susce: entite.composante_zone_susce,      
        probleme_env: entite.probleme_env,      
        mesure_envisage: entite.mesure_envisage,    
@@ -4807,8 +4810,8 @@ function insert_in_baseFiche_env(entite,suppression)
            //vm.selectedItemFiche_env.id_region    = reg[0];                 
            //vm.selectedItemFiche_env.id_commune   = co[0];       
            vm.selectedItemFiche_env.composante_sousprojet    = entite.composante_sousprojet;      
-           vm.selectedItemFiche_env.localisation_sousprojet  = entite.localisation_sousprojet;      
-           vm.selectedItemFiche_env.localisation_geo         = entite.localisation_geo;      
+           //vm.selectedItemFiche_env.localisation_sousprojet  = entite.localisation_sousprojet;      
+           //vm.selectedItemFiche_env.localisation_geo         = entite.localisation_geo;      
            vm.selectedItemFiche_env.composante_zone_susce    = entite.composante_zone_susce;      
            vm.selectedItemFiche_env.probleme_env             = entite.probleme_env;      
            vm.selectedItemFiche_env.mesure_envisage          = entite.mesure_envisage;    
@@ -4831,7 +4834,8 @@ function insert_in_baseFiche_env(entite,suppression)
          NouvelItemFiche_env=false;
         //entite.ile       = il[0];
         //entite.id_region    = reg[0];                 
-        //entite.id_commune   = co[0]; 
+        //entite.id_commune   = co[0];
+        vm.selectedItemFiche_env ={}; 
        }
        entite.$selected=false;
        entite.$edit=false;
@@ -4882,8 +4886,8 @@ function insert_in_baseFiche_env(entite,suppression)
                //id_region: '',
               // id_commune: '',       
               composante_sousprojet: '',      
-              localisation_sousprojet: '',      
-              localisation_geo: '',      
+              //localisation_sousprojet: '',      
+              //localisation_geo: '',      
               composante_zone_susce: '',      
               probleme_env: '',      
               mesure_envisage: '',    
@@ -4919,8 +4923,8 @@ function insert_in_baseFiche_env(entite,suppression)
            //item.id_region         = currentItemFiche_env.region.id;                   
            //item.id_commune        = currentItemFiche_env.commune.id;       
            item.composante_sousprojet    = currentItemFiche_env.composante_sousprojet;      
-           item.localisation_sousprojet  = currentItemFiche_env.localisation_sousprojet;      
-           item.localisation_geo         = currentItemFiche_env.localisation_geo;      
+           //item.localisation_sousprojet  = currentItemFiche_env.localisation_sousprojet;      
+           //item.localisation_geo         = currentItemFiche_env.localisation_geo;      
            item.composante_zone_susce    = currentItemFiche_env.composante_zone_susce;      
            item.probleme_env             = currentItemFiche_env.probleme_env;      
            item.mesure_envisage          = currentItemFiche_env.mesure_envisage;    
@@ -4955,8 +4959,8 @@ function insert_in_baseFiche_env(entite,suppression)
          //item.id_region         = vm.selectedItemFiche_env.region.id;                           
          //item.id_commune        = vm.selectedItemFiche_env.commune.id;       
          item.composante_sousprojet    = vm.selectedItemFiche_env.composante_sousprojet;      
-         item.localisation_sousprojet  = vm.selectedItemFiche_env.localisation_sousprojet;      
-         item.localisation_geo         = vm.selectedItemFiche_env.localisation_geo;      
+         //item.localisation_sousprojet  = vm.selectedItemFiche_env.localisation_sousprojet;      
+         //item.localisation_geo         = vm.selectedItemFiche_env.localisation_geo;      
          item.composante_zone_susce    = vm.selectedItemFiche_env.composante_zone_susce;      
          item.probleme_env             = vm.selectedItemFiche_env.probleme_env;      
          item.mesure_envisage          = vm.selectedItemFiche_env.mesure_envisage;    
@@ -5013,8 +5017,8 @@ function insert_in_baseFiche_env(entite,suppression)
                           // ||(ag[0].id_region             !=currentItemFiche_env.id_region)                                 
                           // ||(ag[0].id_commune            != currentItemFiche_env.id_commune)       
                            ||(ag[0].composante_sousprojet != currentItemFiche_env.composante_sousprojet)      
-                           ||(ag[0].localisation_sousprojet != currentItemFiche_env.localisation_sousprojet)      
-                           ||(ag[0].localisation_geo        != currentItemFiche_env.localisation_geo)      
+                           //||(ag[0].localisation_sousprojet != currentItemFiche_env.localisation_sousprojet)      
+                           //||(ag[0].localisation_geo        != currentItemFiche_env.localisation_geo)      
                            ||(ag[0].composante_zone_susce   != currentItemFiche_env.composante_zone_susce)      
                            ||(ag[0].probleme_env            != currentItemFiche_env.probleme_env)      
                            ||(ag[0].mesure_envisage         != currentItemFiche_env.mesure_envisage)    

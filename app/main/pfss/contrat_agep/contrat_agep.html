@@ -17,21 +17,21 @@
             <div class="form-wrapper">
                 <div style="clear:both;"></div>
                 <md-tabs md-dynamic-height>
-                    <md-tab label="Contrat UGP/agep">
+                    <md-tab label="Contrat AGEP">
                         <div style="widht:100%;">    
-                            <md-button type="submit"class="md-raised md-accent md-green-600-bg" aria-label="Nouveau" ng-click="vm.ajouterContrat_agep()" style="width:10%;">
+                            <md-button type="submit"class="md-raised md-accent " aria-label="Nouveau" ng-click="vm.ajouterContrat_agep()" style="width:10%;">
                               Nouveau
                             </md-button>
-                            <md-button type="submit" class="md-raised md-accent" ng-if="vm.selectedItemContrat_agep.id" aria-label="Modifier" ng-click="vm.modifContrat_agep()" style="width:10%;">
+                            <md-button type="submit" class="md-raised md-blue-600-bg" ng-if="vm.selectedItemContrat_agep.id" aria-label="Modifier" ng-click="vm.modifContrat_agep()" style="width:10%;">
                               Modifier
                             </md-button>
                             <md-button type="submit" class="md-raised md-warn" ng-if="vm.selectedItemContrat_agep.id" aria-label="Supprimer" ng-click="vm.supprimerContrat_agep()" style="width:10%;">                                
                               Supprimer
                             </md-button>
-                            <md-button type="submit" class="md-raised md-accent md-green-600-bg" ng-if="vm.selectedItemContrat_agep.id && vm.selectedItemContrat_agep.statu=='EN COURS'" aria-label="Terminer" ng-click="vm.terminerContrat_agep()" style="width:10%;">                                
+                            <md-button type="submit" class="md-raised md-accent" ng-if="vm.selectedItemContrat_agep.id && vm.selectedItemContrat_agep.statu=='EN COURS'" aria-label="Terminer" ng-click="vm.terminerContrat_agep()" style="width:10%;">                                
                               Terminé
                             </md-button>
-                            <md-button type="submit" class="md-raised md-accent md-pink-900-bg" ng-if="vm.selectedItemContrat_agep.id && vm.selectedItemContrat_agep.statu=='EN COURS'" aria-label="Resilie" ng-click="vm.resilieContrat_agep()" style="width:10%;">                                
+                            <md-button type="submit" class="md-raised  md-pink-900-bg" ng-if="vm.selectedItemContrat_agep.id && vm.selectedItemContrat_agep.statu=='EN COURS'" aria-label="Resilie" ng-click="vm.resilieContrat_agep()" style="width:10%;">                                
                               Resilié
                             </md-button>
                         </div>

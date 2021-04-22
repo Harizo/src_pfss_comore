@@ -1,0 +1,162 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Données de bases</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;"> Consultant</span>
+                </div>
+    
+                <div class="title">ZIP</div>
+            </div>
+        </div>
+        <div class="content" layout="column"  >
+            <div class="form-wrapper md-whiteframe-1dp" >
+                <div style="clear:both;"></div>
+                
+                    <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                        <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                            <div layout="row" layout-align="start center">
+                            <div class="border-right">
+                                
+                              <span class="md-headline">Consultant &nbsp</span>
+                            </div>
+                              <div class="border-right" ng-if="!vm.selectedItem.id && !vm.nouvelItem">
+                                <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter()">
+                                  <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                  <md-tooltip><span>Ajouter</span></md-tooltip>
+                                </md-button>
+                              </div> 
+                              <div class="border-right" ng-if="vm.selectedItem.id && !vm.selectedItem.$edit">
+                                <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier()">
+                                  <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                  <md-tooltip><span>Modifier</span></md-tooltip>
+                                </md-button>
+                              </div>    
+                              <div class="border-right" ng-if="vm.selectedItem.id && !vm.selectedItem.$edit">
+                                <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer()">
+                                  <md-icon md-font-icon="icon-delete"></md-icon>
+                                  <md-tooltip><span>Supprimer</span></md-tooltip>
+                                </md-button>
+                              </div>  
+
+                              <div class="border-right" ng-if="vm.selectedItem.id">
+                                <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler()">
+                                  <md-icon md-font-icon="icon-cancel"></md-icon>
+                                  <md-tooltip><span>Annuler</span></md-tooltip>
+                                </md-button>
+                              </div>   
+
+                              <div ng-if="vm.selectedItem.$edit">
+                                <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer(0)">
+                                  <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                  <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                </md-button>
+                              </div>                
+                            </div>
+                        </header>
+                        
+                    
+                        <table ng-table="agep" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                            <thead>
+                                <tr>
+                                    <th class="secondary-text" ng-repeat="c in ::vm.consultant_ong_column">
+                                        <div class="table-header">
+                                            <span class="column-title text-center">{{c.titre}}</span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="consu in vm.allConsultant_ong"  ng-class="{selected: consu.$selected}" ng-click="vm.selection(consu)">                                       
+                                    
+                                    
+                                    <td>
+                                        <span ng-if="consu.$edit">
+                                            <md-input-container style="width:100%;display: flex !important;">
+                                              <label>Ile</label> 
+                                              <md-select ng-model="consu.ile_id" required>										 
+                                                  <md-option ng-repeat="ile in vm.allIle" value="{{ile.id}}" >
+                                                      {{ile.Code}} - {{ile.Ile}}
+                                                  </md-option>
+                                              </md-select>
+                                            </md-input-container>
+                                        </span>
+                                        <span ng-if="!consu.$edit"> {{consu.ile.Ile}}</span>
+                                      </td>
+                                      <td>
+                                        <span ng-if="consu.$edit">
+                                            <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Code</label>                                                
+                                                <input type="text" name="code"  ng-model="consu.code"/>
+                                            </md-input-container>
+                                        </span>
+                                        <span ng-if="!consu.$edit"> {{consu.code}}</span>
+                                        </td>
+                                        <td>
+                                            <span ng-if="consu.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                    <label>Nom cosultant</label>                                                
+                                                    <input type="text" name="nom_cosultant"  ng-model="consu.nom_cosultant"/>
+                                                </md-input-container>
+                                            </span>
+                                            <span ng-if="!consu.$edit"> {{consu.nom_cosultant}}</span>
+                                        </td> 
+                                        <td>
+                                            <span ng-if="consu.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                    <label>Raison social</label>                                                
+                                                    <input type="text" name="raison_social"  ng-model="consu.raison_social"/>
+                                                </md-input-container>
+                                            </span>
+                                            <span ng-if="!consu.$edit"> {{consu.raison_social}}</span>
+                                        </td>
+                                        <td>
+                                            <span ng-if="consu.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Contact</label>                                                
+                                                <input type="text" name="contact"  ng-model="consu.contact"/>
+                                                </md-input-container>
+                                            </span>
+                                            <span ng-if="!consu.$edit"> {{consu.contact}}</span>
+                                        </td>
+                                        <td>
+                                            <span ng-if="consu.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                    <label>Fonction du contact</label>                                                
+                                                    <input type="text" name="fonction_contact"  ng-model="consu.fonction_contact"/>
+                                                </md-input-container>
+                                            </span>
+                                            <span ng-if="!consu.$edit"> {{consu.fonction_contact}}</span>
+                                            </td>
+                                        <td>
+                                            <span ng-if="consu.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Telephone du contact</label>                                                
+                                                <input type="text" name="telephone_contact"  ng-model="consu.telephone_contact"/>
+                                                </md-input-container>
+                                            </span>
+                                            <span ng-if="!consu.$edit"> {{consu.telephone_contact}}</span>
+                                        </td>
+                                        <td>
+                                            <span ng-if="consu.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                    <label>Adresse</label>                                                
+                                                    <input type="text" name="adresse"  ng-model="consu.adresse"/>
+                                                </md-input-container>
+                                            </span>
+                                            <span ng-if="!consu.$edit"> {{consu.adresse}}</span>
+                                        </td>                                                                         
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
+        </div>
+    </div>
+    

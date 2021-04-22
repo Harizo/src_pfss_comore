@@ -882,7 +882,7 @@
 										</span>
 										<span ng-if="!fic_env.$edit">{{fic_env.composante_sousprojet}}</span>
 									</td>
-									<td style="width:35% !important;">
+									<!--td style="width:35% !important;">
 										<span ng-if="fic_env.$edit">
 											<md-input-container style="width:100% !important; display: flex !important;">
 												<label>Localisation sous projet</label>
@@ -899,7 +899,7 @@
 											</md-input-container>   
 										</span>
 										<span ng-if="!fic_env.$edit">{{fic_env.localisation_geo}}</span>
-									</td>
+									</td-->
 									<td style="width:35% !important;">
 										<span ng-if="fic_env.$edit">
 											<md-input-container style="width:100% !important; display: flex !important;">
@@ -976,8 +976,8 @@
 										<a ng-if="fic_env.$edit" ng-click="vm.annulerFiche_env(fic_env)" title="Annuler modification">
 											<span class="icon-cancel"></span>
 										</a>
-										<a ng-if="fic_env.$edit && fic_env.bureau_etude && fic_env.ref_contrat && fic_env.composante_sousprojet && fic_env.localisation_sousprojet 
-										&& fic_env.localisation_geo && fic_env.composante_zone_susce && fic_env.probleme_env && fic_env.mesure_envisage 
+										<a ng-if="fic_env.$edit && fic_env.bureau_etude && fic_env.ref_contrat && fic_env.composante_sousprojet 
+										&& fic_env.composante_zone_susce && fic_env.probleme_env && fic_env.mesure_envisage 
 										&& fic_env.justification_classe_env && fic_env.observation && fic_env.date_visa_rt && fic_env.date_visa_ugp && fic_env.date_visa_be" ng-click="vm.ajoutFiche_env(fic_env,0)" title="Sauvegarder">
 											<span class="icon-content-save"></span>
 										</a>
