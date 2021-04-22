@@ -106,7 +106,7 @@
     };
 
     /** @ngInject */
-    function loginService($http, apiUrl, $location, cookieService, storageService, $mdDialog, $state,$window,hashage)
+    function loginService($http, apiUrl, $location, cookieService, storageService, $mdDialog, $state,$window,hashage,$rootScope)
     {
       return{
         sing_in: function(utilisateur, ev){
@@ -151,7 +151,10 @@
                   
                       $window.location.href = '/mis';
                     }
-                  }else{
+                  }
+                  else
+                  {
+                    $rootScope.etat_load = false ;
 
                     $mdDialog.show({
                       controller         : function ($scope, $mdDialog)
