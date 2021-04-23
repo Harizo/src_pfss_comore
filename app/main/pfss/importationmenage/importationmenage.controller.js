@@ -67,6 +67,7 @@
         vm.all_beneficiaires = [] ;
         vm.all_fiche_presence = [] ;
         vm.all_sous_projet = [] ;
+        vm.sous_projet = [] ;
  
         vm.nouvelle_element = false ;
         vm.nouvelle_element_individu = false ;
@@ -265,7 +266,8 @@
 			apiFactory.getAPIgeneraliserREST("importation_menage/index",
                                                 "nomfichier",vm.fichier,
                                                 "chemin",vm.repertoire,
-                                                "controle",1
+                                                "controle",1,
+												"id_sous_projet",vm.filtre.id_sous_projet
                                                 ).then(function(result) {               
 					vm.status =  result.data.status ;
 					if(vm.status)  {
@@ -289,14 +291,15 @@
 			apiFactory.getAPIgeneraliserREST("importation_menage/index",
                                                 "nomfichier",vm.fichier,
                                                 "chemin",vm.repertoire,
-                                                "import",1
+                                                "import",1,
+												"id_sous_projet",vm.filtre.id_sous_projet
                                                 ).then(function(result) {   
 console.log(result.data);												
 					vm.status =  result.data.status ;
 					if(vm.status)  {
 						vm.affiche_load =false; 
 						vm.all_beneficiaires=result.data.menage;
-						vm.all_sous_projet=result.data.sous_projet;
+						vm.sous_projet=result.data.sous_projet;
 						vm.nom_ile=result.data.nom_ile;
 						vm.nom_prefecture=result.data.nom_prefecture;
 						vm.nom_commune=result.data.nom_commune;
@@ -339,6 +342,14 @@ console.log(result.data);
             .targetEvent()
           );
         } 
+		vm.modifierSousProjet = function(filtre) {
+			vm.all_sous_projet.forEach(function(ssp) {
+				if(parseInt(ssp.id)==parseInt(vm.filtre.id_sous_projet)) {
+					vm.filtre.sous_projet = ssp.description; 
+					vm.nontrouvee=false;
+				}
+			});			
+		}
 		function formatDateBDD(dat) {
 			if (dat) {
 				var date = new Date(dat);
