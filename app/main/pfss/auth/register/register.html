@@ -7,6 +7,19 @@
             </div>
 
             <div class="title" translate="REGISTER.TITLE">Create an account</div>
+            <div layout="column" layout-align="start center">
+              
+
+              <span>
+                <b>Le mot de passe doit:</b>  <br>
+                - Contenir au moins 8 caractères <br>
+                - Contiennent au moins un chiffre <br>
+                - Contiennent au moins 1 caractère de base (A-z) <br>
+                - Contiennent au moins un caractère majuscule (A-Z) <br>
+                - Contient seulement 0-9a-zA-Z
+              </span>
+            
+            </div>
 
             <form name="registerForm" novalidate>
 
@@ -55,13 +68,27 @@
 
                 <md-input-container class="md-block" md-no-float>
                     <input type="password" name="password" ng-model="vm.registerForm.password" placeholder="Mot de passe"
-                           required>
+                            ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/" required>
                     <div ng-messages="registerForm.password.$error" role="alert">
                         <div ng-message="required">
                             <span translate="REGISTER.ERRORS.PASSWORD_REQUIRED">Password field is required</span>
                         </div>
+                        <div ng-message="pattern">
+                            <span>
+
+                              - Contenir au moins 8 caractères <br>
+                              - Contiennent au moins un chiffre <br>
+                              - Contiennent au moins 1 caractère de base (A-z) <br> 
+                              - Contiennent au moins un caractère majuscule (A-Z) <br>
+                              - Contient seulement 0-9a-zA-Z <br>
+                             
+                              
+                            </span>
+                        </div>
                     </div>
                 </md-input-container>
+
+                
 
                 <md-input-container class="md-block" md-no-float>
                     <input type="password" name="password_verif" ng-model="vm.registerForm.password_verif" placeholder="Confirmation de mot de passe"
@@ -73,6 +100,23 @@
                         <div ng-if="vm.registerForm.password!=vm.registerForm.password_verif">
                             <span>Vérifier votre saisie</span>
                         </div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block" md-no-float>
+                  <label>Île</label>
+                    <md-select ng-model="vm.registerForm.id_ile" name="ile"  >
+                     
+                      <md-option ng-repeat="ile in vm.all_ile" value="{{ile.id}}" >
+                        {{ile.Ile}}
+                      </md-option>
+
+                    </md-select>
+                    <div ng-messages="registerForm.ile.$error"
+                      role="alert">
+                      <div ng-message="required">
+                        <span>Île obligatoire</span>
+                      </div>
                     </div>
                 </md-input-container>
 

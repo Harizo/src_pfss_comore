@@ -13,7 +13,9 @@
 
       vm.allSite = [];
 
- 
+      apiFactory.getAll("ile/index").then(function(result) {
+        vm.all_ile = result.data.response;
+      }); 
 
       //enregistrer
       vm.enregistrer = enregistrer;
@@ -32,7 +34,8 @@
           nom: utilisateur.firstname,
           prenom: utilisateur.lastname,
           email: utilisateur.email,
-          password: utilisateur.password
+          password: utilisateur.password,
+          id_ile: utilisateur.id_ile
         });
 
         //ajout user
