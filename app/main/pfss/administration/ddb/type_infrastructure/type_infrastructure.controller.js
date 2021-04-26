@@ -29,7 +29,9 @@
             $mdSidenav(sidenavId).toggle();
 			console.log('aiza');
         }
-		vm.allitem_infrastructure = [{id: '1', nom: 'Infrastructure'},{id: '2', nom: 'AGR'},{id: '3', nom: 'Activité'}]
+		//vm.allitem_infrastructure = [{id: '1', nom: 'Infrastructure'},{id: '2', nom: 'AGR'},{id: '3', nom: 'Activité'}]
+    
+		vm.allitem_infrastructure = [{id: '2', nom: 'AGR'},{id: '3', nom: 'Activité'}]
 		
 		vm.selectionItem_infrastructure = function(infras)
         {
