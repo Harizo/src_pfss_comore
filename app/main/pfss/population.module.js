@@ -20,7 +20,7 @@
             // 'app.pfss.reporting',
             //'app.pfss.importdecoupage',
             'app.pfss.registre_beneficiaire',
-            'app.pfss.annuaire',
+            // 'app.pfss.annuaire',
             // 'app.pfss.canevas_formate',
             'app.pfss.plainte',
             'app.pfss.communaute',
