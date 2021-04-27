@@ -39,6 +39,10 @@
 
             'app.pfss.gerer_pges',
             'app.pfss.communaute_idb',
+            'app.pfss.act',
+            'app.pfss.arse',
+            'app.pfss.tmnccovid',
+            'app.pfss.idb'
 
  
        ])
