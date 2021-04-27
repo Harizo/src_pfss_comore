@@ -5,7 +5,7 @@
     var tab = [         
             'app.pfss.ddb_adm.variable_individu',
             'app.pfss.ddb_adm.acteurs',
-            'app.pfss.ddb_adm.projet',
+            //'app.pfss.ddb_adm.projet',
             'app.pfss.ddb_adm.decoup_admin',
             'app.pfss.ddb_adm.variable',
             'app.pfss.ddb_adm.nomenclatureintervention',

@@ -19,11 +19,33 @@
                         <div ng-if="vm.affiche_load" style="position:relative;top: -30px;  left: 60px;color: #039be5">
                             Traitement en cours,veuillez patienter s'il vous plait . Merci.
                         </div>
-                        <form name="filtreimportform" class="md-inline-form" novalidate >
+                        <form name="filtreimportform" class="md-inline-form" novalidate >						
+							<div> 
+								<div layout="column" layout-gt-xs="row" flex-gt-xs="50">
+									<md-input-container flex="100" flex-gt-xs="20">
+										<label><b>Choix format de données Excel :</b></label>
+									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="40">
+									  <label>Activité/Sous-projet</label>
+										<md-select ng-model="vm.filtre.id_sous_projet" name="id_sous_projet" ng-change="vm.modifierSousProjet(vm.filtre)" required>
+										  <md-option  value="">&nbsp;</md-option>
+										  <md-option ng-repeat="ssp in vm.all_sous_projet" value="{{ssp.id}}" ng-disabled="ssp.id==3" >
+											{{ssp.description}}
+										  </md-option>
+										</md-select>
+										<div ng-messages="filtreimportform.id_sous_projet.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Choix Activité obligatoire</span>
+										  </div>
+										</div>
+									</md-input-container>                               
+								</div>                            
+							</div>                            
 							<div>                            
 								<section layout="row" layout-sm="column" layout-align="left" layout-wrap>							 
 									<div class="file-upload">
-										<input file-uploader style="color:#772e03 !important;" id="fichier" name="fichier" type="file" custom-on-change="uploadFile"  ng-multiple="false"/>
+										<input file-uploader style="color:#772e03 !important;" id="fichier" name="fichier" type="file" custom-on-change="uploadFile"  ng-multiple="false" ng-disabled="!vm.filtre.id_sous_projet"/>
 										<button ng-click="vm.uploadFile()" ng-disabled="!vm.monfichier" 
 											style="background: #ff843d; /* Old browsers */
 												background: -moz-linear-gradient(top,  #ff843d 0%, #fc8a49 17%, #ef7d3b 33%, #db6520 67%, #ce5712 83%, #ba4603 100%); /* FF3.6+ */
@@ -44,7 +66,7 @@
                             </div>
                             <div>
 								<label ng-if="vm.all_beneficiaires.length >0"><b>Sous-projet / Acticité :    </b></label>
-								<label ng-if="vm.all_beneficiaires.length >0"><b>{{vm.all_sous_projet.code}} - {{vm.all_sous_projet.description}}</b></label>
+								<label ng-if="vm.all_beneficiaires.length >0"><b>{{vm.sous_projet.code}} - {{vm.sous_projet.description}}</b></label>
                             </div>
                             <div>
 								<label ng-if="vm.all_beneficiaires.length >0">Ile :    </label>

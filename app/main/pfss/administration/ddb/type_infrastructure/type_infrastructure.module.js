@@ -31,13 +31,13 @@
         });
         // Navigation
         msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.type_infrastructure', {
-            title: "Infrastructure et activité",
+            title: "Type AGR et activité ACT",
             icon  : 'icon-yelp',
             state: 'app.pfss_ddb_type_infrastructure',
             weight: 5
             // hidden: function()
             // {
-                    // return vs;
+                    //return vs;
             // }
         });
     }
