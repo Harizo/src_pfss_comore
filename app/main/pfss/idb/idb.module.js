@@ -17,7 +17,6 @@
         msNavigationServiceProvider.saveItem('pfss.idb', {
             title : 'IDB',
             icon  : 'icon-apps',
-            state : 'app.pfss_idb',
             weight: 1
         });
     }

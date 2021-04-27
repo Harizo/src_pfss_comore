@@ -17,7 +17,6 @@
         msNavigationServiceProvider.saveItem('pfss.act', {
             title : 'ACT',
             icon  : 'icon-apps',
-            state : 'app.pfss_act',
             weight: 1
         });
     }

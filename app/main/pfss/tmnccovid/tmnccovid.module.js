@@ -17,7 +17,6 @@
         msNavigationServiceProvider.saveItem('pfss.tmnccovid', {
             title : 'TMNC-COVID19',
             icon  : 'icon-apps',
-            state : 'app.pfss_tmnccovid',
             weight: 1
         });
     }
