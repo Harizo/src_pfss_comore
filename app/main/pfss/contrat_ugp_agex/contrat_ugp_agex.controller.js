@@ -53,7 +53,7 @@
                 {titre:"Etat de validation"}*/
             ];
 
-            apiFactory.getAll("Contrat_ugp_agex/index").then(function(result)
+            apiFactory.getParamsDynamic("Contrat_ugp_agex/index?get_all=true").then(function(result)
             {
                 vm.all_contrat_ugp_agex = result.data.response;
             });

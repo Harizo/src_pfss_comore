@@ -1,0 +1,39 @@
+<md-dialog aria-label="Mango (Fruit)"  ng-cloak>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Contrat UGP/AGEX en retard</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="assets/angular-material-assets/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <table class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="dtOptions" ms-responsive-table>
+            <thead>
+                <tr>
+                    <th class="secondary-text" ng-repeat="sc in ::entete_dialog_art">
+                        <div class="table-header">
+                            <span class="column-title text-center">{{sc.titre}}</span>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="user in all_contrat" ng-class="{selected: user.$selected}">
+                   
+                    <td>{{user.numero_contrat}}</td>
+                    <td>{{user.date_prevu_fin_contrat | date:'dd/MM/yyyy'}}  </td>
+                   
+                   
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </md-dialog-content>
+
+  </form>
+</md-dialog>
