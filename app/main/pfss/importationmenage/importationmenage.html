@@ -29,7 +29,7 @@
 									  <label>Activité/Sous-projet</label>
 										<md-select ng-model="vm.filtre.id_sous_projet" name="id_sous_projet" ng-change="vm.modifierSousProjet(vm.filtre)" required>
 										  <md-option  value="">&nbsp;</md-option>
-										  <md-option ng-repeat="ssp in vm.all_sous_projet" value="{{ssp.id}}" ng-disabled="ssp.id==3" >
+										  <md-option ng-repeat="ssp in vm.all_sous_projet" value="{{ssp.id}}" ng-disabled="ssp.id==3" ng-if="ssp.id!=3">
 											{{ssp.description}}
 										  </md-option>
 										</md-select>

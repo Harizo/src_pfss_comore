@@ -81,6 +81,8 @@
 		vm.affiche_load=false;
 		vm.saisie={};
 		vm.affichage_masque=false;
+		vm.code_plainte ="";
+		vm.numeroplainte =1;
         // Data
         vm.dtOptions = {
         dom       : '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
@@ -89,10 +91,9 @@
         responsive: true
         };
         // vm.activite_col = [{"titre":"Type de document"}];
-        vm.col_plainte = [{"titre":"Village"},{"titre":"Cellule"},{"titre":"Type"},{"titre":"Résultat"},{"titre":"Objet"},{"titre":"Sous-prj"},{"titre":"Date dépot"},{"titre":"Réf"},{"titre":"Nom"},{"titre":"Adresse"},{"titre":"Date résolution"}];           
+        vm.col_plainte = [{"titre":"N°"},{"titre":"Type"},{"titre":"Objet"},{"titre":"Sous-prj"},{"titre":"Date dépot"},{"titre":"Nom"},{"titre":"Adresse"},{"titre":"Résultat"},{"titre":"Date résolution"}];           
         var id_user = $cookieStore.get('id');
 		vm.utilisateur_id = id_user;
-		console.log(vm.utilisateur_id);
 		// Début Récupération données référentielles
         apiFactory.getOne("utilisateurs/index", id_user).then(function(result) {
 			vm.nomutilisateur = result.data.response.prenom + ' ' + result.data.response.nom;
@@ -144,6 +145,54 @@
           
         });
       }
+	  vm.Get_menage_by_village= function(village_id) {
+        apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",village_id).then(function(result)
+        { 
+			vm.allMenages = result.data.response; 
+			apiFactory.getAPIgeneraliserREST("plainte/index","cle_etrangere",village_id,"nombre_plainte",1).then(function(result)
+			{ 
+				vm.nom_ile="";
+				vm.nom_region = "";
+				vm.nom_commune ="";
+				vm.nom_village ="";
+				vm.numeroplainte = result.data.response[0].nombre;
+				// Numérotation plainte
+				if(parseInt(vm.filtre.id_ile)==1) {
+					vm.nom_ile="MWL";
+				} else if(parseInt(vm.filtre.id_ile)==4){
+					vm.nom_ile="NDZ";
+				} else {
+					vm.nom_ile="NGZ";
+				}			  
+				vm.all_region.forEach(function(ax) {
+					if(parseInt(ax.id)==parseInt(vm.filtre.id_region)) {
+						vm.nom_region = ax.Region; 
+					}
+				});
+				var str1=vm.nom_region;
+				vm.nom_region=str1.substring(0, 3);
+				vm.nom_region=vm.nom_region.toUpperCase();
+				vm.all_commune.forEach(function(ax) {
+					if(parseInt(ax.id)==parseInt(vm.filtre.id_commune)) {
+						vm.nom_commune = ax.Commune; 
+					}
+				});
+				str1=vm.nom_commune;
+				vm.nom_commune=str1.substring(0, 3);	
+				vm.nom_commune=vm.nom_commune.toUpperCase();
+				vm.all_village.forEach(function(ax) {
+					if(parseInt(ax.id)==parseInt(vm.filtre.id_commune)) {
+						vm.nom_village = ax.Village; 
+						vm.saisie.village=ax.Village; 
+					}
+				});
+				str1=vm.nom_village;
+				vm.nom_village=str1.substring(0, 3);	
+				vm.nom_village=vm.nom_village.toUpperCase();	
+			});
+        });
+		  
+	  }
 		vm.filtrer = function()  {
 			vm.affiche_load = true ;
 			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id).then(function(result) { 
@@ -238,6 +287,7 @@
 						typeplainte_id:vm.saisie.typeplainte_id,
 						solution_id:vm.saisie.solution_id,
 						village_id:vm.saisie.village_id,
+						village:vm.saisie.village,
 						programme_id:vm.saisie.programme_id,
 						datedepot:vm.saisie.datedepot,
 						reference:vm.saisie.reference,
@@ -576,7 +626,9 @@
 				if(parseInt(ax.id)==parseInt(item.typeplainte_id)) {
 					vm.saisie.typeplainte_id = ax.id; 
 					vm.saisie.type_plainte=ax.TypePlainte;
-					vm.nontrouvee=false;
+					vm.code_plainte = ax.Code;
+					vm.nontrouvee=false;				
+					vm.saisie.reference = vm.saisie.code_sous_projet + "-" + vm.code_plainte + "-" + vm.nom_ile +"-" + vm.nom_region+"-" + vm.nom_commune+"-" + vm.nom_village + "-" + vm.numeroplainte;
 				}
 			});
 			if(vm.nontrouvee==true) {				
@@ -608,6 +660,7 @@
 					vm.saisie.sous_projet=ax.description;
 					vm.saisie.code_sous_projet=ax.code;
 					vm.nontrouvee=false;
+					vm.saisie.reference = vm.saisie.code_sous_projet + "-" + vm.code_plainte + "-" + vm.nom_ile +"-" + vm.nom_region+"-" + vm.nom_commune+"-" + vm.nom_village + "-" + vm.numeroplainte;
 				}
 			});
 			if(vm.nontrouvee==true) {				

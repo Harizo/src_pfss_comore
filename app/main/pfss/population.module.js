@@ -14,7 +14,7 @@
             'app.pfss.administration',
             // 'app.pfss.registresocial',
             //'app.pfss.recommandation',
-            'app.pfss.traitement',
+            // 'app.pfss.traitement',
             // 'app.pfss.validationdonnees',
             // 'app.pfss.importationdonnees',
             // 'app.pfss.reporting',

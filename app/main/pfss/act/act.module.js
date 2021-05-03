@@ -3,7 +3,11 @@
     'use strict';
 
     angular
-        .module('app.pfss.act', [])
+        .module('app.pfss.act', [
+           'app.pfss.act.menageinscrit_act',
+           'app.pfss.act.menagepreselectionne_act',
+           'app.pfss.act.menagebeneficiaire_act',
+		   ])
         .config(config);
 
     /** @ngInject */
@@ -17,7 +21,6 @@
         msNavigationServiceProvider.saveItem('pfss.act', {
             title : 'ACT',
             icon  : 'icon-apps',
-            state : 'app.pfss_act',
             weight: 1
         });
     }

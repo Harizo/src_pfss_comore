@@ -3,7 +3,10 @@
     'use strict';
 
     angular
-        .module('app.pfss.tmnccovid', [])
+        .module('app.pfss.tmnccovid', [
+           'app.pfss.tmnccovid.menageinscrit_covid',
+           'app.pfss.tmnccovid.menagepreselectionne_covid',
+           'app.pfss.tmnccovid.menagebeneficiaire_covid',])
         .config(config);
 
     /** @ngInject */
@@ -17,7 +20,6 @@
         msNavigationServiceProvider.saveItem('pfss.tmnccovid', {
             title : 'TMNC-COVID19',
             icon  : 'icon-apps',
-            state : 'app.pfss_tmnccovid',
             weight: 1
         });
     }
