@@ -2,11 +2,11 @@
 {
     'use strict';
     angular
-        .module('app.pfss.ddb_adm.pac')
-        .controller('PacController', PacController);
+        .module('app.pfss.ddb_adm.gerer_pac')
+        .controller('Gerer_pacController', Gerer_pacController);
 
     /** @ngInject */
-    function PacController(apiFactory, $state, $mdDialog, $scope, serveur_central,$cookieStore)
+    function Gerer_pacController(apiFactory, $state, $mdDialog, $scope, serveur_central,$cookieStore)
 	{		
 		var vm = this;
 		var id_utilisateur = $cookieStore.get('id');
@@ -67,7 +67,7 @@ apiFactory.getAll("type_agr/index").then(function(result){
 });
 vm.pac_column =[
   {titre:"Ile"},
-  {titre:"Region"},
+  {titre:"Préfecture"},
   {titre:"Commune"},
   {titre:"Zip"},
   {titre:"Milieu physique"},
@@ -414,9 +414,9 @@ vm.click_calendrier_activites = function()
 }
 
 vm.calendrier_activites_column =[
-  {titre:"Activite"},
+  {titre:"Activité"},
+  {titre:"Numero d'ordre"},
   {titre:"Mois"},
-  {titre:"Durrée"},
   {titre:"Action"}
   ];
  function ajoutCalendrier_activites(calendrier_activites,suppression)
@@ -452,7 +452,7 @@ vm.calendrier_activites_column =[
         id:getId,      
         activite: entite.activite,      
         mois: entite.mois,      
-        duree: entite.duree,
+        numero: entite.numero,
         id_pac:vm.selectedItemPac.id
       }); 
       console.log(datas);   
@@ -515,7 +515,7 @@ vm.calendrier_activites_column =[
                 id: '0',
                 activite: '',
                 mois: '',
-                duree: ''
+                numero: ''
             };
           vm.allCalendrier_activites.unshift(items);
  
@@ -537,7 +537,7 @@ vm.calendrier_activites_column =[
 
             item.activite      = currentItemCalendrier_activites.activite;
             item.mois = currentItemCalendrier_activites.mois;
-            item.duree  = currentItemCalendrier_activites.duree;   
+            item.numero  = currentItemCalendrier_activites.numero;   
           }
           else
           {
@@ -559,8 +559,8 @@ vm.calendrier_activites_column =[
           item.$selected = true;	
  
           item.activite = vm.selectedItemCalendrier_activites.activite;
-           item.mois         = parseInt(vm.selectedItemCalendrier_activites.mois) ;
-           item.duree  = parseFloat(vm.selectedItemCalendrier_activites.duree) ;         
+           item.mois         = vm.selectedItemCalendrier_activites.mois ;
+           item.numero  = parseInt(vm.selectedItemCalendrier_activites.numero) ;         
           vm.selectedItemCalendrier_activites.$edit = true;
         };
         vm.supprimerCalendrier_activites = function()
@@ -591,7 +591,7 @@ vm.calendrier_activites_column =[
               {
                   if((pl[0].activite         !=currentItemCalendrier_activites.activite)
                       ||(pl[0].mois !=currentItemCalendrier_activites.mois)
-                      ||(pl[0].duree      !=currentItemCalendrier_activites.duree))                    
+                      ||(pl[0].numero      !=currentItemCalendrier_activites.numero))                    
                   { 
                       insert_in_baseCalendrier_activites(item,suppression);
                   }

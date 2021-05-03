@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pfss.ddb_adm.pac', [])
+        .module('app.pfss.ddb_adm.gerer_pac', [])
         .run(testPermission)
         .config(config);
         var vs ;
@@ -13,27 +13,27 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.pfss_ddb_pac', {
-            url      : '/donnees-de-base/type-pac',
+        $stateProvider.state('app.pfss_ddb_gerer_pac', {
+            url      : '/donnees-de-base/type-gerer_pac',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/pfss/administration/ddb/pac/pac.html',
-                    controller : 'PacController as vm'
+                    templateUrl: 'app/main/pfss/administration/ddb/gerer_pac/gerer_pac.html',
+                    controller : 'Gerer_pacController as vm'
                 }
             },
-            bodyClass: 'pac',
+            bodyClass: 'gerer_pac',
             data : {
               authorizer : true,
               permitted : ["USER","PERSONNEL","ADMIN"],
-              page: "Phase execution"
+              page: "Gérer PAC"
             }
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.pac', {
-            title: "PAC",
+        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.gerer_pac', {
+            title: "Gérer PAC",
             icon  : 'icon-square-inc',
-            state: 'app.pfss_ddb_pac',
+            state: 'app.pfss_ddb_gerer_pac',
             weight: 8
             // hidden: function()
             // {

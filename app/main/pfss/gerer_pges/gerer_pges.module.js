@@ -27,12 +27,16 @@
         });
 
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.gerer_pges', {
+       /* msNavigationServiceProvider.saveItem('pfss.gerer_pges', {
             title: 'Gérer PGES',
             icon  : 'icon-data',
             state: 'app.pfss_gerer_pges',
 			weight:8,
-        });
+            hidden: function()
+            {
+                    return true;
+            }
+        });*/
     }
 
 })();

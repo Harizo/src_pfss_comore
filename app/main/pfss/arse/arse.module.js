@@ -3,7 +3,10 @@
     'use strict';
 
     angular
-        .module('app.pfss.arse', [])
+        .module('app.pfss.arse', [
+            'app.pfss.arse.contrat_agep_arse',
+            //'app.pfss.arse.gerer_pges_arse',
+        ])
         .config(config);
 
     /** @ngInject */

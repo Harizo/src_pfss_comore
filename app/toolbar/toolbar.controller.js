@@ -4,6 +4,11 @@
 
     angular
         .module('app.toolbar')
+        .controller('ToastCtrl', function($scope, $mdToast) {
+            $scope.closeToast = function() {
+              $mdToast.hide();
+            };
+          })
         .controller('ToolbarController', ToolbarController);
 
     /** @ngInject */
@@ -139,6 +144,14 @@
         {
             vm.bodyEl.toggleClass('ms-navigation-horizontal-mobile-menu-active');
         }
+        vm.showSimpleToast = function() {
+            $mdToast.show(
+              $mdToast.simple()
+                .textContent('Simple Toast!')
+                .position('top left')
+                .hideDelay(3000)
+            );
+          };
     }
 
 })();

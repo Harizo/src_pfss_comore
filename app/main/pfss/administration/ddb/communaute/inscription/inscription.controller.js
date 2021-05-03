@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pfss.communaute.inscription')
+        .module('app.pfss.ddb_adm.communaute.inscription')
         .controller('InscriptionController', InscriptionController);
 
     /** @ngInject */
@@ -31,9 +31,9 @@
             {titre:"Commune"},
             {titre:"Code"},
             {titre:"Libelle"},
-            {titre:"Nombre personne"},
-            {titre:"Representant"},
-            {titre:"Téléphone"},
+            {titre:"Nombre population"},
+            //{titre:"Representant"},
+            //{titre:"Téléphone"},
             {titre:"Action"}
         ];
         apiFactory.getAll("zip/index").then(function success(response)
@@ -44,13 +44,19 @@
         {
             vm.allcommune=response.data.response;
         });
-        
-        apiFactory.getAPIgeneraliserREST("communaute/index","menu","getcommunauteinscrit").then(function success(response)
+        apiFactory.getAll("communaute/index").then(function success(response)
         {
             vm.allInscription=response.data.response;
             console.log(vm.allInscription);
             vm.affiche_load = false;
         });
+        
+       /* apiFactory.getAPIgeneraliserREST("communaute/index","menu","getcommunauteinscrit").then(function success(response)
+        {
+            vm.allInscription=response.data.response;
+            console.log(vm.allInscription);
+            vm.affiche_load = false;
+        });*/
         function ajout(inscription,suppression,maj_statu)
         {
             	
@@ -100,10 +106,10 @@
                 id_commune: '',
                 code: '',
                 libelle: '',
-                nbr_personne: '',     
-                representant: '',       
-                telephone:'',      
-                statut: 'INSCRIT'
+                nbr_population: '',     
+                //representant: '',       
+                //telephone:'',      
+                //statut: 'INSCRIT'
             };
 			    vm.allInscription.unshift(items);
 
@@ -126,10 +132,10 @@
                 item.id_commune          = currentItem.commune.id;
                 item.code = currentItem.code;
                 item.libelle     = currentItem.libelle;
-                item.nbr_personne         = currentItem.nbr_personne;      
-                item.representant = currentItem.representant;       
-                item.telephone = currentItem.telephone;      
-                item.statut = currentItem.statut; 
+                item.nbr_population         = currentItem.nbr_population;      
+                //item.representant = currentItem.representant;       
+                //item.telephone = currentItem.telephone;      
+                //item.statut = currentItem.statut; 
             }
             else
             {
@@ -153,10 +159,10 @@
           item.id_commune = vm.selectedItem.commune.id;
           item.code       = vm.selectedItem.code;
           item.libelle    = vm.selectedItem.libelle;
-          item.nbr_personne = parseInt(vm.selectedItem.nbr_personne) ;     
-          item.representant = vm.selectedItem.representant;       
-          item.telephone    = vm.selectedItem.telephone;      
-          item.statut       = vm.selectedItem.statut;
+          item.nbr_population = parseInt(vm.selectedItem.nbr_population) ;     
+          //item.representant = vm.selectedItem.representant;       
+          //item.telephone    = vm.selectedItem.telephone;      
+          //item.statut       = vm.selectedItem.statut;
           
           vm.selectedItem.$edit = true;	
         };
@@ -198,10 +204,10 @@
 				id_commune: entite.id_commune,      
 				code: entite.code,
 				libelle: entite.libelle,      
-				nbr_personne: entite.nbr_personne,      
-				representant: entite.representant,       
-				telephone: entite.telephone,      
-				statut: entite.statut
+				nbr_population: entite.nbr_population,      
+				//representant: entite.representant,       
+				//telephone: entite.telephone,      
+				//statut: entite.statut
 			});       
 			//factory
 			apiFactory.add("communaute/index",datas, config).success(function (data)
@@ -221,10 +227,10 @@
                         vm.selectedItem.commune  = com[0];
                         vm.selectedItem.code        = entite.code;
                         vm.selectedItem.libelle     = entite.libelle;
-                        vm.selectedItem.nbr_personne= entite.nbr_personne;      
-                        vm.selectedItem.representant= entite.representant;       
-                        vm.selectedItem.telephone   = entite.telephone;      
-                        vm.selectedItem.statut     = entite.statut;
+                        vm.selectedItem.nbr_population= entite.nbr_population;      
+                        //vm.selectedItem.representant= entite.representant;       
+                        //vm.selectedItem.telephone   = entite.telephone;      
+                        //vm.selectedItem.statut     = entite.statut;
                         vm.selectedItem.$selected   = false;
                         vm.selectedItem.$edit       = false;
                         vm.selectedItem ={};
@@ -265,10 +271,11 @@
                     ||(ins[0].id_commune  !=currentItem.id_commune)
                     ||(ins[0].code        !=currentItem.code)
                     ||(ins[0].libelle     !=currentItem.libelle)
-                    ||(ins[0].nbr_personne!=currentItem.nbr_personne)                                 
-                    ||(ins[0].representant!= currentItem.representant)       
-                    ||(ins[0].telephone   != currentItem.telephone)      
-                    ||(ins[0].statut      != currentItem.statut))                    
+                    ||(ins[0].nbr_population!=currentItem.nbr_population)                                 
+                    //||(ins[0].representant!= currentItem.representant)       
+                    //||(ins[0].telephone   != currentItem.telephone)      
+                    //||(ins[0].statut      != currentItem.statut)
+                    )                    
                   { 
                       insert_in_base(item,suppression,maj_statu);
                   }

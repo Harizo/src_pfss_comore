@@ -93,10 +93,10 @@
 		//DEBUT INFRASTRUCTURE ELIGIBLE
 
 		vm.infrastructure_eligible_column = 
-		[			
-			{titre:"Type infrastructure"},
-			{titre:"Code"},
-			{titre:"Libelle"}
+		[
+			{titre:"Numero"},
+			{titre:"Libelle"},
+			{titre:"Type infrastructure"}
 		]; 
 
 		vm.selectionInfrastructure_eligible = function(item)
@@ -369,10 +369,10 @@
 	//DEBUT INFRASTRUCTURE CHOISI
 
 	vm.infrastructure_choisi_column = 
-	[			
+	[	
+		{titre:"Numero"},
+		{titre:"Libelle"},		
 		{titre:"Type infrastructure"},
-		{titre:"Code"},
-		{titre:"Libelle"}
 	]; 
 
 	vm.selectionInfrastructure_choisi = function(item)

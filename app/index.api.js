@@ -67,6 +67,9 @@
           },
           add_serveur_central: function(controller, data, config) {
             return $http.post(apiUrl_serve_central+controller, data, config);
+          },
+          getcount_contrat_agep: function(controller, id_sous_projet) {
+            return $http.get(apiUrl+controller+"?id_sous_projet="+id_sous_projet);
           }
 
 

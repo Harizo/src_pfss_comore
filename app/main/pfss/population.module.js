@@ -23,7 +23,7 @@
             // 'app.pfss.annuaire',
             // 'app.pfss.canevas_formate',
             'app.pfss.plainte',
-            'app.pfss.communaute',
+            //'app.pfss.communaute',
             'app.pfss.suiviactivite',
             'app.pfss.mereleaderpereleader',
             'app.pfss.contratconsultant',

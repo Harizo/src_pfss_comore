@@ -3,7 +3,10 @@
     'use strict';
 
     angular
-        .module('app.pfss.tmnccovid', [])
+        .module('app.pfss.tmnccovid', [
+            'app.pfss.tmnccovid.contrat_agep_tmnccovid',            
+            //'app.pfss.tmnccovid.gerer_pges_tmnccovid',
+        ])
         .config(config);
 
     /** @ngInject */
