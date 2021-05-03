@@ -32,7 +32,7 @@
         vm.nouvelItemEtat_paiement = false ;
         vm.allEtat_paiement = [] ;
         vm.affiche_load = false ;
-        if ($state.current.id_sous_projet==3)
+        /*if ($state.current.id_sous_projet==3)
         {
            vm.show_communaute = true;
            vm.show_village = false;
@@ -41,7 +41,7 @@
         {
             vm.show_communaute = false;
             vm.show_village = true; 
-        }
+        }*/
         vm.dtOptions_new =
         {
             dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
@@ -82,6 +82,7 @@
                // {titre:"Sous projet"},
                 {titre:"Objet du contrat"},
                 {titre:"Montant du contrat"},
+                {titre:"Montant paiement à effectué prévu"},
                 {titre:"Modalité du contrat"},
                 {titre:"Date prévu fin contrat"},
                 {titre:"Noms des signataires"},
@@ -116,6 +117,23 @@
             }
             vm.ajouterContrat_agep = function ()
             {
+                var montant_a_effectue_prevu=0;
+                if (vm.type_sous_projet=='ACT')
+                {
+                    montant_a_effectue_prevu = 75000;
+                }
+                if (vm.type_sous_projet=='ARSE')
+                {
+                    montant_a_effectue_prevu = 3150000;
+                }
+                if (vm.type_sous_projet=='IDB')
+                {
+                    montant_a_effectue_prevu = 315000;
+                }
+                if (vm.type_sous_projet=='TMNC-COVID-19')
+                {
+                    montant_a_effectue_prevu = 105000;
+                }
                 vm.selectedItemContrat_agep.$selected = false;
                 NouvelItemContrat_agep = true ;
                 vm.contrat_agep.supprimer=0;
@@ -125,6 +143,7 @@
                 vm.contrat_agep.id_sous_projet=id_sous_projet_state;
                 vm.contrat_agep.objet_contrat=null;
                 vm.contrat_agep.montant_contrat=null;
+                vm.contrat_agep.montant_a_effectue_prevu=montant_a_effectue_prevu;
                 vm.contrat_agep.modalite_contrat=null;
                 vm.contrat_agep.date_prevu_fin=null;
                 vm.contrat_agep.date_signature=null;
@@ -156,6 +175,7 @@
                 vm.contrat_agep.objet_contrat   = vm.selectedItemContrat_agep.objet_contrat ;
                 vm.contrat_agep.modalite_contrat = vm.selectedItemContrat_agep.modalite_contrat ;
                 vm.contrat_agep.montant_contrat = parseFloat(vm.selectedItemContrat_agep.montant_contrat) ;
+                vm.contrat_agep.montant_a_effectue_prevu = parseFloat(vm.selectedItemContrat_agep.montant_a_effectue_prevu) ;
                 vm.contrat_agep.date_prevu_fin  = new Date(vm.selectedItemContrat_agep.date_prevu_fin) ;
                 vm.contrat_agep.date_signature  = new Date(vm.selectedItemContrat_agep.date_signature) ;
                 vm.contrat_agep.noms_signataires           = vm.selectedItemContrat_agep.noms_signataires ;
@@ -208,6 +228,7 @@
                         objet_contrat:contrat_agep.objet_contrat,
                         modalite_contrat:contrat_agep.modalite_contrat,
                         montant_contrat:contrat_agep.montant_contrat,
+                        montant_a_effectue_prevu:contrat_agep.montant_a_effectue_prevu,
                         date_signature:convert_date(contrat_agep.date_signature),
                         date_prevu_fin:convert_date(contrat_agep.date_prevu_fin),
                         noms_signataires:contrat_agep.noms_signataires,
@@ -236,6 +257,7 @@
                                 vm.selectedItemContrat_agep.numero_contrat = contrat_agep.numero_contrat ;
                                 vm.selectedItemContrat_agep.objet_contrat = contrat_agep.objet_contrat ;
                                 vm.selectedItemContrat_agep.montant_contrat = contrat_agep.montant_contrat ;
+                                vm.selectedItemContrat_agep.montant_a_effectue_prevu = contrat_agep.montant_a_effectue_prevu ;
                                 vm.selectedItemContrat_agep.modalite_contrat = contrat_agep.modalite_contrat ;
                                 vm.selectedItemContrat_agep.date_prevu_fin = new Date(contrat_agep.date_prevu_fin) ;
                                 vm.selectedItemContrat_agep.date_signature = new Date(contrat_agep.date_signature) ;
@@ -270,6 +292,7 @@
                             numero_contrat : contrat_agep.numero_contrat ,
                             objet_contrat : contrat_agep.objet_contrat ,
                             montant_contrat : contrat_agep.montant_contrat ,
+                            montant_a_effectue_prevu : contrat_agep.montant_a_effectue_prevu ,
                             modalite_contrat : contrat_agep.modalite_contrat ,
                             date_prevu_fin : new Date(contrat_agep.date_prevu_fin) ,
                             date_signature : new Date(contrat_agep.date_signature) ,
@@ -295,6 +318,7 @@
                         ||(currentItemContrat_agep.numero_contrat   != item.numero_contrat )
                         ||(currentItemContrat_agep.objet_contrat    != item.objet_contrat )
                         ||(currentItemContrat_agep.montant_contrat != item.montant_contrat )
+                        ||(currentItemContrat_agep.montant_a_effectue_prevu != item.montant_a_effectue_prevu )
                         ||(currentItemContrat_agep.modalite_contrat != item.modalite_contrat )
                         ||(currentItemContrat_agep.date_prevu_fin   != convert_date(item.date_prevu_fin) )
                         ||(currentItemContrat_agep.date_signature   != convert_date(item.date_signature) )
@@ -333,6 +357,7 @@
                             numero_contrat : vm.selectedItemContrat_agep.numero_contrat ,
                             objet_contrat : vm.selectedItemContrat_agep.objet_contrat ,
                             montant_contrat : vm.selectedItemContrat_agep.montant_contrat ,
+                            montant_a_effectue_prevu : vm.selectedItemContrat_agep.montant_a_effectue_prevu ,
                             modalite_contrat : vm.selectedItemContrat_agep.modalite_contrat ,
                             date_prevu_fin : vm.selectedItemContrat_agep.date_prevu_fin ,
                             date_signature : vm.selectedItemContrat_agep.date_signature ,
@@ -351,6 +376,7 @@
                             numero_contrat : vm.selectedItemContrat_agep.numero_contrat ,
                             objet_contrat : vm.selectedItemContrat_agep.objet_contrat ,
                             montant_contrat : vm.selectedItemContrat_agep.montant_contrat ,
+                            montant_a_effectue_prevu : vm.selectedItemContrat_agep.montant_a_effectue_prevu ,
                             modalite_contrat : vm.selectedItemContrat_agep.modalite_contrat ,
                             date_prevu_fin : vm.selectedItemContrat_agep.date_prevu_fin ,
                             date_signature : vm.selectedItemContrat_agep.date_signature ,
@@ -419,7 +445,7 @@
                                         {titre:"Sexe"},
                                         {titre:"Tranche paiement"},
                                         {titre:"Pourcentage paiement"},
-                                        {titre:"Montant total prévu"},
+                                        //{titre:"Montant total prévu"},
                                         {titre:"Montant perçu"},
                                         {titre:"Date paiement"},
                                         {titre:"Moyen de transfert"},
@@ -448,31 +474,529 @@
                     vm.selectedItemEtat_paiement.$selected = true;
 
                 });
-
+                vm.change_village = function(item)
+                {
+                    var pourcent = 0 ;
+                    if(id_sous_projet_state ==1)//ACT
+                    { 
+                        var etat_pai = [];
+                        if (vm.nouvelItemEtat_paiement==true)
+                        {
+                            etat_pai = vm.allEtat_paiement.filter(function(obj)
+                            {
+                                return obj.id != '0';
+                            });
+                            var vil = etat_pai.filter(function(obj)
+                            {
+                                return obj.village.id == item.id_village;
+                            });
+                            
+                            if (parseInt(vil.length)>=2)
+                            {
+                                var confirm = $mdDialog.confirm()
+                                .title('Tranche de paiement atteinte')
+                                .textContent('')
+                                .ariaLabel('Lucky day')
+                                .clickOutsideToClose(true)
+                                .parent(angular.element(document.body))
+                                .ok('OK');
+                                //.cancel('Annuler');
+                                $mdDialog.show(confirm).then(function() {
+                                    vm.selectedItemEtat_paiement.$edit = false;
+                                    vm.selectedItemEtat_paiement.$selected = false;
+                                    vm.allEtat_paiement = vm.allEtat_paiement.filter(function(obj)
+                                    {
+                                        return obj.id != '0';
+                                    });
+                                    vm.selectedItemEtat_paiement = {};
+                                }, function() {
+                                //alert('rien');
+                                });
+                            }
+                            else
+                            {
+                                var tranche = vil.length + 1;
+                                switch (tranche)
+                                {
+                                    case 1:
+                                    {
+                                        pourcent = 50;
+                                        break;
+                                    }
+                                    case 2:
+                                    {
+                                        pourcent = 50;
+                                        break;
+                                    }
+                                    default:
+                                    {
+                                        pourcent = 0;
+                                        break;
+                                    }
+                                }
+                                item.tranche = tranche;
+                                item.pourcentage = pourcent;
+                                //item.montant_total_prevu = 75000;
+                                item.montant_percu = (parseFloat(vm.selectedItemContrat_agep.montant_a_effectue_prevu) * pourcent) / 100;
+                            }
+                        }
+                        else
+                        {   console.log(item);
+                            console.log(current_selectedItemEtat_paiement);
+                            if (item.id_village == current_selectedItemEtat_paiement.village.id)
+                            {
+                                item.tranche = parseFloat(current_selectedItemEtat_paiement.tranche);
+                                item.pourcentage = parseFloat(current_selectedItemEtat_paiement.pourcentage);
+                                //item.montant_total_prevu = parseFloat(current_selectedItemEtat_paiement.montant_total_prevu);
+                                item.montant_percu = parseFloat(current_selectedItemEtat_paiement.montant_percu);
+                            }
+                            else
+                            {
+                                var vil = vm.allEtat_paiement.filter(function(obj)
+                                {
+                                    return obj.village.id == item.id_village;
+                                });
+                                
+                                if (parseInt(vil.length)>=2)
+                                {
+                                    var confirm = $mdDialog.confirm()
+                                    .title('Tranche de paiement atteinte')
+                                    .textContent('')
+                                    .ariaLabel('Lucky day')
+                                    .clickOutsideToClose(true)
+                                    .parent(angular.element(document.body))
+                                    .ok('OK');
+                                    //.cancel('Annuler');
+                                    $mdDialog.show(confirm).then(function() {
+                                        vm.selectedItemEtat_paiement.$edit = false;
+                                        vm.selectedItemEtat_paiement.$selected = false;
+                                        vm.allEtat_paiement = vm.allEtat_paiement.filter(function(obj)
+                                        {
+                                            return obj.id != '0';
+                                        });
+                                        vm.selectedItemEtat_paiement = {};
+                                    }, function() {
+                                    //alert('rien');
+                                    });
+                                }
+                                else
+                                {
+                                    var tranche = vil.length + 1;
+                                    switch (tranche)
+                                    {
+                                        case 1:
+                                        {
+                                            pourcent = 50;
+                                            break;
+                                        }
+                                        case 2:
+                                        {
+                                            pourcent = 50;
+                                            break;
+                                        }
+                                        default:
+                                        {
+                                            pourcent = 0;
+                                            break;
+                                        }
+                                    }
+                                    item.tranche = tranche;
+                                    item.pourcentage = pourcent;
+                                    //item.montant_total_prevu = 75000;
+                                    item.montant_percu = (parseFloat(vm.selectedItemContrat_agep.montant_a_effectue_prevu)  * pourcent) / 100;
+                                }
+                            }
+                        }
+                        
+                        
+                    } 
+                    if(id_sous_projet_state ==2) //ARSE
+                    {   
+                        var etat_pai = [];
+                        if (vm.nouvelItemEtat_paiement==true)
+                        {
+                            etat_pai = vm.allEtat_paiement.filter(function(obj)
+                            {
+                                return obj.id != '0';
+                            });
+                            var vil = etat_pai.filter(function(obj)
+                            {
+                                return obj.village.id == item.id_village;
+                            });
+                            
+                            if (parseInt(vil.length)>=3)
+                            {
+                                var confirm = $mdDialog.confirm()
+                                .title('Tranche de paiement atteinte')
+                                .textContent('')
+                                .ariaLabel('Lucky day')
+                                .clickOutsideToClose(true)
+                                .parent(angular.element(document.body))
+                                .ok('OK');
+                                //.cancel('Annuler');
+                                $mdDialog.show(confirm).then(function() {
+                                    vm.selectedItemEtat_paiement.$edit = false;
+                                    vm.selectedItemEtat_paiement.$selected = false;
+                                    vm.allEtat_paiement = vm.allEtat_paiement.filter(function(obj)
+                                    {
+                                        return obj.id != '0';
+                                    });
+                                    vm.selectedItemEtat_paiement = {};
+                                }, function() {
+                                //alert('rien');
+                                });
+                            }
+                            else
+                            {
+                                var tranche = vil.length + 1;
+                                switch (tranche)
+                                {
+                                    case 1:
+                                    {
+                                        pourcent = 10;
+                                        break;
+                                    }
+                                    case 2:
+                                    {
+                                        pourcent = 70;
+                                        break;
+                                    }
+                                    case 3:
+                                    {
+                                        pourcent = 20;
+                                        break;
+                                    }
+                                    default:
+                                    {
+                                        pourcent = 0;
+                                        break;
+                                    }
+                                }
+                                item.tranche = tranche;
+                                item.pourcentage = pourcent;
+                                //item.montant_total_prevu = 315000;
+                                item.montant_percu = (parseFloat(vm.selectedItemContrat_agep.montant_a_effectue_prevu)  * pourcent) / 100;
+                            }
+                        }
+                        else
+                        {   console.log(item);
+                            console.log(current_selectedItemEtat_paiement);
+                            if (item.id_village == current_selectedItemEtat_paiement.village.id)
+                            {
+                                item.tranche = parseFloat(current_selectedItemEtat_paiement.tranche);
+                                item.pourcentage = parseFloat(current_selectedItemEtat_paiement.pourcentage);
+                                //item.montant_total_prevu = parseFloat(current_selectedItemEtat_paiement.montant_total_prevu);
+                                item.montant_percu = parseFloat(current_selectedItemEtat_paiement.montant_percu);
+                            }
+                            else
+                            {
+                                var vil = vm.allEtat_paiement.filter(function(obj)
+                                {
+                                    return obj.village.id == item.id_village;
+                                });
+                                
+                                if (parseInt(vil.length)>=3)
+                                {
+                                    var confirm = $mdDialog.confirm()
+                                    .title('Tranche de paiement atteinte')
+                                    .textContent('')
+                                    .ariaLabel('Lucky day')
+                                    .clickOutsideToClose(true)
+                                    .parent(angular.element(document.body))
+                                    .ok('OK');
+                                    //.cancel('Annuler');
+                                    $mdDialog.show(confirm).then(function() {
+                                        vm.selectedItemEtat_paiement.$edit = false;
+                                        vm.selectedItemEtat_paiement.$selected = false;
+                                        vm.allEtat_paiement = vm.allEtat_paiement.filter(function(obj)
+                                        {
+                                            return obj.id != '0';
+                                        });
+                                        vm.selectedItemEtat_paiement = {};
+                                    }, function() {
+                                    //alert('rien');
+                                    });
+                                }
+                                else
+                                {
+                                    var tranche = vil.length + 1;
+                                    switch (tranche)
+                                    {
+                                        case 1:
+                                        {
+                                            pourcent = 10;
+                                            break;
+                                        }
+                                        case 2:
+                                        {
+                                            pourcent = 70;
+                                            break;
+                                        }
+                                        case 3:
+                                        {
+                                            pourcent = 20;
+                                            break;
+                                        }
+                                        default:
+                                        {
+                                            pourcent = 0;
+                                            break;
+                                        }
+                                    }
+                                    item.tranche = tranche;
+                                    item.pourcentage = pourcent;
+                                    //item.montant_total_prevu = 315000;
+                                    item.montant_percu = (parseFloat(vm.selectedItemContrat_agep.montant_a_effectue_prevu) * pourcent) / 100;
+                                }
+                            }
+                        }                       
+                    }
+                    if(id_sous_projet_state ==3) //IDB
+                    {   
+                        var etat_pai = [];
+                        if (vm.nouvelItemEtat_paiement==true)
+                        {
+                            etat_pai = vm.allEtat_paiement.filter(function(obj)
+                            {
+                                return obj.id != '0';
+                            });
+                            var com = etat_pai.filter(function(obj)
+                            {
+                                return obj.communaute.id == item.id_communaute;
+                            });
+                            
+                            if (parseInt(com.length)>=3)
+                            {
+                                var confirm = $mdDialog.confirm()
+                                .title('Tranche de paiement atteinte')
+                                .textContent('')
+                                .ariaLabel('Lucky day')
+                                .clickOutsideToClose(true)
+                                .parent(angular.element(document.body))
+                                .ok('OK');
+                                //.cancel('Annuler');
+                                $mdDialog.show(confirm).then(function() {
+                                    vm.selectedItemEtat_paiement.$edit = false;
+                                    vm.selectedItemEtat_paiement.$selected = false;
+                                    vm.allEtat_paiement = vm.allEtat_paiement.filter(function(obj)
+                                    {
+                                        return obj.id != '0';
+                                    });
+                                    vm.selectedItemEtat_paiement = {};
+                                }, function() {
+                                //alert('rien');
+                                });
+                            }
+                            else
+                            {
+                                var tranche = com.length + 1;
+                                switch (tranche)
+                                {
+                                    case 1:
+                                    {
+                                        pourcent = 10;
+                                        break;
+                                    }
+                                    case 2:
+                                    {
+                                        pourcent = 70;
+                                        break;
+                                    }
+                                    case 3:
+                                    {
+                                        pourcent = 20;
+                                        break;
+                                    }
+                                    default:
+                                    {
+                                        pourcent = 0;
+                                        break;
+                                    }
+                                }
+                                item.tranche = tranche;
+                                item.pourcentage = pourcent;
+                                //item.montant_total_prevu = 315000;
+                                item.montant_percu = (parseFloat(vm.selectedItemContrat_agep.montant_a_effectue_prevu)  * pourcent) / 100;
+                            }
+                        }
+                        else
+                        {   console.log(item);
+                            console.log(current_selectedItemEtat_paiement);
+                            if (item.id_communaute == current_selectedItemEtat_paiement.communaute.id)
+                            {
+                                item.tranche = parseFloat(current_selectedItemEtat_paiement.tranche);
+                                item.pourcentage = parseFloat(current_selectedItemEtat_paiement.pourcentage);
+                                //item.montant_total_prevu = parseFloat(current_selectedItemEtat_paiement.montant_total_prevu);
+                                item.montant_percu = parseFloat(current_selectedItemEtat_paiement.montant_percu);
+                            }
+                            else
+                            {
+                                var com = vm.allEtat_paiement.filter(function(obj)
+                                {
+                                    return obj.communaute.id == item.id_communaute;
+                                });
+                                
+                                if (parseInt(com.length)>=3)
+                                {
+                                    var confirm = $mdDialog.confirm()
+                                    .title('Tranche de paiement atteinte')
+                                    .textContent('')
+                                    .ariaLabel('Lucky day')
+                                    .clickOutsideToClose(true)
+                                    .parent(angular.element(document.body))
+                                    .ok('OK');
+                                    //.cancel('Annuler');
+                                    $mdDialog.show(confirm).then(function() {
+                                        vm.selectedItemEtat_paiement.$edit = false;
+                                        vm.selectedItemEtat_paiement.$selected = false;
+                                        vm.allEtat_paiement = vm.allEtat_paiement.filter(function(obj)
+                                        {
+                                            return obj.id != '0';
+                                        });
+                                        vm.selectedItemEtat_paiement = {};
+                                    }, function() {
+                                    //alert('rien');
+                                    });
+                                }
+                                else
+                                {
+                                    var tranche = com.length + 1;
+                                    switch (tranche)
+                                    {
+                                        case 1:
+                                        {
+                                            pourcent = 10;
+                                            break;
+                                        }
+                                        case 2:
+                                        {
+                                            pourcent = 70;
+                                            break;
+                                        }
+                                        case 3:
+                                        {
+                                            pourcent = 20;
+                                            break;
+                                        }
+                                        default:
+                                        {
+                                            pourcent = 0;
+                                            break;
+                                        }
+                                    }
+                                    item.tranche = tranche;
+                                    item.pourcentage = pourcent;
+                                    //item.montant_total_prevu = 315000;
+                                    item.montant_percu = (parseFloat(vm.selectedItemContrat_agep.montant_a_effectue_prevu) * pourcent) / 100;
+                                }
+                            }
+                        }                         
+                    }
+                    if(id_sous_projet_state ==4) //TMNC-COVID
+                    {   
+                        var etat_pai = [];
+                        if (vm.nouvelItemEtat_paiement==true)
+                        {
+                            etat_pai = vm.allEtat_paiement.filter(function(obj)
+                            {
+                                return obj.id != '0';
+                            });
+                            var vil = etat_pai.filter(function(obj)
+                            {
+                                return obj.village.id == item.id_village;
+                            });
+                            
+                            if (parseInt(vil.length)>=3)
+                            {
+                                var confirm = $mdDialog.confirm()
+                                .title('Tranche de paiement atteinte')
+                                .textContent('')
+                                .ariaLabel('Lucky day')
+                                .clickOutsideToClose(true)
+                                .parent(angular.element(document.body))
+                                .ok('OK');
+                                //.cancel('Annuler');
+                                $mdDialog.show(confirm).then(function() {
+                                    vm.selectedItemEtat_paiement.$edit = false;
+                                    vm.selectedItemEtat_paiement.$selected = false;
+                                    vm.allEtat_paiement = vm.allEtat_paiement.filter(function(obj)
+                                    {
+                                        return obj.id != '0';
+                                    });
+                                    vm.selectedItemEtat_paiement = {};
+                                }, function() {
+                                //alert('rien');
+                                });
+                            }
+                            else
+                            {
+                                var tranche = vil.length + 1;
+                                
+                                item.tranche = tranche;
+                                //item.pourcentage = pourcent;
+                                //item.montant_total_prevu = 105000;
+                                item.montant_percu = 35000 ;
+                            }
+                        }
+                        else
+                        {   console.log(item);
+                            console.log(current_selectedItemEtat_paiement);
+                            if (item.id_village == current_selectedItemEtat_paiement.village.id)
+                            {
+                                item.tranche = parseFloat(current_selectedItemEtat_paiement.tranche);
+                                //item.pourcentage = parseFloat(current_selectedItemEtat_paiement.pourcentage);
+                                //item.montant_total_prevu = parseFloat(current_selectedItemEtat_paiement.montant_total_prevu);
+                                item.montant_percu = parseFloat(current_selectedItemEtat_paiement.montant_percu);
+                            }
+                            else
+                            {
+                                var vil = vm.allEtat_paiement.filter(function(obj)
+                                {
+                                    return obj.village.id == item.id_village;
+                                });
+                                
+                                if (parseInt(vil.length)>=3)
+                                {
+                                    var confirm = $mdDialog.confirm()
+                                    .title('Tranche de paiement atteinte')
+                                    .textContent('')
+                                    .ariaLabel('Lucky day')
+                                    .clickOutsideToClose(true)
+                                    .parent(angular.element(document.body))
+                                    .ok('OK');
+                                    //.cancel('Annuler');
+                                    $mdDialog.show(confirm).then(function() {
+                                        vm.selectedItemEtat_paiement.$edit = false;
+                                        vm.selectedItemEtat_paiement.$selected = false;
+                                        vm.allEtat_paiement = vm.allEtat_paiement.filter(function(obj)
+                                        {
+                                            return obj.id != '0';
+                                        });
+                                        vm.selectedItemEtat_paiement = {};
+                                    }, function() {
+                                    //alert('rien');
+                                    });
+                                }
+                                else
+                                {
+                                    var tranche = vil.length + 1;
+                                   
+                                    item.tranche = tranche;
+                                    //item.pourcentage = pourcent;
+                                    //item.montant_total_prevu = 105000;
+                                    item.montant_percu = 35000;
+                                }
+                            }
+                        }
+                    }
+                }
                 vm.ajouterEtat_paiement = function()
                 {
                     var tranc = vm.allEtat_paiement.length + 1;
                     var pourcent = 0 ;
                     var item = {};
                     if(id_sous_projet_state ==1)//ACT
-                    {
-                        switch (tranc) {
-                            case 1:
-                            {
-                                pourcent = 50;
-                                break;
-                            }
-                            case 2:
-                            {
-                                pourcent = 50;
-                                break;
-                            }
-                            default:
-                            {
-                                pourcent = 0;
-                                break;
-                            }
-                        }
+                    {  
                         item = 
                         {                            
                             $edit: true,
@@ -487,10 +1011,10 @@
                             activite_concerne:'ACT',
                             id_menage:null,
                             id_contrat_agep:vm.selectedItemContrat_agep.id,
-                            tranche:tranc,
-                            pourcentage:pourcent,
-                            montant_total_prevu:75000,
-                            montant_percu:(75000 * pourcent) / 100,
+                            tranche:null,
+                            pourcentage:null,
+                           // montant_total_prevu:null,
+                            montant_percu:null,
                             date_paiement:null,
                             moyen_transfert:null,
                             situation_paiement:null
@@ -499,28 +1023,6 @@
                     } 
                     if(id_sous_projet_state ==2) //ARSE
                     {
-                        switch (tranc) {
-                            case 1:
-                            {
-                                pourcent = 10;
-                                break;
-                            }
-                            case 2:
-                            {
-                                pourcent = 70;
-                                break;
-                            }
-                            case 3:
-                            {
-                                pourcent = 20;
-                                break;
-                            }
-                            default:
-                            {
-                                pourcent = 0;
-                                break;
-                            }
-                        }
                         item = 
                         {                            
                             $edit: true,
@@ -535,10 +1037,10 @@
                             id_communaute : null,
                             id_menage:null,
                             id_contrat_agep:vm.selectedItemContrat_agep.id,
-                            tranche:tranc,
-                            pourcentage:pourcent,
-                            montant_total_prevu:315000,
-                            montant_percu:(315000 * pourcent) / 100,
+                            tranche:null,
+                            pourcentage:null,
+                            //montant_total_prevu:null,
+                            montant_percu:null,
                             date_paiement:null,
                             moyen_transfert:null,
                             situation_paiement:null
@@ -547,28 +1049,6 @@
                     }
                     if(id_sous_projet_state ==3) //IDB
                     {
-                        switch (tranc) {
-                            case 1:
-                            {
-                                pourcent = 10;
-                                break;
-                            }
-                            case 2:
-                            {
-                                pourcent = 70;
-                                break;
-                            }
-                            case 3:
-                            {
-                                pourcent = 20;
-                                break;
-                            }
-                            default:
-                            {
-                                pourcent = 0;
-                                break;
-                            }
-                        }
                         item = 
                         {                            
                             $edit: true,
@@ -583,10 +1063,10 @@
                             activite_concerne:'IDB',
                             id_menage:null,
                             id_contrat_agep:vm.selectedItemContrat_agep.id,
-                            tranche:tranc,
-                            pourcentage:pourcent,
-                            montant_total_prevu:315000,
-                            montant_percu:(315000 * pourcent) / 100,
+                            tranche:null,
+                            pourcentage:null,
+                            //montant_total_prevu:null,
+                            montant_percu:null,
                             date_paiement:null,
                             moyen_transfert:null,
                             situation_paiement:null
@@ -609,10 +1089,10 @@
                                     activite_concerne:'TMNC-COVID-19',
                                     id_menage:null,
                                     id_contrat_agep:vm.selectedItemContrat_agep.id,
-                                    tranche:tranc,
+                                    tranche:null,
                                     pourcentage:null,
-                                    montant_total_prevu:315000,
-                                    montant_percu: 105000,
+                                    //montant_total_prevu:null,
+                                    montant_percu: null,
                                     date_paiement:null,
                                     moyen_transfert:null,
                                     situation_paiement:null
@@ -650,7 +1130,7 @@
                     vm.selectedItemEtat_paiement.SexeChefMenage = vm.selectedItemEtat_paiement.menage.SexeChefMenage ;
                     vm.selectedItemEtat_paiement.tranche = vm.selectedItemEtat_paiement.tranche ;
                     vm.selectedItemEtat_paiement.pourcentage = parseFloat(vm.selectedItemEtat_paiement.pourcentage) ;
-                    vm.selectedItemEtat_paiement.montant_total_prevu = parseFloat(vm.selectedItemEtat_paiement.montant_total_prevu) ;
+                    //vm.selectedItemEtat_paiement.montant_total_prevu = parseFloat(vm.selectedItemEtat_paiement.montant_total_prevu) ;
                     vm.selectedItemEtat_paiement.montant_percu = parseFloat(vm.selectedItemEtat_paiement.montant_percu)  ;
                     vm.selectedItemEtat_paiement.date_paiement = new Date(vm.selectedItemEtat_paiement.date_paiement) ;
                     vm.selectedItemEtat_paiement.moyen_transfert = vm.selectedItemEtat_paiement.moyen_transfert ;
@@ -659,7 +1139,7 @@
                     vm.selectedItemEtat_paiement.id_ile       = vm.selectedItemEtat_paiement.ile.id;
                     vm.selectedItemEtat_paiement.id_region       = vm.selectedItemEtat_paiement.region.id;
                     vm.selectedItemEtat_paiement.id_commune       = vm.selectedItemEtat_paiement.commune.id;
-                    if (vm.show_village)
+                    if (vm.type_sous_projet!='IDB')
                     {
                         vm.selectedItemEtat_paiement.id_village       = vm.selectedItemEtat_paiement.village.id;
                         apiFactory.getVillageByCommune("village/index",vm.selectedItemEtat_paiement.id_commune).then(function(result){
@@ -730,17 +1210,17 @@
                             vm.selectedItemEtat_paiement.id_menage = current_selectedItemEtat_paiement.menage.id ;
                             vm.selectedItemEtat_paiement.tranche = current_selectedItemEtat_paiement.tranche ;
                             vm.selectedItemEtat_paiement.pourcentage = current_selectedItemEtat_paiement.pourcentage ;
-                            vm.selectedItemEtat_paiement.montant_total_prevu = current_selectedItemEtat_paiement.montant_total_prevu ;
+                            //vm.selectedItemEtat_paiement.montant_total_prevu = current_selectedItemEtat_paiement.montant_total_prevu ;
                             vm.selectedItemEtat_paiement.montant_percu = current_selectedItemEtat_paiement.montant_percu ;
                             vm.selectedItemEtat_paiement.date_paiement = current_selectedItemEtat_paiement.date_paiement ;
                             vm.selectedItemEtat_paiement.moyen_transfert = current_selectedItemEtat_paiement.moyen_transfert ;
                             vm.selectedItemEtat_paiement.numero_tranche = current_selectedItemEtat_paiement.numero_tranche ;
                             vm.selectedItemEtat_paiement.situation_paiement = current_selectedItemEtat_paiement.situation_paiement;
-                            vm.selectedItemEtat_paiement.id_ile   = currentItemSous_projet_localisation.id_ile;
-                            vm.selectedItemEtat_paiement.id_region   = currentItemSous_projet_localisation.id_region;
-                            vm.selectedItemEtat_paiement.id_commune   = currentItemSous_projet_localisation.id_commune;
-                            vm.selectedItemEtat_paiement.id_village   = currentItemSous_projet_localisation.id_village;
-                            vm.selectedItemEtat_paiement.id_communaute = currentItemSous_projet_localisation.id_communaute;
+                            vm.selectedItemEtat_paiement.id_ile   = current_selectedItemEtat_paiement.id_ile;
+                            vm.selectedItemEtat_paiement.id_region   = current_selectedItemEtat_paiement.id_region;
+                            vm.selectedItemEtat_paiement.id_commune   = current_selectedItemEtat_paiement.id_commune;
+                            vm.selectedItemEtat_paiement.id_village   = current_selectedItemEtat_paiement.id_village;
+                            vm.selectedItemEtat_paiement.id_communaute = current_selectedItemEtat_paiement.id_communaute;
                             
                             vm.selectedItemEtat_paiement = {};
                         }
@@ -775,7 +1255,7 @@
                         id_menage : vm.selectedItemEtat_paiement.id_menage ,
                         tranche : vm.selectedItemEtat_paiement.tranche ,
                         pourcentage : vm.selectedItemEtat_paiement.pourcentage ,
-                        montant_total_prevu : vm.selectedItemEtat_paiement.montant_total_prevu ,
+                        //montant_total_prevu : vm.selectedItemEtat_paiement.montant_total_prevu ,
                         montant_percu : vm.selectedItemEtat_paiement.montant_percu ,
                         date_paiement : convert_date(vm.selectedItemEtat_paiement.date_paiement ) ,
                         moyen_transfert : vm.selectedItemEtat_paiement.moyen_transfert ,
@@ -804,7 +1284,7 @@
                                 {
                                     return obj.id == vm.selectedItemEtat_paiement.id_commune;
                                 });
-                                if (vm.show_village)
+                                if (vm.type_sous_projet!='IDB')
                                 {
                                     vil = vm.allVillage.filter(function(obj)
                                     {
@@ -859,7 +1339,7 @@
                                 {
                                     return obj.id == vm.selectedItemEtat_paiement.id_commune;
                                 });
-                                if (vm.show_village)
+                                if (vm.type_sous_projet!='IDB')
                                 {
                                     vil = vm.allVillage.filter(function(obj)
                                     {
@@ -923,9 +1403,9 @@
 
             vm.change_montantT_pourcentage = function (etat_paiement) 
             {
-                vm.selectedItemEtat_paiement.montant_percu = (etat_paiement.montant_total_prevu * etat_paiement.pourcentage) / 100 ;
+                vm.selectedItemEtat_paiement.montant_percu = (parseFloat(vm.selectedItemContrat_agep.montant_a_effectue_prevu) * etat_paiement.pourcentage) / 100 ;
             }
-            vm.change_activite = function (etat_paiement) 
+           /* vm.change_activite = function (etat_paiement) 
             {   
                 if (etat_paiement.activite_concerne==2)
                 {                    
@@ -933,7 +1413,7 @@
                     etat_paiement.montant_total_prevu = 105000;
                     etat_paiement.montant_percu = 35000;
                 }
-            }
+            }*/
             vm.change_menage = function (etat_paiement) 
             {   
                 var men = vm.allMenage.filter(function(obj)

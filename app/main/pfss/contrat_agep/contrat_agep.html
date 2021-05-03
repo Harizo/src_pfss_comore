@@ -107,6 +107,15 @@
                                     </div>
                               </md-input-container>
                               <md-input-container flex="100" flex-gt-xs="10">
+                                <label>Montant paiement à effectué prevu</label>
+                                  <input name="montant_a_effectue_prevu" type="number" ng-model="vm.contrat_agep.montant_a_effectue_prevu" required md-select-on-focus>
+                                    <div ng-messages="formcontrat_agep.montant_a_effectue_prevu.$error" role="alert">
+                                      <div ng-message="required">
+                                          <span>Montant du Contrat obligatoire.</span>
+                                      </div>
+                                    </div>
+                              </md-input-container>
+                              <md-input-container flex="100" flex-gt-xs="10">
                                 <input  type="text" name="modalite_contrat" ng-model="vm.contrat_agep.modalite_contrat"
                                         placeholder="Modalité du Contrat" required>
                                 <div ng-messages="formcontrat_agep.modalite_contrat.$error" role="alert">
@@ -183,6 +192,7 @@
                                 <!--td>{{contr.sous_projet.description}}</td-->
                                 <td>{{contr.objet_contrat}}</td>
                                 <td>{{contr.montant_contrat}}</td>
+                                <td>{{contr.montant_a_effectue_prevu}}</td>
                                 <td>{{contr.modalite_contrat}}</td>
                                 <td>{{contr.date_prevu_fin | date:'dd/MM/yyyy'}}</td>
                                 <td>{{contr.noms_signataires}}</td>
@@ -261,12 +271,12 @@
                                             <span class="column-title">Commune</span>
                                           </div>
                                         </th>
-                                        <th class="secondary-text" ng-show="vm.show_village">
+                                        <th class="secondary-text" ng-show="vm.type_sous_projet!='IDB'">
                                           <div class="table-header">
                                             <span class="column-title">Village</span>
                                           </div>
                                         </th>
-                                        <th class="secondary-text" ng-show="vm.show_communaute">
+                                        <th class="secondary-text" ng-show="vm.type_sous_projet=='IDB'">
                                           <div class="table-header">
                                             <span class="column-title">Communaute</span>
                                           </div>
@@ -301,16 +311,16 @@
                                             <span class="column-title">Tranche paiement</span>
                                           </div>
                                         </th>
-                                        <th class="secondary-text">
+                                        <th class="secondary-text" ng-show="vm.type_sous_projet!='TMNC-COVID-19'">
                                           <div class="table-header">
                                             <span class="column-title">Pourcentage paiement</span>
                                           </div>
                                         </th>
-                                        <th class="secondary-text">
+                                        <!--th class="secondary-text">
                                           <div class="table-header">
                                             <span class="column-title">Montant total prévu</span>
                                           </div>
-                                        </th>
+                                        </th-->
                                         <th class="secondary-text">
                                           <div class="table-header">
                                             <span class="column-title">Montant perçu</span>
@@ -379,11 +389,11 @@
                                         </span>
                                         <span ng-if="!paie.$edit">{{paie.commune.Commune}}</span>
                                       </td>
-                                      <td ng-show="vm.show_village">
+                                      <td ng-show="vm.type_sous_projet!='IDB'">
                                         <span ng-if="paie.$edit">
-                                          <md-input-container style="width:100%; display: flex !important;" ng-if="vm.show_village">
+                                          <md-input-container style="width:100%; display: flex !important;" ng-if="vm.type_sous_projet!='IDB'">
                                             <label>Village</label>
-                                            <md-select ng-model="paie.id_village"  style="width:90px;overflow: hidden;text-overflow: ellipsis;" ng-disabled="!paie.id_commune" ng-change='vm.change_village()'>
+                                            <md-select ng-model="paie.id_village"  style="width:90px;overflow: hidden;text-overflow: ellipsis;" ng-disabled="!paie.id_commune" ng-change='vm.change_village(paie)'>
                                               <md-option value=''>&nbsp;</md-option>
                                               <md-option ng-repeat="vil in vm.allVillage" value="{{vil.id}}">
                                               {{vil.Village}}
@@ -393,11 +403,11 @@
                                         </span>
                                         <span ng-if="!paie.$edit">{{paie.village.Village}}</span>
                                       </td>
-                                      <td ng-show="vm.show_communaute">
+                                      <td ng-show="vm.type_sous_projet=='IDB'">
                                         <span ng-if="paie.$edit">
-                                          <md-input-container style="width:100%; display: flex !important;" ng-if="vm.show_communaute">
+                                          <md-input-container style="width:100%; display: flex !important;" ng-if="vm.type_sous_projet=='IDB'">
                                             <label>Communaute</label>
-                                            <md-select ng-model="paie.id_communaute"  style="width:90px;overflow: hidden;text-overflow: ellipsis;" ng-disabled="!paie.id_commune">
+                                            <md-select ng-model="paie.id_communaute"  style="width:90px;overflow: hidden;text-overflow: ellipsis;" ng-disabled="!paie.id_commune" ng-change='vm.change_village(paie)'>
                                               <md-option value=''>&nbsp;</md-option>
                                               <md-option ng-repeat="com in vm.allCommunaute" value="{{com.id}}">
                                               {{com.libelle}}
@@ -464,7 +474,7 @@
                                         <td>
                                           <span> {{vm.tranche_paiement(paie.tranche)}}</span>
                                         </td>
-                                        <td>
+                                        <td ng-show="vm.type_sous_projet!='TMNC-COVID-19'">
                                           <span ng-if="paie.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
                                                 <label>Pourcentage</label>                                                
@@ -473,7 +483,7 @@
                                           </span>
                                           <span ng-if="!paie.$edit"> {{paie.pourcentage}} %</span>
                                         </td>
-                                        <td>
+                                        <!--td>
                                           <span ng-if="paie.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
                                                 <label>Montant total prevu</label>                                                
@@ -481,12 +491,12 @@
                                               </md-input-container>
                                           </span>
                                           <span ng-if="!paie.$edit"> {{paie.montant_total_prevu}} KMF</span>
-                                        </td>
+                                        </td-->
                                         <td>
                                           <span ng-if="paie.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
                                                 <label>Montant perçu</label>                                                
-                                                <input type="number" name="montant_percu"  ng-model="paie.montant_percu"/>
+                                                <input type="number" name="montant_percu"  ng-model="paie.montant_percu" />
                                               </md-input-container>
                                           </span>
                                           <span ng-if="!paie.$edit"> {{paie.montant_percu}} KMF</span>
