@@ -654,7 +654,7 @@
               $edit: true,
               $selected: true,
               supprimer:0,
-                      nbr_menage_beneficiaire: '',
+                      //nbr_menage_beneficiaire: '',
                       presentantion_communaute: '',                
                       ref_dgsc : '',
                       nbr_menage_beneficiaire : null,
