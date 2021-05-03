@@ -7,10 +7,23 @@
         .controller('gerer_mdpController', gerer_mdpController);
 
     /** @ngInject */
-    function gerer_mdpController(apiFactory, $scope, $mdDialog)
+    function gerer_mdpController(apiFactory, $scope, $mdDialog, $location)
     {
     	var vm = this ;
-    	
+       
+    	vm.loc = $location ;
+
+        if (vm.loc.path()=='/act-gerer-mpd') 
+        {
+            //vm.mdp.type = 1;
+            vm.type = "ACT";
+        }
+        else
+        {
+            vm.type = "ARSE";
+            //vm.mdp.type = 2 ;
+        }
+
         vm.date_now = new Date();
         vm.dtOptions_new =
         {
@@ -47,8 +60,8 @@
                 {titre:"Coût d’investissement des AGR"},
                 {titre:"Coût d’investissement des AGR(Stage de formation éléctricité)"}
             ];
-
-            apiFactory.getAll("mdp/index").then(function(result)
+           
+            apiFactory.getParamsDynamic("mdp/index?type="+vm.type).then(function(result)
             {
                 vm.all_mdp = result.data.response;
             });
@@ -117,6 +130,17 @@
                 vm.affichage_masque = true ;
                 
                 nouvelle_mdp = true;
+
+                if (vm.loc.path()=='/act-gerer-mpd') 
+                {
+                    //vm.mdp.type = 1;
+                    vm.mdp.type = "ACT";
+                }
+                else
+                {
+                    vm.mdp.type = "ARSE";
+                    //vm.mdp.type = 2 ;
+                }
             }
 
             vm.annuler = function () {
@@ -291,7 +315,8 @@
             [
                 {titre:"Communautés local"},
                 {titre:"Communes"},
-                {titre:"Région/Préfecture"}
+                {titre:"Région/Préfecture"},
+                {titre:"Nombre de bénéficiaires"}
             ];
 
             vm.affiche_load = false ;
@@ -362,6 +387,7 @@
                             id:'0',
                             id_mdp:vm.selected_mdp.id,
                             id_communaute:'',
+                            nbr_beneficiaire:0,
                             code_communaute:'',
                             libelle_communaute:'',
                             nom_commune:'',
@@ -384,6 +410,8 @@
                 {
                     vm.nouvelle_mdp_communaute = false ;
                     vm.selected_mdp_communaute.$edit = true;
+
+                    vm.selected_mdp_communaute.nbr_beneficiaire = Number(vm.selected_mdp_communaute.nbr_beneficiaire);
                 
                     current_selected_mdp_communaute = angular.copy(vm.selected_mdp_communaute);
                 }
@@ -432,6 +460,7 @@
                             vm.selected_mdp_communaute.$edit = false;
                         
                             vm.selected_mdp_communaute.id_communaute = current_selected_mdp_communaute.id_communaute;
+                            vm.selected_mdp_communaute.nbr_beneficiaire = Number(current_selected_mdp_communaute.nbr_beneficiaire);
                             vm.selected_mdp_communaute.code_communaute = current_selected_mdp_communaute.code_communaute;
                             vm.selected_mdp_communaute.libelle_communaute = current_selected_mdp_communaute.libelle_communaute;
                             vm.selected_mdp_communaute.nom_commune = current_selected_mdp_communaute.nom_commune;
@@ -461,7 +490,8 @@
                         id:vm.selected_mdp_communaute.id,
                         id_mdp:vm.selected_mdp.id,
 
-                        id_communaute : vm.selected_mdp_communaute.id_communaute 
+                        id_communaute : vm.selected_mdp_communaute.id_communaute ,
+                        nbr_beneficiaire : vm.selected_mdp_communaute.nbr_beneficiaire 
                         
                         
                         
@@ -730,7 +760,7 @@
             vm.type_agr_column =
             [
                 {titre:"Localités"},
-                {titre:"Type d'AGR"},
+                {titre:"Type d'activité"},
                 {titre:"Bénéficiaires"}
             ];
 
@@ -1358,9 +1388,229 @@
 
             vm.agr_maraichere_column =
             [
-                {titre:"Type"},
+                {titre:"Désignation"},
                 {titre:"Localité"},
-                {titre:"Activité"},
+                {titre:"Prix unitaire"},
+                {titre:"Quantité"},
+                {titre:"Unité"}
+            ];
+
+            vm.affiche_load = false ;
+
+            vm.get_all_mdp_agr_maraichere = function () 
+            {
+                vm.affiche_load = true ;
+                apiFactory.getAPIgeneraliserREST("mdp_agr_maraichere/index","id_mdp_description_activite",vm.selected_mdp_description_activite.id).then(function(result){
+                    vm.all_mdp_agr_maraichere = result.data.response;
+                    
+                    vm.affiche_load = false ;
+
+                });  
+            }
+
+            //mdp_agr_maraichere..
+                
+                vm.selected_mdp_agr_maraichere = {} ;
+                var current_selected_mdp_agr_maraichere = {} ;
+                 vm.nouvelle_mdp_agr_maraichere = false ;
+
+            
+                vm.selection_mdp_agr_maraichere = function(item)
+                {
+                    vm.selected_mdp_agr_maraichere = item ;
+
+                    if (!vm.selected_mdp_agr_maraichere.$edit) //si simple selection
+                    {
+                        vm.nouvelle_mdp_agr_maraichere = false ;  
+
+                    }
+
+                }
+
+                $scope.$watch('vm.selected_mdp_agr_maraichere', function()
+                {
+                    if (!vm.all_mdp_agr_maraichere) return;
+                    vm.all_mdp_agr_maraichere.forEach(function(item)
+                    {
+                        item.$selected = false;
+                    });
+                    vm.selected_mdp_agr_maraichere.$selected = true;
+
+                });
+
+               
+
+                vm.ajouter_mdp_agr_maraichere = function()
+                {
+                    vm.nouvelle_mdp_agr_maraichere = true ;
+                    var item = 
+                        {
+                            
+                            $edit: true,
+                            $selected: true,
+                            id:'0',
+                            id_mdp_description_activite:vm.selected_mdp_description_activite.id,
+                            designation:'',
+                            localite:'',
+                            prix_unitaire:0,
+                            unite:'',
+                            quantite:0
+                            
+                        } ;
+
+                    vm.all_mdp_agr_maraichere.unshift(item);
+                    vm.all_mdp_agr_maraichere.forEach(function(af)
+                    {
+                      if(af.$selected == true)
+                      {
+                        vm.selected_mdp_agr_maraichere = af;
+                        
+                      }
+                    });
+                }
+
+                vm.modifier_mdp_agr_maraichere = function()
+                {
+                    vm.nouvelle_mdp_agr_maraichere = false ;
+                    vm.selected_mdp_agr_maraichere.$edit = true;
+                    vm.selected_mdp_agr_maraichere.quantite = Number(vm.selected_mdp_agr_maraichere.quantite);
+                    vm.selected_mdp_agr_maraichere.prix_unitaire = Number(vm.selected_mdp_agr_maraichere.prix_unitaire);
+                    current_selected_mdp_agr_maraichere = angular.copy(vm.selected_mdp_agr_maraichere);
+                }
+
+                vm.supprimer_mdp_agr_maraichere = function()
+                {
+
+                    
+                    var confirm = $mdDialog.confirm()
+                      .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                      .textContent('Cliquer sur OK pour confirmer')
+                      .ariaLabel('Lucky day')
+                      .clickOutsideToClose(true)
+                      .parent(angular.element(document.body))
+                      .ok('OK')
+                      .cancel('Annuler');
+                    $mdDialog.show(confirm).then(function() {
+
+                    vm.enregistrer_mdp_agr_maraichere(1);
+                    }, function() {
+                    //alert('rien');
+                    });
+                }
+
+                vm.annuler_mdp_agr_maraichere = function()
+                {
+                    if (vm.nouvelle_mdp_agr_maraichere) 
+                    {
+                        
+                        vm.all_mdp_agr_maraichere.shift();
+                        vm.selected_mdp_agr_maraichere = {} ;
+                        vm.nouvelle_mdp_agr_maraichere = false ;
+                    }
+                    else
+                    {
+                        
+
+                        if (!vm.selected_mdp_agr_maraichere.$edit) //annuler selection
+                        {
+                            vm.selected_mdp_agr_maraichere.$selected = false;
+                            vm.selected_mdp_agr_maraichere = {};
+                        }
+                        else
+                        {
+                            vm.selected_mdp_agr_maraichere.$selected = false;
+                            vm.selected_mdp_agr_maraichere.$edit = false;
+                        
+                            vm.selected_mdp_agr_maraichere.type = current_selected_mdp_agr_maraichere.type;
+                            vm.selected_mdp_agr_maraichere.localite = current_selected_mdp_agr_maraichere.localite;
+                            vm.selected_mdp_agr_maraichere.activite = current_selected_mdp_agr_maraichere.activite;
+                            vm.selected_mdp_agr_maraichere.unite = current_selected_mdp_agr_maraichere.unite;                    
+                            vm.selected_mdp_agr_maraichere.quantite = current_selected_mdp_agr_maraichere.quantite;                    
+                            vm.selected_mdp_agr_maraichere = {};
+                        }
+
+                        
+
+                    }
+                }
+
+                vm.enregistrer_mdp_agr_maraichere = function(etat_suppression)
+                {
+                    vm.affiche_load = true ;
+                    var config = {
+                        headers : {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                        }
+                    };
+
+
+                    var datas = $.param(
+                    {
+                        
+                        supprimer:etat_suppression,
+                        id:vm.selected_mdp_agr_maraichere.id,
+                        id_mdp_description_activite:vm.selected_mdp_description_activite.id,
+
+                        designation : vm.selected_mdp_agr_maraichere.designation ,
+                        localite : vm.selected_mdp_agr_maraichere.localite ,
+                        prix_unitaire : vm.selected_mdp_agr_maraichere.prix_unitaire ,
+                        unite : vm.selected_mdp_agr_maraichere.unite ,
+                        quantite : vm.selected_mdp_agr_maraichere.quantite 
+                        
+                        
+                        
+                    });
+
+                    apiFactory.add("mdp_agr_maraichere/index",datas, config).success(function (data)
+                    {
+                        vm.affiche_load = false ;
+                        if (!vm.nouvelle_mdp_agr_maraichere) 
+                        {
+                            if (etat_suppression == 0) 
+                            {
+                                vm.selected_mdp_agr_maraichere.$edit = false ;
+                                vm.selected_mdp_agr_maraichere.$selected = false ;
+                                vm.selected_mdp_agr_maraichere = {} ;
+                            }
+                            else
+                            {
+                                vm.all_mdp_agr_maraichere = vm.all_mdp_agr_maraichere.filter(function(obj)
+                                {
+                                    return obj.id !== vm.selected_mdp_agr_maraichere.id;
+                                });
+
+                                vm.selected_mdp_agr_maraichere = {} ;
+                            }
+
+                        }
+                        else
+                        {
+                            vm.selected_mdp_agr_maraichere.$edit = false ;
+                            vm.selected_mdp_agr_maraichere.$selected = false ;
+                            vm.selected_mdp_agr_maraichere.id = String(data.response) ;
+
+                            vm.nouvelle_mdp_agr_maraichere = false ;
+                            vm.selected_mdp_agr_maraichere = {};
+
+                        }
+                    })
+                    .error(function (data) {alert("Une erreur s'est produit");});
+                }
+
+            
+
+            //fin mdp_agr_maraichere..
+        //FIN mdp_agr_maraichere
+
+        /*//mdp_agr_maraichere 
+
+            vm.all_mdp_agr_maraichere = [] ;
+
+            vm.agr_maraichere_column =
+            [
+                {titre:"Désignation"},
+                {titre:"Localité"},
+                {titre:"Prix unitaire"},
                 {titre:"Unité"},
                 {titre:"Quantité"}
             ];
@@ -1569,7 +1819,7 @@
             
 
             //fin mdp_agr_maraichere..
-        //FIN mdp_agr_maraichere
+        //FIN mdp_agr_maraichere*/
 
         //mdp_estimation_depense 
 
@@ -2036,9 +2286,10 @@
             vm.duree_planning_column =
             [
                 {titre:"Désignation des activités/tâches "},
-                {titre:"Semaine"},
-                {titre:"Jour"},
-                {titre:"Valeur"}
+                {titre:"Mois début"},
+                {titre:"Semaine début"},
+                {titre:"Mois fin"},
+                {titre:"Semaine fin"}
             ];
 
             vm.affiche_load = false ;
@@ -2052,6 +2303,28 @@
                     vm.affiche_load = false ;
 
                 });  
+            }
+
+            vm.set_color = function(item,mois,semaine)
+            {
+                var deb =  Number(item.numero_semaine_deb+''+item.numero_jour_deb) ;
+                var fin =  Number(item.numero_semaine_fin+''+item.numero_jour_fin) ;
+
+                var valeur = Number(mois+''+semaine) ;
+               
+                if 
+                ( 
+
+                    valeur >= deb && valeur <= fin
+                   
+                ) 
+                {
+                    return "#5c935c";
+                }
+                else
+                {
+                    return "#ffffff";
+                }
             }
 
             //mdp_duree_planning..
@@ -2097,9 +2370,10 @@
                             id:'0',
                             id_mdp:vm.selected_mdp.id,
                             designation_activite:'',
-                            numero_semaine:'',
-                            numero_jour:'',
-                            valeur:''
+                            numero_semaine_deb:'',
+                            numero_jour_deb:'',
+                            numero_semaine_fin:'',
+                            numero_jour_fin:''
                             
                         } ;
 
@@ -2166,9 +2440,10 @@
                             vm.selected_mdp_duree_planning.$edit = false;
                         
                             vm.selected_mdp_duree_planning.designation_activite = current_selected_mdp_duree_planning.designation_activite;
-                            vm.selected_mdp_duree_planning.numero_semaine = current_selected_mdp_duree_planning.numero_semaine;                    
-                            vm.selected_mdp_duree_planning.numero_jour = current_selected_mdp_duree_planning.numero_jour;                    
-                            vm.selected_mdp_duree_planning.valeur = current_selected_mdp_duree_planning.valeur;
+                            vm.selected_mdp_duree_planning.numero_semaine_deb = current_selected_mdp_duree_planning.numero_semaine_deb;                    
+                            vm.selected_mdp_duree_planning.numero_jour_deb = current_selected_mdp_duree_planning.numero_jour_deb;                    
+                            vm.selected_mdp_duree_planning.numero_semaine_fin = current_selected_mdp_duree_planning.numero_semaine_fin;
+                            vm.selected_mdp_duree_planning.numero_jour_fin = current_selected_mdp_duree_planning.numero_jour_fin;
                            
                             vm.selected_mdp_duree_planning = {};
                         }
@@ -2196,9 +2471,10 @@
                         id_mdp:vm.selected_mdp.id,
 
                         designation_activite : vm.selected_mdp_duree_planning.designation_activite ,
-                        numero_semaine : vm.selected_mdp_duree_planning.numero_semaine ,
-                        numero_jour : vm.selected_mdp_duree_planning.numero_jour ,
-                        valeur : vm.selected_mdp_duree_planning.valeur 
+                        numero_semaine_deb : vm.selected_mdp_duree_planning.numero_semaine_deb ,
+                        numero_jour_deb : vm.selected_mdp_duree_planning.numero_jour_deb ,
+                        numero_jour_fin : vm.selected_mdp_duree_planning.numero_jour_fin ,
+                        numero_semaine_fin : vm.selected_mdp_duree_planning.numero_semaine_fin 
                        
                         
                         
@@ -2468,9 +2744,9 @@
 
             vm.indicateur_column =
             [
-                {titre:"Catégorie de travailleurs"},
+                {titre:"Catégorie du bénéficiaire"},
                 {titre:"Localité"},
-                {titre:"Semaine"},
+              //  {titre:"Semaine"},
                 {titre:"Nombre"}
             ];
 
@@ -2479,7 +2755,7 @@
             vm.get_all_mdp_indicateur = function () 
             {
                 vm.affiche_load = true ;
-                apiFactory.getAPIgeneraliserREST("mdp_indicateur/index","id_mdp",vm.selected_mdp.id).then(function(result){
+                apiFactory.getAPIgeneraliserREST("mdp_indicateur/index","id_mdp_description_activite",vm.selected_mdp_description_activite.id).then(function(result){
                     vm.all_mdp_indicateur = result.data.response;
                     
                     vm.affiche_load = false ;
@@ -2528,8 +2804,8 @@
                             $edit: true,
                             $selected: true,
                             id:'0',
-                            id_mdp:vm.selected_mdp.id,
-                            numero_semaine:'',
+                            id_mdp_description_activite:vm.selected_mdp_description_activite.id,
+                            //numero_semaine:'',
                             lieu:'',
                             nombre:0
                             
@@ -2598,7 +2874,7 @@
                             vm.selected_mdp_indicateur.$edit = false;
                         
                             vm.selected_mdp_indicateur.categorie_travailleur = current_selected_mdp_indicateur.categorie_travailleur;
-                            vm.selected_mdp_indicateur.numero_semaine = current_selected_mdp_indicateur.numero_semaine;
+                           // vm.selected_mdp_indicateur.numero_semaine = current_selected_mdp_indicateur.numero_semaine;
                             vm.selected_mdp_indicateur.lieu = current_selected_mdp_indicateur.lieu;                    
                             vm.selected_mdp_indicateur.nombre = current_selected_mdp_indicateur.nombre;  
                             vm.selected_mdp_indicateur = {};
@@ -2624,9 +2900,9 @@
                         
                         supprimer:etat_suppression,
                         id:vm.selected_mdp_indicateur.id,
-                        id_mdp:vm.selected_mdp.id,
+                        id_mdp_description_activite:vm.selected_mdp_description_activite.id,
 
-                        numero_semaine : vm.selected_mdp_indicateur.numero_semaine ,
+                       // numero_semaine : vm.selected_mdp_indicateur.numero_semaine ,
                         lieu : vm.selected_mdp_indicateur.lieu ,
                         nombre : vm.selected_mdp_indicateur.nombre ,
                         categorie_travailleur : vm.selected_mdp_indicateur.categorie_travailleur 
@@ -2694,7 +2970,7 @@
             vm.get_all_mdp_resultat_attendu = function () 
             {
                 vm.affiche_load = true ;
-                apiFactory.getAPIgeneraliserREST("mdp_resultat_attendu/index","id_mdp",vm.selected_mdp.id).then(function(result){
+                apiFactory.getAPIgeneraliserREST("mdp_resultat_attendu/index","id_mdp_description_activite",vm.selected_mdp_description_activite.id).then(function(result){
                     vm.all_mdp_resultat_attendu = result.data.response;
                     
                     vm.affiche_load = false ;
@@ -2743,7 +3019,7 @@
                             $edit: true,
                             $selected: true,
                             id:'0',
-                            id_mdp:vm.selected_mdp.id,
+                            id_mdp_description_activite:vm.selected_mdp_description_activite.id,
                             description:'',
                             unite:'',
                             lieu:'',
@@ -2843,7 +3119,7 @@
                         
                         supprimer:etat_suppression,
                         id:vm.selected_mdp_resultat_attendu.id,
-                        id_mdp:vm.selected_mdp.id,
+                        id_mdp_description_activite:vm.selected_mdp_description_activite.id,
 
                         description : vm.selected_mdp_resultat_attendu.description ,
                         unite : vm.selected_mdp_resultat_attendu.unite ,

@@ -3,7 +3,9 @@
     'use strict';
 
     angular
-        .module('app.pfss.arse', [])
+        .module('app.pfss.arse', [
+            'app.pfss.arse.gerer_mdp'
+            ])
         .config(config);
 
     /** @ngInject */

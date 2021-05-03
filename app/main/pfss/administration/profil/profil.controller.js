@@ -37,6 +37,7 @@
             var datas = $.param(
             {
             	profil:1,
+                gestion_utilisateur:1,
                 id:vm.user.id,      
                 nom: profil.nom,
                 prenom: profil.prenom,

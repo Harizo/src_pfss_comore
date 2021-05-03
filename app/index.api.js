@@ -62,8 +62,8 @@
           getAll_acteur_serveur_central: function(controller) {
             return $http.get(apiUrl_serve_central+controller);
           },
-          getParamsDynamic : function(controller) {
-            return $http.get(apiUrl+controller);
+          getParamsDynamic : function(prams) {
+            return $http.get(apiUrl+prams);
           },
           add_serveur_central: function(controller, data, config) {
             return $http.post(apiUrl_serve_central+controller, data, config);

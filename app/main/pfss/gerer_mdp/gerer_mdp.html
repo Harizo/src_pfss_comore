@@ -5,7 +5,7 @@
                 <div class="breadcrumb" layout="row" layout-align="start center">
                     <md-icon md-font-icon="icon-home" class="s16"></md-icon>
                     <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
-                    <span class="parent">Gérer MDP</span>
+                    <span class="parent">Gérer MDP {{vm.type}}</span>
                     <span class="parent"> </span>
                     <!--md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
                     <span class="parent" href="javascript:;">Groupe ML/PL</span-->
@@ -38,9 +38,9 @@
                                    
                                         
 
-                                        <md-input-container flex="100" flex-gt-xs="15">
+                                        <md-input-container flex="100" flex-gt-xs="15" >
                                             <label>Type</label>
-                                            <md-select ng-model="vm.mdp.type" name="type" >
+                                            <md-select ng-model="vm.mdp.type" name="type" ng-disabled="true">
                                                 
                                                 <md-option  value="ARSE">ARSE</md-option>
                                                 <md-option  value="ACT">ACT</md-option>
@@ -354,6 +354,20 @@
                                                 {{cm.nom_region}}
                                             </span>
                                         </td>
+
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Nombre de bénéficiaires</label>
+                                                  <input type="number" name="nbr_beneficiaire"  ng-model="cm.nbr_beneficiaire"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.nbr_beneficiaire}}
+                                            </span>
+                                        </td>
                                       
 
                                     </tr>
@@ -361,7 +375,7 @@
                             </table>
                         </div>
                     </md-tab> 
-                    <md-tab label="Délai" ng-disabled="!vm.selected_mdp.id" ng-click="vm.get_all_mdp_delai()">
+                    <!-- <md-tab label="Délai" ng-disabled="!vm.selected_mdp.id" ng-click="vm.get_all_mdp_delai()">
                         <div class="price-table style-1 md-whiteframe-1dp" layout="column">
                             <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                                 <div layout="row" layout-align="start center">
@@ -467,9 +481,9 @@
                                 </tbody>
                             </table>
                         </div>
-                    </md-tab> 
+                    </md-tab> --> 
 
-                    <md-tab label="Type AGR" ng-disabled="!vm.selected_mdp.id" ng-click="vm.get_all_mdp_type_agr()">
+                    <md-tab label="Type du micro-Projet" ng-disabled="!vm.selected_mdp.id" ng-click="vm.get_all_mdp_type_agr()">
                         <div class="price-table style-1 md-whiteframe-1dp" layout="column">
                             <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                                 <div layout="row" layout-align="start center">
@@ -659,7 +673,7 @@
                         </div>
                     </md-tab> 
 
-                    <md-tab label="Formation" ng-disabled="!vm.selected_mdp.id" ng-click="vm.get_all_mdp_formation()">
+                    <!-- <md-tab label="Formation" ng-disabled="!vm.selected_mdp.id" ng-click="vm.get_all_mdp_formation()">
                         <div class="price-table style-1 md-whiteframe-1dp" layout="column">
                             <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                                 <div layout="row" layout-align="start center">
@@ -779,15 +793,15 @@
                                 </tbody>
                             </table>
                         </div>
-                    </md-tab> 
-
-                     <md-tab label="Estimation des quantitatif des ressources nécessaires à la mise en place de l’activité" ng-disabled="!vm.selected_mdp.id" ng-click="                              vm.get_all_mdp_agr_maraichere()">
+                    </md-tab>  -->
+                    <!-- table mdp_agr_maraichere io amabny io -->
+                     <md-tab label="Liste des matériels et intrants | Activité: {{vm.selected_mdp_description_activite.description_activite}}" ng-disabled="!vm.selected_mdp_description_activite.id" ng-click="                              vm.get_all_mdp_agr_maraichere()">
                         <div class="price-table style-1 md-whiteframe-1dp" layout="column">
                             <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                                 <div layout="row" layout-align="start center">
                                 <div class="border-right">
                                     
-                                  <span class="md-headline">Liste Estimation des quantitatif des ressources nécessaires à la mise en place de l’activité</span>
+                                  <span class="md-headline">Liste des matériels et intrants</span>
                                 </div>
                                   <div class="border-right" ng-if="!vm.selected_mdp_agr_maraichere.id&&!vm.nouvelle_mdp_agr_maraichere">
                                     <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_mdp_agr_maraichere()">
@@ -842,21 +856,13 @@
 
                                             <span ng-if="cm.$edit">
                                                 <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Type</label>
-                                                  
-                                                  <md-select ng-model="cm.type" name="type" >
-                                                
-                                                      <md-option  value="AGR production de maraichère Nombre100 ">AGR production de maraichère Nombre100 </md-option>
-                                                      <md-option  value="AGR Magasin de vente en détail des bien de premier nécessité ">AGR Magasin de vente en détail des bien de premier nécessité </md-option>
-                                                      <md-option  value="Stage de formation au centre de Ouani en electricité  ">Stage de formation au centre de Ouani en electricité  </md-option>
-                                                      <md-option  value="Installation pépinière de production des agrumes   ">Installation pépinière de production des agrumes   </md-option>
-                                                      
-                                                  </md-select>
+                                                  <label>Désignation</label>
+                                                  <input type="text" name="designation"  ng-model="cm.designation"/>
                                                 </md-input-container>   
                                                 
                                             </span>
                                             <span ng-if="!cm.$edit">
-                                                {{cm.type}}
+                                                {{cm.designation}}
                                             </span>
                                         </td>
                                      
@@ -878,13 +884,29 @@
 
                                             <span ng-if="cm.$edit">
                                                 <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Activité</label>
-                                                  <input type="text" name="activite"  ng-model="cm.activite"/>
+                                                  <label>Prix unitaire</label>
+                                                  <input type="number" name="prix_unitaire"  ng-model="cm.prix_unitaire"/>
                                                 </md-input-container>   
                                                 
                                             </span>
                                             <span ng-if="!cm.$edit">
-                                                {{cm.activite}}
+                                                {{cm.prix_unitaire}} KMF
+                                            </span>
+                                        </td>
+
+                                        
+
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Quantité</label>
+                                                  <input type="number" name="quantite"  ng-model="cm.quantite"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.quantite}}
                                             </span>
                                         </td>
 
@@ -901,20 +923,940 @@
                                                 {{cm.unite}}
                                             </span>
                                         </td>
+                                      
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </md-tab>
+
+                    <md-tab label="Indicateurs | Activité: {{vm.selected_mdp_description_activite.description_activite}}" ng-disabled="!vm.selected_mdp.id" ng-click="vm.get_all_mdp_indicateur()" ng-disabled="!vm.selected_mdp_description_activite.id">
+                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                <div layout="row" layout-align="start center">
+                                <div class="border-right">
+                                    
+                                  <span class="md-headline">Liste Indicateurs</span>
+                                </div>
+                                  <div class="border-right" ng-if="!vm.selected_mdp_indicateur.id&&!vm.nouvelle_mdp_indicateur">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_mdp_indicateur()">
+                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                      <md-tooltip><span>Ajouter</span></md-tooltip>
+                                    </md-button>
+                                  </div> 
+                                  <div class="border-right" ng-if="vm.selected_mdp_indicateur.id&&!vm.selected_mdp_indicateur.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_mdp_indicateur()">
+                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                      <md-tooltip><span>Modifier</span></md-tooltip>
+                                    </md-button>
+                                  </div>    
+                                  <div class="border-right" ng-if="vm.selected_mdp_indicateur.id&&!vm.selected_mdp_indicateur.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_mdp_indicateur()">
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Supprimer</span></md-tooltip>
+                                    </md-button>
+                                  </div>  
+
+                                  <div class="border-right" ng-if="vm.selected_mdp_indicateur.id">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_mdp_indicateur()">
+                                      <md-icon md-font-icon="icon-cancel"></md-icon>
+                                      <md-tooltip><span>Annuler</span></md-tooltip>
+                                    </md-button>
+                                  </div>   
+
+                                  <div ng-if="vm.selected_mdp_indicateur.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_mdp_indicateur(0)">
+                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                    </md-button>
+                                  </div>                
+                                </div>
+                            </header>
+                            
+                        
+                            <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                                <thead>
+                                    <tr>
+                                        <th class="secondary-text" ng-repeat="c in ::vm.indicateur_column">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">{{c.titre}}</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="cm in vm.all_mdp_indicateur"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_mdp_indicateur(cm)">                                       
+                                        
+                                        
+                                     
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Catégorie du bénéficiaire</label>
+                                                  <input type="text" name="categorie_travailleur"  ng-model="cm.categorie_travailleur"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.categorie_travailleur}}
+                                            </span>
+                                        </td>
 
                                         <td>
 
                                             <span ng-if="cm.$edit">
                                                 <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Quantité</label>
-                                                  <input type="number" name="quantite"  ng-model="cm.quantite"/>
+                                                  <label>Localité</label>
+                                                  <input type="text" name="lieu"  ng-model="cm.lieu"/>
                                                 </md-input-container>   
                                                 
                                             </span>
                                             <span ng-if="!cm.$edit">
-                                                {{cm.quantite}}
+                                                {{cm.lieu}}
                                             </span>
                                         </td>
+
+                                        
+
+                                        <!-- <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Semaine</label>
+                                                  
+                                                  <md-select ng-model="cm.numero_semaine" name="numero_semaine" >
+                                                
+                                                      <md-option  value="1">1</md-option>
+                                                      <md-option  value="2">2</md-option>
+                                                      <md-option  value="3">3</md-option>
+                                                      <md-option  value="4">4</md-option>
+                                                      
+                                                  </md-select>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.numero_semaine}}
+                                            </span>
+                                        </td> -->
+
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Nombre</label>
+                                                  <input type="number" name="nombre"  ng-model="cm.nombre"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.nombre}}
+                                            </span>
+                                        </td>
+
+                                      
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </md-tab>
+
+                    <md-tab label="Cycle du sous projet et planning d’exécution" ng-disabled="!vm.selected_mdp.id" ng-click="               vm.get_all_mdp_duree_planning()">
+                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                <div layout="row" layout-align="start center">
+                                <div class="border-right">
+                                    
+                                  <span class="md-headline">Liste Durée et planning d’exécution</span>
+                                </div>
+                                  <div class="border-right" ng-if="!vm.selected_mdp_duree_planning.id&&!vm.nouvelle_mdp_duree_planning">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_mdp_duree_planning()">
+                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                      <md-tooltip><span>Ajouter</span></md-tooltip>
+                                    </md-button>
+                                  </div> 
+                                  <div class="border-right" ng-if="vm.selected_mdp_duree_planning.id&&!vm.selected_mdp_duree_planning.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_mdp_duree_planning()">
+                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                      <md-tooltip><span>Modifier</span></md-tooltip>
+                                    </md-button>
+                                  </div>    
+                                  <div class="border-right" ng-if="vm.selected_mdp_duree_planning.id&&!vm.selected_mdp_duree_planning.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_mdp_duree_planning()">
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Supprimer</span></md-tooltip>
+                                    </md-button>
+                                  </div>  
+
+                                  <div class="border-right" ng-if="vm.selected_mdp_duree_planning.id">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_mdp_duree_planning()">
+                                      <md-icon md-font-icon="icon-cancel"></md-icon>
+                                      <md-tooltip><span>Annuler</span></md-tooltip>
+                                    </md-button>
+                                  </div>   
+
+                                  <div ng-if="vm.selected_mdp_duree_planning.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_mdp_duree_planning(0)">
+                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                    </md-button>
+                                  </div>                
+                                </div>
+                            </header>
+                            
+                        
+                            <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                                <thead>
+                                    <tr>
+                                        <th class="secondary-text" ng-repeat="c in ::vm.duree_planning_column">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">{{c.titre}}</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="cm in vm.all_mdp_duree_planning"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_mdp_duree_planning(cm)">                                       
+                                        
+                                        
+                                     
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Désignation des activités/tâches</label>
+                                                  <input type="text" name="designation_activite"  ng-model="cm.designation_activite"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.designation_activite}}
+                                            </span>
+                                        </td>
+
+                                        
+
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Mois début</label>
+                                                  
+                                                  <md-select ng-model="cm.numero_semaine_deb" name="numero_semaine_deb" >
+                                                
+                                                      <md-option  value="1">Mois 1</md-option>
+                                                      <md-option  value="2">Mois 2</md-option>
+                                                      <md-option  value="3">Mois 3</md-option>
+                                                      <md-option  value="4">Mois 4</md-option>
+                                                      <md-option  value="5">Mois 5</md-option>
+                                                      <md-option  value="6">Mois 6</md-option>
+                                                      
+                                                  </md-select>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.numero_semaine_deb}}
+                                            </span>
+                                        </td>
+
+
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Semaine début</label>
+                                                  
+                                                  <md-select ng-model="cm.numero_jour_deb" name="numero_jour_deb" >
+                                                
+                                                      <md-option  value="1">Semaine 1</md-option>
+                                                      <md-option  value="2">Semaine 2</md-option>
+                                                      <md-option  value="3">Semaine 3</md-option>
+                                                      <md-option  value="4">Semaine 4</md-option>
+                                                      <md-option  value="5">Semaine 5</md-option>
+                                                      
+                                                  </md-select>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.numero_jour_deb}}
+                                            </span>
+                                        </td>
+
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Mois fin</label>
+                                                  
+                                                  <md-select ng-model="cm.numero_semaine_fin" name="numero_semaine_fin" >
+                                                
+                                                      <md-option  value="1">Mois 1</md-option>
+                                                      <md-option  value="2">Mois 2</md-option>
+                                                      <md-option  value="3">Mois 3</md-option>
+                                                      <md-option  value="4">Mois 4</md-option>
+                                                      <md-option  value="5">Mois 5</md-option>
+                                                      <md-option  value="6">Mois 6</md-option>
+                                                      
+                                                  </md-select>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.numero_semaine_fin}}
+                                            </span>
+                                        </td>
+
+
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Semaine fin</label>
+                                                  
+                                                  <md-select ng-model="cm.numero_jour_fin" name="numero_jour_fin" >
+                                                
+                                                      <md-option  value="1">Semaine 1</md-option>
+                                                      <md-option  value="2">Semaine 2</md-option>
+                                                      <md-option  value="3">Semaine 3</md-option>
+                                                      <md-option  value="4">Semaine 4</md-option>
+                                                      <md-option  value="5">Semaine 5</md-option>
+                                                      
+                                                  </md-select>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.numero_jour_fin}}
+                                            </span>
+                                        </td>
+
+                                        <!-- <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Valeur</label>
+                                                  
+                                                  <md-select ng-model="cm.valeur" name="valeur" >
+                                                
+                                                      <md-option  value="0">0</md-option>
+                                                      <md-option  value="1">1</md-option>
+                                                      
+                                                  </md-select>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.valeur}}
+                                            </span>
+                                        </td> -->
+
+                                      
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">   
+                          <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top  border-bottom">
+                            <div layout="row" layout-align="start center">
+                              <div >
+
+                                <span class="md-headline">Cycle 06 mois</span>
+                              </div>
+
+                            </div>
+                          </header>         
+                          <div layout="row">
+                            <div flex="40" class="tableau text-center">
+                             Désignation des activités/tâches
+                            </div>
+
+                        
+
+                            <div flex="10" class="tableau text-center">
+                              <div layout="column">
+                                <div flex>Mois 1</div>
+                                <div flex>
+                                  <div layout="row">
+                                    <div flex="20" class="tableau text-center">
+                                      S1
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S2
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S3
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S4
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S5
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                              </div>
+                            </div>
+
+                            <div flex="10" class="tableau text-center">
+                              <div layout="column">
+                                <div flex>Mois 2</div>
+                                <div flex>
+                                  <div layout="row">
+                                    <div flex="20" class="tableau text-center">
+                                      S1
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S2
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S3
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S4
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S5
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                              </div>
+                            </div>
+
+                            <div flex="10" class="tableau text-center">
+                              <div layout="column">
+                                <div flex>Mois 3</div>
+                                <div flex>
+                                  <div layout="row">
+                                    <div flex="20" class="tableau text-center">
+                                      S1
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S2
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S3
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S4
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S5
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                              </div>
+                            </div>
+
+                            <div flex="10" class="tableau text-center">
+                              <div layout="column">
+                                <div flex>Mois 4</div>
+                                <div flex>
+                                  <div layout="row">
+                                    <div flex="20" class="tableau text-center">
+                                      S1
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S2
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S3
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S4
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S5
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                              </div>
+                            </div>
+
+                            <div flex="10" class="tableau text-center">
+                              <div layout="column">
+                                <div flex>Mois 5</div>
+                                <div flex>
+                                  <div layout="row">
+                                    <div flex="20" class="tableau text-center">
+                                      S1
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S2
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S3
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S4
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S5
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                              </div>
+                            </div>
+
+                            <div flex="10" class="tableau text-center">
+                              <div layout="column">
+                                <div flex>Mois 6</div>
+                                <div flex>
+                                  <div layout="row">
+                                    <div flex="20" class="tableau text-center">
+                                      S1
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S2
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S3
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S4
+                                    </div>
+                                    <div flex="20" class="tableau text-center">
+                                      S5
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                              </div>
+                            </div>
+                         
+                           
+                          </div>
+
+                          <div layout="row" ng-repeat="cm in vm.all_mdp_duree_planning">
+                            <div flex="40" class="tableau text-center">
+                             {{cm.designation_activite}}
+                            </div>
+                            <div flex="10" class="tableau text-center">
+                              <div layout="row"><!-- M1 -->
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,1,1)}};" class="tableau text-center">
+                                      <!-- S1 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,1,2)}};" class="tableau text-center">
+                                      <!-- S2 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,1,3)}};" class="tableau text-center">
+                                      <!-- S3 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,1,4)}};" class="tableau text-center">
+                                      <!-- S4 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,1,5)}};" class="tableau text-center">
+                                      <!-- S5 -->&nbsp;
+                                    </div>
+                                  </div>
+                            </div>
+                            <div flex="10" class="tableau text-center" >
+                              <div layout="row"> <!-- M2 -->
+                                    <div flex="20"  style="background-color: {{vm.set_color(cm,2,1)}};" class="tableau text-center">
+                                      <!-- S1 --> &nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,2,2)}};" class="tableau text-center">
+                                      <!-- S2 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,2,3)}};" class="tableau text-center">
+                                      <!-- S3 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,2,4)}};" class="tableau text-center">
+                                      <!-- S4 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,2,5)}};" class="tableau text-center">
+                                      <!-- S5 -->&nbsp;
+                                    </div>
+                                  </div>
+                            </div>
+                            <div flex="10" class="tableau text-center">
+                              <div layout="row"><!-- M3 -->
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,3,1)}};" class="tableau text-center">
+                                      <!-- S1 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,3,2)}};" class="tableau text-center">
+                                      <!-- S2 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,3,3)}};" class="tableau text-center">
+                                      <!-- S3 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,3,4)}};" class="tableau text-center">
+                                      <!-- S4 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,3,5)}};" class="tableau text-center">
+                                      <!-- S5 -->&nbsp;
+                                    </div>
+                                  </div>
+                            </div>
+                            <div flex="10" class="tableau text-center">
+                              <div layout="row"><!-- M4 -->
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,4,1)}};" class="tableau text-center">
+                                      <!-- S1 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,4,2)}};" class="tableau text-center">
+                                      <!-- S2 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,4,3)}};" class="tableau text-center">
+                                      <!-- S3 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,4,4)}};" class="tableau text-center">
+                                      <!-- S4 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,4,5)}};" class="tableau text-center">
+                                      <!-- S5 -->&nbsp;
+                                    </div>
+                                  </div>
+                            </div>
+                            <div flex="10" class="tableau text-center">
+                              <div layout="row"><!-- M5 -->
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,5,1)}};" class="tableau text-center">
+                                      <!-- S1 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,5,2)}};" class="tableau text-center">
+                                      <!-- S2 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,5,3)}};" class="tableau text-center">
+                                      <!-- S3 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,5,4)}};" class="tableau text-center">
+                                      <!-- S4 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,5,5)}};" class="tableau text-center">
+                                      <!-- S5 -->&nbsp;
+                                    </div>
+                                  </div>
+                            </div>
+                            <div flex="10" class="tableau text-center">
+                              <div layout="row"><!-- M6 -->
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,6,1)}};" class="tableau text-center">
+                                      <!-- S1 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,6,2)}};" class="tableau text-center">
+                                      <!-- S2 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,6,3)}};" class="tableau text-center">
+                                      <!-- S3 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,6,4)}};" class="tableau text-center">
+                                      <!-- S4 -->&nbsp;
+                                    </div>
+                                    <div flex="20" style="background-color: {{vm.set_color(cm,6,5)}};" class="tableau text-center">
+                                      <!-- S5 -->&nbsp;
+                                    </div>
+                                  </div>
+                            </div>
+
+
+
+
+                          </div>
+                        </div>
+                    </md-tab>
+
+                    <md-tab label="Résultats attendus | Activité: {{vm.selected_mdp_description_activite.description_activite}}" ng-disabled="!vm.selected_mdp.id" ng-disabled="!vm.selected_mdp_description_activite.id" ng-click="vm.get_all_mdp_resultat_attendu()">
+                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                <div layout="row" layout-align="start center">
+                                <div class="border-right">
+                                    
+                                  <span class="md-headline">Liste Résultats attendus </span>
+                                </div>
+                                  <div class="border-right" ng-if="!vm.selected_mdp_resultat_attendu.id&&!vm.nouvelle_mdp_resultat_attendu">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_mdp_resultat_attendu()">
+                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                      <md-tooltip><span>Ajouter</span></md-tooltip>
+                                    </md-button>
+                                  </div> 
+                                  <div class="border-right" ng-if="vm.selected_mdp_resultat_attendu.id&&!vm.selected_mdp_resultat_attendu.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_mdp_resultat_attendu()">
+                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                      <md-tooltip><span>Modifier</span></md-tooltip>
+                                    </md-button>
+                                  </div>    
+                                  <div class="border-right" ng-if="vm.selected_mdp_resultat_attendu.id&&!vm.selected_mdp_resultat_attendu.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_mdp_resultat_attendu()">
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Supprimer</span></md-tooltip>
+                                    </md-button>
+                                  </div>  
+
+                                  <div class="border-right" ng-if="vm.selected_mdp_resultat_attendu.id">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_mdp_resultat_attendu()">
+                                      <md-icon md-font-icon="icon-cancel"></md-icon>
+                                      <md-tooltip><span>Annuler</span></md-tooltip>
+                                    </md-button>
+                                  </div>   
+
+                                  <div ng-if="vm.selected_mdp_resultat_attendu.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_mdp_resultat_attendu(0)">
+                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                    </md-button>
+                                  </div>                
+                                </div>
+                            </header>
+                            
+                        
+                            <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                                <thead>
+                                    <tr>
+                                        <th class="secondary-text" ng-repeat="c in ::vm.resultat_attendu_column">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">{{c.titre}}</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="cm in vm.all_mdp_resultat_attendu"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_mdp_resultat_attendu(cm)">                                       
+                                        
+                                        
+                                     
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Déscription</label>
+                                                  <input type="text" name="description"  ng-model="cm.description"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.description}}
+                                            </span>
+                                        </td>
+
+                                        
+
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Unité</label>
+                                                  <input type="text" name="unite"  ng-model="cm.unite"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.unite}}
+                                            </span>
+                                        </td>
+
+
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Localité</label>
+                                                  <input type="text" name="lieu"  ng-model="cm.lieu"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.lieu}}
+                                            </span>
+                                        </td>
+
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Prévu </label>
+                                                  <input type="number" name="prevu"  ng-model="cm.prevu"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{vm.formatMillier(cm.prevu)}}
+                                            </span>
+                                        </td>
+
+                                        
+
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Réalisé</label>
+                                                  <input type="number" name="realise"  ng-model="cm.realise"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{vm.formatMillier(cm.realise)}} 
+                                            </span>
+                                        </td>
+
+                                     
+                                      
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </md-tab>
+
+                    <md-tab label="Suivi des indicateurs" ng-disabled="!vm.selected_mdp.id" ng-click="           vm.get_all_mdp_suivi_indicateur()">
+                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                <div layout="row" layout-align="start center">
+                                <div class="border-right">
+                                    
+                                  <span class="md-headline">Suivi des indicateurs</span>
+                                </div>
+                                  <div class="border-right" ng-if="!vm.selected_mdp_suivi_indicateur.id&&!vm.nouvelle_mdp_suivi_indicateur">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_mdp_suivi_indicateur()">
+                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                      <md-tooltip><span>Ajouter</span></md-tooltip>
+                                    </md-button>
+                                  </div> 
+                                  <div class="border-right" ng-if="vm.selected_mdp_suivi_indicateur.id&&!vm.selected_mdp_suivi_indicateur.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_mdp_suivi_indicateur()">
+                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                      <md-tooltip><span>Modifier</span></md-tooltip>
+                                    </md-button>
+                                  </div>    
+                                  <div class="border-right" ng-if="vm.selected_mdp_suivi_indicateur.id&&!vm.selected_mdp_suivi_indicateur.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_mdp_suivi_indicateur()">
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Supprimer</span></md-tooltip>
+                                    </md-button>
+                                  </div>  
+
+                                  <div class="border-right" ng-if="vm.selected_mdp_suivi_indicateur.id">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_mdp_suivi_indicateur()">
+                                      <md-icon md-font-icon="icon-cancel"></md-icon>
+                                      <md-tooltip><span>Annuler</span></md-tooltip>
+                                    </md-button>
+                                  </div>   
+
+                                  <div ng-if="vm.selected_mdp_suivi_indicateur.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_mdp_suivi_indicateur(0)">
+                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                    </md-button>
+                                  </div>                
+                                </div>
+                            </header>
+                            
+                        
+                            <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                                <thead>
+                                    <tr>
+                                        <th class="secondary-text" ng-repeat="c in ::vm.suivi_indicateur_column">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">{{c.titre}}</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="cm in vm.all_mdp_suivi_indicateur"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_mdp_suivi_indicateur(cm)">                                       
+                                        
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Type indicateur</label>
+                                                  
+                                                  <md-select ng-model="cm.type_indicateur" name="type_indicateur" >
+                                                
+                                                      <md-option  value="Environnemental et social">Environnemental et social</md-option>
+                                                      <md-option  value="Autres ">Autres </md-option>
+                                                      
+                                                  </md-select>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.type_indicateur}}
+                                            </span>
+                                        </td>
+                                     
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Indicateur</label>
+                                                  <input type="text" name="indicateur"  ng-model="cm.indicateur"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.indicateur}}
+                                            </span>
+                                        </td>
+
+                                        
+
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Localité</label>
+                                                  <input type="text" name="lieu"  ng-model="cm.lieu"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.lieu}}
+                                            </span>
+                                        </td>
+
+                                       
+
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Valeurs de référence</label>
+                                                  <input type="text" name="valeur_reference"  ng-model="cm.valeur_reference"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.valeur_reference}}
+                                            </span>
+                                        </td>
+
+                                        
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Valeurs mesurées</label>
+                                                  <input type="text" name="valeur_mesure"  ng-model="cm.valeur_mesure"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.valeur_mesure}}
+                                            </span>
+                                        </td>
+
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Explications</label>
+                                                  <input type="text" name="explications"  ng-model="cm.explications"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.explications}}
+                                            </span>
+                                        </td>
+                                        
                                       
 
                                     </tr>
@@ -1255,153 +2197,7 @@
                         </div>
                     </md-tab>
 
-                    <md-tab label="Durée du sous projet et planning d’exécution" ng-disabled="!vm.selected_mdp.id" ng-click="               vm.get_all_mdp_duree_planning()">
-                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
-                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
-                                <div layout="row" layout-align="start center">
-                                <div class="border-right">
-                                    
-                                  <span class="md-headline">Liste Durée et planning d’exécution</span>
-                                </div>
-                                  <div class="border-right" ng-if="!vm.selected_mdp_duree_planning.id&&!vm.nouvelle_mdp_duree_planning">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_mdp_duree_planning()">
-                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
-                                      <md-tooltip><span>Ajouter</span></md-tooltip>
-                                    </md-button>
-                                  </div> 
-                                  <div class="border-right" ng-if="vm.selected_mdp_duree_planning.id&&!vm.selected_mdp_duree_planning.$edit">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_mdp_duree_planning()">
-                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
-                                      <md-tooltip><span>Modifier</span></md-tooltip>
-                                    </md-button>
-                                  </div>    
-                                  <div class="border-right" ng-if="vm.selected_mdp_duree_planning.id&&!vm.selected_mdp_duree_planning.$edit">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_mdp_duree_planning()">
-                                      <md-icon md-font-icon="icon-delete"></md-icon>
-                                      <md-tooltip><span>Supprimer</span></md-tooltip>
-                                    </md-button>
-                                  </div>  
-
-                                  <div class="border-right" ng-if="vm.selected_mdp_duree_planning.id">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_mdp_duree_planning()">
-                                      <md-icon md-font-icon="icon-cancel"></md-icon>
-                                      <md-tooltip><span>Annuler</span></md-tooltip>
-                                    </md-button>
-                                  </div>   
-
-                                  <div ng-if="vm.selected_mdp_duree_planning.$edit">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_mdp_duree_planning(0)">
-                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
-                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
-                                    </md-button>
-                                  </div>                
-                                </div>
-                            </header>
-                            
-                        
-                            <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
-                                <thead>
-                                    <tr>
-                                        <th class="secondary-text" ng-repeat="c in ::vm.duree_planning_column">
-                                            <div class="table-header">
-                                                <span class="column-title text-center">{{c.titre}}</span>
-                                            </div>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="cm in vm.all_mdp_duree_planning"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_mdp_duree_planning(cm)">                                       
-                                        
-                                        
-                                     
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Désignation des activités/tâches</label>
-                                                  <input type="text" name="designation_activite"  ng-model="cm.designation_activite"/>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.designation_activite}}
-                                            </span>
-                                        </td>
-
-                                        
-
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Semaine</label>
-                                                  
-                                                  <md-select ng-model="cm.numero_semaine" name="numero_semaine" >
-                                                
-                                                      <md-option  value="1">1</md-option>
-                                                      <md-option  value="2">2</md-option>
-                                                      <md-option  value="3">3</md-option>
-                                                      <md-option  value="4">4</md-option>
-                                                      
-                                                  </md-select>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.numero_semaine}}
-                                            </span>
-                                        </td>
-
-
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Jour</label>
-                                                  
-                                                  <md-select ng-model="cm.numero_jour" name="numero_jour" >
-                                                
-                                                      <md-option  value="1">1</md-option>
-                                                      <md-option  value="2">2</md-option>
-                                                      <md-option  value="3">3</md-option>
-                                                      <md-option  value="4">4</md-option>
-                                                      <md-option  value="5">5</md-option>
-                                                      
-                                                  </md-select>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.numero_jour}}
-                                            </span>
-                                        </td>
-
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Valeur</label>
-                                                  
-                                                  <md-select ng-model="cm.valeur" name="valeur" >
-                                                
-                                                      <md-option  value="0">0</md-option>
-                                                      <md-option  value="1">1</md-option>
-                                                      
-                                                  </md-select>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.valeur}}
-                                            </span>
-                                        </td>
-
-                                      
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </md-tab>
+                    
 
                     <md-tab label="Récapitulatif des estimations des dépenses " ng-disabled="!vm.selected_mdp.id" ng-click="                                   vm.get_all_mdp_recap_depense()">
                         <div class="price-table style-1 md-whiteframe-1dp" layout="column">
@@ -1531,440 +2327,11 @@
                         </div>
                     </md-tab>
 
-                    <md-tab label="Indicateurs" ng-disabled="!vm.selected_mdp.id" ng-click="               vm.get_all_mdp_indicateur()">
-                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
-                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
-                                <div layout="row" layout-align="start center">
-                                <div class="border-right">
-                                    
-                                  <span class="md-headline">Liste Indicateurs</span>
-                                </div>
-                                  <div class="border-right" ng-if="!vm.selected_mdp_indicateur.id&&!vm.nouvelle_mdp_indicateur">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_mdp_indicateur()">
-                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
-                                      <md-tooltip><span>Ajouter</span></md-tooltip>
-                                    </md-button>
-                                  </div> 
-                                  <div class="border-right" ng-if="vm.selected_mdp_indicateur.id&&!vm.selected_mdp_indicateur.$edit">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_mdp_indicateur()">
-                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
-                                      <md-tooltip><span>Modifier</span></md-tooltip>
-                                    </md-button>
-                                  </div>    
-                                  <div class="border-right" ng-if="vm.selected_mdp_indicateur.id&&!vm.selected_mdp_indicateur.$edit">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_mdp_indicateur()">
-                                      <md-icon md-font-icon="icon-delete"></md-icon>
-                                      <md-tooltip><span>Supprimer</span></md-tooltip>
-                                    </md-button>
-                                  </div>  
+                    
 
-                                  <div class="border-right" ng-if="vm.selected_mdp_indicateur.id">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_mdp_indicateur()">
-                                      <md-icon md-font-icon="icon-cancel"></md-icon>
-                                      <md-tooltip><span>Annuler</span></md-tooltip>
-                                    </md-button>
-                                  </div>   
+                    
 
-                                  <div ng-if="vm.selected_mdp_indicateur.$edit">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_mdp_indicateur(0)">
-                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
-                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
-                                    </md-button>
-                                  </div>                
-                                </div>
-                            </header>
-                            
-                        
-                            <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
-                                <thead>
-                                    <tr>
-                                        <th class="secondary-text" ng-repeat="c in ::vm.indicateur_column">
-                                            <div class="table-header">
-                                                <span class="column-title text-center">{{c.titre}}</span>
-                                            </div>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="cm in vm.all_mdp_indicateur"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_mdp_indicateur(cm)">                                       
-                                        
-                                        
-                                     
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Catégorie de travailleurs</label>
-                                                  <input type="text" name="categorie_travailleur"  ng-model="cm.categorie_travailleur"/>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.categorie_travailleur}}
-                                            </span>
-                                        </td>
-
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Localité</label>
-                                                  <input type="text" name="lieu"  ng-model="cm.lieu"/>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.lieu}}
-                                            </span>
-                                        </td>
-
-                                        
-
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Semaine</label>
-                                                  
-                                                  <md-select ng-model="cm.numero_semaine" name="numero_semaine" >
-                                                
-                                                      <md-option  value="1">1</md-option>
-                                                      <md-option  value="2">2</md-option>
-                                                      <md-option  value="3">3</md-option>
-                                                      <md-option  value="4">4</md-option>
-                                                      
-                                                  </md-select>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.numero_semaine}}
-                                            </span>
-                                        </td>
-
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Nombre</label>
-                                                  <input type="number" name="nombre"  ng-model="cm.nombre"/>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.nombre}}
-                                            </span>
-                                        </td>
-
-                                      
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </md-tab>
-
-                    <md-tab label="Résultats attendus" ng-disabled="!vm.selected_mdp.id" ng-click="                                   vm.get_all_mdp_resultat_attendu()">
-                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
-                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
-                                <div layout="row" layout-align="start center">
-                                <div class="border-right">
-                                    
-                                  <span class="md-headline">Liste Résultats attendus </span>
-                                </div>
-                                  <div class="border-right" ng-if="!vm.selected_mdp_resultat_attendu.id&&!vm.nouvelle_mdp_resultat_attendu">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_mdp_resultat_attendu()">
-                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
-                                      <md-tooltip><span>Ajouter</span></md-tooltip>
-                                    </md-button>
-                                  </div> 
-                                  <div class="border-right" ng-if="vm.selected_mdp_resultat_attendu.id&&!vm.selected_mdp_resultat_attendu.$edit">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_mdp_resultat_attendu()">
-                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
-                                      <md-tooltip><span>Modifier</span></md-tooltip>
-                                    </md-button>
-                                  </div>    
-                                  <div class="border-right" ng-if="vm.selected_mdp_resultat_attendu.id&&!vm.selected_mdp_resultat_attendu.$edit">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_mdp_resultat_attendu()">
-                                      <md-icon md-font-icon="icon-delete"></md-icon>
-                                      <md-tooltip><span>Supprimer</span></md-tooltip>
-                                    </md-button>
-                                  </div>  
-
-                                  <div class="border-right" ng-if="vm.selected_mdp_resultat_attendu.id">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_mdp_resultat_attendu()">
-                                      <md-icon md-font-icon="icon-cancel"></md-icon>
-                                      <md-tooltip><span>Annuler</span></md-tooltip>
-                                    </md-button>
-                                  </div>   
-
-                                  <div ng-if="vm.selected_mdp_resultat_attendu.$edit">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_mdp_resultat_attendu(0)">
-                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
-                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
-                                    </md-button>
-                                  </div>                
-                                </div>
-                            </header>
-                            
-                        
-                            <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
-                                <thead>
-                                    <tr>
-                                        <th class="secondary-text" ng-repeat="c in ::vm.resultat_attendu_column">
-                                            <div class="table-header">
-                                                <span class="column-title text-center">{{c.titre}}</span>
-                                            </div>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="cm in vm.all_mdp_resultat_attendu"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_mdp_resultat_attendu(cm)">                                       
-                                        
-                                        
-                                     
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Déscription</label>
-                                                  <input type="text" name="description"  ng-model="cm.description"/>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.description}}
-                                            </span>
-                                        </td>
-
-                                        
-
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Unité</label>
-                                                  <input type="text" name="unite"  ng-model="cm.unite"/>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.unite}}
-                                            </span>
-                                        </td>
-
-
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Localité</label>
-                                                  <input type="text" name="lieu"  ng-model="cm.lieu"/>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.lieu}}
-                                            </span>
-                                        </td>
-
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Prévu </label>
-                                                  <input type="number" name="prevu"  ng-model="cm.prevu"/>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{vm.formatMillier(cm.prevu)}}
-                                            </span>
-                                        </td>
-
-                                        
-
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Réalisé</label>
-                                                  <input type="number" name="realise"  ng-model="cm.realise"/>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{vm.formatMillier(cm.realise)}} 
-                                            </span>
-                                        </td>
-
-                                     
-                                      
-
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </md-tab>
-
-                    <md-tab label="Suivi des indicateurs" ng-disabled="!vm.selected_mdp.id" ng-click="           vm.get_all_mdp_suivi_indicateur()">
-                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
-                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
-                                <div layout="row" layout-align="start center">
-                                <div class="border-right">
-                                    
-                                  <span class="md-headline">Suivi des indicateurs</span>
-                                </div>
-                                  <div class="border-right" ng-if="!vm.selected_mdp_suivi_indicateur.id&&!vm.nouvelle_mdp_suivi_indicateur">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_mdp_suivi_indicateur()">
-                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
-                                      <md-tooltip><span>Ajouter</span></md-tooltip>
-                                    </md-button>
-                                  </div> 
-                                  <div class="border-right" ng-if="vm.selected_mdp_suivi_indicateur.id&&!vm.selected_mdp_suivi_indicateur.$edit">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_mdp_suivi_indicateur()">
-                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
-                                      <md-tooltip><span>Modifier</span></md-tooltip>
-                                    </md-button>
-                                  </div>    
-                                  <div class="border-right" ng-if="vm.selected_mdp_suivi_indicateur.id&&!vm.selected_mdp_suivi_indicateur.$edit">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_mdp_suivi_indicateur()">
-                                      <md-icon md-font-icon="icon-delete"></md-icon>
-                                      <md-tooltip><span>Supprimer</span></md-tooltip>
-                                    </md-button>
-                                  </div>  
-
-                                  <div class="border-right" ng-if="vm.selected_mdp_suivi_indicateur.id">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_mdp_suivi_indicateur()">
-                                      <md-icon md-font-icon="icon-cancel"></md-icon>
-                                      <md-tooltip><span>Annuler</span></md-tooltip>
-                                    </md-button>
-                                  </div>   
-
-                                  <div ng-if="vm.selected_mdp_suivi_indicateur.$edit">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_mdp_suivi_indicateur(0)">
-                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
-                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
-                                    </md-button>
-                                  </div>                
-                                </div>
-                            </header>
-                            
-                        
-                            <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
-                                <thead>
-                                    <tr>
-                                        <th class="secondary-text" ng-repeat="c in ::vm.suivi_indicateur_column">
-                                            <div class="table-header">
-                                                <span class="column-title text-center">{{c.titre}}</span>
-                                            </div>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="cm in vm.all_mdp_suivi_indicateur"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_mdp_suivi_indicateur(cm)">                                       
-                                        
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Type indicateur</label>
-                                                  
-                                                  <md-select ng-model="cm.type_indicateur" name="type_indicateur" >
-                                                
-                                                      <md-option  value="Environnemental et social">Environnemental et social</md-option>
-                                                      <md-option  value="Autres ">Autres </md-option>
-                                                      
-                                                  </md-select>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.type_indicateur}}
-                                            </span>
-                                        </td>
-                                     
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Indicateur</label>
-                                                  <input type="text" name="indicateur"  ng-model="cm.indicateur"/>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.indicateur}}
-                                            </span>
-                                        </td>
-
-                                        
-
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Localité</label>
-                                                  <input type="text" name="lieu"  ng-model="cm.lieu"/>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.lieu}}
-                                            </span>
-                                        </td>
-
-                                       
-
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Valeurs de référence</label>
-                                                  <input type="text" name="valeur_reference"  ng-model="cm.valeur_reference"/>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.valeur_reference}}
-                                            </span>
-                                        </td>
-
-                                        
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Valeurs mesurées</label>
-                                                  <input type="text" name="valeur_mesure"  ng-model="cm.valeur_mesure"/>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.valeur_mesure}}
-                                            </span>
-                                        </td>
-
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Explications</label>
-                                                  <input type="text" name="explications"  ng-model="cm.explications"/>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.explications}}
-                                            </span>
-                                        </td>
-                                        
-                                      
-
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </md-tab>
+                    
                 </md-tabs>
             </div>
         </div>

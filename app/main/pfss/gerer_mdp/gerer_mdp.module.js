@@ -27,12 +27,12 @@
         });
 
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.gerer_mdp', {
+       /* msNavigationServiceProvider.saveItem('pfss.gerer_mdp', {
             title: 'Gérer Mémoire descriptive du projet',
             icon  : 'icon-tile-four',
             state: 'app.pfss_gerer_mdp',
 			weight:8,
-        });
+        });*/
     }
 
 })();

@@ -3,7 +3,10 @@
     'use strict';
 
     angular
-        .module('app.pfss.act', [])
+        .module('app.pfss.act', [
+
+            'app.pfss.act.gerer_mdp'
+            ])
         .config(config);
 
     /** @ngInject */
