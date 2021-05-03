@@ -7,10 +7,13 @@
         .controller('Gerer_pgesController', Gerer_pgesController);
 
     /** @ngInject */
-    function Gerer_pgesController(apiFactory, $scope, $mdDialog)
+    function Gerer_pgesController(apiFactory, $scope, $mdDialog,$state)
     {
 
     	var vm = this ;
+        var id_sous_projet_state = $state.current.id_sous_projet;
+        vm.type_sous_projet=$state.current.type_sous_projet;
+        
     	vm.selectedItemPges = {};
 		var current_selectedItemPges = {} ;
         vm.nouvelItemPges = false ;
@@ -35,8 +38,12 @@
         {
             vm.allSous_projet = result.data.response;
         }); 
-        apiFactory.getAll("pges/index").then(function(result)
+        /*apiFactory.getAll("pges/index").then(function(result)
         {
+            vm.allPges = result.data.response;
+            console.log(vm.allPges);
+        });*/
+        apiFactory.getAPIgeneraliserREST("pges/index","menu","getpgesBysousprojet",'id_sous_projet',id_sous_projet_state).then(function(result) { 
             vm.allPges = result.data.response;
             console.log(vm.allPges);
         });
@@ -46,7 +53,7 @@
          [
              {titre:"Bureau d\'étude"},
              {titre:"Référence contrat"},
-             {titre:"Sous projet"},
+             //{titre:"Sous projet"},
              {titre:"Description environnementale"},
              {titre:"Composante zone susceptible"},
              {titre:"Problèmes environnementaux"},
@@ -103,7 +110,7 @@
                      date_etablissement: '',      
                      date_visa_ugp: '',      
                      nom_prenom_ugp: '',     
-                     id_sous_projet: null,  
+                     //id_sous_projet: null,  
                      
                  } ;
 
@@ -137,7 +144,7 @@
              vm.selectedItemPges.date_visa_ugp            = new Date(vm.selectedItemPges.date_visa_ugp);      
              vm.selectedItemPges.nom_prenom_ugp           = vm.selectedItemPges.nom_prenom_ugp;      
              vm.selectedItemPges.date_etablissement       = new Date(vm.selectedItemPges.date_etablissement);    
-             vm.selectedItemPges.id_sous_projet           = vm.selectedItemPges.sous_projet.id; 
+             //vm.selectedItemPges.id_sous_projet           = vm.selectedItemPges.sous_projet.id; 
          }
 
          vm.supprimerPges = function()
@@ -195,7 +202,7 @@
                      vm.selectedItemPges.date_visa_ugp            = current_selectedItemPges.date_visa_ugp;      
                      vm.selectedItemPges.nom_prenom_ugp           = current_selectedItemPges.nom_prenom_ugp;      
                      vm.selectedItemPges.date_etablissement       = current_selectedItemPges.date_etablissement;     
-                     vm.selectedItemPges.id_sous_projet           = current_selectedItemPges.sous_projet.id;
+                     //vm.selectedItemPges.id_sous_projet           = current_selectedItemPges.sous_projet.id;
                      
                      vm.selectedItemPges = {};
                  }
@@ -231,7 +238,7 @@
                  date_visa_ugp            : convert_date(vm.selectedItemPges.date_visa_ugp),      
                  nom_prenom_ugp           : vm.selectedItemPges.nom_prenom_ugp,      
                  date_etablissement       : convert_date(vm.selectedItemPges.date_etablissement),                        
-                 id_sous_projet           : vm.selectedItemPges.id_sous_projet
+                 id_sous_projet           : id_sous_projet_state
              });
 
              apiFactory.add("pges/index",datas, config).success(function (data)
@@ -241,11 +248,11 @@
                  {
                      if (etat_suppression == 0) 
                      {   
-                         var sousp = vm.allSous_projet.filter(function(obj)
+                        /* var sousp = vm.allSous_projet.filter(function(obj)
                          {
                              return obj.id == vm.selectedItemPges.id_sous_projet;
-                         });
-                         vm.selectedItemPges.sous_projet = sousp[0] ;
+                         });*/
+                         //vm.selectedItemPges.sous_projet = sousp[0] ;
                          vm.selectedItemPges.$edit = false ;
                          vm.selectedItemPges.$selected = false ;
                          vm.selectedItemPges = {} ;
@@ -263,11 +270,11 @@
                  }
                  else
                  {   
-                     var sousp = vm.allSous_projet.filter(function(obj)
+                     /*var sousp = vm.allSous_projet.filter(function(obj)
                      {
                          return obj.id == vm.selectedItemPges.id_sous_projet;
-                     });
-                     vm.selectedItemPges.sous_projet = sousp[0] ;
+                     });*/
+                     //vm.selectedItemPges.sous_projet = sousp[0] ;
                      vm.selectedItemPges.$edit = false ;
                      vm.selectedItemPges.$selected = false ;
                      vm.selectedItemPges.id = String(data.response) ;

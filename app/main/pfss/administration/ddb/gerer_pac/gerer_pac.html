@@ -63,7 +63,7 @@
                                                     <td style="width:100% !important;">
                                                         <span ng-if="pa.$edit">
                                                             <md-input-container style="width:100%; display: flex !important;">
-                                                              <label>Region</label>
+                                                              <label>Préfecture</label>
                                                                 <md-select ng-model="pa.id_region"  style="width:90px;overflow: hidden;text-overflow: ellipsis;" ng-disabled="!pa.id_ile" ng-change="vm.modifierRegion(pa)">
                                                                     <md-option value=''>&nbsp;</md-option>
                                                                   <md-option ng-repeat="reg in vm.allRegion" value="{{reg.id}}">
@@ -199,7 +199,7 @@
                                                                 <input name="structure_appui" type="text" ng-model="pa.structure_appui"/>
                                                             </md-input-container>   
                                                         </span>
-                                                        <span ng-if="!pa.$edit">{{pa.structure_appui}} Jours</span>
+                                                        <span ng-if="!pa.$edit">{{pa.structure_appui}}</span>
                                                     </td>
                                                     <td style="width:100% !important;">
                                                         <span ng-if="pa.$edit">
@@ -276,7 +276,7 @@
                                                 
                                                     <td >
                                                         <span ng-if="cal.$edit">
-                                                            <md-input-container style="width:100% !important; ">
+                                                            <md-input-container style="width:100% !important; display: flex !important;">
                                                                 <label>Activités</label>
                                                                 <input name="activite" type="text" ng-model="cal.activite"/>
                                                             </md-input-container>   
@@ -285,21 +285,43 @@
                                                     </td>
                                                     <td >
                                                         <span ng-if="cal.$edit">
+                                                            <md-input-container style="width:100% !important;display: flex !important; ">
+                                                                <label>Numero</label>
+                                                                <input name="numero" type="number" ng-model="cal.numero"/>
+                                                            </md-input-container>   
+                                                        </span>
+                                                        <span ng-if="!cal.$edit">{{cal.numero}}</span>
+                                                    </td>
+                                                    <!--td >
+                                                        <span ng-if="cal.$edit">
                                                             <md-input-container style="width:100% !important; ">
                                                                 <label>Mois</label>
-                                                                <input name="mois" type="number" ng-model="cal.mois"/>
+                                                                <input name="mois" type="text" ng-model="cal.mois"/>
                                                             </md-input-container>   
                                                         </span>
                                                         <span ng-if="!cal.$edit">{{cal.mois}}</span>
-                                                    </td>
+                                                    </td-->
                                                     <td >
                                                         <span ng-if="cal.$edit">
-                                                            <md-input-container style="width:100% !important; ">
-                                                                <label>Durée</label>
-                                                                <input name="duree" type="number" ng-model="cal.duree"/>
-                                                            </md-input-container>   
+                                                            <md-input-container style="width:100%;">
+                                                              <label>Mois</label>
+                                                                <md-select ng-model="cal.mois"  style="width:90px;overflow: hidden;text-overflow: ellipsis;">
+                                                                    <md-option value='Janvier'>Janvier</md-option>
+                                                                    <md-option value='Fevrier'>Fevrier</md-option>
+                                                                    <md-option value='Mars'>Mars</md-option>
+                                                                    <md-option value="Avril">Avril</md-option>
+                                                                    <md-option value="Mai">Mai</md-option>
+                                                                    <md-option value="Juin">Juin</md-option>
+                                                                    <md-option value="Juillet">Juillet</md-option>
+                                                                    <md-option value="Août">Août</md-option>
+                                                                    <md-option value="Septembre">Septembre</md-option>
+                                                                    <md-option value="Octobre">Octobre</md-option>
+                                                                    <md-option value="Novembre">Novembre</md-option>
+                                                                    <md-option value="Décembre">Décembre</md-option>
+                                                                </md-select>
+                                                            </md-input-container>  
                                                         </span>
-                                                        <span ng-if="!cal.$edit">{{cal.duree}}</span>
+                                                        <span ng-if="!cal.$edit">{{cal.mois}}</span>
                                                     </td>
                                                     <td >
                                                         <a ng-if="!cal.$edit" ng-click="vm.modifierCalendrier_activites(cal)" title="Modifier">
@@ -311,7 +333,7 @@
                                                         <a ng-if="cal.$edit" ng-click="vm.annulerCalendrier_activites(cal)" title="Annuler modification">
                                                             <span class="icon-cancel"></span>
                                                         </a>
-                                                        <a ng-if="cal.$edit && cal.activite && cal.mois && cal.duree" ng-click="vm.ajoutCalendrier_activites(cal,0)" title="Sauvegarder">
+                                                        <a ng-if="cal.$edit && cal.activite && cal.mois && cal.numero" ng-click="vm.ajoutCalendrier_activites(cal,0)" title="Sauvegarder">
                                                             <span class="icon-content-save"></span>
                                                         </a>
                                                     </td>
@@ -407,7 +429,7 @@
                             <div style="overflow: auto; width: 100%;">
                                 <fieldset layout="column" layout-gt-xs="row">
                                     <legend>
-                                        Activite AGR
+                                        Activité AGR
                                         <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterActivite_agr()">
                                           <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
                                         </md-button>
@@ -446,7 +468,7 @@
                                                     </td>
                                                     <td >
                                                         <span ng-if="activ.$edit">
-                                                            <md-input-container style="width:100% !important; ">
+                                                            <md-input-container style="width:100% !important; display: flex !important;">
                                                                 <label>Code</label>
                                                                 <input name="code" type="text" ng-model="activ.code"/>
                                                             </md-input-container>   
@@ -455,7 +477,7 @@
                                                     </td>
                                                     <td >
                                                         <span ng-if="activ.$edit">
-                                                            <md-input-container style="width:100% !important; ">
+                                                            <md-input-container style="width:100% !important; display: flex !important;">
                                                                 <label>Libelle</label>
                                                                 <input name="libelle" type="text" ng-model="activ.libelle"/>
                                                             </md-input-container>   

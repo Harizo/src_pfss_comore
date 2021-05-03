@@ -3,7 +3,10 @@
     'use strict';
 
     angular
-        .module('app.pfss.idb', [])
+        .module('app.pfss.idb', [
+            'app.pfss.idb.contrat_agep_idb',            
+            'app.pfss.idb.gerer_pges_idb',
+        ])
         .config(config);
 
     /** @ngInject */
@@ -17,7 +20,6 @@
         msNavigationServiceProvider.saveItem('pfss.idb', {
             title : 'IDB',
             icon  : 'icon-apps',
-            state : 'app.pfss_idb',
             weight: 1
         });
     }

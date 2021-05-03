@@ -6,7 +6,10 @@
         .module('app.pfss.tmnccovid', [
            'app.pfss.tmnccovid.menageinscrit_covid',
            'app.pfss.tmnccovid.menagepreselectionne_covid',
-           'app.pfss.tmnccovid.menagebeneficiaire_covid',])
+           'app.pfss.tmnccovid.menagebeneficiaire_covid',
+            'app.pfss.tmnccovid.contrat_agep_tmnccovid',            
+            //'app.pfss.tmnccovid.gerer_pges_tmnccovid',
+        ])
         .config(config);
 
     /** @ngInject */

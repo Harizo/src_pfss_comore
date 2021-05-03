@@ -29,7 +29,7 @@
             $mdSidenav(sidenavId).toggle();
 			console.log('aiza');
         }
-		vm.allitem_infrastructure = [{id: '1', nom: 'Infrastructure'},{id: '2', nom: 'AGR'},{id: '3', nom: 'Activité'}]
+		vm.allitem_infrastructure = [{id: '1', nom: 'INFRASTRUCTURE'},{id: '2', nom: 'AGR'},{id: '3', nom: 'ACT'}]
     
 		//vm.allitem_infrastructure = [{id: '2', nom: 'AGR'},{id: '3', nom: 'Activité'}]
 		
@@ -45,7 +45,7 @@
                         vm.titre_contenu="CONTENU AGR";
                         break;
                         case "3":
-                          vm.titre_contenu="CONTENU ACTIVITE";
+                          vm.titre_contenu="CONTENU ACT";
                           break;
                       
                       default:
@@ -213,7 +213,7 @@
           
           // height: 550,
           toolbar: [{               
-               template: '<label id="table_titre">Type infrastructure</label>'
+               template: '<label id="table_titre">TYPE INFRASTRUCTURE</label>'
 			   				+'<a class="k-button k-button-icontext k-grid-add addinfrastructure" href="\\#" ng-if="vm.serveur_central">' 
 			   				+'<md-icon md-font-icon="icon-playlist-plus"></md-icon>'
 							+'<md-tooltip><span>Ajout</span></md-tooltip>'
@@ -639,7 +639,7 @@
       
       // height: 550,
       toolbar: [{               
-           template: '<label id="table_titre">Type AGR</label>'
+           template: '<label id="table_titre">TYPE AGR</label>'
              +'<a class="k-button k-button-icontext k-grid-add" href="\\#" ng-if="vm.serveur_central">' 
              +'<md-icon md-font-icon="icon-playlist-plus"></md-icon>'
           +'<md-tooltip><span>Ajout</span></md-tooltip>'
@@ -853,7 +853,7 @@
             pageSize: 5,
           },
           toolbar: [{               
-               template: '<label id="table_titre">Activite AGR</label>'
+               template: '<label id="table_titre">ACTIVITE AGR</label>'
 							+'<a class="k-button k-button-icontext k-grid-add" href="\\#" ng-if="vm.serveur_central">' 
 							+'<md-icon md-font-icon="icon-playlist-plus"></md-icon>'
 							+'<md-tooltip><span>Ajout</span></md-tooltip>'
@@ -1059,7 +1059,7 @@
           
           // height: 550,
           toolbar: [{               
-               template: '<label id="table_titre">Type Activite act</label>'
+               template: '<label id="table_titre">TYPE ACTIVITE ACT</label>'
                  +'<a class="k-button k-button-icontext k-grid-add" href="\\#" ng-if="vm.serveur_central">' 
                  +'<md-icon md-font-icon="icon-playlist-plus"></md-icon>'
               +'<md-tooltip><span>Ajout</span></md-tooltip>'
@@ -1273,12 +1273,12 @@
                 pageSize: 5,
               },
               toolbar: [{               
-                   template: '<label id="table_titre">Activite act</label>'
+                   template: '<label id="table_titre">ACTIVITE ACT</label>'
                   +'<a class="k-button k-button-icontext k-grid-add" href="\\#" ng-if="vm.serveur_central">' 
                   +'<md-icon md-font-icon="icon-playlist-plus"></md-icon>'
                   +'<md-tooltip><span>Ajout</span></md-tooltip>'
                 +'</a>'
-                +'<a class="k-button k-button-icontext addactivite_act" href="\\#" ng-if="vm.serveur_central" ng-click="vm.download_ddb(\'activite_act\/index\',\'activite_act\')">' 
+                +'<a class="k-button k-button-icontext addactivite_act" href="\\#" ng-if="!vm.serveur_central" ng-click="vm.download_ddb(\'activite_act\/index\',\'activite_act\')">' 
                   +'<md-icon md-font-icon="icon-box-download"></md-icon>'
                   +'<md-tooltip><span>Download</span></md-tooltip>'
                 +'</a>'

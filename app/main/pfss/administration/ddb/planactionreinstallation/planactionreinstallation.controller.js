@@ -16,6 +16,11 @@
 		var currentItemSous_projet;
 		vm.selectedItemSous_projet = {} ;
 		vm.allRecordsSous_projet = [] ;
+		vm.ajoutSous_projet_localisation = ajoutSous_projet_localisation ;
+		var NouvelItemSous_projet_localisation=false;
+		var currentItemSous_projet_localisation;
+		vm.selectedItemSous_projet_localisation = {} ;
+		vm.allSous_projet_localisation = [] ;
 
     vm.ajoutPlan_action_reinstallation = ajoutPlan_action_reinstallation ;
 		var NouvelItemPlan_action_reinstallation=false;
@@ -54,8 +59,8 @@
     vm.dtOptions = {
       dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
       pagingType: 'simple',
-      autoWidth: false,
-      responsive: true,
+      autoWidth: true,
+      //responsive: true,
       order:[]          
     };
 		    		
@@ -78,33 +83,33 @@
         apiFactory.add("historique_utilisateur/index",datas, config).success(function (data) {
         });
 /***********FIN add historique***********/  
-apiFactory.getAll("commune/index").then(function(result){
+/*apiFactory.getAll("commune/index").then(function(result){
   vm.allCommune = result.data.response;
-});  
+});  */
 
 		// Début Sous projet
     vm.sous_projet_column =[
-      {titre:"Code"},
-      {titre:"Intitule"},
-      {titre:"Nature"},
       {titre:"Type"},
+      {titre:"Code"},
       {titre:"Description sous projet"},
-      {titre:"Description activite"},
-      {titre:"Presentantion communauté"},
-      {titre:"Référence DGSC"},
-      {titre:"Nombre menage participant"},
-      {titre:"Nombre menage non participant"},
-      {titre:"Population total"},
       {titre:"Objectif"},
       {titre:"Durée"},
+      {titre:"Nature"},
+      /*{titre:"Presentantion communauté"},
+      {titre:"Référence DGSC"},
+      {titre:"Nombre menage bénéficiaire"},
+      {titre:"Nombre menage participant ACT"},
+      {titre:"Nombre menage non participant ACT"},
+      {titre:"Population total"},
       {titre:"Commune"},
       {titre:"Village"},
-      {titre:"Communaute"},
+      {titre:"Communaute"},*/
       {titre:"Action"}
       ];
       vm.click_tab_sousprojet = function()
       {
         vm.detail_sousprojet = false;
+        vm.show_tab_sous_localisation = false;
         apiFactory.getAPIgeneraliserREST("sous_projet/index","menu","getsousprojetbypar","id_par",vm.selectedItemPlan_action_reinstallation.id).then(function(result){
           vm.allRecordsSous_projet = result.data.response;
         });
@@ -137,29 +142,29 @@ apiFactory.getAll("commune/index").then(function(result){
             supprimer:suppression,
             id:getId,      
             code: ss_p.code, 
-            intitule: ss_p.intitule, 
+            //intitule: ss_p.intitule, 
             nature: ss_p.nature,  
             type: ss_p.type,      
-            description:   ss_p.description,
-            description_activite:     ss_p.description_activite, 
+            description: ss_p.description,
+            objectif:    ss_p.objectif, 
+            duree:      ss_p.duree,
+            /*nbr_menage_beneficiaire:     ss_p.nbr_menage_beneficiaire, 
             presentantion_communaute: ss_p.presentantion_communaute, 
             ref_dgsc:                 ss_p.ref_dgsc, 
             nbr_menage_participant:   ss_p.nbr_menage_participant, 
             nbr_menage_nonparticipant: ss_p.nbr_menage_nonparticipant, 
-            population_total:          ss_p.population_total, 
-            objectif:                  ss_p.objectif, 
-            duree:      ss_p.duree,  
+            population_total:          ss_p.population_total,   
             id_commune: ss_p.id_commune,  
             id_village: ss_p.id_village, 
-            id_communaute: ss_p.id_communaute,       
+            id_communaute: ss_p.id_communaute, */      
             id_par: vm.selectedItemPlan_action_reinstallation.id,      
 			}); 
       console.log(datas) ;     
 			//factory
 			apiFactory.add("sous_projet/index",datas, config).success(function (data)
 			{	
-        var vil = [];
-        var co = [];
+        //var vil = [];
+       // var co = [];
 				if (NouvelItemSous_projet == false)
         {
 					// Update or delete: id exclu 
@@ -167,7 +172,7 @@ apiFactory.getAll("commune/index").then(function(result){
 					if(suppression==0)
           { 
             
-            var com = vm.allCommune.filter(function(obj)
+           /* var com = vm.allCommune.filter(function(obj)
             {
                 return obj.id == ss_p.id_commune;
             });
@@ -184,25 +189,25 @@ apiFactory.getAll("commune/index").then(function(result){
               {
                   return obj.id == ss_p.id_communaute;
               });
-            }
+            }*/
             
             
 					  vm.selectedItemSous_projet.code = ss_p.code;
-					  vm.selectedItemSous_projet.intitule = ss_p.intitule;
+					  //vm.selectedItemSous_projet.intitule = ss_p.intitule;
 					  vm.selectedItemSous_projet.nature = ss_p.nature;
 					  vm.selectedItemSous_projet.type = ss_p.type;
 					  vm.selectedItemSous_projet.description   = ss_p.description;
-					  vm.selectedItemSous_projet.description_activite     = ss_p.description_activite;
+					  vm.selectedItemSous_projet.objectif     = ss_p.objectif;
+					  vm.selectedItemSous_projet.duree        = ss_p.duree;
+					 /* vm.selectedItemSous_projet.nbr_menage_beneficiaire     = ss_p.nbr_menage_beneficiaire;
 					  vm.selectedItemSous_projet.presentantion_communaute = ss_p.presentantion_communaute;
 					  vm.selectedItemSous_projet.ref_dgsc = ss_p.ref_dgsc;
 					  vm.selectedItemSous_projet.nbr_menage_participant     = ss_p.nbr_menage_participant;
 					  vm.selectedItemSous_projet.nbr_menage_nonparticipant  = ss_p.nbr_menage_nonparticipant;
 					  vm.selectedItemSous_projet.population_total           = ss_p.population_total;
-					  vm.selectedItemSous_projet.objectif     = ss_p.objectif;
-					  vm.selectedItemSous_projet.duree        = ss_p.duree;
 					  vm.selectedItemSous_projet.village   = vil[0];
 					  vm.selectedItemSous_projet.communaute = co[0];
-					  vm.selectedItemSous_projet.commune = com[0];
+					  vm.selectedItemSous_projet.commune = com[0];*/
 					  vm.selectedItemSous_projet ={};
 
 					} else {    
@@ -214,7 +219,7 @@ apiFactory.getAll("commune/index").then(function(result){
 				} 
         else
         { 
-          var com = vm.allCommune.filter(function(obj)
+         /* var com = vm.allCommune.filter(function(obj)
             {
                 return obj.id == ss_p.id_commune;
             });
@@ -231,17 +236,18 @@ apiFactory.getAll("commune/index").then(function(result){
               {
                   return obj.id == ss_p.id_communaute;
               });
-            }
+            }*/
 					ss_p.id=data.response;
-          ss_p.village   = vil[0];
+          /*ss_p.village   = vil[0];
 					ss_p.communaute = co[0];
-					ss_p.commune= com[0];
+					ss_p.commune= com[0];*/
 					NouvelItemSous_projet=false;
           vm.selectedItemSous_projet ={};
 				}
 				ss_p.$selected=false;
 				ss_p.$edit=false;
         vm.detail_sousprojet = false;
+        vm.show_tab_sous_localisation = false;
 			}).error(function (data)
       {
 				vm.showAlert('Erreur lors de la sauvegarde','Veuillez corriger le(s) erreur(s) !');
@@ -250,7 +256,9 @@ apiFactory.getAll("commune/index").then(function(result){
         vm.selectionSous_projet= function (item)
         {     
             vm.selectedItemSous_projet = item;
-            vm.detail_sousprojet = true;
+           // vm.detail_sousprojet = true;
+            vm.show_tab_sous_localisation = true;
+            vm.type_sous_projet = item.type;
         };
         $scope.$watch('vm.selectedItemSous_projet', function()
         {
@@ -271,21 +279,22 @@ apiFactory.getAll("commune/index").then(function(result){
               $selected: true,
               supprimer:0,
                       code: '',
-                      intitule: '',
+                      //intitule: '',
                       nature: '',
                       type: '',
                       description: '',
-                      description_activite: '',
-                      presentantion_communaute: '',                
-                      ref_dgsc : '',
-                      nbr_menage_participant : '',
-                      nbr_menage_nonparticipant : '',
-                      population_total :'',
                       objectif : '',
                       duree : '',
+                      /*nbr_menage_beneficiaire: '',
+                      presentantion_communaute: '',                
+                      ref_dgsc : '',
+                      nbr_menage_beneficiaire : null,
+                      nbr_menage_participant : null,
+                      nbr_menage_nonparticipant : null,
+                      population_total :'',
                       id_commune : null,
                       id_village : null,
-                      id_communaute : null
+                      id_communaute : null*/
             };
             vm.allRecordsSous_projet.unshift(items);
               vm.allRecordsSous_projet.forEach(function(it) {
@@ -301,21 +310,21 @@ apiFactory.getAll("commune/index").then(function(result){
             item.$selected=false;
             item.$edit=false;
             item.code = currentItemSous_projet.code;
-            item.intitule = currentItemSous_projet.intitule;
+            //item.intitule = currentItemSous_projet.intitule;
             item.nature = currentItemSous_projet.nature;
             item.type = currentItemSous_projet.type;
             item.description   = currentItemSous_projet.description;
-            item.description_activite     = currentItemSous_projet.description_activite;
+            item.objectif     = currentItemSous_projet.objectif;
+            item.duree        = currentItemSous_projet.duree;
+            /*item.nbr_menage_beneficiaire     = currentItemSous_projet.nbr_menage_beneficiaire;
             item.presentantion_communaute = currentItemSous_projet.presentantion_communaute;
             item.ref_dgsc = currentItemSous_projet.ref_dgsc;
             item.nbr_menage_participant   = currentItemSous_projet.nbr_menage_participant;
             item.nbr_menage_nonparticipant = currentItemSous_projet.nbr_menage_nonparticipant;
             item.population_total          = currentItemSous_projet.population_total;
-            item.objectif     = currentItemSous_projet.objectif;
-            item.duree        = currentItemSous_projet.duree;
             item.id_commune   = currentItemSous_projet.id_commune;
             item.id_village   = currentItemSous_projet.id_village;
-            item.id_communaute = currentItemSous_projet.id_communaute;
+            item.id_communaute = currentItemSous_projet.id_communaute;*/
           }
           else
           {
@@ -339,20 +348,20 @@ apiFactory.getAll("commune/index").then(function(result){
           item.$edit = true;	
           item.$selected = true;	
           item.code = vm.selectedItemSous_projet.code;
-          item.intitule = vm.selectedItemSous_projet.intitule;
+          //item.intitule = vm.selectedItemSous_projet.intitule;
           item.nature = vm.selectedItemSous_projet.nature;
           item.type = vm.selectedItemSous_projet.type;
           item.description   = vm.selectedItemSous_projet.description;
-          item.description_activite     = vm.selectedItemSous_projet.description_activite;
+          item.objectif      = vm.selectedItemSous_projet.objectif;
+          item.duree         = parseFloat(vm.selectedItemSous_projet.duree) ;
+          /*item.nbr_menage_beneficiaire     = vm.selectedItemSous_projet.nbr_menage_beneficiaire;
           item.presentantion_communaute = vm.selectedItemSous_projet.presentantion_communaute;
           item.ref_dgsc = vm.selectedItemSous_projet.ref_dgsc;
           item.nbr_menage_participant   = parseInt(vm.selectedItemSous_projet.nbr_menage_participant) ;
           item.nbr_menage_nonparticipant = parseInt(vm.selectedItemSous_projet.nbr_menage_nonparticipant) ;
           item.population_total = parseInt(vm.selectedItemSous_projet.population_total);
-          item.objectif         = vm.selectedItemSous_projet.objectif;
-          item.duree            = parseFloat(vm.selectedItemSous_projet.duree) ;
-          item.id_commune       = vm.selectedItemSous_projet.commune.id;
-          if (item.type=='ACT')
+          item.id_commune       = vm.selectedItemSous_projet.commune.id;*/
+          /*if (item.type=='ACT')
           {
             item.id_village       = vm.selectedItemSous_projet.village.id;
             apiFactory.getVillageByCommune("village/index",item.id_commune).then(function(result){
@@ -366,7 +375,7 @@ apiFactory.getAll("commune/index").then(function(result){
             apiFactory.getAPIgeneraliserREST("communaute/index","menu","getcommunautebycommune","id_commune",item.id_commune).then(function(result){
               vm.allCommunaute = result.data.response;
             });
-          }
+          }*/
           
 			    item.$edit = true;
         };
@@ -396,21 +405,21 @@ apiFactory.getAll("commune/index").then(function(result){
                 if(ag[0])
                 {
                   if((ag[0].code != currentItemSous_projet.code)
-                  ||(ag[0].intitule != currentItemSous_projet.intitule)
+                  //||(ag[0].intitule != currentItemSous_projet.intitule)
                   ||(ag[0].nature != currentItemSous_projet.nature)
                   ||(ag[0].type != currentItemSous_projet.type)
                   ||(ag[0].description != currentItemSous_projet.description)
-                  ||(ag[0].description_activite != currentItemSous_projet.description_activite)
+                  ||(ag[0].objectif != currentItemSous_projet.objectif)
+                  ||(ag[0].duree != currentItemSous_projet.duree)
+                 /* ||(ag[0].nbr_menage_beneficiaire != currentItemSous_projet.nbr_menage_beneficiaire)
                   ||(ag[0].presentantion_communaute != currentItemSous_projet.presentantion_communaute)
                   ||(ag[0].ref_dgsc != currentItemSous_projet.ref_dgsc)
                   ||(ag[0].nbr_menage_participant != currentItemSous_projet.nbr_menage_participant)
                   ||(ag[0].nbr_menage_nonparticipant != currentItemSous_projet.nbr_menage_nonparticipant)
                   ||(ag[0].population_total != currentItemSous_projet.population_total)
-                  ||(ag[0].objectif != currentItemSous_projet.objectif)
-                  ||(ag[0].duree != currentItemSous_projet.duree)
                   ||(ag[0].id_commune != currentItemSous_projet.id_commune)
                   ||(ag[0].id_village != currentItemSous_projet.id_village)
-                  ||(ag[0].id_communaute != currentItemSous_projet.id_communaute)
+                  ||(ag[0].id_communaute != currentItemSous_projet.id_communaute)*/
                   )                    
                       { 
                          insert_in_baseSous_projet(item,suppression);                         
@@ -425,7 +434,7 @@ apiFactory.getAll("commune/index").then(function(result){
             else
               insert_in_baseSous_projet(item,suppression);		
         }
-        vm.modifierType = function(item)
+        /*vm.modifierType = function(item)
         {
           if (item.type=="ACT")
           {
@@ -437,6 +446,383 @@ apiFactory.getAll("commune/index").then(function(result){
           }
           console.log(item);
           console.log(vm.selectedItemSous_projet);
+        }*/
+       /* vm.modifierCommune = function(item)
+        {
+          item.id_communaute = null;
+          item.id_village = null;
+          apiFactory.getAPIgeneraliserREST("communaute/index","menu","getcommunautebycommune","id_commune",item.id_commune).then(function(result){
+            vm.allCommunaute = result.data.response;
+          });
+          apiFactory.getVillageByCommune("village/index",item.id_commune).then(function(result){
+            vm.allVillage = result.data.response;
+            console.log(vm.allVillage);
+          });
+        }*/
+		
+		// Fin Sous projet   
+    
+    // Debut sous projet localisation 
+    vm.sous_projet_localisation_column =[  
+      {titre:"Ile"},  
+      {titre:"Préfecture"},
+      {titre:"Commune"},
+      {titre:"Village"},
+      {titre:"Communaute"},    
+      {titre:"Presentantion communauté"},
+      {titre:"Référence DGSC"},
+      {titre:"Nombre menage bénéficiaire"},
+      {titre:"Nombre menage participant ACT"},
+      {titre:"Nombre menage non participant ACT"},
+      {titre:"Population total"},
+      {titre:"Action"}
+      ];
+      vm.click_tab_sousprojet_localisation = function()
+      {
+        vm.detail_sousprojet = false;
+        apiFactory.getAPIgeneraliserREST("sous_projet_localisation/index","menu","getlocalisationbysousprojet","id_sous_projet",vm.selectedItemSous_projet.id).then(function(result){
+          vm.allSous_projet_localisation = result.data.response;
+        });
+      }
+        function ajoutSous_projet_localisation(ss_p,suppression)
+    {            
+      if (NouvelItemSous_projet_localisation==false) 
+      {
+          test_existenceSous_projet_localisation (ss_p,suppression); 
+      }
+      else
+      {
+          insert_in_baseSous_projet_localisation(ss_p,suppression);
+      }
+    }
+        function insert_in_baseSous_projet_localisation(ss_p,suppression)
+        {  
+          //add
+          var config = {
+            headers : {
+              'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+            }
+          };
+          var getId = 0;
+          if (NouvelItemSous_projet_localisation==false)
+          {
+            getId = vm.selectedItemSous_projet_localisation.id; 
+          } 
+          var datas = $.param({
+            supprimer:suppression,
+            id:getId,
+            id_ile: ss_p.id_ile,  
+            id_region: ss_p.id_region, 
+            id_commune: ss_p.id_commune,  
+            id_village: ss_p.id_village, 
+            id_communaute: ss_p.id_communaute,
+            nbr_menage_beneficiaire:     ss_p.nbr_menage_beneficiaire, 
+            presentantion_communaute: ss_p.presentantion_communaute, 
+            ref_dgsc:                 ss_p.ref_dgsc, 
+            nbr_menage_participant:   ss_p.nbr_menage_participant, 
+            nbr_menage_nonparticipant: ss_p.nbr_menage_nonparticipant, 
+            population_total:          ss_p.population_total,  
+            type:          vm.selectedItemSous_projet.type,     
+            id_sous_projet: vm.selectedItemSous_projet.id,      
+            }); 
+      console.log(datas) ;     
+            //factory
+            apiFactory.add("sous_projet_localisation/index",datas, config).success(function (data)
+            {	
+              var vil = [];
+              var co = [];
+                if (NouvelItemSous_projet_localisation == false)
+                {
+                    // Update or delete: id exclu 
+                    //console.log('noufalse');                  
+                    if(suppression==0)
+                  { 
+                    
+                    var il = vm.allIle.filter(function(obj)
+                    {
+                        return obj.id == ss_p.id_ile;
+                    });
+                    var reg = vm.allRegion.filter(function(obj)
+                    {
+                        return obj.id == ss_p.id_region;
+                    });
+                    var com = vm.allCommune.filter(function(obj)
+                    {
+                        return obj.id == ss_p.id_commune;
+                    });
+                    if (vm.selectedItemSous_projet.type=='ACT' || vm.selectedItemSous_projet.type=='ARSE' || vm.selectedItemSous_projet.type=='COVID-19')
+                    {
+                      vil = vm.allVillage.filter(function(obj)
+                      {
+                          return obj.id == ss_p.id_village;
+                      });
+                      
+                      vm.selectedItemSous_projet_localisation.village   = vil[0];
+                    }
+                    else
+                    {
+                      co = vm.allCommunaute.filter(function(obj)
+                      {
+                          return obj.id == ss_p.id_communaute;
+                      });
+                      vm.selectedItemSous_projet_localisation.communaute = co[0];
+                    }
+            
+                      vm.selectedItemSous_projet_localisation.nbr_menage_beneficiaire     = ss_p.nbr_menage_beneficiaire;
+                      vm.selectedItemSous_projet_localisation.presentantion_communaute = ss_p.presentantion_communaute;
+                      vm.selectedItemSous_projet_localisation.ref_dgsc = ss_p.ref_dgsc;
+                      vm.selectedItemSous_projet_localisation.nbr_menage_participant     = ss_p.nbr_menage_participant;
+                      vm.selectedItemSous_projet_localisation.nbr_menage_nonparticipant  = ss_p.nbr_menage_nonparticipant;
+                      vm.selectedItemSous_projet_localisation.population_total           = ss_p.population_total;
+                      vm.selectedItemSous_projet_localisation.ile = il[0];
+                      vm.selectedItemSous_projet_localisation.region = reg[0];
+                      vm.selectedItemSous_projet_localisation.commune = com[0];
+                      vm.selectedItemSous_projet_localisation ={};
+  
+                    } else {    
+                        vm.allSous_projet_localisation = vm.allSous_projet_localisation.filter(function(obj)
+                        {
+                            return obj.id !== vm.selectedItemSous_projet_localisation.id;
+                        });
+                    }
+                } 
+        else
+        { 
+          var il = vm.allIle.filter(function(obj)
+                    {
+                        return obj.id == ss_p.id_ile;
+                    });
+                    var reg = vm.allRegion.filter(function(obj)
+                    {
+                        return obj.id == ss_p.id_region;
+                    });
+          var com = vm.allCommune.filter(function(obj)
+            {
+                return obj.id == ss_p.id_commune;
+            });
+            if (vm.selectedItemSous_projet.type=='ACT' || vm.selectedItemSous_projet.type=='ARSE' || vm.selectedItemSous_projet.type=='COVID-19')
+            {
+              vil = vm.allVillage.filter(function(obj)
+              {
+                  return obj.id == ss_p.id_village;
+              });
+              ss_p.village   = vil[0];
+            }
+            else
+            {
+              co = vm.allCommunaute.filter(function(obj)
+              {
+                  return obj.id == ss_p.id_communaute;
+              });
+              ss_p.communaute = co[0];
+            }
+            ss_p.id=data.response;
+            ss_p.ile= il[0];
+            ss_p.region= reg[0];
+            ss_p.commune= com[0];
+            NouvelItemSous_projet_localisation=false;
+          vm.selectedItemSous_projet_localisation ={};
+        }
+        ss_p.$selected=false;
+        ss_p.$edit=false;
+        vm.detail_sousprojet = false;
+            }).error(function (data)
+        {
+                vm.showAlert('Erreur lors de la sauvegarde','Veuillez corriger le(s) erreur(s) !');
+        });  
+      }
+        vm.selectionSous_projet_localisation= function (item)
+        {     
+            vm.selectedItemSous_projet_localisation = item;
+            vm.detail_sousprojet = true;
+        };
+        $scope.$watch('vm.selectedItemSous_projet_localisation', function()
+        {
+            if (!vm.allSous_projet_localisation) return;
+            vm.allSous_projet_localisation.forEach(function(item) {
+                item.$selected = false;
+            });
+            vm.selectedItemSous_projet_localisation.$selected = true;
+        });
+        //function cache masque de saisie
+        vm.ajouterSous_projet_localisation = function ()
+        {
+            vm.selectedItemSous_projet_localisation.$selected = false;
+            NouvelItemSous_projet_localisation = true ;
+            var items =
+            {
+              $edit: true,
+              $selected: true,
+              supprimer:0,
+                      nbr_menage_beneficiaire: '',
+                      presentantion_communaute: '',                
+                      ref_dgsc : '',
+                      nbr_menage_beneficiaire : null,
+                      nbr_menage_participant : null,
+                      nbr_menage_nonparticipant : null,
+                      population_total :'',
+                      id_ile : null,
+                      id_region : null,
+                      id_commune : null,
+                      id_village : null,
+                      id_communaute : null
+            };
+            vm.allSous_projet_localisation.unshift(items);
+              vm.allSous_projet_localisation.forEach(function(it) {
+              if(it.$selected==true) {
+                vm.selectedItemSous_projet_localisation = it;
+              }
+            });			
+        };
+        vm.annulerSous_projet_localisation = function(item)
+        {
+          if (NouvelItemSous_projet_localisation == false)
+          {          
+            item.$selected=false;
+            item.$edit=false;
+            item.nbr_menage_beneficiaire     = currentItemSous_projet_localisation.nbr_menage_beneficiaire;
+            item.presentantion_communaute = currentItemSous_projet_localisation.presentantion_communaute;
+            item.ref_dgsc = currentItemSous_projet_localisation.ref_dgsc;
+            item.nbr_menage_participant   = currentItemSous_projet_localisation.nbr_menage_participant;
+            item.nbr_menage_nonparticipant = currentItemSous_projet_localisation.nbr_menage_nonparticipant;
+            item.population_total          = currentItemSous_projet_localisation.population_total;
+            item.id_ile   = currentItemSous_projet_localisation.id_ile;
+            item.id_region   = currentItemSous_projet_localisation.id_region;
+            item.id_commune   = currentItemSous_projet_localisation.id_commune;
+            item.id_village   = currentItemSous_projet_localisation.id_village;
+            item.id_communaute = currentItemSous_projet_localisation.id_communaute;
+          }
+          else
+          {
+            vm.allSous_projet_localisation = vm.allSous_projet_localisation.filter(function(obj)
+            {
+                return obj.id !== vm.selectedItemSous_projet_localisation.id;
+            });
+            
+            NouvelItemSous_projet_localisation = false;
+          }
+          vm.selectedItemSous_projet_localisation = {} ;
+        };
+        vm.modifierSous_projet_localisation = function(item)
+        {
+          NouvelItemSous_projet_localisation = false ;
+          vm.selectedItemSous_projet_localisation = item;
+          currentItemSous_projet_localisation = angular.copy(vm.selectedItemSous_projet_localisation);
+          $scope.vm.allSous_projet_localisation.forEach(function(it)
+          {
+            it.$edit = false;
+          });        
+          item.$edit = true;	
+          item.$selected = true;	
+          item.nbr_menage_beneficiaire     = parseInt(vm.selectedItemSous_projet_localisation.nbr_menage_beneficiaire);
+          item.presentantion_communaute = vm.selectedItemSous_projet_localisation.presentantion_communaute;
+          item.ref_dgsc = vm.selectedItemSous_projet_localisation.ref_dgsc;
+          item.nbr_menage_participant   = parseInt(vm.selectedItemSous_projet_localisation.nbr_menage_participant) ;
+          item.nbr_menage_nonparticipant = parseInt(vm.selectedItemSous_projet_localisation.nbr_menage_nonparticipant) ;
+          item.population_total = parseInt(vm.selectedItemSous_projet_localisation.population_total);
+          item.id_ile       = vm.selectedItemSous_projet_localisation.ile.id;
+          item.id_region       = vm.selectedItemSous_projet_localisation.region.id;
+          item.id_commune       = vm.selectedItemSous_projet_localisation.commune.id;
+          if (vm.selectedItemSous_projet.type=='ACT' || vm.selectedItemSous_projet.type=='ARSE' || vm.selectedItemSous_projet.type=='COVID-19')
+          {
+            item.id_village       = vm.selectedItemSous_projet_localisation.village.id;
+            apiFactory.getVillageByCommune("village/index",item.id_commune).then(function(result){
+              vm.allVillage = result.data.response;
+              console.log(vm.allVillage);
+            });
+          }
+          else
+          {            
+            item.id_communaute    = vm.selectedItemSous_projet_localisation.communaute.id;
+            apiFactory.getAPIgeneraliserREST("communaute/index","menu","getcommunautebycommune","id_commune",item.id_commune).then(function(result){
+              vm.allCommunaute = result.data.response;
+            });
+          }
+          apiFactory.getAPIgeneraliserREST("region/index","ile_id",item.id_ile).then(function(result){
+            vm.allRegion = result.data.response;
+          });
+          apiFactory.getAPIgeneraliserREST("commune/index","region_id",item.id_region).then(function(result){
+            vm.allCommune = result.data.response;
+          });
+                item.$edit = true;
+        };
+        vm.supprimerSous_projet_localisation = function()
+        {
+          var confirm = $mdDialog.confirm()
+                    .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                    .textContent('')
+                    .ariaLabel('Lucky day')
+                    .clickOutsideToClose(true)
+                    .parent(angular.element(document.body))
+                    .ok('supprimer')
+                    .cancel('annuler');
+          $mdDialog.show(confirm).then(function() {          
+            ajoutSous_projet(vm.selectedItemSous_projet_localisation,1);
+          }, function() {
+          });
+        }
+        function test_existenceSous_projet_localisation (item,suppression)
+        {
+                  if (suppression!=1) 
+            {
+                var ag = vm.allSous_projet_localisation.filter(function(obj)
+                {
+                   return obj.id == item.id;
+                });
+                if(ag[0])
+                {
+                  if((ag[0].nbr_menage_beneficiaire != currentItemSous_projet_localisation.nbr_menage_beneficiaire)
+                  ||(ag[0].presentantion_communaute != currentItemSous_projet_localisation.presentantion_communaute)
+                  ||(ag[0].ref_dgsc != currentItemSous_projet_localisation.ref_dgsc)
+                  ||(ag[0].nbr_menage_participant != currentItemSous_projet_localisation.nbr_menage_participant)
+                  ||(ag[0].nbr_menage_nonparticipant != currentItemSous_projet_localisation.nbr_menage_nonparticipant)
+                  ||(ag[0].population_total != currentItemSous_projet_localisation.population_total)
+                  ||(ag[0].id_ile != currentItemSous_projet_localisation.id_ile)
+                  ||(ag[0].id_region != currentItemSous_projet_localisation.id_region)
+                  ||(ag[0].id_commune != currentItemSous_projet_localisation.id_commune)
+                  ||(ag[0].id_village != currentItemSous_projet_localisation.id_village)
+                  ||(ag[0].id_communaute != currentItemSous_projet_localisation.id_communaute)
+                  )                    
+                      { 
+                         insert_in_baseSous_projet_localisation(item,suppression);                         
+                      }
+                      else
+                      { 
+                        item.$selected=false;
+                        item.$edit=false;
+                      }
+                }
+            }
+            else
+              insert_in_baseSous_projet_localisation(item,suppression);		
+        }
+        vm.modifierType = function(item)
+        {
+          if (item.type=="ACT")
+          {
+            item.id_communaute = null;
+          }
+          else
+          {
+            item.id_village = null;
+          }
+          console.log(item);
+          console.log(vm.selectedItemSous_projet_localisation);
+        }
+        vm.modifierIle = function(item)
+        {
+          item.id_region = null;
+          apiFactory.getAPIgeneraliserREST("region/index","ile_id",item.id_ile).then(function(result){
+            vm.allRegion = result.data.response;
+          });
+        }
+        
+        vm.modifierRegion = function(item)
+        {
+          item.id_commune = null;
+          apiFactory.getAPIgeneraliserREST("commune/index","region_id",item.id_region).then(function(result){
+            vm.allCommune = result.data.response;
+          });
         }
         vm.modifierCommune = function(item)
         {
@@ -450,8 +836,13 @@ apiFactory.getAll("commune/index").then(function(result){
             console.log(vm.allVillage);
           });
         }
-		
-		// Fin Sous projet    
+    // Fin sous projet localisation
+
+
+
+
+
+
       /* ***************Debut liste variable**********************/ 
       
 
@@ -1869,9 +2260,9 @@ function insert_in_baseActivite_par(entite,suppression)
               //recuperation ile
                 read: function (e)
                 {
-                  if (vm.selectedItemSous_projet.id)
+                  if (vm.selectedItemSous_projet_localisation.id)
                   {
-                    apiFactory.getAPIgeneraliserREST("sous_projet_travaux/index","menu","getsous_projet_travauxbysousprojet","id_sous_projet",vm.selectedItemSous_projet.id).then(function(result)
+                    apiFactory.getAPIgeneraliserREST("sous_projet_travaux/index","menu","getsous_projet_travauxbysousprojet_localisation","id_sous_projet_localisation",vm.selectedItemSous_projet_localisation.id).then(function(result)
                     {
                         e.success(result.data.response);
     
@@ -1901,8 +2292,9 @@ function insert_in_baseActivite_par(entite,suppression)
                             unite:       e.data.models[0].unite,
                             quantite:       e.data.models[0].quantite,
                             observation:       e.data.models[0].observation,
-                            id_sous_projet : e.data.models[0].id_sous_projet               
+                            id_sous_projet_localisation : e.data.models[0].id_sous_projet_localisation               
                         });
+                        console.log(datas);
                     apiFactory.add("sous_projet_travaux/index",datas, config).success(function (data)
                     {                
                       e.success(e.data.models);
@@ -1973,14 +2365,14 @@ function insert_in_baseActivite_par(entite,suppression)
                           unite:       e.data.models[0].unite,
                           quantite:       e.data.models[0].quantite,
                           observation:       e.data.models[0].observation,
-                          id_sous_projet: vm.selectedItemSous_projet.id              
+                          id_sous_projet_localisation: vm.selectedItemSous_projet_localisation.id              
                       });
-                  
+                  console.log(datas);
                   apiFactory.add("sous_projet_travaux/index",datas, config).success(function (data)
                   { 
                     
                       e.data.models[0].id = String(data.response);                    
-                      e.data.models[0].id_sous_projet=vm.selectedItemSous_projet.id;                                 
+                      e.data.models[0].id_sous_projet_localisation=vm.selectedItemSous_projet_localisation.id;                                 
                       e.success(e.data.models);
 
                   /***********Debut add historique***********/
@@ -2114,9 +2506,9 @@ function insert_in_baseActivite_par(entite,suppression)
               //recuperation ile
                 read: function (e)
                 { 
-                  if (vm.selectedItemSous_projet.id)
+                  if (vm.selectedItemSous_projet_localisation.id)
                   {
-                    apiFactory.getAPIgeneraliserREST("sous_projet_materiels/index","menu","getsous_projet_materielsbysousprojet","id_sous_projet",vm.selectedItemSous_projet.id).then(function(result)
+                    apiFactory.getAPIgeneraliserREST("sous_projet_materiels/index","menu","getsous_projet_materielsbysousprojet_localisation","id_sous_projet_localisation",vm.selectedItemSous_projet_localisation.id).then(function(result)
                     {
                         e.success(result.data.response);  
                     }, function error(result)
@@ -2142,7 +2534,7 @@ function insert_in_baseActivite_par(entite,suppression)
                             quantite:      e.data.models[0].quantite,
                             prix_unitaire:       e.data.models[0].prix_unitaire,
                             prix_total:       e.data.models[0].prix_total,
-                            id_sous_projet : e.data.models[0].id_sous_projet               
+                            id_sous_projet_localisation : e.data.models[0].id_sous_projet_localisation               
                         });
                     apiFactory.add("sous_projet_materiels/index",datas, config).success(function (data)
                     {                
@@ -2215,14 +2607,14 @@ function insert_in_baseActivite_par(entite,suppression)
                           quantite:      e.data.models[0].quantite,
                           prix_unitaire:       e.data.models[0].prix_unitaire,
                           prix_total:       e.data.models[0].prix_total,
-                          id_sous_projet: vm.selectedItemSous_projet.id              
+                          id_sous_projet_localisation: vm.selectedItemSous_projet_localisation.id              
                       });
                   
                   apiFactory.add("sous_projet_materiels/index",datas, config).success(function (data)
                   { 
                     
                       e.data.models[0].id = String(data.response);                    
-                      e.data.models[0].id_sous_projet=vm.selectedItemSous_projet.id;                                 
+                      e.data.models[0].id_sous_projet_localisation=vm.selectedItemSous_projet_localisation.id;                                 
                       e.success(e.data.models);
 
                   /***********Debut add historique***********/
@@ -2362,9 +2754,9 @@ function insert_in_baseActivite_par(entite,suppression)
             //recuperation ile
               read: function (e)
               { 
-                if (vm.selectedItemSous_projet.id)
+                if (vm.selectedItemSous_projet_localisation.id)
                 {
-                  apiFactory.getAPIgeneraliserREST("sous_projet_main_oeuvre/index","menu","getsous_projet_main_oeuvrebysousprojet","id_sous_projet",vm.selectedItemSous_projet.id).then(function(result)
+                  apiFactory.getAPIgeneraliserREST("sous_projet_main_oeuvre/index","menu","getsous_projet_main_oeuvrebysousprojet_localisation","id_sous_projet_localisation",vm.selectedItemSous_projet_localisation.id).then(function(result)
                   {
                       e.success(result.data.response);  
                   }, function error(result)
@@ -2392,7 +2784,7 @@ function insert_in_baseActivite_par(entite,suppression)
                           remuneration_jour:       e.data.models[0].remuneration_jour,
                           nbr_jour:       e.data.models[0].nbr_jour,
                           remuneration_total:       e.data.models[0].remuneration_total,
-                          id_sous_projet : e.data.models[0].id_sous_projet               
+                          id_sous_projet_localisation : e.data.models[0].id_sous_projet_localisation               
                       });
                   apiFactory.add("sous_projet_main_oeuvre/index",datas, config).success(function (data)
                   {                
@@ -2466,14 +2858,14 @@ function insert_in_baseActivite_par(entite,suppression)
                         remuneration_jour:       e.data.models[0].remuneration_jour,
                         nbr_jour:       e.data.models[0].nbr_jour,
                         remuneration_total:       e.data.models[0].remuneration_total,
-                        id_sous_projet: vm.selectedItemSous_projet.id              
+                        id_sous_projet_localisation: vm.selectedItemSous_projet_localisation.id              
                     });
                 
                 apiFactory.add("sous_projet_main_oeuvre/index",datas, config).success(function (data)
                 { 
                   
                     e.data.models[0].id = String(data.response);                    
-                    e.data.models[0].id_sous_projet=vm.selectedItemSous_projet.id;                                 
+                    e.data.models[0].id_sous_projet_localisation=vm.selectedItemSous_projet_localisation.id;                                 
                     e.success(e.data.models);
 
                 /***********Debut add historique***********/
@@ -2620,9 +3012,9 @@ function insert_in_baseActivite_par(entite,suppression)
             //recuperation ile
               read: function (e)
               {
-                if (vm.selectedItemSous_projet.id)
+                if (vm.selectedItemSous_projet_localisation.id)
                 { 
-                  apiFactory.getAPIgeneraliserREST("sous_projet_planning/index","menu","getsous_projet_planningbysousprojet","id_sous_projet",vm.selectedItemSous_projet.id).then(function(result)
+                  apiFactory.getAPIgeneraliserREST("sous_projet_planning/index","menu","getsous_projet_planningbysousprojet_localisation","id_sous_projet_localisation",vm.selectedItemSous_projet_localisation.id).then(function(result)
                   {
                       e.success(result.data.response);  
                   }, function error(result)
@@ -2647,7 +3039,7 @@ function insert_in_baseActivite_par(entite,suppression)
                           code:      e.data.models[0].code,     
                           phase_activite:      e.data.models[0].phase_activite,     
                           numero_phase:      e.data.models[0].numero_phase,
-                          id_sous_projet : e.data.models[0].id_sous_projet               
+                          id_sous_projet_localisation : e.data.models[0].id_sous_projet_localisation               
                       });
                   apiFactory.add("sous_projet_planning/index",datas, config).success(function (data)
                   {                
@@ -2718,14 +3110,14 @@ function insert_in_baseActivite_par(entite,suppression)
                         code:      e.data.models[0].code,     
                         phase_activite:      e.data.models[0].phase_activite,     
                         numero_phase:      e.data.models[0].numero_phase,
-                        id_sous_projet: vm.selectedItemSous_projet.id              
+                        id_sous_projet_localisation: vm.selectedItemSous_projet_localisation.id              
                     });
                 
                 apiFactory.add("sous_projet_planning/index",datas, config).success(function (data)
                 { 
                   
                     e.data.models[0].id = String(data.response);                    
-                    e.data.models[0].id_sous_projet=vm.selectedItemSous_projet.id;                                 
+                    e.data.models[0].id_sous_projet_localisation=vm.selectedItemSous_projet_localisation.id;                                 
                     e.success(e.data.models);
 
                 /***********Debut add historique***********/
@@ -3044,9 +3436,9 @@ function insert_in_baseActivite_par(entite,suppression)
               //recuperation ile
                 read: function (e)
                 { 
-                  if (vm.selectedItemSous_projet.id)
+                  if (vm.selectedItemSous_projet_localisation.id)
                   {
-                    apiFactory.getAPIgeneraliserREST("sous_projet_depenses/index","menu","getsous_projet_depensesbysousprojet","id_sous_projet",vm.selectedItemSous_projet.id).then(function(result)
+                    apiFactory.getAPIgeneraliserREST("sous_projet_depenses/index","menu","getsous_projet_depensesbysousprojet_localisation","id_sous_projet_localisation",vm.selectedItemSous_projet_localisation.id).then(function(result)
                     {
                         e.success(result.data.response);  
                     }, function error(result)
@@ -3071,7 +3463,7 @@ function insert_in_baseActivite_par(entite,suppression)
                             designation:      e.data.models[0].designation,
                             montant:       e.data.models[0].montant,
                             pourcentage:       e.data.models[0].pourcentage,
-                            id_sous_projet : e.data.models[0].id_sous_projet               
+                            id_sous_projet_localisation : e.data.models[0].id_sous_projet_localisation               
                         });
                     apiFactory.add("sous_projet_depenses/index",datas, config).success(function (data)
                     {                
@@ -3142,14 +3534,14 @@ function insert_in_baseActivite_par(entite,suppression)
                           designation:      e.data.models[0].designation,
                           montant:       e.data.models[0].montant,
                           pourcentage:       e.data.models[0].pourcentage,
-                          id_sous_projet: vm.selectedItemSous_projet.id              
+                          id_sous_projet_localisation: vm.selectedItemSous_projet_localisation.id              
                       });
                   
                   apiFactory.add("sous_projet_depenses/index",datas, config).success(function (data)
                   { 
                     
                       e.data.models[0].id = String(data.response);                    
-                      e.data.models[0].id_sous_projet=vm.selectedItemSous_projet.id;                                 
+                      e.data.models[0].id_sous_projet_localisation=vm.selectedItemSous_projet_localisation.id;                                 
                       e.success(e.data.models);
 
                   /***********Debut add historique***********/
@@ -3277,9 +3669,9 @@ function insert_in_baseActivite_par(entite,suppression)
         //recuperation ile
           read: function (e)
           { 
-            if (vm.selectedItemSous_projet.id)
+            if (vm.selectedItemSous_projet_localisation.id)
             {
-              apiFactory.getAPIgeneraliserREST("sous_projet_indicateurs/index","menu","getsous_projet_indicateursbysousprojet","id_sous_projet",vm.selectedItemSous_projet.id).then(function(result)
+              apiFactory.getAPIgeneraliserREST("sous_projet_indicateurs/index","menu","getsous_projet_indicateursbysousprojet_localisation","id_sous_projet_localisation",vm.selectedItemSous_projet_localisation.id).then(function(result)
               {
                   e.success(result.data.response);  
               }, function error(result)
@@ -3302,7 +3694,7 @@ function insert_in_baseActivite_par(entite,suppression)
                       id:        e.data.models[0].id,      
                       personne:      e.data.models[0].personne,
                       nombre:       e.data.models[0].nombre,
-                      id_sous_projet : e.data.models[0].id_sous_projet               
+                      id_sous_projet_localisation : e.data.models[0].id_sous_projet_localisation               
                   });
               apiFactory.add("sous_projet_indicateurs/index",datas, config).success(function (data)
               {                
@@ -3372,14 +3764,14 @@ function insert_in_baseActivite_par(entite,suppression)
                     id:        0,     
                     personne:      e.data.models[0].personne,
                     nombre:       e.data.models[0].nombre,
-                    id_sous_projet: vm.selectedItemSous_projet.id              
+                    id_sous_projet_localisation: vm.selectedItemSous_projet_localisation.id              
                 });
             
             apiFactory.add("sous_projet_indicateurs/index",datas, config).success(function (data)
             { 
               
                 e.data.models[0].id = String(data.response);                    
-                e.data.models[0].id_sous_projet=vm.selectedItemSous_projet.id;                                 
+                e.data.models[0].id_sous_projet_localisation=vm.selectedItemSous_projet_localisation.id;                                 
                 e.success(e.data.models);
 
             /***********Debut add historique***********/
@@ -3501,9 +3893,9 @@ function insert_in_baseActivite_par(entite,suppression)
         //recuperation ile
           read: function (e)
           {
-            if (vm.selectedItemSous_projet.id)
+            if (vm.selectedItemSous_projet_localisation.id)
             {
-              apiFactory.getAPIgeneraliserREST("sous_projet_resultats/index","menu","getsous_projet_resultatsbysousprojet","id_sous_projet",vm.selectedItemSous_projet.id).then(function(result)
+              apiFactory.getAPIgeneraliserREST("sous_projet_resultats/index","menu","getsous_projet_resultatsbysousprojet_localisation","id_sous_projet_localisation",vm.selectedItemSous_projet_localisation.id).then(function(result)
               {
                   e.success(result.data.response);
               }, function error(result)
@@ -3526,7 +3918,7 @@ function insert_in_baseActivite_par(entite,suppression)
                       id:        e.data.models[0].id,      
                       quantite:      e.data.models[0].quantite,
                       description:       e.data.models[0].description,
-                      id_sous_projet : e.data.models[0].id_sous_projet               
+                      id_sous_projet_localisation : e.data.models[0].id_sous_projet_localisation               
                   });
               apiFactory.add("sous_projet_resultats/index",datas, config).success(function (data)
               {                
@@ -3596,14 +3988,14 @@ function insert_in_baseActivite_par(entite,suppression)
                     id:        0,      
                     quantite:      e.data.models[0].quantite,
                     description:       e.data.models[0].description,
-                    id_sous_projet: vm.selectedItemSous_projet.id              
+                    id_sous_projet_localisation: vm.selectedItemSous_projet_localisation.id              
                 });
             
             apiFactory.add("sous_projet_resultats/index",datas, config).success(function (data)
             { 
               
                 e.data.models[0].id = String(data.response);                    
-                e.data.models[0].id_sous_projet=vm.selectedItemSous_projet.id;                                 
+                e.data.models[0].id_sous_projet_localisation=vm.selectedItemSous_projet_localisation.id;                                 
                 e.success(e.data.models);
 
             /***********Debut add historique***********/
@@ -3729,9 +4121,9 @@ function insert_in_baseActivite_par(entite,suppression)
         //recuperation ile
           read: function (e)
           { 
-            if (vm.selectedItemSous_projet.id)
+            if (vm.selectedItemSous_projet_localisation.id)
             {
-                apiFactory.getAPIgeneraliserREST("sauvegarde_env/index","menu","getsauvegarde_envbysousprojet","id_sous_projet",vm.selectedItemSous_projet.id).then(function(result)
+                apiFactory.getAPIgeneraliserREST("sauvegarde_env/index","menu","getsauvegarde_envbysousprojet_localisation","id_sous_projet_localisation",vm.selectedItemSous_projet_localisation.id).then(function(result)
                 {
                     e.success(result.data.response);
                 }, function error(result)
@@ -3758,7 +4150,7 @@ function insert_in_baseActivite_par(entite,suppression)
                       resultats:       e.data.models[0].resultats,
                       methodologie:       e.data.models[0].methodologie,
                       mesures_environnement:       e.data.models[0].mesures_environnement,
-                      id_sous_projet : e.data.models[0].id_sous_projet               
+                      id_sous_projet_localisation : e.data.models[0].id_sous_projet_localisation              
                   });
               apiFactory.add("sauvegarde_env/index",datas, config).success(function (data)
               {                
@@ -3831,14 +4223,14 @@ function insert_in_baseActivite_par(entite,suppression)
                     resultats:       e.data.models[0].resultats,
                     methodologie:       e.data.models[0].methodologie,
                     mesures_environnement:       e.data.models[0].mesures_environnement,
-                    id_sous_projet: vm.selectedItemSous_projet.id              
+                    id_sous_projet_localisation: vm.selectedItemSous_projet_localisation.id              
                 });
             
             apiFactory.add("sauvegarde_env/index",datas, config).success(function (data)
             { 
               
                 e.data.models[0].id = String(data.response);                    
-                e.data.models[0].id_sous_projet=vm.selectedItemSous_projet.id;                                 
+                e.data.models[0].id_sous_projet_localisation=vm.selectedItemSous_projet_localisation.id;                                 
                 e.success(e.data.models);
 
             /***********Debut add historique***********/
@@ -3972,7 +4364,7 @@ function insert_in_baseActivite_par(entite,suppression)
  vm.click_filtration_env = function()
  {
    //vm.mainGridOptionsFiltration_env.dataSource.read();
-   apiFactory.getAPIgeneraliserREST("filtration_env/index","menu","getfiltration_envbysousprojet","id_sous_projet",vm.selectedItemSous_projet.id).then(function(result)
+   apiFactory.getAPIgeneraliserREST("filtration_env/index","menu","getfiltration_envbysousprojet_localisation","id_sous_projet_localisation",vm.selectedItemSous_projet_localisation.id).then(function(result)
   {
       vm.allFiltration_env= result.data.response ;
   });
@@ -4038,7 +4430,7 @@ function insert_in_baseFiltration_env(entite,suppression)
 				environnement_naturel: entite.environnement_naturel,      
 				date_visa_rt_ibd: convertionDate(entite.date_visa_rt_ibd),     
 				date_visa_res: convertionDate(entite.date_visa_res),      
-				id_sous_projet: vm.selectedItemSous_projet.id
+				id_sous_projet_localisation: vm.selectedItemSous_projet_localisation.id
 			});       
 			//factory
 			apiFactory.add("filtration_env/index",datas, config).success(function (data)
@@ -4073,9 +4465,11 @@ function insert_in_baseFiltration_env(entite,suppression)
 				} else {
 					entite.id=data.response;	
 					NouvelItemFiltration_env=false;
+
 				}
 				entite.$selected=false;
 				entite.$edit=false;
+        vm.selectedItemFiltration_env ={};
 			}).error(function (data) {
 				vm.showAlert('Erreur lors de la sauvegarde','Veuillez corriger le(s) erreur(s) !');
 			});  
@@ -4256,9 +4650,9 @@ vm.mainGridOptionsAspects_env =
        //recuperation ile
          read: function (e)
          { 
-           if (vm.selectedItemSous_projet.id)
+           if (vm.selectedItemSous_projet_localisation.id)
            {
-               apiFactory.getAPIgeneraliserREST("aspects_env/index","menu","getaspects_envbysousprojet","id_sous_projet",vm.selectedItemSous_projet.id).then(function(result)
+               apiFactory.getAPIgeneraliserREST("aspects_env/index","menu","getaspects_envbysousprojet_localisation","id_sous_projet_localisation",vm.selectedItemSous_projet_localisation.id).then(function(result)
                {
                    e.success(result.data.response);
                }, function error(result)
@@ -4284,7 +4678,7 @@ vm.mainGridOptionsAspects_env =
                      emplace_site:      e.data.models[0].emplace_site,
                     etat_initial_recepteur:       e.data.models[0].etat_initial_recepteur,
                     classification_sous_projet:       e.data.models[0].classification_sous_projet,
-                     id_sous_projet : e.data.models[0].id_sous_projet               
+                     id_sous_projet_localisation : e.data.models[0].id_sous_projet_localisation               
                  });
                  console.log(datas);
              apiFactory.add("aspects_env/index",datas, config).success(function (data)
@@ -4355,14 +4749,14 @@ vm.mainGridOptionsAspects_env =
                    emplace_site:      e.data.models[0].emplace_site,
                   etat_initial_recepteur:       e.data.models[0].etat_initial_recepteur,
                   classification_sous_projet:       e.data.models[0].classification_sous_projet,
-                   id_sous_projet: vm.selectedItemSous_projet.id              
+                   id_sous_projet_localisation: vm.selectedItemSous_projet_localisation.id              
                });
            
            apiFactory.add("aspects_env/index",datas, config).success(function (data)
            { 
              
                e.data.models[0].id = String(data.response);                    
-               e.data.models[0].id_sous_projet=vm.selectedItemSous_projet.id;                                 
+               e.data.models[0].id_sous_projet_localisation=vm.selectedItemSous_projet_localisation.id;                                 
                e.success(e.data.models);
 
                var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
@@ -4704,7 +5098,7 @@ vm.allproblemes_env = function(aspects_env_id) {
 vm.click_fiche_env = function()
 {
   //vm.mainGridOptionsfiche_env.dataSource.read();
-  apiFactory.getAPIgeneraliserREST("fiche_env/index","menu","getfiche_envbysousprojet","id_sous_projet",vm.selectedItemSous_projet.id).then(function(result)
+  apiFactory.getAPIgeneraliserREST("fiche_env/index","menu","getfiche_envbysousprojet_localisation","id_sous_projet_localisation",vm.selectedItemSous_projet_localisation.id).then(function(result)
  {
      vm.allFiche_env= result.data.response ;
      vm.allPlan_gestion_env = [];
@@ -4779,7 +5173,7 @@ function insert_in_baseFiche_env(entite,suppression)
        date_visa_rt: convertionDate(entite.date_visa_rt),     
        date_visa_ugp: convertionDate(entite.date_visa_ugp),     
        date_visa_be: convertionDate(entite.date_visa_be),      
-       id_sous_projet: vm.selectedItemSous_projet.id
+       id_sous_projet_localisation: vm.selectedItemSous_projet_localisation.id
      }); 
      console.log(datas);   
      //factory
@@ -5291,9 +5685,9 @@ vm.mainGridOptionsEtude_env =
        //recuperation ile
          read: function (e)
          { 
-           if (vm.selectedItemSous_projet.id)
+           if (vm.selectedItemSous_projet_localisation.id)
            {
-               apiFactory.getAPIgeneraliserREST("etude_env/index","menu","getetude_envbysousprojet","id_sous_projet",vm.selectedItemSous_projet.id).then(function(result)
+               apiFactory.getAPIgeneraliserREST("etude_env/index","menu","getetude_envbysousprojet_localisation","id_sous_projet_localisation",vm.selectedItemSous_projet_localisation.id).then(function(result)
                {
                    e.success(result.data.response);
                }, function error(result)
@@ -5320,7 +5714,7 @@ vm.mainGridOptionsEtude_env =
                     description_impacts:       e.data.models[0].description_impacts,
                     mesure:       e.data.models[0].mesure,
                     plan_gestion:       e.data.models[0].plan_gestion,
-                     id_sous_projet : e.data.models[0].id_sous_projet               
+                     id_sous_projet_localisation : e.data.models[0].id_sous_projet_localisation               
                  });
                  console.log(datas);
              apiFactory.add("etude_env/index",datas, config).success(function (data)
@@ -5392,14 +5786,14 @@ vm.mainGridOptionsEtude_env =
                   description_impacts:       e.data.models[0].description_impacts,
                   mesure:       e.data.models[0].mesure,
                   plan_gestion:       e.data.models[0].plan_gestion,
-                   id_sous_projet: vm.selectedItemSous_projet.id              
+                   id_sous_projet_localisation: vm.selectedItemSous_projet_localisation.id              
                });
            
            apiFactory.add("etude_env/index",datas, config).success(function (data)
            { 
              
                e.data.models[0].id = String(data.response);                    
-               e.data.models[0].id_sous_projet=vm.selectedItemSous_projet.id;                                 
+               e.data.models[0].id_sous_projet_localisation=vm.selectedItemSous_projet_localisation.id;                                 
                e.success(e.data.models);
 
                var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
@@ -6041,9 +6435,9 @@ vm.mainGridOptionsConvention_idb =
        //recuperation ile
          read: function (e)
          { 
-           if (vm.selectedItemSous_projet.id)
+           if (vm.selectedItemSous_projet_localisation.id)
            {
-               apiFactory.getAPIgeneraliserREST("convention_idb/index","menu","getconvention_idbbysousprojet","id_sous_projet",vm.selectedItemSous_projet.id).then(function(result)
+               apiFactory.getAPIgeneraliserREST("convention_idb/index","menu","getconvention_idbbysousprojet_localisation","id_sous_projet_localisation",vm.selectedItemSous_projet_localisation.id).then(function(result)
                {
                    e.success(result.data.response);
                }, function error(result)
@@ -6071,7 +6465,7 @@ vm.mainGridOptionsConvention_idb =
                       nom_signataire:           e.data.models[0].nom_signataire,
                       date_signature:           convertionDate(e.data.models[0].date_signature),
                       litige_conclusion:        e.data.models[0].litige_conclusion,
-                      id_sous_projet : e.data.models[0].id_sous_projet               
+                      id_sous_projet_localisation : e.data.models[0].id_sous_projet_localisation               
                  });
                  console.log(datas);
              apiFactory.add("convention_idb/index",datas, config).success(function (data)
@@ -6144,14 +6538,14 @@ vm.mainGridOptionsConvention_idb =
                       nom_signataire:           e.data.models[0].nom_signataire,
                       date_signature:          convertionDate(e.data.models[0].date_signature),
                       litige_conclusion:        e.data.models[0].litige_conclusion,
-                   id_sous_projet: vm.selectedItemSous_projet.id              
+                   id_sous_projet_localisation: vm.selectedItemSous_projet_localisation.id              
                });
            
            apiFactory.add("convention_idb/index",datas, config).success(function (data)
            { 
              
                e.data.models[0].id = String(data.response);                    
-               e.data.models[0].id_sous_projet=vm.selectedItemSous_projet.id;                                 
+               e.data.models[0].id_sous_projet_localisation=vm.selectedItemSous_projet_localisation.id;                                 
                e.success(e.data.models);
 
                var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
@@ -6301,9 +6695,9 @@ vm.mainGridOptionsConvention_mod =
        //recuperation ile
          read: function (e)
          { 
-           if (vm.selectedItemSous_projet.id)
+           if (vm.selectedItemSous_projet_localisation.id)
            {
-               apiFactory.getAPIgeneraliserREST("convention_mod/index","menu","getconvention_modbysousprojet","id_sous_projet",vm.selectedItemSous_projet.id).then(function(result)
+               apiFactory.getAPIgeneraliserREST("convention_mod/index","menu","getconvention_modbysousprojet_localisation","id_sous_projet_localisation",vm.selectedItemSous_projet_localisation.id).then(function(result)
                {
                    e.success(result.data.response);
                }, function error(result)
@@ -6331,7 +6725,7 @@ vm.mainGridOptionsConvention_mod =
                       montant_travaux:      e.data.models[0].montant_travaux,
                       nom_signataire:           e.data.models[0].nom_signataire,
                       date_signature:           convertionDate(e.data.models[0].date_signature),
-                      id_sous_projet : e.data.models[0].id_sous_projet               
+                      id_sous_projet_localisation : e.data.models[0].id_sous_projet_localisation               
                  });
                  console.log(datas);
              apiFactory.add("convention_mod/index",datas, config).success(function (data)
@@ -6404,14 +6798,14 @@ vm.mainGridOptionsConvention_mod =
                       montant_travaux:      e.data.models[0].montant_travaux,
                       nom_signataire:           e.data.models[0].nom_signataire,
                       date_signature:           convertionDate(e.data.models[0].date_signature),
-                   id_sous_projet: vm.selectedItemSous_projet.id              
+                   id_sous_projet_localisation: vm.selectedItemSous_projet_localisation.id              
                });
            
            apiFactory.add("convention_mod/index",datas, config).success(function (data)
            { 
              
                e.data.models[0].id = String(data.response);                    
-               e.data.models[0].id_sous_projet=vm.selectedItemSous_projet.id;                                 
+               e.data.models[0].id_sous_projet_localisation=vm.selectedItemSous_projet_localisation.id;                                 
                e.success(e.data.models);
 
                var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
@@ -6563,9 +6957,9 @@ vm.mainGridOptionsConvention_entretien =
        //recuperation ile
          read: function (e)
          { 
-           if (vm.selectedItemSous_projet.id)
+           if (vm.selectedItemSous_projet_localisation.id)
            {
-               apiFactory.getAPIgeneraliserREST("convention_entretien/index","menu","getconvention_entretienbysousprojet","id_sous_projet",vm.selectedItemSous_projet.id).then(function(result)
+               apiFactory.getAPIgeneraliserREST("convention_entretien/index","menu","getconvention_entretienbysousprojet_localisation","id_sous_projet_localisation",vm.selectedItemSous_projet_localisation.id).then(function(result)
                {
                    e.success(result.data.response);
                }, function error(result)
@@ -6592,7 +6986,7 @@ vm.mainGridOptionsConvention_entretien =
                       montant_travaux:      e.data.models[0].montant_travaux,
                       nom_signataire:           e.data.models[0].nom_signataire,
                       date_signature:           convertionDate(e.data.models[0].date_signature),
-                      id_sous_projet : e.data.models[0].id_sous_projet               
+                      id_sous_projet_localisation : e.data.models[0].id_sous_projet_localisation               
                  });
                  console.log(datas);
              apiFactory.add("convention_entretien/index",datas, config).success(function (data)
@@ -6665,14 +7059,14 @@ vm.mainGridOptionsConvention_entretien =
                       nom_signataire:           e.data.models[0].nom_signataire,
                       date_signature:          convertionDate(e.data.models[0].date_signature),
                       litige_conclusion:        e.data.models[0].litige_conclusion,
-                   id_sous_projet: vm.selectedItemSous_projet.id              
+                   id_sous_projet_localisation: vm.selectedItemSous_projet_localisation.id              
                });
            
            apiFactory.add("convention_entretien/index",datas, config).success(function (data)
            { 
              
                e.data.models[0].id = String(data.response);                    
-               e.data.models[0].id_sous_projet=vm.selectedItemSous_projet.id;                                 
+               e.data.models[0].id_sous_projet_localisation=vm.selectedItemSous_projet_localisation.id;                                 
                e.success(e.data.models);
 
                var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};

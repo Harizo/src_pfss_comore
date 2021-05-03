@@ -5,7 +5,7 @@
                 <div class="breadcrumb" layout="row" layout-align="start center">
                     <md-icon md-font-icon="icon-home" class="s16"></md-icon>
                     <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
-                    <span class="parent">Contrat AGEP</span>
+                    <span class="parent">PGES &nbsp {{vm.type_sous_projet}}</span>
                     <span class="parent"> </span>
                     <!--md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
                     <span class="parent" href="javascript:;">Groupe ML/PL</span-->
@@ -23,7 +23,7 @@
                                 <div layout="row" layout-align="start center">
                                 <div class="border-right">
                                     
-                                  <span class="md-headline">PGES &nbsp</span>
+                                  <span class="md-headline">PGES &nbsp{{vm.type_sous_projet}} &nbsp</span>
                                 </div>
                                   <div class="border-right" ng-if="!vm.selectedItemPges.id && !vm.nouvelleItemPges">
                                     <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterPges()">
@@ -92,7 +92,7 @@
                                           </span>
                                           <span ng-if="!paie.$edit"> {{paie.ref_contrat}}</span>
                                         </td>
-                                        <td>
+                                        <!--td>
                                             <span ng-if="paie.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
                                                   <label>Sous projet</label>
@@ -104,7 +104,7 @@
                                               </md-input-container> 
                                             </span>
                                             <span ng-if="!paie.$edit"> {{paie.sous_projet.description}}</span>
-                                        </td>
+                                        </td-->
                                         <td>
                                           <span ng-if="paie.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
