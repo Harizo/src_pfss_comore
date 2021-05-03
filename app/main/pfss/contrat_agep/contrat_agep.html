@@ -5,7 +5,7 @@
                 <div class="breadcrumb" layout="row" layout-align="start center">
                     <md-icon md-font-icon="icon-home" class="s16"></md-icon>
                     <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
-                    <span class="parent">Contrat AGEP</span>
+                    <span class="parent">Contrat AGEP |&nbsp {{vm.type_sous_projet}}</span>
                     <span class="parent"> </span>
                     <!--md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
                     <span class="parent" href="javascript:;">Groupe ML/PL</span-->
@@ -71,7 +71,7 @@
                               </div>
                             </md-input-container>
 
-                            <md-input-container flex="100" flex-gt-xs="30">
+                            <!--md-input-container flex="100" flex-gt-xs="30">
                               <label>Sous-projet</label>
                               <md-select ng-model="vm.contrat_agep.id_sous_projet" name="id_sous_projet" >
                                   <md-option ng-repeat="sous_p in vm.allSous_projet" value="{{sous_p.id}}">
@@ -83,7 +83,7 @@
                                     <span>Sous projet Obligatoire.</span>
                                   </div>
                               </div>
-                            </md-input-container>
+                            </md-input-container-->
                                       
                           </div>
 
@@ -101,6 +101,15 @@
                                 <label>Montant du Contrat</label>
                                   <input name="montant_contrat" type="number" ng-model="vm.contrat_agep.montant_contrat" required md-select-on-focus>
                                     <div ng-messages="formcontrat_agep.montant_contrat.$error" role="alert">
+                                      <div ng-message="required">
+                                          <span>Montant du Contrat obligatoire.</span>
+                                      </div>
+                                    </div>
+                              </md-input-container>
+                              <md-input-container flex="100" flex-gt-xs="10">
+                                <label>Montant paiement à effectué prevu</label>
+                                  <input name="montant_a_effectue_prevu" type="number" ng-model="vm.contrat_agep.montant_a_effectue_prevu" required md-select-on-focus>
+                                    <div ng-messages="formcontrat_agep.montant_a_effectue_prevu.$error" role="alert">
                                       <div ng-message="required">
                                           <span>Montant du Contrat obligatoire.</span>
                                       </div>
@@ -176,13 +185,14 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr ng-repeat="contr in vm.allContrat_agep"  ng-class="{selected: contr.$selected}" ng-click="vm.selection(contr)">
+                            <tr ng-repeat="contr in vm.allContrat_agep"  ng-class="{selected: contr.$selected, colorby: contr.nbr_jour_restant<5 && contr.statu=='EN COURS'}" ng-click="vm.selection(contr)">
                                 <td>{{contr.numero_contrat}}</td>
                                 <td>{{contr.agep.identifiant}}</td>
                                 <td>{{contr.agep.adresse}}</td>                               
-                                <td>{{contr.sous_projet.description}}</td>
+                                <!--td>{{contr.sous_projet.description}}</td-->
                                 <td>{{contr.objet_contrat}}</td>
                                 <td>{{contr.montant_contrat}}</td>
+                                <td>{{contr.montant_a_effectue_prevu}}</td>
                                 <td>{{contr.modalite_contrat}}</td>
                                 <td>{{contr.date_prevu_fin | date:'dd/MM/yyyy'}}</td>
                                 <td>{{contr.noms_signataires}}</td>
@@ -241,17 +251,173 @@
                             <table ng-table="agep" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
                                 <thead>
                                     <tr>
-                                        <th class="secondary-text" ng-repeat="c in ::vm.etat_paiement_column">
+                                        <!--th class="secondary-text" ng-repeat="c in ::vm.etat_paiement_column">
                                             <div class="table-header">
                                                 <span class="column-title text-center">{{c.titre}}</span>
                                             </div>
+                                        </th-->
+                                        <th class="secondary-text">
+                                          <div class="table-header">
+                                            <span class="column-title">Ile</span>
+                                          </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                          <div class="table-header">
+                                            <span class="column-title">Préfecture</span>
+                                          </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                          <div class="table-header">
+                                            <span class="column-title">Commune</span>
+                                          </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.type_sous_projet!='IDB'">
+                                          <div class="table-header">
+                                            <span class="column-title">Village</span>
+                                          </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.type_sous_projet=='IDB'">
+                                          <div class="table-header">
+                                            <span class="column-title">Communaute</span>
+                                          </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                          <div class="table-header">
+                                            <span class="column-title">numéro d’ordre de paiement</span>
+                                          </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                          <div class="table-header">
+                                            <span class="column-title">Activité concernée</span>
+                                          </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                          <div class="table-header">
+                                            <span class="column-title">Menage bénéficiaire</span>
+                                          </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                          <div class="table-header">
+                                            <span class="column-title">Nom et prénoms de la personne</span>
+                                          </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                          <div class="table-header">
+                                            <span class="column-title">Sexe</span>
+                                          </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                          <div class="table-header">
+                                            <span class="column-title">Tranche paiement</span>
+                                          </div>
+                                        </th>
+                                        <th class="secondary-text" ng-show="vm.type_sous_projet!='TMNC-COVID-19'">
+                                          <div class="table-header">
+                                            <span class="column-title">Pourcentage paiement</span>
+                                          </div>
+                                        </th>
+                                        <!--th class="secondary-text">
+                                          <div class="table-header">
+                                            <span class="column-title">Montant total prévu</span>
+                                          </div>
+                                        </th-->
+                                        <th class="secondary-text">
+                                          <div class="table-header">
+                                            <span class="column-title">Montant perçu</span>
+                                          </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                          <div class="table-header">
+                                            <span class="column-title">Date paiement</span>
+                                          </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                          <div class="table-header">
+                                            <span class="column-title">Moyen de transfert</span>
+                                          </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                          <div class="table-header">
+                                            <span class="column-title">Situation paiement</span>
+                                          </div>
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="paie in vm.allEtat_paiement"  ng-class="{selected: paie.$selected}" ng-click="vm.selectionEtat_paiement(paie)">                                       
                                                                                 
-                                        <td>
+                                      
+                                      <td>
+                                        <span ng-if="paie.$edit">
+                                          <md-input-container style="width:100%; display: flex !important;">
+                                            <label>Ile</label>
+                                            <md-select ng-model="paie.id_ile"  style="width:90px;overflow: hidden;text-overflow: ellipsis;" ng-change="vm.modifierIle(paie)">
+                                            
+                                              <md-option ng-repeat="il in vm.allIle" value="{{il.id}}">
+                                              {{il.Ile}}
+                                              </md-option>
+                                            </md-select>
+                                          </md-input-container>  
+                                        </span>
+                                        <span ng-if="!paie.$edit">{{paie.ile.Ile}}</span>
+                                      </td>
+                                      <td>
+                                        <span ng-if="paie.$edit">
+                                          <md-input-container style="width:100%; display: flex !important;">
+                                            <label>Region</label>
+                                            <md-select ng-model="paie.id_region"  style="width:90px;overflow: hidden;text-overflow: ellipsis;" ng-change="vm.modifierRegion(paie)" ng-disabled="!paie.id_ile">
+                                            
+                                              <md-option ng-repeat="il in vm.allRegion" value="{{il.id}}">
+                                              {{il.Region}}
+                                              </md-option>
+                                            </md-select>
+                                          </md-input-container>  
+                                        </span>
+                                        <span ng-if="!paie.$edit">{{paie.region.Region}}</span>
+                                      </td>
+                                      <td>
+                                        <span ng-if="paie.$edit">
+                                          <md-input-container style="width:100%; display: flex !important;">
+                                            <label>Commune</label>
+                                            <md-select ng-model="paie.id_commune"  style="width:90px;overflow: hidden;text-overflow: ellipsis;" ng-change="vm.modifierCommune(paie)" ng-disabled="!paie.id_region">
+                                            
+                                              <md-option ng-repeat="comu in vm.allCommune" value="{{comu.id}}">
+                                              {{comu.Commune}}
+                                              </md-option>
+                                            </md-select>
+                                          </md-input-container>  
+                                        </span>
+                                        <span ng-if="!paie.$edit">{{paie.commune.Commune}}</span>
+                                      </td>
+                                      <td ng-show="vm.type_sous_projet!='IDB'">
+                                        <span ng-if="paie.$edit">
+                                          <md-input-container style="width:100%; display: flex !important;" ng-if="vm.type_sous_projet!='IDB'">
+                                            <label>Village</label>
+                                            <md-select ng-model="paie.id_village"  style="width:90px;overflow: hidden;text-overflow: ellipsis;" ng-disabled="!paie.id_commune" ng-change='vm.change_village(paie)'>
+                                              <md-option value=''>&nbsp;</md-option>
+                                              <md-option ng-repeat="vil in vm.allVillage" value="{{vil.id}}">
+                                              {{vil.Village}}
+                                              </md-option>
+                                            </md-select>
+                                          </md-input-container>  
+                                        </span>
+                                        <span ng-if="!paie.$edit">{{paie.village.Village}}</span>
+                                      </td>
+                                      <td ng-show="vm.type_sous_projet=='IDB'">
+                                        <span ng-if="paie.$edit">
+                                          <md-input-container style="width:100%; display: flex !important;" ng-if="vm.type_sous_projet=='IDB'">
+                                            <label>Communaute</label>
+                                            <md-select ng-model="paie.id_communaute"  style="width:90px;overflow: hidden;text-overflow: ellipsis;" ng-disabled="!paie.id_commune" ng-change='vm.change_village(paie)'>
+                                              <md-option value=''>&nbsp;</md-option>
+                                              <md-option ng-repeat="com in vm.allCommunaute" value="{{com.id}}">
+                                              {{com.libelle}}
+                                              </md-option>
+                                            </md-select>
+                                          </md-input-container>  
+                                        </span>
+                                        <span ng-if="!paie.$edit">{{paie.communaute.libelle}}</span>
+                                      </td>  
+                                      <td>
                                           <span ng-if="paie.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
                                                 <label>Numero d'ordre de paiement</label>                                                
@@ -264,9 +430,11 @@
                                             <span ng-if="paie.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
                                                 <label>Activité concernée </label>
-                                                <md-select ng-model="paie.activite_concerne" name="activite_concerne" ng-change="vm.change_activite(paie)">
-                                                    <md-option value="1">ARSE</md-option>
-                                                    <md-option value="2">TMNC-COVID-19</md-option>                                                 
+                                                <md-select ng-model="paie.activite_concerne" name="activite_concerne" ng-change="vm.change_activite(paie)" disabled>
+                                                  <md-option value="ACT">ACT</md-option>
+                                                    <md-option value="ARSE">ARSE</md-option>
+                                                    <md-option value="IDB">IDB</md-option>
+                                                    <md-option value="TMNC-COVID-19">TMNC-COVID-19</md-option>                                                 
                                                 </md-select>
                                               </md-input-container>
                                             </span>
@@ -278,35 +446,35 @@
                                                   <label>Menage</label>
                                                   <md-select ng-model="paie.id_menage" name="id_menage" ng-change="vm.change_menage(paie)">
                                                       <md-option ng-repeat="mena in vm.allMenage" value="{{mena.id}}">
-                                                          {{mena.NumeroEnregistrement}}
+                                                          {{mena.identifiant_menage}}
                                                       </md-option>                                                
                                                   </md-select>
                                               </md-input-container> 
                                             </span>
-                                            <span ng-if="!paie.$edit"> {{paie.menage.NumeroEnregistrement}}</span>
+                                            <span ng-if="!paie.$edit"> {{paie.menage.identifiant_menage}}</span>
                                         </td>
                                         <td>
                                           <span ng-if="paie.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
                                                 <label>Nom et prénoms de la personne</label>                                                
-                                                <input type="text" name="NomTravailleurSuppliant"  ng-model="paie.NomTravailleurSuppliant" disabled/>
+                                                <input type="text" name="nomchefmenage"  ng-model="paie.nomchefmenage" disabled/>
                                               </md-input-container>
                                           </span>
-                                          <span ng-if="!paie.$edit"> {{paie.menage.NomTravailleurSuppliant}}</span>
+                                          <span ng-if="!paie.$edit"> {{paie.menage.nomchefmenage}}</span>
                                         </td>
                                         <td>
                                           <span ng-if="paie.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
                                                 <label>Sexe</label>                                                
-                                                <input type="text" name="SexeTravailleurSuppliant"  ng-model="paie.SexeTravailleurSuppliant" disabled/>
+                                                <input type="text" name="SexeChefMenage"  ng-model="paie.SexeChefMenage" disabled/>
                                               </md-input-container>
                                           </span>
-                                          <span ng-if="!paie.$edit"> {{paie.menage.SexeTravailleurSuppliant}}</span>
+                                          <span ng-if="!paie.$edit"> {{paie.menage.SexeChefMenage}}</span>
                                         </td>
                                         <td>
                                           <span> {{vm.tranche_paiement(paie.tranche)}}</span>
                                         </td>
-                                        <td>
+                                        <td ng-show="vm.type_sous_projet!='TMNC-COVID-19'">
                                           <span ng-if="paie.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
                                                 <label>Pourcentage</label>                                                
@@ -315,7 +483,7 @@
                                           </span>
                                           <span ng-if="!paie.$edit"> {{paie.pourcentage}} %</span>
                                         </td>
-                                        <td>
+                                        <!--td>
                                           <span ng-if="paie.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
                                                 <label>Montant total prevu</label>                                                
@@ -323,12 +491,12 @@
                                               </md-input-container>
                                           </span>
                                           <span ng-if="!paie.$edit"> {{paie.montant_total_prevu}} KMF</span>
-                                        </td>
+                                        </td-->
                                         <td>
                                           <span ng-if="paie.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
                                                 <label>Montant perçu</label>                                                
-                                                <input type="number" name="montant_percu"  ng-model="paie.montant_percu"/>
+                                                <input type="number" name="montant_percu"  ng-model="paie.montant_percu" />
                                               </md-input-container>
                                           </span>
                                           <span ng-if="!paie.$edit"> {{paie.montant_percu}} KMF</span>
@@ -365,6 +533,182 @@
                                 </tbody>
                             </table>
                         </div>
+                    </md-tab>
+                    <md-tab label="AVENANT CONTRAT AGEP" ng-disabled="!vm.selectedItemContrat_agep.id || vm.selectedItemContrat_agep.statu=='RESILIE'" ng-click="vm.click_avenant_agep()">
+                        <div style="widht:100%;">    
+                            <md-button type="submit"class="md-raised md-accent " aria-label="Nouveau" ng-click="vm.ajouterAvenant_agep()" style="width:10%;">
+                              Nouveau
+                            </md-button>
+                            <md-button type="submit" class="md-raised md-blue-600-bg" ng-if="vm.selectedItemAvenant_agep.id" aria-label="Modifier" ng-click="vm.modifAvenant_agep()" style="width:10%;">
+                              Modifier
+                            </md-button>
+                            <md-button type="submit" class="md-raised md-warn" ng-if="vm.selectedItemAvenant_agep.id" aria-label="Supprimer" ng-click="vm.supprimerAvenant_agep()" style="width:10%;">                                
+                              Supprimer
+                            </md-button>
+                            <md-button type="submit" class="md-raised md-accent" ng-if="vm.selectedItemAvenant_agep.id && vm.selectedItemAvenant_agep.statu=='EN COURS'" aria-label="Terminer" ng-click="vm.terminerAvenant_agep()" style="width:10%;">                                
+                              Terminé
+                            </md-button>
+                            <md-button type="submit" class="md-raised  md-pink-900-bg" ng-if="vm.selectedItemAvenant_agep.id && vm.selectedItemAvenant_agep.statu=='EN COURS'" aria-label="Resilie" ng-click="vm.resilieAvenant_agep()" style="width:10%;">                                
+                              Resilié
+                            </md-button>
+                        </div>
+                        <!----------FORM AGEP--------------->       
+                         
+                        <form ng-show="vm.affichage_masque" name="formavenant_agep" class="md-inline-form" novalidate >
+
+                          <div layout="column" layout-gt-xs="row" flex>                                   
+                            <md-input-container flex="100" flex-gt-xs="40">
+                              <input  type="text" name="numero_avenant" ng-model="vm.avenant_agep.numero_avenant" placeholder="N° Avenant"    ng-init="vm.avenant_agep.numero_avenant=''" required>
+                              <div ng-messages="formavenant_agep.numero_avenant.$error"role="alert">
+                                  <div ng-message="required">
+                                      <span>N° avenant obligatoire.</span>
+                                  </div>
+                              </div>
+                            </md-input-container>
+
+                            <!--md-input-container flex="100" flex-gt-xs="30">
+                                <label>AGEP</label>
+                                <md-select ng-model="vm.avenant_agep.id_agep" name="id_agep" ng-change="vm.change_agep()">
+                                  <md-option ng-repeat="agep in vm.allAgep" value="{{agep.id}}">
+                                      {{agep.identifiant}}
+                                  </md-option>                                                
+                                </md-select>
+                                <div ng-messages="formavenant_agep.id_agep.$error" role="alert">
+                                  <div ng-message="required">
+                                    <span>agep Obligatoire.</span>
+                                  </div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container flex="100" flex-gt-xs="40">
+                              <input  type="text" name="adresse" ng-model="vm.avenant_agep.adresse" placeholder="Adresse AGEP" required disabled>
+                              <div ng-messages="formavenant_agep.adresse.$error"role="alert">
+                                  <div ng-message="required">
+                                      <span>Adresse obligatoire.</span>
+                                  </div>
+                              </div>
+                            </md-input-container-->
+
+                            <!--md-input-container flex="100" flex-gt-xs="30">
+                              <label>Sous-projet</label>
+                              <md-select ng-model="vm.avenant_agep.id_sous_projet" name="id_sous_projet" >
+                                  <md-option ng-repeat="sous_p in vm.allSous_projet" value="{{sous_p.id}}">
+                                      {{sous_p.description}}
+                                  </md-option>                                                
+                              </md-select>
+                              <div ng-messages="formavenant_agep.id_sous_projet.$error" role="alert">
+                                  <div ng-message="required">
+                                    <span>Sous projet Obligatoire.</span>
+                                  </div>
+                              </div>
+                            </md-input-container-->
+                                      
+                          <!--/div>
+
+                          <div layout="column" layout-gt-xs="row" flex-->
+                              <md-input-container flex="100" flex-gt-xs="10">
+                                <label>Objet du avenant</label>
+                                  <textarea name="objet_avenant" ng-model="vm.avenant_agep.objet_avenant" required md-select-on-focus></textarea>
+                                    <div ng-messages="formavenant_agep.objet_avenant.$error" role="alert">
+                                      <div ng-message="required">
+                                          <span>Objet du avenant obligatoire.</span>
+                                      </div>
+                                    </div>
+                              </md-input-container>
+                              <md-input-container flex="100" flex-gt-xs="10">
+                                <label>Montant du avenant</label>
+                                  <input name="montant_avenant" type="number" ng-model="vm.avenant_agep.montant_avenant" required md-select-on-focus>
+                                    <div ng-messages="formavenant_agep.montant_avenant.$error" role="alert">
+                                      <div ng-message="required">
+                                          <span>Montant du avenant obligatoire.</span>
+                                      </div>
+                                    </div>
+                              </md-input-container>
+                              <md-input-container flex="100" flex-gt-xs="10">
+                                <input  type="text" name="modalite_avenant" ng-model="vm.avenant_agep.modalite_avenant"
+                                        placeholder="Modalité du avenant" required>
+                                <div ng-messages="formavenant_agep.modalite_avenant.$error" role="alert">
+                                    <div ng-message="required">
+                                      <span>Modalite du avenant obligatoire.</span>
+                                    </div>
+                                </div>
+                              </md-input-container>
+                              
+                              <md-input-container flex="100" flex-gt-xs="10">
+                                <input  type="text" name="noms_signataires" ng-model="vm.avenant_agep.noms_signataires"
+                                        placeholder="Noms des signataires" required>
+                                <div ng-messages="formavenant_agep.noms_signataires.$error" role="alert">
+                                    <div ng-message="required">
+                                      <span>Noms signatures obligatoire.</span>
+                                    </div>
+                                </div>
+                              </md-input-container>
+                   
+                          </div>
+
+                          <div layout="column" layout-gt-xs="row" flex>
+                              
+                              <div style="margin-top: 14px !important; font-size: 13px !important;" flex="100" flex-gt-xs="10">
+                                  <label>Date signature:</label>
+                                  <md-datepicker  ng-model="vm.avenant_agep.date_signature" md-placeholder="Date signature" md-max-date="vm.date_now" required>                       
+                                  </md-datepicker>
+                              </div>
+                              <div style="margin-top: 14px !important; font-size: 13px !important;" flex="100" flex-gt-xs="10">
+                                  <label>Date prévu fin avenant:</label>
+                                  <md-datepicker  ng-model="vm.avenant_agep.date_prevu_fin" md-placeholder="Date Fin avenant" ng-disabled="!vm.avenant_agep.date_signature" md-min-date="vm.avenant_agep.date_signature">                       
+                                  </md-datepicker>
+                              </div>
+
+                              <md-input-container flex="100" flex-gt-xs="10">
+                                  <label>Status</label>
+                                  <input type="text" ng-model="vm.avenant_agep.statu" name="statu" required disabled>
+                                  <div ng-messages="formavenant_agep.statu.$error" role="alert">
+                                    <div ng-message="required">
+                                        <span>Status Obligatoire.</span>
+                                    </div>
+                                  </div>
+                              </md-input-container>
+                            </div>
+
+                            <div>
+                                <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                        ng-disabled="formavenant_agep.$invalid " ng-click="vm.ajoutAvenant_agep(vm.avenant_agep,0)">
+                                        Enregistrer
+                                </md-button>
+                                <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerAvenant_agep()">
+                                        Annuler
+                                </md-button>
+                            </div>
+                            </form>
+                                        
+                        <!--FORM  agep--> 
+                        <table class="dataTable row-border hover cell-border text-center" datatable="ng"
+                          dt-options="vm.dtOptions_new" ms-responsive-table>
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::vm.avenant_agep_column">
+                                <div class="table-header">
+                                  <span class="column-title text-center">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="aven in vm.allAvenant_agep"  ng-class="{selected: aven.$selected}" ng-click="vm.selection_avenant(aven)">
+                                <td>{{aven.numero_avenant}}</td>
+                                <!--td>{{aven.agep.identifiant}}</td>
+                                <td>{{aven.agep.adresse}}</td-->                               
+                                <!--td>{{aven.sous_projet.description}}</td-->
+                                <td>{{aven.objet_avenant}}</td>
+                                <td>{{aven.montant_avenant}}</td>
+                                <td>{{aven.modalite_avenant}}</td>
+                                <td>{{aven.date_prevu_fin | date:'dd/MM/yyyy'}}</td>
+                                <td>{{aven.noms_signataires}}</td>
+                                <td>{{aven.date_signature | date:'dd/MM/yyyy'}}</td>
+                                <td>{{aven.statu}}</td>
+                              <!--   <td>{{vm.aff_validation(cua.etat_validation)}}</td> -->
+                            </tr>
+                          </tbody>
+                        </table>
                     </md-tab> 
                     <md-tab>
                     </md-tab>

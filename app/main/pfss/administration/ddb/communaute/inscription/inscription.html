@@ -1,0 +1,140 @@
+  <div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Données de bases</span>
+                <span class="parent"> </span>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent" href="javascript:;">Communaute</span>
+            </div>
+        </div>
+    </div>
+        <div style="clear:both;"></div>
+		    
+            <!-- LISTE TABLE -->
+    <div class="content" layout="column">
+		<div class="form-wrapper">
+			<md-progress-circular ng-if="vm.affiche_load" class="md-accent" md-mode="indeterminate" md-diameter="64"></md-progress-circular>
+			<div style="overflow: auto; width: 100%;">
+				<fieldset >
+					<legend>
+							Communaute
+						<md-button class="md-fab md-mini " aria-label="Ajout" ng-click="vm.ajouter()">
+						  <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
+						</md-button>
+						<!--md-button class="md-fab md-mini" style="background-color: green;" aria-label="Ajout" ng-click="vm.preselectionner()" ng-show="vm.show_bouton_preselection && vm.selectedItem.id">
+						  <md-icon md-font-icon="icon-check-circle" ></md-icon>
+						  <md-tooltip><span>Faire présélection</span></md-tooltip>
+						</md-button-->
+					</legend>
+					<table ng-table="tableInscription" id="tableInscription" class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+						<thead>
+							<tr>
+								<th class="secondary-text" ng-repeat="c in ::vm.inscription_column">
+									<div class="table-header">
+										<span class="column-title">{{c.titre}}</span>
+									</div>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="inscri in vm.allInscription"  ng-class="{selected: inscri.$selected}" ng-click="vm.selection(inscri)">                                      
+								
+								<td>
+									<span ng-if="inscri.$edit">
+									  <md-input-container style="width:100%;display: flex !important;">
+										<label>ZIP  &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp</label>
+										<md-select ng-model="inscri.id_zip"style="overflow: hidden;text-overflow: ellipsis;" ng-change="vm.change_zip(inscri)">
+										  <md-option ng-repeat="zip in vm.allzip" value="{{zip.id}}">
+																			  {{zip.libelle}}
+										  </md-option>
+										</md-select>
+									  </md-input-container>  
+									</span>
+									<span ng-if="!inscri.$edit">{{inscri.zip.libelle}}</span>
+								  </td>
+								  <td>
+									<span ng-if="inscri.$edit">
+									  <md-input-container style="width:100%;display: flex !important;">
+										<label>Commune  &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp</label>
+										<md-select ng-model="inscri.id_commune"style="overflow: hidden;text-overflow: ellipsis;" ng-change="vm.change_commune(inscri)">
+										  <md-option ng-repeat="commune in vm.allcommune" value="{{commune.id}}">
+																			  {{commune.Commune}}
+										  </md-option>
+										</md-select>
+									  </md-input-container>  
+									</span>
+									<span ng-if="!inscri.$edit">{{inscri.commune.Commune}}</span>
+								  </td>
+								<td style="width:35% !important;">
+									<span ng-if="inscri.$edit">
+										<md-input-container style="width:100% !important; display: flex !important; ">
+											<label>Code</label>
+											<input name="code" type="text" ng-model="inscri.code"/>
+										</md-input-container>   
+									</span>
+									<span ng-if="!inscri.$edit">{{inscri.code}}</span>
+								</td>
+								<td style="width:35% !important;">
+									<span ng-if="inscri.$edit">
+										<md-input-container style="width:100% !important; display: flex !important;">
+											<label>Libelle</label>
+											<input name="libelle" type="text" ng-model="inscri.libelle"/>
+										</md-input-container>   
+									</span>
+									<span ng-if="!inscri.$edit">{{inscri.libelle}}</span>
+								</td>
+								<td style="width:35% !important;">
+									<span ng-if="inscri.$edit">
+										<md-input-container style="width:100% !important; display: flex !important;">
+											<label> Nombre population</label>
+											<input name="nbr_population" type="number" ng-model="inscri.nbr_population"/>
+										</md-input-container>   
+									</span>
+									<span ng-if="!inscri.$edit">{{inscri.nbr_population}}</span>
+								</td>
+								<!--td style="width:35% !important;">
+									<span ng-if="inscri.$edit">
+										<md-input-container style="width:100% !important; display: flex !important;">
+											<label>Representant</label>
+											<input name="representant" type="text" ng-model="inscri.representant"/>
+										</md-input-container>   
+									</span>
+									<span ng-if="!inscri.$edit">{{inscri.representant}}</span>
+								</td>
+								<td style="width:35% !important;">
+									<span ng-if="inscri.$edit">
+										<md-input-container style="width:100% !important; display: flex !important;">
+											<label>Téléphone</label>
+											<input name="telephone" type="text" ng-model="inscri.telephone"/>
+										</md-input-container>   
+									</span>
+									<span ng-if="!inscri.$edit">{{inscri.telephone}}</span>
+								</td-->
+								<td style="width:15% !important;">
+									<a ng-if="!inscri.$edit" ng-click="vm.modifier(inscri)" title="Modifier">
+										<span class="icon-table-edit"></span>
+									</a>
+									<a ng-if="!inscri.$edit" ng-click="vm.supprimer(inscri)" title="Supprimer">
+										<span class="icon-delete"></span>
+									</a>
+									<a ng-if="inscri.$edit" ng-click="vm.annuler(inscri)" title="Annuler modification">
+										<span class="icon-cancel"></span>
+									</a>
+									<a ng-if="inscri.$edit && inscri.id_zip && inscri.id_commune && inscri.code && inscri.libelle && inscri.nbr_population" ng-click="vm.ajout(inscri,0,0)" title="Sauvegarder">
+										<span class="icon-content-save"></span>
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</fieldset>
+					
+			</div>
+		</div>
+    </div>
+    <!-- / CONTENT -->
+  </div>

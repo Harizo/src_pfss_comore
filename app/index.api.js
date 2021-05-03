@@ -32,8 +32,8 @@
           getAPIgeneraliserCI: function(controller,valeur1,valeur2,valeur3) {
             return $http.get(apiUrl+controller+"/"+valeur1+"/"+valeur2+"/"+valeur3);
           },
-          getAPIgeneraliserREST: function(controller,champ1,valeur1,champ2,valeur2,champ3,valeur3,champ4,valeur4,champ5,valeur5,champ6,valeur6,champ7,valeur7,champ8,valeur8,champ9,valeur9,champ10,valeur10) {
-            return $http.get(apiUrl+controller+"?"+champ1+"="+valeur1+"&"+champ2+"="+valeur2+"&"+champ3+"="+valeur3+"&"+champ4+"="+valeur4+"&"+champ5+"="+valeur5+"&"+champ6+"="+valeur6+"&"+champ7+"="+valeur7+"&"+champ8+"="+valeur8+"&"+champ9+"="+valeur9+"&"+champ10+"="+valeur10);
+          getAPIgeneraliserREST: function(controller,champ1,valeur1,champ2,valeur2,champ3,valeur3,champ4,valeur4,champ5,valeur5,champ6,valeur6,champ7,valeur7,champ8,valeur8,champ9,valeur9,champ10,valeur10,champ11,valeur11) {
+            return $http.get(apiUrl+controller+"?"+champ1+"="+valeur1+"&"+champ2+"="+valeur2+"&"+champ3+"="+valeur3+"&"+champ4+"="+valeur4+"&"+champ5+"="+valeur5+"&"+champ6+"="+valeur6+"&"+champ7+"="+valeur7+"&"+champ8+"="+valeur8+"&"+champ9+"="+valeur9+"&"+champ10+"="+valeur10+"&"+champ11+"="+valeur11);
           },
           getAllNonFait: function(model,fait) {//DP
             return $http.get(apiUrl+model+"?fait='"+fait+"'");
@@ -67,6 +67,9 @@
           },
           add_serveur_central: function(controller, data, config) {
             return $http.post(apiUrl_serve_central+controller, data, config);
+          },
+          getcount_contrat_agep: function(controller, id_sous_projet) {
+            return $http.get(apiUrl+controller+"?id_sous_projet="+id_sous_projet);
           }
 
 

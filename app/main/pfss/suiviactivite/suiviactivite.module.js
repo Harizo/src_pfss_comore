@@ -4,8 +4,12 @@
 
     angular
         .module('app.pfss.suiviactivite', [			
-           'app.pfss.suiviactivite.exportficheetat',
-           'app.pfss.suiviactivite.importetat',
+           // 'app.pfss.suiviactivite.exportficheetat',
+           // 'app.pfss.suiviactivite.importetat',
+			'app.pfss.suiviactivite.suivi_arse',
+			'app.pfss.suiviactivite.suivi_act',
+			'app.pfss.suiviactivite.suivi_covid',
+			'app.pfss.suiviactivite.suivi_idb',
             ])
         // .run(testPermission)
         .config(config);

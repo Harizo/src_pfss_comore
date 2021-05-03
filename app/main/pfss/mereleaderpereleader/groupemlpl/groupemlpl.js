@@ -532,7 +532,7 @@
 			vm.affiche_load = true ;
 			// Liste ménage par village et liste ménage par groupe ML/PL
 			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"statut","BENEFICIAIRE").then(function(result) { 
-				vm.all_menages =[];
+				//vm.all_menages =[];
 				vm.all_menages = result.data.response;   
 				apiFactory.getAPIgeneraliserREST("liste_menage_mlpl/index","cle_etrangere",id_groupe_ml_pl).then(function(result) 	{ 
 					vm.all_listemenage_mlpl =[];

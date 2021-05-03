@@ -49,7 +49,7 @@
                             <div layout="column" layout-gt-xs="row" flex >
 
                                 <md-input-container flex="100" flex-gt-xs="90">
-                                  <label>Région</label>
+                                  <label>Préfecture </label>
                                     <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_region()" required>
                                      
                                       <md-option ng-repeat="region in vm.all_region" value="{{region.id}}" >
@@ -60,7 +60,7 @@
                                     <div ng-messages="filtrepardateform.region.$error"
                                       role="alert">
                                       <div ng-message="required">
-                                        <span>Région obligatoire</span>
+                                        <span>Préfecture  obligatoire</span>
                                       </div>
                                     </div>
                                 </md-input-container>

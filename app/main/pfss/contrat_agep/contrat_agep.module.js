@@ -27,12 +27,16 @@
         });
 
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.contrat_agep', {
+       /* msNavigationServiceProvider.saveItem('pfss.contrat_agep', {
             title: 'Gérer AGEP',
             icon  : 'icon-data',
             state: 'app.pfss_contrat_agep',
 			weight:8,
-        });
+            hidden: function()
+            {
+                    return true;
+            }
+        });*/
     }
 
 })();

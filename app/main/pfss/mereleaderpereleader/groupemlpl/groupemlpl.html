@@ -66,7 +66,7 @@
                                     <div ng-messages="filtrepardateform.ile.$error"
                                       role="alert">
                                       <div ng-message="required">
-                                        <span>Région obligatoire</span>
+                                        <span>Préfecture  obligatoire</span>
                                       </div>
                                     </div>
                                 </md-input-container>
@@ -415,12 +415,12 @@
                                                 <label>Menage</label> 
                                                   <md-select ng-model="fichepresence.menage_id" ng-change="vm.modifier_menage(fichepresence)" required>										 
                                                     <md-option ng-repeat="men in vm.all_menages" value="{{men.id}}" >
-                                                      {{men.NumeroEnregistrement}} - {{men.nomchefmenage}}
+                                                      {{men.identifiant_menage}} - {{men.nomchefmenage}}
                                                     </md-option>
                                                   </md-select>
                                               </md-input-container>
                                           </span>
-                                          <span ng-if="!fichepresence.$edit"> {{fichepresence.menage.NumeroEnregistrement}} - {{fichepresence.menage.nomchefmenage}}</span>
+                                          <span ng-if="!fichepresence.$edit"> {{fichepresence.menage.identifiant_menage}} - {{fichepresence.menage.nomchefmenage}}</span>
                                         </td>
                                         <td>
                                            {{fichepresence.enfant_moins_six_ans}}
