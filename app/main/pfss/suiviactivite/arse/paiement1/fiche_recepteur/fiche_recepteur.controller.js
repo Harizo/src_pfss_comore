@@ -153,7 +153,7 @@
 						var chemin=result.data.chemin;
 						var name_file=result.data.name_file;
 						// Ménage Apte
-						// window.location = apiUrlExcelimport + chemin + name_file;  
+						window.location = apiUrlExcel + chemin + name_file;  
 						vm.affiche_load =false; 
 					} else {
 						vm.affiche_load =false;
