@@ -3,7 +3,7 @@
     'use strict';
 
     var tab = [];
-
+  var mytoast = null;
     angular
         .module('fuse')
         .controller('ToastCtrl', ToastCtrl)
@@ -42,7 +42,27 @@
        
             });
             
-     
+        
+        apiFactory.getAPIgeneraliserREST("contrat_agep/index",'menu','getallcontrat_alert').then(function(result) 
+        {
+            var resultat = result.data.response;
+            console.log(resultat);
+            if (parseInt(resultat.length)!=0)
+            {   
+              mytoast=$mdToast.show({
+                        controller: 'Toast_contrat_agepCtrl',
+                        templateUrl: 'app/main/pfss/contrat_agep/toast_contrat_agep.html',
+                        hideDelay: 0,
+                        position: 'top right',
+                        locals:{param: resultat}
+                      });
+                
+            }
+            
+            console.log(resultat);
+                    
+
+        });
         }
 
 

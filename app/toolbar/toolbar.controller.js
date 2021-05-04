@@ -1,7 +1,7 @@
 (function ()
 {
     'use strict';
-
+    var my_toast_agep=null;
     angular
         .module('app.toolbar')
         .controller('Toast_contrat_agepCtrl', Toast_contrat_agepCtrl)
@@ -9,7 +9,7 @@
         .controller('ToolbarController', ToolbarController);
 
     /** @ngInject */
-    function ToolbarController($rootScope, $mdSidenav, $translate, $mdToast, loginService, cookieService, $location,apiFactory,$cookieStore)
+    function ToolbarController($rootScope, $mdSidenav, $translate, $mdToast, loginService, cookieService, $location,apiFactory,$cookieStore,$document)
     {
         var vm = this;
         // Data
@@ -152,12 +152,14 @@
             console.log(resultat);
             if (parseInt(resultat.length)!=0)
             {   
-                    $mdToast.show({
+                 my_toast_agep =   $mdToast.show({
                         controller: 'Toast_contrat_agepCtrl',
                         templateUrl: 'app/main/pfss/contrat_agep/toast_contrat_agep.html',
                         hideDelay: 0,
+                        //parent: $document[0].querySelector('#toast_contrat'),
                         position: 'bottom right',
-                        locals:{param: resultat}
+                        locals:{param: resultat},
+                        highlightAction: false
                       });
                 
             }
@@ -173,9 +175,9 @@
     function Toast_contrat_agepCtrl($mdToast, $mdDialog, $scope,param) 
     {
       $scope.data_toast = param;
-        $scope.closeToast = function() 
+        $scope.closeToast_agep = function() 
         {
-          $mdToast.hide();
+          $mdToast.hide(my_toast_agep);
         };
 
         $scope.liste_contrat = function()
