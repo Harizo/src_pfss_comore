@@ -4,18 +4,14 @@
 
     angular
         .module('app.toolbar')
-        .controller('ToastCtrl', function($scope, $mdToast) {
-            $scope.closeToast = function() {
-              $mdToast.hide();
-            };
-          })
+        .controller('Toast_contrat_agepCtrl', Toast_contrat_agepCtrl)
+        .controller('Liste_contrat_agepController', Liste_contrat_agepController)
         .controller('ToolbarController', ToolbarController);
 
     /** @ngInject */
-    function ToolbarController($rootScope, $mdSidenav, $translate, $mdToast, loginService, cookieService, $location)
+    function ToolbarController($rootScope, $mdSidenav, $translate, $mdToast, loginService, cookieService, $location,apiFactory,$cookieStore)
     {
         var vm = this;
-
         // Data
         vm.userdetails = {
           "nom": cookieService.get('nom'),
@@ -144,14 +140,88 @@
         {
             vm.bodyEl.toggleClass('ms-navigation-horizontal-mobile-menu-active');
         }
-        vm.showSimpleToast = function() {
-            $mdToast.show(
-              $mdToast.simple()
-                .textContent('Simple Toast!')
-                .position('top left')
-                .hideDelay(3000)
-            );
+
+        var id_user = $cookieStore.get('id');
+
+        if (id_user) 
+        {            
+        
+        apiFactory.getAPIgeneraliserREST("contrat_agep/index",'menu','getallcontrat_alert').then(function(result) 
+        {
+            var resultat = result.data.response;
+            console.log(resultat);
+            if (parseInt(resultat.length)!=0)
+            {   
+                    $mdToast.show({
+                        controller: 'Toast_contrat_agepCtrl',
+                        templateUrl: 'app/main/pfss/contrat_agep/toast_contrat_agep.html',
+                        hideDelay: 0,
+                        position: 'bottom right',
+                        locals:{param: resultat}
+                      });
+                
+            }
+            
+            console.log(resultat);
+                    
+
+        });
+        }
+          
+    }
+    
+    function Toast_contrat_agepCtrl($mdToast, $mdDialog, $scope,param) 
+    {
+      $scope.data_toast = param;
+        $scope.closeToast = function() 
+        {
+          $mdToast.hide();
+        };
+
+        $scope.liste_contrat = function()
+        {
+            $mdDialog.show({
+              controller: Liste_contrat_agepController,
+              templateUrl: 'app/main/pfss/contrat_agep/liste_contrat_agep_alert.html',
+              parent: angular.element(document.body),
+              locals:{contrat: param},
+              clickOutsideToClose:true
+            })
+        }
+
+   
+    }
+    
+
+    function Liste_contrat_agepController($scope, $mdDialog,contrat) 
+    {
+       
+      $scope.contrat_liste = contrat; 
+      $scope.dtOptions = {
+        dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
+        pagingType: 'simple',
+        autoWidth: false,
+        order: [] 
+     };
+          $scope.hide = function() {
+            $mdDialog.hide();
           };
+
+          $scope.cancel = function() {
+            $mdDialog.cancel();
+
+          };
+
+        $scope.contrat_agep_column = 
+        [
+            {titre:"Contrat N°"},
+            {titre:"AGEP"},
+            {titre:"Sous projet"},
+            {titre:"Montant du contrat"},
+            {titre:"Montant paiement à effectué prévu"},
+            {titre:"Date prévu fin contrat"}
+        ];
+
     }
 
 })();
