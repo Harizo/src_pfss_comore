@@ -14,7 +14,7 @@
         msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_arse.profilage_orientation', {
             title : 'Profilage orientation',
             icon  : 'icon-data',
-            weight: 2,
+            weight: 3,
         });
     }
     function testPermission(loginService,$cookieStore,apiFactory)
