@@ -1,0 +1,41 @@
+
+  <md-dialog ng-cloak aria-label="dialog_type_effort">
+    <md-subheader style="background-color: rgb(245,245,245)">
+        <h2 mat-dialog-title  style="margin:0px">Liste contrat AGEP </h2>
+    </md-subheader>
+
+    <md-dialog-content layout="row" style="padding:0px">      
+        <div style=" margin:auto;">
+                      <table class="dataTable row-border hover cell-border text-center" datatable="ng"
+                          dt-options="dtOptions" ms-responsive-table>
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::contrat_agep_column">
+                                <div class="table-header">
+                                  <span class="column-title text-center">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="contr in contrat_liste"  ng-class="{selected: contr.$selected,}" ng-click="vm.selection(contr)">
+                                <td>{{contr.numero_contrat}}</td>
+                                <td>{{contr.agep.identifiant}}</td>
+                                <td>{{contr.sous_projet.type}}</td>
+                                <td>{{contr.montant_contrat}}</td>
+                                <td>{{contr.montant_a_effectue_prevu}}</td>
+                                <td>{{contr.date_prevu_fin | date:'dd/MM/yyyy'}}</td>
+                              <!--   <td>{{vm.aff_validation(cua.etat_validation)}}</td> -->
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </md-dialog-content>
+              
+                    <md-dialog-actions layout="row" style="background-color: rgb(245,245,245)">
+                        <span>              
+                          <md-button type="submit" class="md-raised md-primary" ng-click="cancel()">Annuler</md-button>
+                        </span>    
+                    </md-dialog-actions>
+                 
+                </md-dialog>

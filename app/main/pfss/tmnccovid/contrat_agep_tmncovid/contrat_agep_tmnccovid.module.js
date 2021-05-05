@@ -4,7 +4,7 @@
 
     angular
         .module('app.pfss.tmnccovid.contrat_agep_tmnccovid', [])
-        .run(notification)
+        //.run(notification)
         .config(config);
         var vs = {};
 
@@ -36,7 +36,7 @@
             icon  : 'icon-data',
             state: 'app.pfss_tmnccovid_contrat_agep_tmnccovid',
 			weight:8,
-            badge:vs,
+            //badge:vs,
         });
     }
     
