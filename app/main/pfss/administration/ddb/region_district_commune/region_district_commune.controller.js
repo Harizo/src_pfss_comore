@@ -841,7 +841,8 @@
             {
               field: "vague",
               title: "Vague",
-              width: "Auto"
+              width: "Auto",
+              format: "{0:n0}"
             },
             {
               field: "zip",
