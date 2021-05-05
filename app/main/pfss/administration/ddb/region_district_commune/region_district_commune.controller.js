@@ -636,7 +636,10 @@
         };
       };
     /* ***************Fin commune**********************/
-
+    apiFactory.getAll("zip/index").then(function(result)
+    {
+      vm.allZip= result.data.response;
+    });
     /* ***************Debut village**********************/
       vm.allvillage = function(commune_id) {
         return {
@@ -659,14 +662,17 @@
               update : function (e)
               {                  
                   var config ={headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
-                  
+                  console.log(e);
                   var datas = $.param({
                           supprimer: 0,
                           id:        e.data.models[0].id,      
                           Code:      e.data.models[0].Code,
                           Village:       e.data.models[0].Village,
-                          commune_id: e.data.models[0].commune.id               
+                          commune_id: e.data.models[0].commune_id,
+                          id_zip:   e.data.models[0].zip.id,
+                          vague: e.data.models[0].vague               
                       });
+                      //console.log(datas); 
                   apiFactory.add("village/index",datas, config).success(function (data)
                   {                
                      e.success(e.data.models);
@@ -710,7 +716,7 @@
 							/***********Debut add historique***********/
 							var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
 							var datas = $.param({
-								  action:"Suppression : Fokontany de nom de  " + e.data.models[0].nom,
+								  action:"Suppression : Village de nom de  " + e.data.models[0].Village,
 								  id_utilisateur:vm.id_utilisateur
 							});                          
 							apiFactory.add("historique_utilisateur/index",datas, config).success(function (data) {
@@ -734,14 +740,23 @@
                           id:        0,      
                           Code:      e.data.models[0].Code,
                           Village:       e.data.models[0].Village,
-                          commune_id: commune_id              
+                          commune_id: commune_id,                          
+                          id_zip:   e.data.models[0].zip,
+                          vague:       e.data.models[0].vague              
                       });
                   apiFactory.add("village/index",datas, config).success(function (data)
                   { 
                     
                     e.data.models[0].id = String(data.response);
                     
-                    e.data.models[0].commune={id:commune_id};              
+                    //e.data.models[0].commune={id:commune_id}; 
+                    e.data.models[0].commune_id= commune_id; 
+                    var itemsZip =
+                      {
+                        id: e.data.models[0].zip,
+                        libelle: vm.libellezip
+                      };
+                      e.data.models[0].zip=itemsZip;             
                     e.success(e.data.models);
 
                   /***********Debut add historique***********/
@@ -769,7 +784,9 @@
                     fields:
                     {
                         Code: {type: "string",validation: {required: true}},
-                        Village: {type: "string", validation: {required: true}}
+                        Village: {type: "string", validation: {required: true}},
+                        vague: {type: "number", validation: {required: true}},
+                        zip: {validation: {required: true}}
 
                     }
                 }
@@ -821,6 +838,18 @@
               title: "Village",
               width: "Auto"
             },
+            {
+              field: "vague",
+              title: "Vague",
+              width: "Auto"
+            },
+            {
+              field: "zip",
+              title: "Zip",
+              template: "{{dataItem.zip.libelle}}",
+              editor: zipDropDownEditor,
+              width: "Auto"
+            },
             { 
               title: "Action",
               width: "Auto",
@@ -833,6 +862,26 @@
             }]
         };
       };
+      
+
+      function zipDropDownEditor(container, options)
+      {
+            $('<input id="zipDropDownList" change="vm.mande()" required data-text-field="libelle" data-value-field="id" data-bind="value:' + options.field + '"/>')
+                .appendTo(container)
+                .kendoDropDownList({
+                    dataTextField: "libelle",
+                    dataValueField: "id_zip",
+                    dataSource: vm.allZip           
+                }); 
+                var zipContener = container.find("#zipDropDownList").data("kendoDropDownList");
+          
+          zipContener.bind("change", function()
+          {
+            vm.libellezip = zipContener.text();
+            console.log(vm.libellezip);
+    
+          });
+     }
     /* ***************Fin village**********************/
 /* ***************FIN Découpage admninistratif**********************/
         
