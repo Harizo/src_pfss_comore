@@ -14,7 +14,7 @@
         msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_arse.suivi_evaluation', {
             title : 'Suivi et évaluation',
             icon  : 'icon-data',
-            weight: 8,
+            weight: 9,
         });
     }
     function testPermission(loginService,$cookieStore,apiFactory)

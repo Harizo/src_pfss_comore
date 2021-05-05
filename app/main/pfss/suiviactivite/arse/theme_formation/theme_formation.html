@@ -1,0 +1,34 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Suivi activité</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;">ARSE</span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;">Thème formation</span>
+                </div>
+    
+                <div class="title">Thème formation</div>
+            </div>
+        </div>
+        <div class="content" layout="column"  >
+            <div class="form-wrapper md-whiteframe-1dp" >
+                <div style="clear:both;"></div>
+                
+                <div>                                    
+                    <kendo-grid options="vm.mainGridOptions">
+                        <div k-detail-template>
+                        <kendo-grid k-options="vm.all_theme_formation_detail({{dataItem.id}})">
+                        </kendo-grid>
+                        </div>
+                    </kendo-grid>
+                </div>
+            </div>
+        </div>
+    </div>
+    

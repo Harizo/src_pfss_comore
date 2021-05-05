@@ -16,7 +16,7 @@
         msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_arse.paiement1', {
             title : 'Premier paiement',
             icon  : 'icon-data',
-            weight: 1,
+            weight: 2,
         });
     }
     function testPermission(loginService,$cookieStore,apiFactory)

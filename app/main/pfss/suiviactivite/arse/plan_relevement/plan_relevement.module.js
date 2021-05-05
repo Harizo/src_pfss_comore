@@ -15,7 +15,7 @@
         msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_arse.plan_relevement', {
             title : 'Plan de relèvement',
             icon  : 'icon-data',
-            weight: 3,
+            weight: 4,
         });
     }
     function testPermission(loginService,$cookieStore,apiFactory)

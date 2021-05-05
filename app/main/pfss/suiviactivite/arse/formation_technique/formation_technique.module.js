@@ -2,7 +2,8 @@
 {
     'use strict';
     angular
-        .module('app.pfss.suiviactivite.suivi_arse.formation_technique', [			
+        .module('app.pfss.suiviactivite.suivi_arse.formation_technique', [	
+				'app.pfss.suiviactivite.suivi_arse.formation_technique.fiche_presence_formation',
             ])
         // .run(testPermission)
         .config(config);
@@ -14,7 +15,7 @@
         msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_arse.formation_technique', {
             title : 'Formation technique de base',
             icon  : 'icon-data',
-            weight: 4,
+            weight: 5,
         });
     }
     function testPermission(loginService,$cookieStore,apiFactory)
