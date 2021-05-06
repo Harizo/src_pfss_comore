@@ -44,7 +44,7 @@
                                  </md-option>
 
                                </md-select>
-                               <div ng-messages="filtreform_eligible.ile.$error"
+                               <div ng-messages="filtreform_eligible.region.$error"
                                  role="alert">
                                  <div ng-message="required">
                                    <span>Région obligatoire</span>
@@ -54,14 +54,14 @@
 
                            <md-input-container flex="100" flex-gt-xs="90">
                              <label>Commune</label>
-                               <md-select ng-model="vm.filtre_eligible.id_commune" name="commune" ng-disabled="!vm.filtre_eligible.id_region" ng-change="vm.filtre_eligible_communaute()" required>
+                               <md-select ng-model="vm.filtre_eligible.id_commune" name="commune" ng-disabled="!vm.filtre_eligible.id_region" ng-change="vm.filtre_eligible_village()" required>
                                 
                                  <md-option ng-repeat="commune in vm.all_commune" value="{{commune.id}}" >
                                    {{commune.Commune}}
                                  </md-option>
 
                                </md-select>
-                               <div ng-messages="filtreform_eligible.ile.$error"
+                               <div ng-messages="filtreform_eligible.commune.$error"
                                  role="alert">
                                  <div ng-message="required">
                                    <span>Commune obligatoire</span>
@@ -70,18 +70,45 @@
                            </md-input-container>
 
                            <md-input-container flex="100" flex-gt-xs="90">
-                             <label>Communaute</label>
-                               <md-select ng-model="vm.filtre_eligible.id_communaute" name="communaute" ng-disabled="!vm.filtre_eligible.id_commune"  required>
+                             <label>Village</label>
+                               <md-select ng-model="vm.filtre_eligible.id_village" name="village" ng-disabled="!vm.filtre_eligible.id_commune" ng-change="vm.filtre_eligible_zip()" required>
                                 
-                                 <md-option ng-repeat="communaute in vm.all_communaute" value="{{communaute.id}}" >
-                                   {{communaute.libelle}}
+                                 <md-option ng-repeat="village in vm.all_village" value="{{village.id}}" >
+                                   {{village.Village}}
                                  </md-option>
 
                                </md-select>
-                               <div ng-messages="filtreform_eligible.ile.$error"
+                               <div ng-messages="filtreform_eligible.village.$error"
                                  role="alert">
                                  <div ng-message="required">
-                                   <span>Communaute obligatoire</span>
+                                   <span>village obligatoire</span>
+                                 </div>
+                               </div>
+                           </md-input-container>
+                           <md-input-container flex="100" flex-gt-xs="90">
+                             <label>Zip</label>
+                               <md-select ng-model="vm.filtre_eligible.id_zip" name="zip" ng-disabled="!vm.filtre_eligible.id_zip"  required>
+                                
+                                 <md-option ng-repeat="zip in vm.allZip" value="{{zip.id}}" >
+                                   {{zip.libelle}}
+                                 </md-option>
+
+                               </md-select>
+                               <div ng-messages="filtreform_eligible.zip.$error"
+                                 role="alert">
+                                 <div ng-message="required">
+                                   <span>Zip obligatoire</span>
+                                 </div>
+                               </div>
+                           </md-input-container>
+                           <md-input-container flex="100" flex-gt-xs="90">
+                             <label>Vague</label>
+                               <input ng-model="vm.filtre_eligible.vague" type="text" name="vague" disabled  required/>
+                                
+                               <div ng-messages="filtreform_eligible.vague.$error"
+                                 role="alert">
+                                 <div ng-message="required">
+                                   <span>Vague obligatoire</span>
                                  </div>
                                </div>
                            </md-input-container>
@@ -103,7 +130,7 @@
                                 
                               <span class="md-headline">Infrastructure eligible &nbsp</span>
                             </div>
-                              <div class="border-right" ng-if="!vm.selectedItemInfrastructure_eligible.id && !vm.nouvelItemInfrastructure_eligible && vm.filtre_eligible.id_communaute">
+                              <div class="border-right" ng-if="!vm.selectedItemInfrastructure_eligible.id && !vm.nouvelItemInfrastructure_eligible && vm.filtre_eligible.id_village">
                                 <md-button class="md-icon-button" aria-label="add Type ajout" ng-click="vm.ajouterInfrastructure_eligible()">
                                   <md-icon md-font-icon="icon-plus-box"></md-icon>
                                   <md-tooltip><span>Ajouter</span></md-tooltip>
@@ -135,7 +162,7 @@
                                 </md-button>
                               </div>   
 
-                              <div ng-if="vm.selectedItemInfrastructure_eligible.$edit">
+                              <div ng-if="vm.selectedItemInfrastructure_eligible.$edit && vm.selectedItemInfrastructure_eligible.libelle && vm.selectedItemInfrastructure_eligible.id_type_infrastructure">
                                 <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerInfrastructure_eligible(0)">
                                   <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                                   <md-tooltip><span>Enregistrer</span></md-tooltip>
@@ -252,18 +279,45 @@
                                </md-input-container>
 
                                <md-input-container flex="100" flex-gt-xs="90">
-                                 <label>Communaute</label>
-                                   <md-select ng-model="vm.filtre_choisi.id_communaute" name="communaute" ng-disabled="!vm.filtre_choisi.id_commune"  required>
+                                 <label>Village</label>
+                                   <md-select ng-model="vm.filtre_choisi.id_village" name="village" ng-disabled="!vm.filtre_choisi.id_commune" ng-change="vm.filtre_choisi_zip()" required>
                                     
-                                     <md-option ng-repeat="communaute in vm.all_communaute" value="{{communaute.id}}" >
-                                       {{communaute.libelle}}
+                                     <md-option ng-repeat="village in vm.all_village" value="{{village.id}}" >
+                                       {{village.Village}}
                                      </md-option>
-
+    
                                    </md-select>
-                                   <div ng-messages="filtreform_choisi.ile.$error"
+                                   <div ng-messages="filtreform_choisi.village.$error"
                                      role="alert">
                                      <div ng-message="required">
-                                       <span>Communaute obligatoire</span>
+                                       <span>village obligatoire</span>
+                                     </div>
+                                   </div>
+                               </md-input-container>
+                               <md-input-container flex="100" flex-gt-xs="90">
+                                 <label>Zip</label>
+                                   <md-select ng-model="vm.filtre_choisi.id_zip" name="zip" ng-disabled="!vm.filtre_choisi.id_zip"  required>
+                                    
+                                     <md-option ng-repeat="zip in vm.allZip" value="{{zip.id}}" >
+                                       {{zip.libelle}}
+                                     </md-option>
+    
+                                   </md-select>
+                                   <div ng-messages="filtreform_choisi.zip.$error"
+                                     role="alert">
+                                     <div ng-message="required">
+                                       <span>Zip obligatoire</span>
+                                     </div>
+                                   </div>
+                               </md-input-container>
+                               <md-input-container flex="100" flex-gt-xs="90">
+                                 <label>Vague</label>
+                                   <input ng-model="vm.filtre_choisi.vague" type="text" name="vague" disabled  required/>
+                                    
+                                   <div ng-messages="filtreform_choisi.vague.$error"
+                                     role="alert">
+                                     <div ng-message="required">
+                                       <span>Vague obligatoire</span>
                                      </div>
                                    </div>
                                </md-input-container>

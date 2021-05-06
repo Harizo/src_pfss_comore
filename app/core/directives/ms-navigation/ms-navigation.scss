@@ -108,14 +108,15 @@
 
                 &.active {
                     color: #FFFFFF;
-
                     .icon {
                         color: #FFFFFF;
                     }
 
                     .badge {
-                        background: #FFFFFF !important;
-                        color: rgba(0, 0, 0, 0.87) !important;
+                        //background: #FFFFFF !important;
+                        //color: rgba(0, 0, 0, 0.87) !important;
+                        background: red !important;
+                        color: #FFFFFF !important;
                     }
                 }
             }

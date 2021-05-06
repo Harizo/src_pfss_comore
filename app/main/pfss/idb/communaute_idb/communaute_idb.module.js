@@ -3,39 +3,40 @@
     'use strict';
 
     angular
-        .module('app.pfss.act.contrat_agep_act', [])
-        .run(notification)
+        .module('app.pfss.idb.communaute_idb', [])
+        //.run(notification)
         .config(config);
         var vs = {};
+
     /** @ngInject */
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.pfss_act_contrat_agep_act', {
-            url      : '/act/contrat_agep',
+        $stateProvider.state('app.pfss_idb_communaute_idb', {
+            url      : '/idb/communaute_idb',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/pfss/contrat_agep/contrat_agep.html',
-                    controller : 'Contrat_agepController as vm'
+                    templateUrl: 'app/main/pfss/communaute_idb/communaute_idb.html',
+                    controller : 'Communaute_idbController as vm'
                 }
             },
-            bodyClass: 'contratagep_act',
+            bodyClass: 'communaute_idb',
             data : {
               authorizer : true,
               permitted : ["USER","PERSONNEL","ADMIN"],
-              page: "Contrat agep act"
+              page: "Communaute idb"
             },
-            id_sous_projet: 1,
-            type_sous_projet: 'ACT'
+            id_sous_projet: 3,
+            type_sous_projet: 'IDB'
         });
 
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.act.contrat_agep_act', {
-            title: 'Gérer AGEP ACT',
+        msNavigationServiceProvider.saveItem('pfss.idb.communaute_idb', {
+            title: 'Communaute/IDB',
             icon  : 'icon-data',
-            state: 'app.pfss_act_contrat_agep_act',
+            state: 'app.pfss_idb_communaute_idb',
 			weight:8,
-            badge:vs,
+            //badge:vs,
         });
     }
     
@@ -48,7 +49,7 @@
         {
             var permission = [];
             
-            apiFactory.getcount_contrat_agep("count_contrat_agep",Number(1)).then(function(result) 
+            apiFactory.getcount_contrat_agep("count_contrat_agep",Number(3)).then(function(result) 
             {
                 var x = result.data.response;
                 vs.content = Number(x[0].nbr_contrat);
@@ -63,7 +64,7 @@
                 //**************************************************
                 if (id_user) 
                 {
-                    $interval(function(){apiFactory.getcount_contrat_agep("count_contrat_agep",Number(1)).then(function(result) 
+                    $interval(function(){apiFactory.getcount_contrat_agep("count_contrat_agep",Number(3)).then(function(result) 
                     {
                         var resultat = result.data.response;
 
@@ -84,5 +85,4 @@
         }
      
     }
-
 })();

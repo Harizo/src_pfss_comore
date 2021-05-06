@@ -468,7 +468,8 @@
       {titre:"Préfecture"},
       {titre:"Commune"},
       {titre:"Village"},
-      {titre:"Communaute"},    
+      {titre:"Zip"},
+      {titre:"Vague"},     
       {titre:"Presentantion communauté"},
       {titre:"Référence DGSC"},
       {titre:"Nombre menage bénéficiaire"},
@@ -515,7 +516,7 @@
             id_region: ss_p.id_region, 
             id_commune: ss_p.id_commune,  
             id_village: ss_p.id_village, 
-            id_communaute: ss_p.id_communaute,
+            //id_communaute: ss_p.id_communaute,
             nbr_menage_beneficiaire:     ss_p.nbr_menage_beneficiaire, 
             presentantion_communaute: ss_p.presentantion_communaute, 
             ref_dgsc:                 ss_p.ref_dgsc, 
@@ -529,7 +530,7 @@
             //factory
             apiFactory.add("sous_projet_localisation/index",datas, config).success(function (data)
             {	
-              var vil = [];
+              //var vil = [];
               var co = [];
                 if (NouvelItemSous_projet_localisation == false)
                 {
@@ -550,7 +551,11 @@
                     {
                         return obj.id == ss_p.id_commune;
                     });
-                    if (vm.selectedItemSous_projet.type=='ACT' || vm.selectedItemSous_projet.type=='ARSE' || vm.selectedItemSous_projet.type=='COVID-19')
+                    var vil = vm.allVillage.filter(function(obj)
+                      {
+                          return obj.id == ss_p.id_village;
+                      });
+                    /*if (vm.selectedItemSous_projet.type=='ACT' || vm.selectedItemSous_projet.type=='ARSE' || vm.selectedItemSous_projet.type=='COVID-19')
                     {
                       vil = vm.allVillage.filter(function(obj)
                       {
@@ -566,7 +571,7 @@
                           return obj.id == ss_p.id_communaute;
                       });
                       vm.selectedItemSous_projet_localisation.communaute = co[0];
-                    }
+                    }*/
             
                       vm.selectedItemSous_projet_localisation.nbr_menage_beneficiaire     = ss_p.nbr_menage_beneficiaire;
                       vm.selectedItemSous_projet_localisation.presentantion_communaute = ss_p.presentantion_communaute;
@@ -577,6 +582,8 @@
                       vm.selectedItemSous_projet_localisation.ile = il[0];
                       vm.selectedItemSous_projet_localisation.region = reg[0];
                       vm.selectedItemSous_projet_localisation.commune = com[0];
+                      vm.selectedItemSous_projet_localisation.village   = vil[0];
+                      vm.selectedItemSous_projet_localisation.zip   = vm.allZip[0];
                       vm.selectedItemSous_projet_localisation ={};
   
                     } else {    
@@ -589,18 +596,22 @@
         else
         { 
           var il = vm.allIle.filter(function(obj)
-                    {
-                        return obj.id == ss_p.id_ile;
-                    });
-                    var reg = vm.allRegion.filter(function(obj)
-                    {
-                        return obj.id == ss_p.id_region;
-                    });
+          {
+            return obj.id == ss_p.id_ile;
+          });
+          var reg = vm.allRegion.filter(function(obj)
+          {
+            return obj.id == ss_p.id_region;
+          });
           var com = vm.allCommune.filter(function(obj)
-            {
-                return obj.id == ss_p.id_commune;
-            });
-            if (vm.selectedItemSous_projet.type=='ACT' || vm.selectedItemSous_projet.type=='ARSE' || vm.selectedItemSous_projet.type=='COVID-19')
+          {
+              return obj.id == ss_p.id_commune;
+          });
+          vil = vm.allVillage.filter(function(obj)
+          {
+            return obj.id == ss_p.id_village;
+          });
+            /*if (vm.selectedItemSous_projet.type=='ACT' || vm.selectedItemSous_projet.type=='ARSE' || vm.selectedItemSous_projet.type=='COVID-19')
             {
               vil = vm.allVillage.filter(function(obj)
               {
@@ -615,11 +626,14 @@
                   return obj.id == ss_p.id_communaute;
               });
               ss_p.communaute = co[0];
-            }
+            }*/
+
             ss_p.id=data.response;
             ss_p.ile= il[0];
             ss_p.region= reg[0];
             ss_p.commune= com[0];
+            ss_p.village   = vil[0];
+            ss_p.zip   = vm.allZip[0];
             NouvelItemSous_projet_localisation=false;
           vm.selectedItemSous_projet_localisation ={};
         }
@@ -649,23 +663,29 @@
         {
             vm.selectedItemSous_projet_localisation.$selected = false;
             NouvelItemSous_projet_localisation = true ;
+            var nbr_men_p = null;
+            var nbr_men_nonp = null;
+            if (vm.selectedItemSous_projet.type == 'ACT')
+            {
+              nbr_men_p = 40;
+              nbr_men_nonp = 10;
+            }
             var items =
             {
               $edit: true,
               $selected: true,
               supprimer:0,
-                      //nbr_menage_beneficiaire: '',
                       presentantion_communaute: '',                
                       ref_dgsc : '',
-                      nbr_menage_beneficiaire : null,
-                      nbr_menage_participant : null,
-                      nbr_menage_nonparticipant : null,
-                      population_total :'',
+                      nbr_menage_beneficiaire : 50,
+                      nbr_menage_participant : nbr_men_p,
+                      nbr_menage_nonparticipant : nbr_men_nonp,
+                      population_total :null,
                       id_ile : null,
                       id_region : null,
                       id_commune : null,
                       id_village : null,
-                      id_communaute : null
+                      //id_communaute : null
             };
             vm.allSous_projet_localisation.unshift(items);
               vm.allSous_projet_localisation.forEach(function(it) {
@@ -690,7 +710,7 @@
             item.id_region   = currentItemSous_projet_localisation.id_region;
             item.id_commune   = currentItemSous_projet_localisation.id_commune;
             item.id_village   = currentItemSous_projet_localisation.id_village;
-            item.id_communaute = currentItemSous_projet_localisation.id_communaute;
+            //item.id_communaute = currentItemSous_projet_localisation.id_communaute;
           }
           else
           {
@@ -704,7 +724,8 @@
           vm.selectedItemSous_projet_localisation = {} ;
         };
         vm.modifierSous_projet_localisation = function(item)
-        {
+        { 
+          vm.allZip = [];
           NouvelItemSous_projet_localisation = false ;
           vm.selectedItemSous_projet_localisation = item;
           currentItemSous_projet_localisation = angular.copy(vm.selectedItemSous_projet_localisation);
@@ -723,7 +744,14 @@
           item.id_ile       = vm.selectedItemSous_projet_localisation.ile.id;
           item.id_region       = vm.selectedItemSous_projet_localisation.region.id;
           item.id_commune       = vm.selectedItemSous_projet_localisation.commune.id;
-          if (vm.selectedItemSous_projet.type=='ACT' || vm.selectedItemSous_projet.type=='ARSE' || vm.selectedItemSous_projet.type=='COVID-19')
+          item.id_village       = vm.selectedItemSous_projet_localisation.village.id;
+          item.vague       = vm.selectedItemSous_projet_localisation.village.vague;
+          item.id_zip       = vm.selectedItemSous_projet_localisation.zip.id;
+          apiFactory.getAPIgeneraliserREST("village/index","cle_etrangere",item.id_commune).then(function(result){
+            vm.allVillage = result.data.response;
+            //console.log(vm.allVillage);
+          });
+          /*if (vm.selectedItemSous_projet.type=='ACT' || vm.selectedItemSous_projet.type=='ARSE' || vm.selectedItemSous_projet.type=='COVID-19')
           {
             item.id_village       = vm.selectedItemSous_projet_localisation.village.id;
             apiFactory.getVillageByCommune("village/index",item.id_commune).then(function(result){
@@ -737,12 +765,15 @@
             apiFactory.getAPIgeneraliserREST("communaute/index","menu","getcommunautebycommune","id_commune",item.id_commune).then(function(result){
               vm.allCommunaute = result.data.response;
             });
-          }
+          }*/
           apiFactory.getAPIgeneraliserREST("region/index","ile_id",item.id_ile).then(function(result){
             vm.allRegion = result.data.response;
           });
           apiFactory.getAPIgeneraliserREST("commune/index","region_id",item.id_region).then(function(result){
             vm.allCommune = result.data.response;
+          });
+          apiFactory.getAPIgeneraliserREST("zip/index",'id',item.id_zip).then(function(result){
+            vm.allZip.push(result.data.response);            
           });
                 item.$edit = true;
         };
@@ -781,7 +812,7 @@
                   ||(ag[0].id_region != currentItemSous_projet_localisation.id_region)
                   ||(ag[0].id_commune != currentItemSous_projet_localisation.id_commune)
                   ||(ag[0].id_village != currentItemSous_projet_localisation.id_village)
-                  ||(ag[0].id_communaute != currentItemSous_projet_localisation.id_communaute)
+                  //||(ag[0].id_communaute != currentItemSous_projet_localisation.id_communaute)
                   )                    
                       { 
                          insert_in_baseSous_projet_localisation(item,suppression);                         
@@ -796,7 +827,7 @@
             else
               insert_in_baseSous_projet_localisation(item,suppression);		
         }
-        vm.modifierType = function(item)
+        /*vm.modifierType = function(item)
         {
           if (item.type=="ACT")
           {
@@ -808,7 +839,7 @@
           }
           console.log(item);
           console.log(vm.selectedItemSous_projet_localisation);
-        }
+        }*/
         vm.modifierIle = function(item)
         {
           item.id_region = null;
@@ -822,19 +853,56 @@
           item.id_commune = null;
           apiFactory.getAPIgeneraliserREST("commune/index","region_id",item.id_region).then(function(result){
             vm.allCommune = result.data.response;
+            console.log(vm.allCommune);
           });
         }
         vm.modifierCommune = function(item)
         {
-          item.id_communaute = null;
+          //item.id_communaute = null;
           item.id_village = null;
-          apiFactory.getAPIgeneraliserREST("communaute/index","menu","getcommunautebycommune","id_commune",item.id_commune).then(function(result){
+          /*apiFactory.getAPIgeneraliserREST("communaute/index","menu","getcommunautebycommune","id_commune",item.id_commune).then(function(result){
             vm.allCommunaute = result.data.response;
-          });
-          apiFactory.getVillageByCommune("village/index",item.id_commune).then(function(result){
+          });*/
+          apiFactory.getAPIgeneraliserREST("village/index","cle_etrangere",item.id_commune).then(function(result){
             vm.allVillage = result.data.response;
             console.log(vm.allVillage);
           });
+        }
+        vm.modifierVillage = function(item)
+        {
+          vm.allZip=[];
+          //item.id_communaute = null;
+          
+          /*apiFactory.getAPIgeneraliserREST("communaute/index","menu","getcommunautebycommune","id_commune",item.id_commune).then(function(result){
+            vm.allCommunaute = result.data.response;
+          });*/
+          var vil = vm.allVillage.filter(function(obj)
+          {
+            return obj.id == item.id_village;
+          });
+          console.log(vil);
+          item.vague = vil[0].vague;
+          apiFactory.getAPIgeneraliserREST("zip/index",'id',vil[0].zip.id).then(function(result){
+            vm.allZip.push(result.data.response);
+            console.log(vm.allZip);
+            if (result.data.response)
+            {
+              item.id_zip = result.data.response.id;
+            }
+            else
+            {
+              item.id_zip = null;
+            }
+            
+          });
+        }
+        vm.modifierNbr_menage_participant = function(item)
+        {
+          item.nbr_menage_beneficiaire = parseInt(item.nbr_menage_participant) + parseInt(item.nbr_menage_nonparticipant)
+        }
+        vm.modifierNbr_menage_nonparticipant = function(item)
+        {
+          item.nbr_menage_beneficiaire = parseInt(item.nbr_menage_participant) + parseInt(item.nbr_menage_nonparticipant)
         }
     // Fin sous projet localisation
 

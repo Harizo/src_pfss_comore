@@ -371,7 +371,27 @@
 													<span class="column-title">Commune</span>
 												</div>
 											</th>
-											<th class="secondary-text" ng-show="vm.type_sous_projet=='ACT' || vm.type_sous_projet=='ARSE' || vm.type_sous_projet=='COVID-19'">
+											<th class="secondary-text">
+												<div class="table-header">
+													<span class="column-title">Village</span>
+												</div>
+											</th>
+											<th class="secondary-text">
+												<div class="table-header">
+													<span class="column-title">Zip</span>
+												</div>
+											</th>
+											<th class="secondary-text">
+												<div class="table-header">
+													<span class="column-title">Vague</span>
+												</div>
+											</th>											
+											<th class="secondary-text">
+												<div class="table-header">
+													<span class="column-title">Presentantion communauté</span>
+												</div>
+											</th>
+											<!--th class="secondary-text" ng-show="vm.type_sous_projet=='ACT' || vm.type_sous_projet=='ARSE' || vm.type_sous_projet=='COVID-19'">
 												<div class="table-header">
 													<span class="column-title">Village</span>
 												</div>
@@ -385,7 +405,7 @@
 												<div class="table-header">
 													<span class="column-title">Presentantion communauté</span>
 												</div>
-											</th>
+											</th-->
 											<th class="secondary-text">
 												<div class="table-header">
 													<span class="column-title">Référence DGSC</span>
@@ -406,11 +426,16 @@
 													<span class="column-title">Nombre menage non participant ACT</span>
 												</div>
 											</th>
-											<th class="secondary-text" ng-show="vm.type_sous_projet=='IDB'">
+											<th class="secondary-text">
 												<div class="table-header">
 													<span class="column-title">Population total de la communauté</span>
 												</div>
 											</th>
+											<!--th class="secondary-text" ng-show="vm.type_sous_projet=='IDB'">
+												<div class="table-header">
+													<span class="column-title">Population total de la communauté</span>
+												</div>
+											</th-->
 											<th class="secondary-text">
 												<div class="table-header">
 													<span class="column-title">Action</span>
@@ -464,7 +489,7 @@
 												</span>
 												<span ng-if="!ss_p_l.$edit">{{ss_p_l.commune.Commune}}</span>
 											</td>
-											<td ng-show="vm.type_sous_projet=='ACT' || vm.type_sous_projet=='ARSE' || vm.type_sous_projet=='COVID-19'">
+											<!--td ng-show="vm.type_sous_projet=='ACT' || vm.type_sous_projet=='ARSE' || vm.type_sous_projet=='COVID-19'">
 												<span ng-if="ss_p_l.$edit">
 													<md-input-container style="width:100%; display: flex !important;" ng-if="vm.type_sous_projet=='ACT' || vm.type_sous_projet=='ARSE' || vm.type_sous_projet=='COVID-19'">
 													  <label>Village</label>
@@ -500,6 +525,55 @@
 													</md-input-container>   
 												</span>
 												<span ng-if="!ss_p_l.$edit">{{ss_p_l.presentantion_communaute}}</span>
+											</td-->
+											
+											<td>
+												<span ng-if="ss_p_l.$edit">
+													<md-input-container style="width:100%; display: flex !important;">
+													  <label>Village</label>
+														<md-select ng-model="ss_p_l.id_village"  style="width:90px;overflow: hidden;text-overflow: ellipsis;" ng-disabled="!ss_p_l.id_commune" ng-change="vm.modifierVillage(ss_p_l)">
+															<md-option value=''>&nbsp;</md-option>
+														  <md-option ng-repeat="vil in vm.allVillage" value="{{vil.id}}">
+															{{vil.Village}}
+														  </md-option>
+														</md-select>
+													</md-input-container>  
+												</span>
+												<span ng-if="!ss_p_l.$edit">{{ss_p_l.village.Village}}</span>
+											</td>
+											<td>
+												<span ng-if="ss_p_l.$edit">
+													<md-input-container style="width:100%; display: flex !important;">
+													  <label>Zip</label>
+														<md-select ng-model="ss_p_l.id_zip"  style="width:90px;overflow: hidden;text-overflow: ellipsis;" disabled>
+															<md-option value=''>&nbsp;</md-option>
+														  <md-option ng-repeat="zi in vm.allZip" value="{{zi.id}}">
+															{{zi.libelle}}
+														  </md-option>
+														</md-select>
+													</md-input-container>  
+												</span>
+												<span ng-if="!ss_p_l.$edit">{{ss_p_l.zip.libelle}}</span>
+											</td>
+											
+											<td>
+												<span ng-if="ss_p_l.$edit" >
+													<md-input-container style="width:100% !important; display: flex !important;">
+														<label>Vague</label>
+														<input name="vague" type="text" ng-model="ss_p_l.vague" disabled/>
+													</md-input-container>   
+												</span>
+												<span ng-if="!ss_p_l.$edit">{{ss_p_l.village.vague}}</span>
+											</td>
+											
+											<td>
+												<span ng-if="ss_p_l.$edit" >
+													<md-input-container style="width:100% !important; display: flex !important;">
+														<label>Presentantion communauté</label>
+														<input name="presentantion_communaute" type="text" ng-model="ss_p_l.presentantion_communaute"/>
+													</md-input-container>   
+												</span>
+												<span ng-if="!ss_p_l.$edit">{{ss_p_l.presentantion_communaute}}</span>
 											</td>
 											<td>
 												<span ng-if="ss_p_l.$edit">
@@ -523,7 +597,7 @@
 												<span ng-if="ss_p_l.$edit">
 													<md-input-container style="width:100% !important; display: flex !important;">
 														<label>Nombre menage participant</label>
-														<input name="nbr_menage_participant" type="number" ng-model="ss_p_l.nbr_menage_participant"/>
+														<input name="nbr_menage_participant" type="number" ng-model="ss_p_l.nbr_menage_participant" ng-change="vm.modifierNbr_menage_participant(ss_p_l)"/>
 													</md-input-container>   
 												</span>
 												<span ng-if="!ss_p_l.$edit">{{ss_p_l.nbr_menage_participant}}</span>
@@ -532,12 +606,12 @@
 												<span ng-if="ss_p_l.$edit">
 													<md-input-container style="width:100% !important; display: flex !important;">
 														<label>Nombre menage non participant</label>
-														<input name="nbr_menage_nonparticipant" type="number" ng-model="ss_p_l.nbr_menage_nonparticipant"/>
+														<input name="nbr_menage_nonparticipant" type="number" ng-model="ss_p_l.nbr_menage_nonparticipant" ng-change="vm.modifierNbr_menage_nonparticipant(ss_p_l)"/>
 													</md-input-container>   
 												</span>
 												<span ng-if="!ss_p_l.$edit">{{ss_p_l.nbr_menage_nonparticipant}}</span>
 											</td>
-											<td ng-show="vm.type_sous_projet=='IDB'">
+											<td>
 												<span ng-if="ss_p_l.$edit">
 													<md-input-container style="width:100% !important; display: flex !important;">
 														<label>Population total</label>
@@ -546,6 +620,15 @@
 												</span>
 												<span ng-if="!ss_p_l.$edit">{{ss_p_l.population_total}}</span>
 											</td>
+											<!--td ng-show="vm.type_sous_projet=='IDB'">
+												<span ng-if="ss_p_l.$edit">
+													<md-input-container style="width:100% !important; display: flex !important;">
+														<label>Population total</label>
+														<input name="population_total" type="number" ng-model="ss_p_l.population_total"/>
+													</md-input-container>   
+												</span>
+												<span ng-if="!ss_p_l.$edit">{{ss_p_l.population_total}}</span>
+											</td-->
 											<td style="width:15% !important;" ng-if="vm.type_sous_projet=='ACT'">
 												<a ng-if="!ss_p_l.$edit" ng-click="vm.modifierSous_projet_localisation(ss_p_l)" title="Modifier">
 													<span class="icon-table-edit"></span>
@@ -561,7 +644,7 @@
 													<span class="icon-content-save"></span>
 												</a>
 											</td>
-											<td style="width:15% !important;" ng-if="vm.type_sous_projet=='ARSE'">
+											<td style="width:15% !important;" ng-if="vm.type_sous_projet!='ACT'">
 												<a ng-if="!ss_p_l.$edit" ng-click="vm.modifierSous_projet_localisation(ss_p_l)" title="Modifier">
 													<span class="icon-table-edit"></span>
 												</a>
@@ -571,11 +654,11 @@
 												<a ng-if="ss_p_l.$edit" ng-click="vm.annulerSous_projet_localisation(ss_p_l)" title="Annuler modification">
 													<span class="icon-cancel"></span>
 												</a>
-												<a ng-if="ss_p_l.$edit && ss_p_l.ref_dgsc && ss_p_l.nbr_menage_beneficiaire && ss_p_l.id_ile && ss_p_l.id_region && ss_p_l.id_commune  && ss_p_l.id_village" ng-click="vm.ajoutSous_projet_localisation(ss_p_l,0)" title="Sauvegarder">
+												<a ng-if="ss_p_l.$edit && ss_p_l.ref_dgsc && ss_p_l.nbr_menage_beneficiaire && ss_p_l.id_ile && ss_p_l.id_region && ss_p_l.id_commune  && ss_p_l.id_village && ss_p_l.population_total" ng-click="vm.ajoutSous_projet_localisation(ss_p_l,0)" title="Sauvegarder">
 													<span class="icon-content-save"></span>
 												</a>
 											</td>
-											<td style="width:15% !important;" ng-if="vm.type_sous_projet=='COVID-19'">
+											<!--td style="width:15% !important;" ng-if="vm.type_sous_projet=='COVID-19'">
 												<a ng-if="!ss_p_l.$edit" ng-click="vm.modifierSous_projet_localisation(ss_p_l)" title="Modifier">
 													<span class="icon-table-edit"></span>
 												</a>
@@ -603,7 +686,7 @@
 												&& ss_p_l.population_total && ss_p_l.id_ile && ss_p_l.id_region && ss_p_l.id_commune && ss_p_l.id_communaute" ng-click="vm.ajoutSous_projet_localisation(ss_p_l,0)" title="Sauvegarder">
 													<span class="icon-content-save"></span>
 												</a>
-											</td>
+											</td-->
 										</tr>
 									</tbody>
 								</table>
