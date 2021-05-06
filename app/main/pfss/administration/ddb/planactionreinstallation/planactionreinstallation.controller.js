@@ -92,6 +92,7 @@
       {titre:"Type"},
       {titre:"Code"},
       {titre:"Description sous projet"},
+      {titre:"Montant"},
       {titre:"Objectif"},
       {titre:"Durée"},
       {titre:"Nature"},
@@ -146,6 +147,7 @@
             nature: ss_p.nature,  
             type: ss_p.type,      
             description: ss_p.description,
+            montant:    ss_p.montant, 
             objectif:    ss_p.objectif, 
             duree:      ss_p.duree,
             /*nbr_menage_beneficiaire:     ss_p.nbr_menage_beneficiaire, 
@@ -197,6 +199,7 @@
 					  vm.selectedItemSous_projet.nature = ss_p.nature;
 					  vm.selectedItemSous_projet.type = ss_p.type;
 					  vm.selectedItemSous_projet.description   = ss_p.description;
+					  vm.selectedItemSous_projet.montant     = ss_p.montant;
 					  vm.selectedItemSous_projet.objectif     = ss_p.objectif;
 					  vm.selectedItemSous_projet.duree        = ss_p.duree;
 					 /* vm.selectedItemSous_projet.nbr_menage_beneficiaire     = ss_p.nbr_menage_beneficiaire;
@@ -284,6 +287,7 @@
                       type: '',
                       description: '',
                       objectif : '',
+                      montant : '',
                       duree : '',
                       /*nbr_menage_beneficiaire: '',
                       presentantion_communaute: '',                
@@ -315,6 +319,7 @@
             item.type = currentItemSous_projet.type;
             item.description   = currentItemSous_projet.description;
             item.objectif     = currentItemSous_projet.objectif;
+            item.montant     = currentItemSous_projet.montant;
             item.duree        = currentItemSous_projet.duree;
             /*item.nbr_menage_beneficiaire     = currentItemSous_projet.nbr_menage_beneficiaire;
             item.presentantion_communaute = currentItemSous_projet.presentantion_communaute;
@@ -353,6 +358,7 @@
           item.type = vm.selectedItemSous_projet.type;
           item.description   = vm.selectedItemSous_projet.description;
           item.objectif      = vm.selectedItemSous_projet.objectif;
+          item.montant      = parseFloat(vm.selectedItemSous_projet.montant);
           item.duree         = parseFloat(vm.selectedItemSous_projet.duree) ;
           /*item.nbr_menage_beneficiaire     = vm.selectedItemSous_projet.nbr_menage_beneficiaire;
           item.presentantion_communaute = vm.selectedItemSous_projet.presentantion_communaute;
@@ -410,6 +416,7 @@
                   ||(ag[0].type != currentItemSous_projet.type)
                   ||(ag[0].description != currentItemSous_projet.description)
                   ||(ag[0].objectif != currentItemSous_projet.objectif)
+                  ||(ag[0].montant != currentItemSous_projet.montant)
                   ||(ag[0].duree != currentItemSous_projet.duree)
                  /* ||(ag[0].nbr_menage_beneficiaire != currentItemSous_projet.nbr_menage_beneficiaire)
                   ||(ag[0].presentantion_communaute != currentItemSous_projet.presentantion_communaute)

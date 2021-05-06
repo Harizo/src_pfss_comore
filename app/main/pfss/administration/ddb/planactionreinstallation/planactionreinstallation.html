@@ -282,6 +282,15 @@
 											<td >
 												<span ng-if="ss_p.$edit">
 													<md-input-container style="width:100% !important; display: flex !important;">
+														<label>Montant</label>
+														<input name="montant" type="number" ng-model="ss_p.montant"/>
+													</md-input-container>   
+												</span>
+												<span ng-if="!ss_p.$edit">{{ss_p.montant}}</span>
+											</td>
+											<td >
+												<span ng-if="ss_p.$edit">
+													<md-input-container style="width:100% !important; display: flex !important;">
 														<label>Objectif</label>
 														<input name="objectif" type="text" ng-model="ss_p.objectif"/>
 													</md-input-container>   
@@ -318,7 +327,7 @@
 												<a ng-if="ss_p.$edit" ng-click="vm.annulerSous_projet(ss_p)" title="Annuler modification">
 													<span class="icon-cancel"></span>
 												</a>
-												<a ng-if="ss_p.$edit && ss_p.code && ss_p.type && ss_p.description && ss_p.objectif && ss_p.duree" ng-click="vm.ajoutSous_projet(ss_p,0)" title="Sauvegarder">
+												<a ng-if="ss_p.$edit && ss_p.code && ss_p.type && ss_p.description && ss_p.objectif && ss_p.duree && ss_p.montant" ng-click="vm.ajoutSous_projet(ss_p,0)" title="Sauvegarder">
 													<span class="icon-content-save"></span>
 												</a>
 											</td>
