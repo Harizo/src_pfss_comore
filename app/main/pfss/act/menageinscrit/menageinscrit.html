@@ -24,16 +24,24 @@
                             Chargement,veuillez patienter s'il vous plait ...
                         </div>
                         <div style="widht:100%;">    
-                            <md-button type="submit" ng-show="(vm.filtre.id_region)&&(vm.filtre.id_region)&&(vm.filtre.id_commune) &&(vm.filtre.village_id) &&(vm.filtre.id_sous_projet)  && !vm.affichage_masque" class="md-raised md-green-800-bg" aria-label="Nouveau" ng-click="vm.ajouter_menage()" style="width:10%;">
+                            <md-button type="submit" ng-show="(vm.filtre.id_region)&&(vm.filtre.id_region)&&(vm.filtre.id_commune) &&(vm.filtre.village_id) &&(vm.filtre.id_sous_projet)  && !vm.affichage_masque" class="md-raised custum_button_new" aria-label="Nouveau" ng-click="vm.ajouter_menage()" style="width:10%;">
+							<md-icon md-font-icon="icon-plus" class="s16 center" style="color: white;"></md-icon>
                               Nouveau
                             </md-button>
-                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised md-blue-800-bg" aria-label="Modifier" ng-click="vm.modifier()" style="width:10%;">
+                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised custum_button" aria-label="Modifier" ng-click="vm.modifier()">
+							<md-icon md-font-icon="icon-table-edit" class="s16" style="color: white;"></md-icon>
                               Modifier
                             </md-button>
-                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised md-yellow-800-bg" aria-label="Modifier" ng-click="vm.faire_preselectionner()" style="width:15%;">
-                              Faire préséléctionner
+                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised bouton_preselectionne" aria-label="Modifier" ng-click="vm.modifier_statut('PRESELECTIONNE')" style="color: white !important; background-color: #33C7FF  !important;width: auto !important; font-size: 10px;font-weight: bold;;width:11%;">
+							<md-icon md-font-icon="icon-select" class="s16" style="color: white;"></md-icon>
+                              Faire présélectionner
                             </md-button>
-                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque"  ng-disabled="vm.selectedItem.utilisateur_id!=vm.user_id" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimer()" style="width:10%;">
+                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised bouton_preselectionne" aria-label="Modifier" ng-click="vm.modifier_statut('BENEFICIAIRE')" style="color: white !important; background-color: #8FC13D  !important;width: auto !important; font-size: 10px;font-weight: bold;;width:11%;">
+							<md-icon md-font-icon="icon-account-check" class="s16" style="color: white;"></md-icon>
+                              Faire bénéficier
+                            </md-button>
+                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque"  ng-disabled="vm.selectedItem.utilisateur_id!=vm.user_id" class="md-raised custum_button_del" aria-label="Supprimer" ng-click="vm.supprimer()" style="width:10%;">
+							<md-icon md-font-icon="icon-close-circle-outline" class="s16" style="color: white;"></md-icon>
                               Supprimer
                             </md-button>
                           
@@ -115,6 +123,20 @@
                                       </div>
                                     </div>
                                 </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="5">
+                                  <label>Vague</label>
+										<input type="text"  name="vague" ng-model="vm.filtre.vague" readonly>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="5">
+                                  <label>ZIP</label>
+										<input type="text"  name="zip" ng-model="vm.filtre.zip" readonly>
+                                </md-input-container>
+								<div layout="column" layout-gt-xs="col" flex flex-gt-xs="10">
+									<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+										  ng-if="!vm.affichage_masque" ng-disabled="filtrepardateform.$invalid||vm.affiche_load || vm.selectedItem.id" ng-click="vm.filtrer(vm.filtre)"  style="height:40% !important;">
+										  Actualiser
+									</md-button>
+								</div>	
 								<!--md-input-container flex="100" flex-gt-xs="20">
 								  <label>Activité/Sous-projet</label>
 									<md-select ng-model="vm.filtre.id_sous_projet" name="id_sous_projet" ng-disabled="!vm.filtre.village_id" ng-change="vm.modifierSousProjet(vm.filtre)" required>
@@ -598,11 +620,6 @@
 							</fieldset>	
 								<div>                            
 									<section layout="row" layout-sm="column" layout-align="left" layout-wrap>
-							 
-									  <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
-										  ng-if="!vm.affichage_masque" ng-disabled="filtrepardateform.$invalid||vm.affiche_load" ng-click="vm.filtrer(vm.filtre)">
-										  Actualiser
-									  </md-button>
 									  <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
 										  ng-if="vm.affichage_masque" ng-disabled="(filtrepardateform.$invalid)||(vm.disable_button)" ng-click="vm.save_menage(vm.filtre,0)">
 										  Enregistrer
@@ -637,6 +654,9 @@
 								  <td>{{menage.nom_conjoint}}</td>
 								  <td>{{menage.Addresse}}</td>
 								  <td>{{menage.statut}}</td>                
+								  <td>{{vm.affichage_etat_statut(menage.inscrit)}}</td>                
+								  <td>{{vm.affichage_etat_statut(menage.preselectionne)}}</td>                
+								  <td>{{vm.affichage_etat_statut(menage.beneficiaire)}}</td>                
 								  <td>{{vm.etat_envoie(menage.id_serveur_centrale)}}</td>                
 								</tr>
 							  </tbody>

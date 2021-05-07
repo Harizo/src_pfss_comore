@@ -19,7 +19,7 @@
         msNavigationServiceProvider.saveItem('pfss.mereleaderpereleader', {
             title : 'Mère leader pèreleader',
             icon  : 'icon-data',
-            weight: 7,
+            weight: 11,
             // hidden: function()
             // {
                     // return vs;

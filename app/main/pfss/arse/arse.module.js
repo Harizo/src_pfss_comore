@@ -27,7 +27,7 @@
         msNavigationServiceProvider.saveItem('pfss.arse', {
             title : 'ARSE',
             icon  : 'icon-apps',
-            weight: 1
+            weight: 3
         });
     }
 

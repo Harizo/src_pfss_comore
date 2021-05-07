@@ -15,9 +15,8 @@
         autoWidth: false,
         responsive: true
       };
-
       vm.menage_column = [{titre:"Identifiant"},{titre:"N° d'enreg"},{titre:"Chef Ménage"},{titre:"Age"},{titre:"Sexe"},{titre:"Conjoint"},
-      {titre:"Addresse"},{titre:"Statut"},{titre:"Etat envoie"}];
+      {titre:"Addresse"},{titre:"Statut"},{titre:"Inscr"},{titre:"Presél"},{titre:"Bénéf"},{titre:"Etat envoie"}];
       // vm.menage_column = [{titre:"Numero d'enregistrement"},{titre:"Chef Ménage"},
       // {titre:"Age chef de ménage"},{titre:"Sexe"},{titre:"Addresse"},{titre:"Personne inscrire"},{titre:"Etat envoie"}];
       vm.individu_column = [{titre:"Nom et prénom"},{titre:"Date de naissance"},{titre:"Sexe"},{titre:"Lien de parenté"},{titre:"Scolarisé"},{titre:"Activite"},{titre:"Aptitude"},{titre:"Travailleur"}];
@@ -56,7 +55,7 @@
 			vm.filtre.id_sous_projet=4;
 			vm.titre =" COVID-19";
 			vm.filtre.sous_projet="COVID-19";
-		}		
+		}
       //initialisation variable
 
       //test check radio button
@@ -131,8 +130,7 @@
         { 
           vm.all_village = result.data.response;    
           vm.filtre.village_id = null ; 
-          
-          
+         
         });
       }
 		apiFactory.getAll("liste_variable/index").then(function(result){
@@ -253,6 +251,9 @@
 			vm.filtre.rang_obtenu  = "" ;
 			vm.filtre.statut  = "INSCRIT" ;
 			vm.filtre.inapte  = '0' ;
+			vm.filtre.inscrit  = 1 ;
+			vm.filtre.preselectionne  = 0 ;
+			vm.filtre.beneficiaire  = 0 ;
 			vm.filtre.NomTravailleur  = "" ;
 			vm.filtre.SexeTravailleur  = null ;
 			vm.filtre.datedenaissancetravailleur  = new Date() ;
@@ -362,52 +363,76 @@
 			if(vm.selectedItem.rang_obtenu)
 			vm.filtre.rang_obtenu  =  parseInt(vm.selectedItem.rang_obtenu) ;
 			if(vm.selectedItem.inapte) 
+			vm.filtre.inapte  =  parseInt(vm.selectedItem.inapte) ;	
+			vm.filtre.inscrit  = vm.selectedItem.inscrit;
+			vm.filtre.preselectionne  = vm.selectedItem.preselectionne;
+			vm.filtre.beneficiaire  = vm.selectedItem.beneficiaire;
 			vm.affichage_masque = true ;
 			// vm.get_max_id_generer_ref();
 		}
-		vm.faire_preselectionner = function () {
-			var temp = "Etes-vous sûr de faire Présélecttionner le menage " + vm.selectedItem.NumeroEnregistrement + "  chef ménage : " + vm.selectedItem.nomchefmenage + " ?";
-			var confirm = $mdDialog.confirm()
-                .title(temp)
-                .textContent('')
-                .ariaLabel('Lucky day')
-                .clickOutsideToClose(true)
-                .parent(angular.element(document.body))
-                .ok('ok')
-                .cancel('annuler');
+		vm.modifier_statut = function (etat_statut) {
+			if(parseInt(vm.selectedItem.id_sous_projet)>0) {						
+				if(etat_statut=='PRESELECTIONNE') {
+					vm.titre_statut="présélectionnner ";
+					vm.inscrit=vm.selectedItem.inscrit;
+					vm.preselectionne=1;
+					vm.beneficiaire=vm.selectedItem.beneficiaire;
+				} else {
+					vm.titre_statut="bénéficier directement ";				
+					vm.inscrit=vm.selectedItem.inscrit;
+					vm.preselectionne=vm.selectedItem.preselectionne;
+					vm.beneficiaire=1;
+				}
+				var temp = "Etes-vous sûr de faire " + vm.titre_statut + " le ménage, " + vm.selectedItem.identifiant_menage + "  chef ménage : " + vm.selectedItem.nomchefmenage + " ?";
+				var confirm = $mdDialog.confirm()
+					.title(temp)
+					.textContent('')
+					.ariaLabel('Lucky day')
+					.clickOutsideToClose(true)
+					.parent(angular.element(document.body))
+					.ok('ok')
+					.cancel('annuler');
 
-			$mdDialog.show(confirm).then(function() {           
-				var config =  {
-							headers : {
-							  'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
-								}
-							};
-				var datas = $.param({    
-						  supprimer:0,
-						  id: vm.selectedItem.id ,
-						  mise_a_jour_statut: 1,
-						  statut: "PRESELECTIONNE",
-						  identifiant_menage: vm.selectedItem.identifiant_menage,
-						});
-					vm.filtre.statut="PRESELECTIONNE";	
-				apiFactory.add("menage/index",datas, config).success(function (data)  {
-					// Enlever de la liste inscrit
-						vm.all_menages = vm.all_menages.filter(function(obj) {
-							return obj.id !== vm.selectedItem.id;
-						});
-						vm.selectedItem={};
-					vm.disable_button = false ;
-					vm.showAlert("Information",'Enregistrement réussi!');
-				}).error(function (data) {
-					vm.disable_button = false ;
-					console.log('erreur '+data);
-					vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
-				});         
-			}, function() {
-            //alert('rien');
-			});
-			
-			
+				$mdDialog.show(confirm).then(function() {           
+					var config =  {
+								headers : {
+								  'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+									}
+								};
+					var datas = $.param({    
+							  supprimer:0,
+							  id: vm.selectedItem.id ,
+							  mise_a_jour_statut: 1,
+							  statut: etat_statut,
+							  menage_id: vm.selectedItem.id,
+							  identifiant_menage: vm.selectedItem.identifiant_menage,
+							  id_sous_projet: vm.selectedItem.id_sous_projet,
+							  DateInscription: vm.selectedItem.DateInscription,
+							  inscrit: vm.inscrit,
+							  preselectionne: vm.preselectionne,
+							  beneficiaire: vm.beneficiaire,
+							});
+						vm.filtre.statut=etat_statut;	
+					apiFactory.add("menage/index",datas, config).success(function (data)  {
+						// Enlever de la liste inscrit
+							vm.all_menages = vm.all_menages.filter(function(obj) {
+								return obj.id !== vm.selectedItem.id;
+							});
+							vm.selectedItem={};
+						vm.disable_button = false ;
+						vm.showAlert("Information",'Enregistrement réussi!');
+					}).error(function (data) {
+						vm.disable_button = false ;
+						console.log('erreur '+data);
+						vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
+					});         
+				}, function() {
+				//alert('rien');
+				});
+			} else {
+				vm.showAlert("Information",'Veuillez choisir le sous-projet à affecter à ce ménage !');		
+			}	
+				
 		}	
 		vm.annuler = function () {
 			vm.nouvelle_element = false ;
@@ -586,9 +611,15 @@
 			});			
 		}
 		vm.modifierVillage = function(filtre) {
+			vm.filtre.vague=null;
+			vm.filtre.zip=null;
 			vm.all_village.forEach(function(vil) {
 				if(parseInt(vil.id)==parseInt(vm.filtre.village_id)) {
 					vm.filtre.village = vil.Village; 
+					vm.filtre.vague=vil.vague;
+					if(vil.zip) {
+						vm.filtre.zip=vil.zip.id;
+					}	
 					vm.nontrouvee=false;
 				}
 			});			
@@ -676,6 +707,19 @@
 					break;
 				default:
 					return "Non identifier"
+					break;
+			}
+		}
+		vm.affichage_etat_statut = function(etat) {      
+			switch (etat) {
+				case '1':
+					return "Oui" ;
+					break;
+				case '0':
+					return "Non" ;
+					break;
+				default:
+					return "???"
 					break;
 			}
 		}
@@ -894,6 +938,9 @@
                       zip: menage.zip,
                       statut: menage.statut,
                       inapte: menage.inapte,
+                      inscrit: menage.inscrit,
+                      preselectionne: menage.preselectionne,
+                      beneficiaire: menage.beneficiaire,
                                                  
                     });
 			apiFactory.add("menage/index",datas, config).success(function (data) {
@@ -966,6 +1013,9 @@
 						milieu: menage.milieu,
 						zip: menage.zip,
 						inapte: menage.inapte,
+						inscrit: menage.inscrit,
+						preselectionne: menage.preselectionne,
+						beneficiaire: menage.beneficiaire,
 					}
 						   console.log(menage);
 					vm.all_menages.push(mng) ;
@@ -1026,6 +1076,9 @@
 						vm.selectedItem.score_obtenu = vm.filtre.score_obtenu  ;
 						vm.selectedItem.rang_obtenu = vm.filtre.rang_obtenu  ;
 						vm.selectedItem.inapte = vm.filtre.inapte  ;
+						vm.selectedItem.inscrit = vm.filtre.inscrit  ;
+						vm.selectedItem.preselectionne = vm.filtre.preselectionne  ;
+						vm.selectedItem.beneficiaire = vm.filtre.beneficiaire  ;
 						vm.selectedItem.statut = vm.filtre.statut  ;
 						vm.selectedItem.NomTravailleur = vm.filtre.NomTravailleur  ;
 						vm.selectedItem.SexeTravailleur = vm.filtre.SexeTravailleur  ;

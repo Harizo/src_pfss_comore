@@ -31,7 +31,7 @@
             title: 'Contrat consultant',
             icon  : 'icon-tile-four',
             state: 'app.pfss_contrat_consultant',
-			weight:8,
+			weight:12,
         });
     }
 

@@ -31,7 +31,7 @@
             title: 'Gérer AGEX',
             icon  : 'icon-tile-four',
             state: 'app.pfss_contrat_ugp_agex',
-			weight:8,
+			weight:13,
         });
     }
 

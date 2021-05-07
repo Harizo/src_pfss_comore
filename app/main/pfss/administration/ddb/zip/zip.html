@@ -8,24 +8,35 @@
                     <span class="parent">Données de bases</span>
                     <span class="parent"> </span>
                     <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
-                    <span class="parent" href="javascript:;"> ZIP</span>
+                    <span class="parent" href="javascript:;">Milieu/Vague/ZIP</span>
                 </div>
     
-                <div class="title">ZIP</div>
+                <div class="title">Milieu/Vague/ZIP</div>
             </div>
         </div>
         <div class="content" layout="column"  >
             <div class="form-wrapper md-whiteframe-1dp" >
                 <div style="clear:both;"></div>
-                
-                <div>                                    
-                    <kendo-grid options="vm.mainGridOptions">
-                        <!--div k-detail-template>
-                        <kendo-grid k-options="vm.allcommunaute({{dataItem.id}})">
-                        </kendo-grid>
-                        </div-->
-                    </kendo-grid>
-                </div>
+                <md-tabs md-dynamic-height>
+                    <md-tab label="Milieu">
+						<div>                                    
+							<kendo-grid options="vm.mainGridMilieu">
+							</kendo-grid>
+						</div>
+                    </md-tab>
+                    <md-tab label="Vague">
+						<div>                                    
+							<kendo-grid options="vm.mainGridVague">
+							</kendo-grid>
+						</div>
+                    </md-tab>
+                    <md-tab label="ZIP">
+						<div>                                    
+							<kendo-grid options="vm.mainGridOptions">
+							</kendo-grid>
+						</div>
+                    </md-tab>
+                </md-tabs>
             </div>
         </div>
     </div>

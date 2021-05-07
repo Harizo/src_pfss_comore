@@ -2,13 +2,7 @@
 {
     'use strict';
     angular
-        .module('app.pfss.suiviactivite.suivi_idb', [	
-			'app.pfss.suiviactivite.suivi_idb.etude_technique',
-			'app.pfss.suiviactivite.suivi_idb.dossier_technique_projet',
-			'app.pfss.suiviactivite.suivi_idb.pges',
-			'app.pfss.suiviactivite.suivi_idb.execution_travaux',
-			'app.pfss.suiviactivite.suivi_idb.reception_provisoire',
-			'app.pfss.suiviactivite.suivi_idb.reception_definitive',
+        .module('app.pfss.macc.macc_tmnccovid.sensibilisation_beneficiaire_tmnccovid', [			
             ])
         // .run(testPermission)
         .config(config);
@@ -17,20 +11,20 @@
     /** @ngInject */
     function config(msNavigationServiceProvider)
     {
-        msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_idb', {
-            title : 'IDB',
+        msNavigationServiceProvider.saveItem('pfss.macc.macc_tmnccovid.sensibilisation_beneficiaire_tmnccovid', {
+            title : "Sensibilisation bénéficiaire",
             icon  : 'icon-data',
-            weight: 4,
+            weight: 1,
         });
     }
-    function testPermission(loginService,$cookieStore,apiFactory)
+    function testPermission(loginService,$cookieStore,apiFtmnccovidory)
     {
         var id_user = $cookieStore.get('id');
        
         var permission = [];
         if (id_user > 0) 
         {
-            apiFactory.getOne("utilisateurs/index", id_user).then(function(result) 
+            apiFtmnccovidory.getOne("utilisateurs/index", id_user).then(function(result) 
             {
                 var user = result.data.response;
                 var permission = user.roles;

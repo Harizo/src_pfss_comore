@@ -42,7 +42,9 @@
             'app.pfss.act',
             'app.pfss.arse',
             'app.pfss.tmnccovid',
-            'app.pfss.idb'
+            'app.pfss.idb',
+            'app.pfss.macc',
+            'app.pfss.gestion_budgetaire',
 
  
        ])

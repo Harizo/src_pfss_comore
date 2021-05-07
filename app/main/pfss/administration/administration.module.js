@@ -24,7 +24,7 @@
         msNavigationServiceProvider.saveItem('pfss.administration', {
             title : 'Administration du système',
             icon  : 'icon-cog',
-            weight: 1,
+            weight: 2,
             // hidden: function()
             // {
                     // return vs;

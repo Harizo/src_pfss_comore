@@ -1,15 +1,8 @@
 (function ()
 {
     'use strict';
-
     angular
-        .module('app.pfss.suiviactivite', [			
-           // 'app.pfss.suiviactivite.exportficheetat',
-           // 'app.pfss.suiviactivite.importetat',
-			'app.pfss.suiviactivite.suivi_arse',
-			'app.pfss.suiviactivite.suivi_act',
-			'app.pfss.suiviactivite.suivi_covid',
-			'app.pfss.suiviactivite.suivi_idb',
+        .module('app.pfss.suiviactivite.suivi_idb.execution_travaux', [			
             ])
         // .run(testPermission)
         .config(config);
@@ -18,19 +11,12 @@
     /** @ngInject */
     function config(msNavigationServiceProvider)
     {
-        msNavigationServiceProvider.saveItem('pfss.suiviactivite', {
-            title : 'Suivi activité',
+        msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_idb.execution_travaux', {
+            title : 'Exécution travaux',
             icon  : 'icon-data',
-            weight: 10,
-            // hidden: function()
-            // {
-                    // return vs;
-            // }
+            weight: 4,
         });
-
-
     }
-
     function testPermission(loginService,$cookieStore,apiFactory)
     {
         var id_user = $cookieStore.get('id');
@@ -41,16 +27,11 @@
             apiFactory.getOne("utilisateurs/index", id_user).then(function(result) 
             {
                 var user = result.data.response;
-               
-
                 var permission = user.roles;
                 var permissions = ["TTM"];
                 var x =  loginService.gestionMenu(permissions,permission);        
                 vs = x ;
-
             });
-        }
-     
+        }     
     }
-
 })();
