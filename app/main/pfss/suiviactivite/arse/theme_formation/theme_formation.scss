@@ -1,0 +1,53 @@
+#forms {
+    
+        .content {
+    
+            .form-wrapper {
+    
+            }
+            
+            .form-data-wrapper {
+                margin-left: 16px;
+    
+                .json-data-wrapper {
+                    overflow: hidden;
+    
+                    pre {
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+        
+    }
+ 
+md-list-item
+{
+    &.selected {
+        background: #7cc3f5;
+    }
+}
+
+.page-layout.carded.left-sidenav > .center .header {
+    height: 16px !important;
+    min-height: 16px !important;
+    max-height: 16px !important;
+    padding: 4px !important;
+}
+.page-layout .top-bg {
+    
+    height: 80px;
+}
+
+.page-layout.carded.left-sidenav > .sidenav .header {
+    height: 60px !important;
+    min-height: 60px !important;
+    max-height: 60px !important;
+    padding: 4px;
+}
+.page-layout.carded.left-sidenav > .center .content-card .content {
+    height: calc(100vh - 4em - 64px) !important;
+}
+    
+
+    

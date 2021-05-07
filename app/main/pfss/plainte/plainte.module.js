@@ -29,7 +29,7 @@
 		msNavigationServiceProvider.saveItem('pfss.plainte', {
 			title: 'Plaintes',
 			icon  : 'icon-account-switch',
-			weight: 12,
+			weight: 14,
 			state: 'app.pfss_plainte',
 		/*	badge:vs,
             hidden: function()

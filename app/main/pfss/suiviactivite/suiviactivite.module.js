@@ -21,7 +21,7 @@
         msNavigationServiceProvider.saveItem('pfss.suiviactivite', {
             title : 'Suivi activité',
             icon  : 'icon-data',
-            weight: 5,
+            weight: 10,
             // hidden: function()
             // {
                     // return vs;

@@ -4,7 +4,7 @@
 
     angular
         .module('app.pfss.act.contrat_agep_act', [])
-        //.run(notification)
+        .run(notification)
         .config(config);
         var vs = {};
     /** @ngInject */
@@ -35,7 +35,7 @@
             icon  : 'icon-data',
             state: 'app.pfss_act_contrat_agep_act',
 			weight:8,
-            //badge:vs,
+            badge:vs,
         });
     }
     

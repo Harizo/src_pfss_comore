@@ -14,7 +14,7 @@
         msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_arse.suivi_technique', {
             title : 'Suivi technique',
             icon  : 'icon-data',
-            weight: 6,
+            weight: 7,
         });
     }
     function testPermission(loginService,$cookieStore,apiFactory)

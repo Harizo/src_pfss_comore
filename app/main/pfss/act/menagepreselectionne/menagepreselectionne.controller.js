@@ -38,7 +38,6 @@
         vm.affichage_masque = false ;
         vm.affichage_masque_individu = false ;
         vm.date_now = new Date() ;
-
         vm.disable_button = false ;
 		vm.filtre={};		
 		// Choix sous_projet selon url et affichage titre au niveau onglet
@@ -131,8 +130,7 @@
         { 
           vm.all_village = result.data.response;    
           vm.filtre.village_id = null ; 
-          
-          
+         
         });
       }
 		apiFactory.getAll("liste_variable/index").then(function(result){
@@ -253,6 +251,9 @@
 			vm.filtre.rang_obtenu  = "" ;
 			vm.filtre.statut  = "INSCRIT" ;
 			vm.filtre.inapte  = '0' ;
+			vm.filtre.inscrit  = 0 ;
+			vm.filtre.preselectionne  = 1 ;
+			vm.filtre.beneficiaire  = 0 ;
 			vm.filtre.NomTravailleur  = "" ;
 			vm.filtre.SexeTravailleur  = null ;
 			vm.filtre.datedenaissancetravailleur  = new Date() ;
@@ -362,6 +363,10 @@
 			if(vm.selectedItem.rang_obtenu)
 			vm.filtre.rang_obtenu  =  parseInt(vm.selectedItem.rang_obtenu) ;
 			if(vm.selectedItem.inapte) 
+			vm.filtre.inapte  =  parseInt(vm.selectedItem.inapte) ;	
+			vm.filtre.inscrit  = vm.selectedItem.inscrit;
+			vm.filtre.preselectionne  = vm.selectedItem.preselectionne;
+			vm.filtre.beneficiaire  = vm.selectedItem.beneficiaire;
 			vm.affichage_masque = true ;
 			// vm.get_max_id_generer_ref();
 		}
@@ -369,10 +374,16 @@
 			if(parseInt(vm.selectedItem.id_sous_projet)>0) {						
 				if(etat_statut=='INSCRIT') {
 					vm.titre_statut="retourner dans la liste des inscrits "
+					vm.inscrit=1;
+					vm.preselectionne=0;
+					vm.beneficiaire=vm.selectedItem.beneficiaire;
 				} else {
 					vm.titre_statut="bénéficier "				
+					vm.inscrit=vm.selectedItem.inscrit;
+					vm.preselectionne=vm.selectedItem.preselectionne;
+					vm.beneficiaire=1;
 				}
-				var temp = "Etes-vous sûr de faire " + vm.titre_statut + " le ménage, " + vm.selectedItem.NumeroEnregistrement + "  chef ménage : " + vm.selectedItem.nomchefmenage + " ?";
+				var temp = "Etes-vous sûr de faire " + vm.titre_statut + " le ménage, " + vm.selectedItem.identifiant_menage + "  chef ménage : " + vm.selectedItem.nomchefmenage + " ?";
 				var confirm = $mdDialog.confirm()
 					.title(temp)
 					.textContent('')
@@ -397,6 +408,9 @@
 							  identifiant_menage: vm.selectedItem.identifiant_menage,
 							  id_sous_projet: vm.selectedItem.id_sous_projet,
 							  DateInscription: vm.selectedItem.DateInscription,
+							  inscrit: vm.inscrit,
+							  preselectionne: vm.preselectionne,
+							  beneficiaire: vm.beneficiaire,
 							});
 						vm.filtre.statut=etat_statut;	
 					apiFactory.add("menage/index",datas, config).success(function (data)  {
@@ -424,6 +438,22 @@
 			vm.nouvelle_element = false ;
 			vm.affichage_masque = false ;
 			vm.selectedItem={};
+		}
+		vm.supprimer = function() {
+			var confirm = $mdDialog.confirm()
+			  .title('Etes-vous sûr de supprimer cet enregistrement ?')
+			  .textContent('Cliquer sur OK pour confirmer')
+			  .ariaLabel('Lucky day')
+			  .clickOutsideToClose(true)
+			  .parent(angular.element(document.body))
+			  .ok('OK')
+			  .cancel('Annuler');
+			$mdDialog.show(confirm).then(function() {
+
+			vm.save_menage(vm.filtre,1);
+			}, function() {
+			//alert('rien');
+			});
 		}
 		vm.annuler_individu = function()  {
 			vm.nouvelle_element_individu = false ;
@@ -461,14 +491,11 @@
 					vm.showAlert("INFORMATION",msg);
 				}	
 				vm.affiche_load = false ;
-				console.log(vm.all_menages);
-				console.log(result.data.ss);
 			});
 		}
 		vm.get_individus_by_menage = function(menage_id) {
 			vm.affiche_load = true ;
 			apiFactory.getAPIgeneraliserREST("individu/index","cle_etrangere",menage_id).then(function(result) 	{ 
-				vm.all_individus =[];
 				vm.all_individus = result.data.response; 
 				vm.all_individus.forEach(function(obj) {
 					vm.lien_de_parente="";
@@ -478,7 +505,7 @@
 						}
 					});
 					obj.lien_de_parente=vm.lien_de_parente;
-				});				
+				});
 				// console.log(vm.all_individus);
 				vm.affiche_load = false ;
 			});
@@ -584,9 +611,15 @@
 			});			
 		}
 		vm.modifierVillage = function(filtre) {
+			vm.filtre.vague=null;
+			vm.filtre.zip=null;
 			vm.all_village.forEach(function(vil) {
 				if(parseInt(vil.id)==parseInt(vm.filtre.village_id)) {
 					vm.filtre.village = vil.Village; 
+					vm.filtre.vague=vil.vague;
+					if(vil.zip) {
+						vm.filtre.zip=vil.zip.id;
+					}	
 					vm.nontrouvee=false;
 				}
 			});			
@@ -814,7 +847,7 @@
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 			}); 
 		}
-		vm.save_menage = function(menage) {
+		vm.save_menage = function(menage,suppression) {
 			vm.disable_button = true ;
 			var config =  {
                         headers : {
@@ -827,7 +860,7 @@
 			}       
 			var datas = $.param(
                     {    
-                      supprimer:0,
+                      supprimer:suppression,
                       id: id_mng ,
                       village_id: menage.village_id,
                       DateInscription: formatDateBDD(menage.DateInscription),
@@ -892,6 +925,9 @@
                       zip: menage.zip,
                       statut: menage.statut,
                       inapte: menage.inapte,
+                      inscrit: menage.inscrit,
+                      preselectionne: menage.preselectionne,
+                      beneficiaire: menage.beneficiaire,
                                                  
                     });
 			apiFactory.add("menage/index",datas, config).success(function (data) {
@@ -964,77 +1000,89 @@
 						milieu: menage.milieu,
 						zip: menage.zip,
 						inapte: menage.inapte,
+						inscrit: menage.inscrit,
+						preselectionne: menage.preselectionne,
+						beneficiaire: menage.beneficiaire,
 					}
 						   console.log(menage);
 					vm.all_menages.push(mng) ;
 				} else {
-					vm.affichage_masque_individu = false ;
-					vm.selectedItem.DateInscription =  vm.filtre.DateInscription ;
-					vm.selectedItem.village_id = vm.filtre.village_id  ;
-					vm.selectedItem.NumeroEnregistrement = vm.filtre.NumeroEnregistrement  ;
-					vm.selectedItem.identifiant_menage = vm.filtre.identifiant_menage  ;
-					vm.selectedItem.nomchefmenage = vm.filtre.nomchefmenage  ;
-					vm.selectedItem.PersonneInscription = vm.filtre.PersonneInscription  ;
-					vm.selectedItem.agechefdemenage = vm.filtre.agechefdemenage  ;
-					vm.selectedItem.SexeChefMenage = vm.filtre.SexeChefMenage  ;
-					vm.selectedItem.Addresse = vm.filtre.Addresse  ;
-					vm.selectedItem.NumeroCIN = vm.filtre.NumeroCIN  ;
-					vm.selectedItem.NumeroCarteElectorale = vm.filtre.NumeroCarteElectorale  ;
-					vm.selectedItem.datedenaissancechefdemenage = vm.filtre.datedenaissancechefdemenage  ;
-					vm.selectedItem.chef_frequente_ecole = vm.filtre.chef_frequente_ecole  ;
-					vm.selectedItem.conjoint_frequente_ecole = vm.filtre.conjoint_frequente_ecole  ;
-					vm.selectedItem.point_inscription = vm.filtre.point_inscription  ;
-					vm.selectedItem.niveau_instruction_chef = vm.filtre.niveau_instruction_chef  ;
-					vm.selectedItem.niveau_instruction_conjoint = vm.filtre.niveau_instruction_conjoint  ;
-					vm.selectedItem.chef_menage_travail = vm.filtre.chef_menage_travail  ;
-					vm.selectedItem.conjoint_travail = vm.filtre.conjoint_travail  ;
-					vm.selectedItem.activite_chef_menage = vm.filtre.activite_chef_menage  ;
-					vm.selectedItem.activite_conjoint = vm.filtre.activite_conjoint  ;
-					vm.selectedItem.id_sous_projet = vm.filtre.id_sous_projet  ;
-					vm.selectedItem.nom_conjoint = vm.filtre.nom_conjoint  ;
-					vm.selectedItem.sexe_conjoint = vm.filtre.sexe_conjoint  ;
-					vm.selectedItem.age_conjoint = vm.filtre.age_conjoint  ;
-					vm.selectedItem.nin_conjoint = vm.filtre.nin_conjoint  ;
-					vm.selectedItem.carte_electorale_conjoint = vm.filtre.carte_electorale_conjoint  ;
-					vm.selectedItem.telephone_chef_menage = vm.filtre.telephone_chef_menage  ;
-					vm.selectedItem.telephone_conjoint = vm.filtre.telephone_conjoint  ;
-					vm.selectedItem.nombre_personne_plus_soixantedixans = vm.filtre.nombre_personne_plus_soixantedixans  ;
-					vm.selectedItem.taille_menage = vm.filtre.taille_menage  ;
-					vm.selectedItem.nombre_enfant_moins_quinze_ans = vm.filtre.nombre_enfant_moins_quinze_ans  ;
-					vm.selectedItem.nombre_enfant_non_scolarise = vm.filtre.nombre_enfant_non_scolarise  ;
-					vm.selectedItem.nombre_enfant_scolarise = vm.filtre.nombre_enfant_scolarise  ;
-					vm.selectedItem.nombre_enfant_moins_six_ans = vm.filtre.nombre_enfant_moins_six_ans  ;
-					vm.selectedItem.nombre_personne_handicape = vm.filtre.nombre_personne_handicape  ;
-					vm.selectedItem.nombre_adulte_travail = vm.filtre.nombre_adulte_travail  ;
-					vm.selectedItem.nombre_membre_a_etranger = vm.filtre.nombre_membre_a_etranger  ;
-					vm.selectedItem.acces_electricite = vm.filtre.acces_electricite  ;
-					vm.selectedItem.acces_eau_robinet = vm.filtre.acces_eau_robinet  ;
-					vm.selectedItem.logement_endommage = vm.filtre.logement_endommage  ;
-					vm.selectedItem.niveau_degat_logement = vm.filtre.niveau_degat_logement  ;
-					vm.selectedItem.rehabilitation = vm.filtre.rehabilitation  ;
-					vm.selectedItem.beneficiaire_autre_programme = vm.filtre.beneficiaire_autre_programme  ;
-					vm.selectedItem.membre_fonctionnaire = vm.filtre.membre_fonctionnaire  ;
-					vm.selectedItem.antenne_parabolique = vm.filtre.antenne_parabolique  ;
-					vm.selectedItem.possede_frigo = vm.filtre.possede_frigo  ;
-					vm.selectedItem.score_obtenu = vm.filtre.score_obtenu  ;
-					vm.selectedItem.rang_obtenu = vm.filtre.rang_obtenu  ;
-					vm.selectedItem.inapte = vm.filtre.inapte  ;
-					vm.selectedItem.statut = vm.filtre.statut  ;
-					vm.selectedItem.NomTravailleur = vm.filtre.NomTravailleur  ;
-					vm.selectedItem.SexeTravailleur = vm.filtre.SexeTravailleur  ;
-					vm.selectedItem.datedenaissancetravailleur = vm.filtre.datedenaissancetravailleur  ;
-					vm.selectedItem.agetravailleur = vm.filtre.agetravailleur  ;
-					vm.selectedItem.NomTravailleurSuppliant = vm.filtre.NomTravailleurSuppliant  ;
-					vm.selectedItem.SexeTravailleurSuppliant = vm.filtre.SexeTravailleurSuppliant  ;
-					vm.selectedItem.datedenaissancesuppliant = vm.filtre.datedenaissancesuppliant  ;
-					vm.selectedItem.agesuppliant = vm.filtre.agesuppliant  ;
-					vm.selectedItem.quartier = vm.filtre.quartier  ;
-					vm.selectedItem.milieu = vm.filtre.milieu  ;
-					vm.selectedItem.zip = vm.filtre.zip  ;
-					vm.selectedItem.$selected=false;
-					vm.selectedItem.$edit=false;
-					vm.selectedItem={};
-					vm.all_individus=[];
+					if(parseInt(suppression)==1) {
+						vm.all_menages = vm.all_menages.filter(function(obj) {
+							return obj.id !== vm.selectedItem.id;
+						});						
+					} else {
+						vm.affichage_masque_individu = false ;
+						vm.selectedItem.DateInscription =  vm.filtre.DateInscription ;
+						vm.selectedItem.village_id = vm.filtre.village_id  ;
+						vm.selectedItem.NumeroEnregistrement = vm.filtre.NumeroEnregistrement  ;
+						vm.selectedItem.identifiant_menage = vm.filtre.identifiant_menage  ;
+						vm.selectedItem.nomchefmenage = vm.filtre.nomchefmenage  ;
+						vm.selectedItem.PersonneInscription = vm.filtre.PersonneInscription  ;
+						vm.selectedItem.agechefdemenage = vm.filtre.agechefdemenage  ;
+						vm.selectedItem.SexeChefMenage = vm.filtre.SexeChefMenage  ;
+						vm.selectedItem.Addresse = vm.filtre.Addresse  ;
+						vm.selectedItem.NumeroCIN = vm.filtre.NumeroCIN  ;
+						vm.selectedItem.NumeroCarteElectorale = vm.filtre.NumeroCarteElectorale  ;
+						vm.selectedItem.datedenaissancechefdemenage = vm.filtre.datedenaissancechefdemenage  ;
+						vm.selectedItem.chef_frequente_ecole = vm.filtre.chef_frequente_ecole  ;
+						vm.selectedItem.conjoint_frequente_ecole = vm.filtre.conjoint_frequente_ecole  ;
+						vm.selectedItem.point_inscription = vm.filtre.point_inscription  ;
+						vm.selectedItem.niveau_instruction_chef = vm.filtre.niveau_instruction_chef  ;
+						vm.selectedItem.niveau_instruction_conjoint = vm.filtre.niveau_instruction_conjoint  ;
+						vm.selectedItem.chef_menage_travail = vm.filtre.chef_menage_travail  ;
+						vm.selectedItem.conjoint_travail = vm.filtre.conjoint_travail  ;
+						vm.selectedItem.activite_chef_menage = vm.filtre.activite_chef_menage  ;
+						vm.selectedItem.activite_conjoint = vm.filtre.activite_conjoint  ;
+						vm.selectedItem.id_sous_projet = vm.filtre.id_sous_projet  ;
+						vm.selectedItem.nom_conjoint = vm.filtre.nom_conjoint  ;
+						vm.selectedItem.sexe_conjoint = vm.filtre.sexe_conjoint  ;
+						vm.selectedItem.age_conjoint = vm.filtre.age_conjoint  ;
+						vm.selectedItem.nin_conjoint = vm.filtre.nin_conjoint  ;
+						vm.selectedItem.carte_electorale_conjoint = vm.filtre.carte_electorale_conjoint  ;
+						vm.selectedItem.telephone_chef_menage = vm.filtre.telephone_chef_menage  ;
+						vm.selectedItem.telephone_conjoint = vm.filtre.telephone_conjoint  ;
+						vm.selectedItem.nombre_personne_plus_soixantedixans = vm.filtre.nombre_personne_plus_soixantedixans  ;
+						vm.selectedItem.taille_menage = vm.filtre.taille_menage  ;
+						vm.selectedItem.nombre_enfant_moins_quinze_ans = vm.filtre.nombre_enfant_moins_quinze_ans  ;
+						vm.selectedItem.nombre_enfant_non_scolarise = vm.filtre.nombre_enfant_non_scolarise  ;
+						vm.selectedItem.nombre_enfant_scolarise = vm.filtre.nombre_enfant_scolarise  ;
+						vm.selectedItem.nombre_enfant_moins_six_ans = vm.filtre.nombre_enfant_moins_six_ans  ;
+						vm.selectedItem.nombre_personne_handicape = vm.filtre.nombre_personne_handicape  ;
+						vm.selectedItem.nombre_adulte_travail = vm.filtre.nombre_adulte_travail  ;
+						vm.selectedItem.nombre_membre_a_etranger = vm.filtre.nombre_membre_a_etranger  ;
+						vm.selectedItem.acces_electricite = vm.filtre.acces_electricite  ;
+						vm.selectedItem.acces_eau_robinet = vm.filtre.acces_eau_robinet  ;
+						vm.selectedItem.logement_endommage = vm.filtre.logement_endommage  ;
+						vm.selectedItem.niveau_degat_logement = vm.filtre.niveau_degat_logement  ;
+						vm.selectedItem.rehabilitation = vm.filtre.rehabilitation  ;
+						vm.selectedItem.beneficiaire_autre_programme = vm.filtre.beneficiaire_autre_programme  ;
+						vm.selectedItem.membre_fonctionnaire = vm.filtre.membre_fonctionnaire  ;
+						vm.selectedItem.antenne_parabolique = vm.filtre.antenne_parabolique  ;
+						vm.selectedItem.possede_frigo = vm.filtre.possede_frigo  ;
+						vm.selectedItem.score_obtenu = vm.filtre.score_obtenu  ;
+						vm.selectedItem.rang_obtenu = vm.filtre.rang_obtenu  ;
+						vm.selectedItem.inapte = vm.filtre.inapte  ;
+						vm.selectedItem.inscrit = vm.filtre.inscrit  ;
+						vm.selectedItem.preselectionne = vm.filtre.preselectionne  ;
+						vm.selectedItem.beneficiaire = vm.filtre.beneficiaire  ;
+						vm.selectedItem.statut = vm.filtre.statut  ;
+						vm.selectedItem.NomTravailleur = vm.filtre.NomTravailleur  ;
+						vm.selectedItem.SexeTravailleur = vm.filtre.SexeTravailleur  ;
+						vm.selectedItem.datedenaissancetravailleur = vm.filtre.datedenaissancetravailleur  ;
+						vm.selectedItem.agetravailleur = vm.filtre.agetravailleur  ;
+						vm.selectedItem.NomTravailleurSuppliant = vm.filtre.NomTravailleurSuppliant  ;
+						vm.selectedItem.SexeTravailleurSuppliant = vm.filtre.SexeTravailleurSuppliant  ;
+						vm.selectedItem.datedenaissancesuppliant = vm.filtre.datedenaissancesuppliant  ;
+						vm.selectedItem.agesuppliant = vm.filtre.agesuppliant  ;
+						vm.selectedItem.quartier = vm.filtre.quartier  ;
+						vm.selectedItem.milieu = vm.filtre.milieu  ;
+						vm.selectedItem.zip = vm.filtre.zip  ;
+						vm.selectedItem.$selected=false;
+						vm.selectedItem.$edit=false;
+						vm.selectedItem={};
+						vm.all_individus=[];
+					}	
   				}      
 			}).error(function (data) {
 				vm.disable_button = false ;

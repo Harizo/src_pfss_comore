@@ -11,6 +11,7 @@
 			'app.pfss.suiviactivite.suivi_arse.suivi_technique',
 			'app.pfss.suiviactivite.suivi_arse.paiement3',
 			'app.pfss.suiviactivite.suivi_arse.suivi_evaluation',
+			'app.pfss.suiviactivite.suivi_arse.theme_formation',
             ])
         // .run(testPermission)
         .config(config);

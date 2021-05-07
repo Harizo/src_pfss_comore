@@ -4,7 +4,8 @@
 
     angular
         .module('app.pfss.communaute_idb')
-        .controller('Communaute_idbController', Communaute_idbController);
+        .controller('Communaute_idbController', Communaute_idbController)
+        .controller('Communaute_idbDialogController', Communaute_idbDialogController);
     /** @ngInject */
     function Communaute_idbController($mdDialog, $scope, apiFactory, $state,$cookieStore)  {
 		var vm = this;
@@ -52,7 +53,7 @@
           vm.all_region = result.data.response;   
           vm.filtre_eligible.id_region = null ; 
           vm.filtre_eligible.id_commune = null ; 
-          vm.filtre_eligible.village_id = null ; 
+          vm.filtre_eligible.id_village = null ; 
           
         });
 		vm.allInfrastructure_eligible = [] ;
@@ -65,12 +66,12 @@
         { 
           vm.all_commune = result.data.response; 
           vm.filtre_eligible.id_commune = null ; 
-          vm.filtre_eligible.communaute_id = null ;           
+          vm.filtre_eligible.id_village = null ;           
         });
 		vm.allInfrastructure_eligible = [] ;
       }
 
-      vm.filtre_eligible_communaute = function()
+      /*vm.filtre_eligible_communaute = function()
       {
         apiFactory.getAPIgeneraliserREST("communaute/index","menu","getcommunautebycommune_direct","id_commune",vm.filtre_eligible.id_commune).then(function(result)
         { 
@@ -78,11 +79,47 @@
           vm.filtre_eligible.id_communaute = null ;           
         });
 		vm.allInfrastructure_eligible = [] ;
+      }*/
+	  vm.filtre_eligible_village = function()
+      {
+        apiFactory.getAPIgeneraliserREST("village/index","cle_etrangere",vm.filtre_eligible.id_commune).then(function(result)
+        { 
+          vm.all_village = result.data.response; 
+          vm.filtre_eligible.id_village = null ;           
+        });
+		vm.allInfrastructure_eligible = [] ;
       }
+	  vm.filtre_eligible_zip = function()
+        {
+          vm.allZip=[];
+          //item.id_communaute = null;
+          
+          /*apiFactory.getAPIgeneraliserREST("communaute/index","menu","getcommunautebycommune","id_commune",item.id_commune).then(function(result){
+            vm.allCommunaute = result.data.response;
+          });*/
+          var vil = vm.all_village.filter(function(obj)
+          {
+            return obj.id == vm.filtre_eligible.id_village;
+          });
+          vm.filtre_eligible.vague = vil[0].vague;
+          apiFactory.getAPIgeneraliserREST("zip/index",'id',vil[0].zip.id).then(function(result){
+            vm.allZip.push(result.data.response);
+            
+            if (result.data.response)
+            {
+              vm.filtre_eligible.id_zip = result.data.response.id;
+            }
+            else
+            {
+				vm.filtre_eligible.id_zip = null;
+            }
+            
+          });
+        }
 	  vm.get_infrastructure_eligible = function()
 	  {
 		vm.affiche_load = true ;
-		apiFactory.getAPIgeneraliserREST("infrastructure/index","menu","getinfrastructurebycommunauteandeligible","id_communaute",vm.filtre_eligible.id_communaute).then(function(result) { 				
+		apiFactory.getAPIgeneraliserREST("infrastructure/index","menu","getinfrastructurebyvillageandeligible","id_village",vm.filtre_eligible.id_village).then(function(result) { 				
 			vm.allInfrastructure_eligible = result.data.response;    
 			vm.affiche_load = false ;
 		});
@@ -94,7 +131,7 @@
 
 		vm.infrastructure_eligible_column = 
 		[
-			{titre:"Numero"},
+			{titre:"Code /Numero"},
 			{titre:"Libelle"},
 			{titre:"Type infrastructure"}
 		]; 
@@ -129,8 +166,8 @@
 					$edit: true,
 					$selected: true,
 					id:'0',
-					code: '',
-					libelle: '',
+					code: null,
+					libelle: null,
 					id_type_infrastructure: null,
 					statu: 'ELIGIBLE' 
 					
@@ -230,7 +267,7 @@
 				code     : vm.selectedItemInfrastructure_eligible.code,      
 				id_type_infrastructure        : vm.selectedItemInfrastructure_eligible.id_type_infrastructure,
 				libelle    : vm.selectedItemInfrastructure_eligible.libelle,      
-				id_communaute  : vm.filtre_eligible.id_communaute,
+				id_village  : vm.filtre_eligible.id_village,
 				statu: "ELIGIBLE"
 
 			});
@@ -279,11 +316,27 @@
 			})
 			.error(function (data) {alert("Une erreur s'est produit");});
 		}
-		vm.change_statu_en_choisi = function()
+		vm.change_statu_en_choisi = function(ev)
 		{
-			vm.majInfrastructure_eligible();
+			//vm.majInfrastructure_eligible();
+			var confirm = $mdDialog.confirm({
+				controller: Communaute_idbDialogController,
+				templateUrl: 'app/main/pfss/communaute_idb/communaute_idbdialog.html',
+				parent: angular.element(document.body),
+				targetEvent: ev, 
+				locals:{dataInfra: vm.selectedItemInfrastructure_eligible, dataTypeinfra: vm.allType_infrastructure}, 
+				});
+
+				$mdDialog.show(confirm).then(function(data)
+				{ console.log(data);
+					vm.majInfrastructure_eligible(data)
+					vm.affiche_load = true;						
+				}, function()
+				{
+					//alert('rien');
+				});
 		}
-		vm.majInfrastructure_eligible = function()
+		vm.majInfrastructure_eligible = function(infrastructure)
 		{
 			vm.affiche_load = true ;
 			var config = {
@@ -295,16 +348,16 @@
 
 			var datas = $.param(
 			{                        
-				supprimer        :0,
-				id               : vm.selectedItemInfrastructure_eligible.id,
-				code     : vm.selectedItemInfrastructure_eligible.code,      
-				id_type_infrastructure        : vm.selectedItemInfrastructure_eligible.type_infrastructure.id,
-				libelle    : vm.selectedItemInfrastructure_eligible.libelle,      
-				id_communaute  : vm.filtre_eligible.id_communaute,
+				supprimer        		:0,
+				id               		: infrastructure.id,
+				code     				: infrastructure.code,      
+				id_type_infrastructure  : infrastructure.id_type_infrastructure,
+				libelle    				: infrastructure.libelle,      
+				id_village  			: infrastructure.id_village,
 				statu: "CHOISI"
 
 			});
-			//console.log(datas);
+			console.log(datas);
 
 			apiFactory.add("infrastructure/index",datas, config).success(function (data)
 			{
@@ -330,7 +383,7 @@
 			vm.all_region = result.data.response;   
 			vm.filtre_choisi.id_region = null ; 
 			vm.filtre_choisi.id_commune = null ; 
-			vm.filtre_choisi.village_id = null ; 
+			vm.filtre_choisi.id_village = null ; 
 			
 		  });
 		  vm.allInfrastructure_choisi = [] ;
@@ -343,12 +396,12 @@
 		  { 
 			vm.all_commune = result.data.response; 
 			vm.filtre_choisi.id_commune = null ; 
-			vm.filtre_choisi.communaute_id = null ;           
+			vm.filtre_choisi.id_village = null ;           
 		  });
 		  vm.allInfrastructure_choisi = [] ;
 		}
   
-		vm.filtre_choisi_communaute = function()
+		/*vm.filtre_choisi_communaute = function()
 		{
 		  apiFactory.getAPIgeneraliserREST("communaute/index","menu","getcommunautebycommune_direct","id_commune",vm.filtre_choisi.id_commune).then(function(result)
 		  { 
@@ -356,21 +409,57 @@
 			vm.filtre_choisi.id_communaute = null ;           
 		  });
 		  vm.allInfrastructure_choisi = [] ;
-		}
+		}*/
+		vm.filtre_choisi_village = function()
+      {
+        apiFactory.getAPIgeneraliserREST("village/index","cle_etrangere",vm.filtre_choisi.id_commune).then(function(result)
+        { 
+          vm.all_village = result.data.response; 
+          vm.filtre_choisi.id_village = null ;           
+        });
+		vm.allInfrastructure_choisi = [] ;
+      }
+	  vm.filtre_choisi_zip = function()
+        {
+          vm.allZip=[];
+          //item.id_communaute = null;
+          
+          /*apiFactory.getAPIgeneraliserREST("communaute/index","menu","getcommunautebycommune","id_commune",item.id_commune).then(function(result){
+            vm.allCommunaute = result.data.response;
+          });*/
+          var vil = vm.all_village.filter(function(obj)
+          {
+            return obj.id == vm.filtre_choisi.id_village;
+          });
+          vm.filtre_choisi.vague = vil[0].vague;
+          apiFactory.getAPIgeneraliserREST("zip/index",'id',vil[0].zip.id).then(function(result){
+            vm.allZip.push(result.data.response);
+            
+            if (result.data.response)
+            {
+              vm.filtre_choisi.id_zip = result.data.response.id;
+            }
+            else
+            {
+				vm.filtre_choisi.id_zip = null;
+            }
+            
+          });
+        }
 		vm.get_infrastructure_choisi = function()
 		{
 		  vm.affiche_load = true ;
-		  apiFactory.getAPIgeneraliserREST("infrastructure/index","menu","getinfrastructurebycommunauteandchoisi","id_communaute",vm.filtre_choisi.id_communaute).then(function(result) { 				
+		  apiFactory.getAPIgeneraliserREST("infrastructure/index","menu","getinfrastructurebyvillageandchoisi","id_village",vm.filtre_choisi.id_village).then(function(result) { 				
 			  vm.allInfrastructure_choisi = result.data.response;    
 			  vm.affiche_load = false ;
 		  });
 		  vm.selectedItemInfrastructure_choisi = {};
-	  }
+	  	}
 	//DEBUT INFRASTRUCTURE CHOISI
 
 	vm.infrastructure_choisi_column = 
 	[	
-		{titre:"Numero"},
+		{titre:"Code /passation de marché"},
 		{titre:"Libelle"},		
 		{titre:"Type infrastructure"},
 	]; 
@@ -413,7 +502,7 @@
 			code     : vm.selectedItemInfrastructure_choisi.code,      
 			id_type_infrastructure        : vm.selectedItemInfrastructure_choisi.type_infrastructure.id,
 			libelle    : vm.selectedItemInfrastructure_choisi.libelle,      
-			id_communaute  : vm.filtre_choisi.id_communaute,
+			id_village  : vm.filtre_choisi.id_village,
 			statu: "ELIGIBLE"
 
 		});
@@ -481,4 +570,51 @@
 		// FIN FONCTION UTILITAIRE
 
     }
+
+	/*****************Debut CommunauteDialogue Controlleur  ****************/    
+    function Communaute_idbDialogController($mdDialog, $scope, apiFactory, $state,dataInfra, dataTypeinfra)
+    { 
+        var dg=$scope;
+		//var infras = {};
+        dg.affiche_load = true;
+		dg.infrastructuredialog ={  id: dataInfra.id,
+									code: dataInfra.code,
+									libelle: dataInfra.libelle,
+									id_type_infrastructure: dataInfra.type_infrastructure.id,
+									id_village: dataInfra.id_village 
+
+								}
+		dg.allType_infrastructuredialogue = dataTypeinfra;
+		//dg.infrastructuredialog.id_type_infrastructure = dataInfra.type_infrastructure.id;
+		console.log(dataInfra);
+		console.log(dataTypeinfra);
+        dg.communaute_idbdialog_column = [
+        {titre:"Code/passation de marché"
+        },
+        {titre:"Libelle"
+        },
+        {titre:"Type infrastructure"
+        }];
+
+        //style
+        dg.tOptions = {
+          dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
+          pagingType: 'simple',
+          autoWidth: false          
+        };
+
+
+        dg.cancel = function()
+        {
+          $mdDialog.cancel();
+        };
+
+        dg.dialogconfirmerchoisi = function(conven)
+        {  
+            $mdDialog.hide(dg.infrastructuredialog);
+        }
+
+    }
+
+/*****************Fin CommunauteDialogue Controlleur  ****************/ 
 })();

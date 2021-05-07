@@ -16,7 +16,7 @@
         msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_arse.paiement3', {
             title : 'Troisième paiement',
             icon  : 'icon-data',
-            weight: 7,
+            weight: 8,
         });
     }
     function testPermission(loginService,$cookieStore,apiFactory)

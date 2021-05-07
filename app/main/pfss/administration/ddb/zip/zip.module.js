@@ -31,7 +31,7 @@
         });
         // Navigation
         msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.zip', {
-            title: "zip",
+            title: "Milieu/Vague/ZIP",
             icon  : 'icon-view-quilt',
             state: 'app.pfss_ddb_zip',
             weight: 7

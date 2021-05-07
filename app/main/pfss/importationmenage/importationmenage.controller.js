@@ -76,6 +76,8 @@
         vm.date_now = new Date() ;
 
         vm.disable_button = false ;
+		vm.ancien_sous_projet=null;
+		vm.nouveau_sous_projet=null;
       //initialisation variable
 
       //test check radio button
@@ -294,7 +296,6 @@
                                                 "import",1,
 												"id_sous_projet",vm.filtre.id_sous_projet
                                                 ).then(function(result) {   
-console.log(result.data);												
 					vm.status =  result.data.status ;
 					if(vm.status)  {
 						vm.affiche_load =false; 
@@ -346,6 +347,14 @@ console.log(result.data);
 			vm.all_sous_projet.forEach(function(ssp) {
 				if(parseInt(ssp.id)==parseInt(vm.filtre.id_sous_projet)) {
 					vm.filtre.sous_projet = ssp.description; 
+					vm.nouveau_sous_projet= ssp.description;
+					if(!vm.ancien_sous_projet) {
+						vm.ancien_sous_projet =ssp.description; 
+					} else {
+						if(vm.ancien_sous_projet!=vm.nouveau_sous_projet) {
+							vm.monfichier=null;
+						}
+					}
 					vm.nontrouvee=false;
 				}
 			});			
@@ -378,6 +387,44 @@ console.log(result.data);
 					return "Non identifier"
 					break;
 			}
+		}
+		vm.Controler_vague_zip= function () {
+			vm.affiche_load = true ;
+			apiFactory.getAPIgeneraliserREST("importation_menage/index",
+                                                "controle",1,
+												"vague",1
+                                                ).then(function(result) {               
+					vm.status =  result.data.status ;
+					if(vm.status)  {
+						vm.affiche_load = true ;
+						vm.Importer_vague();
+					} else {
+						vm.retour =result.data.retour;
+						 var mess="Télécharger le fichier puis corriger les erreurs : VOIR LES CELLULES COLORES EN ROUGE";
+						vm.affiche_load =false;
+						vm.showAlert('ERREUR Import en excel',mess);
+						window.location = apiUrlbase + 'vague/' + 'vague_zip.xlsx';
+					}                      
+			});			
+		}
+		vm.Importer_vague = function() {
+			apiFactory.getAPIgeneraliserREST("importation_menage/index",
+                                                "import",1,
+												"vague",1
+                                                ).then(function(result) {   
+					vm.status =  result.data.status ;
+					if(vm.status)  {
+						vm.affiche_load =false; 
+						vm.showAlert('Importation vague et ZIP',"Les données sont mise à jour dans la base de données. Merci !");															
+					} else {
+						var mess="";
+						vm.retour =result.data.retour;
+						 mess="Télécharger le fichier puis corriger les erreurs : VOIR LES CELLULES COLORES EN ROUGE";
+						vm.affiche_load =false;
+						vm.showAlert('ERREUR Import en excel',mess);
+						window.location = apiUrlbase + 'vague/' + 'vague_zip.xlsx';
+					}                      
+			});			
 		}
 	}
   })();

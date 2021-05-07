@@ -38,13 +38,18 @@
 
 
             'app.pfss.gerer_pges',
-            'app.pfss.communaute_idb',
+            //'app.pfss.communaute_idb',
             'app.pfss.act',
             'app.pfss.arse',
             'app.pfss.tmnccovid',
             'app.pfss.idb',
 
+
             'app.pfss.gestion_financiere'
+
+            'app.pfss.macc',
+            //'app.pfss.gestion_budgetaire',
+
 
  
        ])

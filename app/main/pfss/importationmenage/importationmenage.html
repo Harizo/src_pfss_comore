@@ -30,7 +30,7 @@
 										<md-select ng-model="vm.filtre.id_sous_projet" name="id_sous_projet" ng-change="vm.modifierSousProjet(vm.filtre)" required>
 										  <md-option  value="">&nbsp;</md-option>
 										  <md-option ng-repeat="ssp in vm.all_sous_projet" value="{{ssp.id}}" ng-disabled="ssp.id==3" ng-if="ssp.id!=3">
-											{{ssp.description}}
+											{{ssp.code}} | {{ssp.description}}
 										  </md-option>
 										</md-select>
 										<div ng-messages="filtreimportform.id_sous_projet.$error"
@@ -44,8 +44,8 @@
 							</div>                            
 							<div>                            
 								<section layout="row" layout-sm="column" layout-align="left" layout-wrap>							 
-									<div class="file-upload">
-										<input file-uploader style="color:#772e03 !important;" id="fichier" name="fichier" type="file" custom-on-change="uploadFile"  ng-multiple="false" ng-disabled="!vm.filtre.id_sous_projet"/>
+									<div class="file-upload" style="width:60% !important;">
+										<input file-uploader style="color:#772e03 !important;width: 85%;" id="fichier" name="fichier" type="file" custom-on-change="uploadFile"  ng-multiple="false" ng-disabled="!vm.filtre.id_sous_projet" style="margin-right:80% !important;"/>
 										<button ng-click="vm.uploadFile()" ng-disabled="!vm.monfichier" 
 											style="background: #ff843d; /* Old browsers */
 												background: -moz-linear-gradient(top,  #ff843d 0%, #fc8a49 17%, #ef7d3b 33%, #db6520 67%, #ce5712 83%, #ba4603 100%); /* FF3.6+ */
@@ -58,10 +58,13 @@
 												color:#772e03;
 												font-weight:bold;
 												height:auto;">
-											<md-icon md-font-icon="icon-cloud-upload" class="s16" style="padding-left: 2px !important;padding-right:  2px !important;padding-bottom: 20px"> 
+											<md-icon md-font-icon="icon-cloud-upload" class="s16" style="padding-left: 2px !important;padding-right:  2px !important;padding-bottom: 20px;"> 
 											</md-icon> Importer
 										</button>
 									</div>
+									<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer" ng-click="vm.Controler_vague_zip()">
+										  Import vague
+									</md-button>
 								</section>                         
                             </div>
                             <div>

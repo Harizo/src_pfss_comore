@@ -17,7 +17,7 @@
         msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_covid', {
             title : 'TMNC-COVID',
             icon  : 'icon-data',
-            weight: 4,
+            weight: 3,
         });
     }
     function testPermission(loginService,$cookieStore,apiFactory)

@@ -2,7 +2,13 @@
 {
     'use strict';
     angular
-        .module('app.pfss.suiviactivite.suivi_idb', [			
+        .module('app.pfss.suiviactivite.suivi_idb', [	
+			'app.pfss.suiviactivite.suivi_idb.etude_technique',
+			'app.pfss.suiviactivite.suivi_idb.dossier_technique_projet',
+			'app.pfss.suiviactivite.suivi_idb.pges',
+			'app.pfss.suiviactivite.suivi_idb.execution_travaux',
+			'app.pfss.suiviactivite.suivi_idb.reception_provisoire',
+			'app.pfss.suiviactivite.suivi_idb.reception_definitive',
             ])
         // .run(testPermission)
         .config(config);
@@ -14,7 +20,7 @@
         msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_idb', {
             title : 'IDB',
             icon  : 'icon-data',
-            weight: 3,
+            weight: 4,
         });
     }
     function testPermission(loginService,$cookieStore,apiFactory)
