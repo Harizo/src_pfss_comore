@@ -11,6 +11,7 @@
     {console.log($state);
         //console.log(type_sous_projet);
     	var vm = this ;
+        vm.date_now = new Date();
         var id_sous_projet_state = $state.current.id_sous_projet;
         vm.type_sous_projet = $state.current.type_sous_projet;
     	vm.selectedItemContrat_agep = {};
@@ -422,16 +423,37 @@
         }
         vm.modifierCommune = function(item)
         {
-          item.id_communaute = null;
+          item.id_zap = null;
           item.id_village = null;
-          apiFactory.getAPIgeneraliserREST("communaute/index","menu","getcommunautebycommune","id_commune",item.id_commune).then(function(result){
+         /* apiFactory.getAPIgeneraliserREST("communaute/index","menu","getcommunautebycommune","id_commune",item.id_commune).then(function(result){
             vm.allCommunaute = result.data.response;
-          });
+          });*/
           apiFactory.getVillageByCommune("village/index",item.id_commune).then(function(result){
             vm.allVillage = result.data.response;
             console.log(vm.allVillage);
           });
         }
+        /*vm.modifierVillage = function(item)
+        {
+          vm.allZip=[];
+          var vil = vm.allVillage.filter(function(obj)
+          {
+            return obj.id == item.id_village;
+          });
+          item.vague = vil[0].vague;
+          apiFactory.getAPIgeneraliserREST("zip/index",'id',vil[0].zip.id).then(function(result){
+            vm.allZip.push(result.data.response);        
+            if (result.data.response)
+            {
+              item.id_zip = result.data.response.id;
+            }
+            else
+            {
+              item.id_zip = null;
+            }
+            
+          });
+        }*/
 
             vm.etat_paiement_column =[  
                                         {titre:"Ile"},
@@ -477,6 +499,26 @@
                 vm.change_village = function(item)
                 {
                     var pourcent = 0 ;
+                    vm.allZip=[];
+                    var vil = vm.allVillage.filter(function(obj)
+                    {
+                        return obj.id == item.id_village;
+                    });
+                    console.log(vil);
+                    item.vague = vil[0].vague;
+                    apiFactory.getAPIgeneraliserREST("zip/index",'id',vil[0].zip.id).then(function(result)
+                    {
+                        vm.allZip.push(result.data.response);        
+                        if (result.data.response)
+                        {
+                        item.id_zip = result.data.response.id;
+                        }
+                        else
+                        {
+                        item.id_zip = null;
+                        }
+                        console.log(vm.allZip);
+                    });
                     if(id_sous_projet_state ==1)//ACT
                     { 
                         var etat_pai = [];
@@ -760,12 +802,12 @@
                             {
                                 return obj.id != '0';
                             });
-                            var com = etat_pai.filter(function(obj)
+                            var vil = etat_pai.filter(function(obj)
                             {
-                                return obj.communaute.id == item.id_communaute;
+                                return obj.village.id == item.id_village;
                             });
                             
-                            if (parseInt(com.length)>=3)
+                            if (parseInt(vil.length)>=3)
                             {
                                 var confirm = $mdDialog.confirm()
                                 .title('Tranche de paiement atteinte')
@@ -789,7 +831,7 @@
                             }
                             else
                             {
-                                var tranche = com.length + 1;
+                                var tranche = vil.length + 1;
                                 switch (tranche)
                                 {
                                     case 1:
@@ -822,7 +864,7 @@
                         else
                         {   console.log(item);
                             console.log(current_selectedItemEtat_paiement);
-                            if (item.id_communaute == current_selectedItemEtat_paiement.communaute.id)
+                            if (item.id_village == current_selectedItemEtat_paiement.village.id)
                             {
                                 item.tranche = parseFloat(current_selectedItemEtat_paiement.tranche);
                                 item.pourcentage = parseFloat(current_selectedItemEtat_paiement.pourcentage);
@@ -833,7 +875,7 @@
                             {
                                 var com = vm.allEtat_paiement.filter(function(obj)
                                 {
-                                    return obj.communaute.id == item.id_communaute;
+                                    return obj.village.id == item.id_village;
                                 });
                                 
                                 if (parseInt(com.length)>=3)
@@ -1006,7 +1048,7 @@
                             id_region : null,
                             id_commune : null,
                             id_village : null,
-                            id_communaute : null,
+                           // id_communaute : null,
                             numero_ordre_paiement:null,
                             activite_concerne:'ACT',
                             id_menage:null,
@@ -1034,7 +1076,7 @@
                             id_region : null,
                             id_commune : null,
                             id_village : null,
-                            id_communaute : null,
+                           // id_communaute : null,
                             id_menage:null,
                             id_contrat_agep:vm.selectedItemContrat_agep.id,
                             tranche:null,
@@ -1057,7 +1099,7 @@
                             id_ile : null,
                             id_region : null,
                             id_commune : null,
-                            id_village : null,
+                            //id_village : null,
                             id_communaute : null,
                             numero_ordre_paiement:null,
                             activite_concerne:'IDB',
@@ -1084,7 +1126,7 @@
                                     id_region : null,
                                     id_commune : null,
                                     id_village : null,
-                                    id_communaute : null,
+                                    //id_communaute : null,
                                     numero_ordre_paiement:null,
                                     activite_concerne:'TMNC-COVID-19',
                                     id_menage:null,
@@ -1119,6 +1161,7 @@
 
                 vm.modifierEtat_paiement = function()
                 {
+                    vm.allZip = [];
                     vm.nouvelItemEtat_paiement = false ;
                     vm.selectedItemEtat_paiement.$edit = true;
                 
@@ -1139,7 +1182,9 @@
                     vm.selectedItemEtat_paiement.id_ile       = vm.selectedItemEtat_paiement.ile.id;
                     vm.selectedItemEtat_paiement.id_region       = vm.selectedItemEtat_paiement.region.id;
                     vm.selectedItemEtat_paiement.id_commune       = vm.selectedItemEtat_paiement.commune.id;
-                    if (vm.type_sous_projet!='IDB')
+                    vm.selectedItemEtat_paiement.id_zip       = vm.selectedItemEtat_paiement.zip.id;
+                    vm.selectedItemEtat_paiement.vague       = vm.selectedItemEtat_paiement.village.vague;
+                   /* if (vm.type_sous_projet!='IDB')
                     {
                         vm.selectedItemEtat_paiement.id_village       = vm.selectedItemEtat_paiement.village.id;
                         apiFactory.getVillageByCommune("village/index",vm.selectedItemEtat_paiement.id_commune).then(function(result){
@@ -1153,7 +1198,13 @@
                         apiFactory.getAPIgeneraliserREST("communaute/index","menu","getcommunautebycommune","id_commune",vm.selectedItemEtat_paiement.id_commune).then(function(result){
                         vm.allCommunaute = result.data.response;
                         });
-                    }
+                    }*/
+                    vm.allZip.push(vm.selectedItemEtat_paiement.zip);
+                    vm.selectedItemEtat_paiement.id_village       = vm.selectedItemEtat_paiement.village.id;
+                        apiFactory.getVillageByCommune("village/index",vm.selectedItemEtat_paiement.id_commune).then(function(result){
+                        vm.allVillage = result.data.response;
+                        console.log(vm.allVillage);
+                        })
                     apiFactory.getAPIgeneraliserREST("region/index","ile_id",vm.selectedItemEtat_paiement.id_ile).then(function(result){
                         vm.allRegion = result.data.response;
                     });
@@ -1220,7 +1271,7 @@
                             vm.selectedItemEtat_paiement.id_region   = current_selectedItemEtat_paiement.id_region;
                             vm.selectedItemEtat_paiement.id_commune   = current_selectedItemEtat_paiement.id_commune;
                             vm.selectedItemEtat_paiement.id_village   = current_selectedItemEtat_paiement.id_village;
-                            vm.selectedItemEtat_paiement.id_communaute = current_selectedItemEtat_paiement.id_communaute;
+                            //vm.selectedItemEtat_paiement.id_communaute = current_selectedItemEtat_paiement.id_communaute;
                             
                             vm.selectedItemEtat_paiement = {};
                         }
@@ -1248,7 +1299,7 @@
                         id_region: vm.selectedItemEtat_paiement.id_region, 
                         id_commune: vm.selectedItemEtat_paiement.id_commune,  
                         id_village: vm.selectedItemEtat_paiement.id_village, 
-                        id_communaute: vm.selectedItemEtat_paiement.id_communaute,
+                        //id_communaute: vm.selectedItemEtat_paiement.id_communaute,
                         id_contrat_agep: vm.selectedItemContrat_agep.id,
                         numero_ordre_paiement : vm.selectedItemEtat_paiement.numero_ordre_paiement ,
                         activite_concerne : vm.selectedItemEtat_paiement.activite_concerne ,
@@ -1284,7 +1335,13 @@
                                 {
                                     return obj.id == vm.selectedItemEtat_paiement.id_commune;
                                 });
-                                if (vm.type_sous_projet!='IDB')
+                                vil = vm.allVillage.filter(function(obj)
+                                    {
+                                        return obj.id == vm.selectedItemEtat_paiement.id_village;
+                                    });
+                                    
+                                    vm.selectedItemEtat_paiement.village   = vil[0];
+                               /* if (vm.type_sous_projet!='IDB')
                                 {
                                     vil = vm.allVillage.filter(function(obj)
                                     {
@@ -1300,7 +1357,7 @@
                                         return obj.id == vm.selectedItemEtat_paiement.id_communaute;
                                     });
                                     vm.selectedItemEtat_paiement.communaute = co[0];
-                                }
+                                }*/
                                 
                                 var men = vm.allMenage.filter(function(obj)
                                 {
@@ -1310,6 +1367,7 @@
                                 vm.selectedItemEtat_paiement.region = reg[0];
                                 vm.selectedItemEtat_paiement.commune = com[0];
                                 vm.selectedItemEtat_paiement.menage = men[0] ;
+                                vm.selectedItemEtat_paiement.zip   = vm.allZip[0];
                                 vm.selectedItemEtat_paiement.$edit = false ;
                                 vm.selectedItemEtat_paiement.$selected = false ;
                                 vm.selectedItemEtat_paiement = {} ;
@@ -1339,7 +1397,7 @@
                                 {
                                     return obj.id == vm.selectedItemEtat_paiement.id_commune;
                                 });
-                                if (vm.type_sous_projet!='IDB')
+                               /* if (vm.type_sous_projet!='IDB')
                                 {
                                     vil = vm.allVillage.filter(function(obj)
                                     {
@@ -1355,7 +1413,13 @@
                                         return obj.id == vm.selectedItemEtat_paiement.id_communaute;
                                     });
                                     vm.selectedItemEtat_paiement.communaute = co[0];
-                                }
+                                }*/
+                                vil = vm.allVillage.filter(function(obj)
+                                    {
+                                        return obj.id == vm.selectedItemEtat_paiement.id_village;
+                                    });
+                                    
+                                    vm.selectedItemEtat_paiement.village   = vil[0];
                             var men = vm.allMenage.filter(function(obj)
                             {
                                 return obj.id == vm.selectedItemEtat_paiement.id_menage;
@@ -1364,6 +1428,7 @@
                             vm.selectedItemEtat_paiement.region = reg[0];
                             vm.selectedItemEtat_paiement.commune = com[0];
                             vm.selectedItemEtat_paiement.menage = men[0] ;
+                            vm.selectedItemEtat_paiement.zip   = vm.allZip[0];
                             vm.selectedItemEtat_paiement.$edit = false ;
                             vm.selectedItemEtat_paiement.$selected = false ;
                             vm.selectedItemEtat_paiement.id = String(data.response) ;
@@ -1491,11 +1556,13 @@
                     {titre:"Avenant N°"},
                    // {titre:"Sous projet"},
                     {titre:"Objet du avenant"},
+                    {titre:"Type avenant"},
                     {titre:"Montant du avenant"},
                     {titre:"Modalité du avenant"},
                     {titre:"Date prévu fin avenant"},
                     {titre:"Noms des signataires"},
                     {titre:"Date signature avenant"},
+                    {titre:"Observation"},
                     {titre:"Statut avenant"}
                 ];                       
     
@@ -1538,8 +1605,12 @@
                     vm.avenant_agep.modalite_avenant=null;
                     vm.avenant_agep.date_prevu_fin=null;
                     vm.avenant_agep.date_signature=null;
+                    vm.avenant_agep.type_avenant=null;
+                    vm.avenant_agep.observation=null;
                     vm.avenant_agep.statu="EN COURS";		
                     vm.affichage_masque=true;
+                    vm.min_date_signature = new Date(vm.selectedItemContrat_agep.date_signature);
+                    vm.min_date_prevu_fin = new Date(vm.selectedItemContrat_agep.date_prevu_fin);
                 }
                 vm.annulerAvenant_agep = function(item)
                 {
@@ -1569,8 +1640,12 @@
                     vm.avenant_agep.date_prevu_fin  = new Date(vm.selectedItemAvenant_agep.date_prevu_fin) ;
                     vm.avenant_agep.date_signature  = new Date(vm.selectedItemAvenant_agep.date_signature) ;
                     vm.avenant_agep.noms_signataires           = vm.selectedItemAvenant_agep.noms_signataires ;
+                    vm.avenant_agep.type_avenant           = vm.selectedItemAvenant_agep.type_avenant ;
+                    vm.avenant_agep.observation           = vm.selectedItemAvenant_agep.observation ;
                     vm.avenant_agep.statu           = vm.selectedItemAvenant_agep.statu ;
                     vm.affichage_masque=true;
+                    vm.min_date_signature = new Date(vm.selectedItemContrat_agep.date_signature);
+                    vm.min_date_prevu_fin = new Date(vm.selectedItemContrat_agep.date_prevu_fin);
                 }
     
                 vm.supprimerAvenant_agep = function()
@@ -1621,11 +1696,13 @@
                             date_signature:convert_date(avenant_agep.date_signature),
                             date_prevu_fin:convert_date(avenant_agep.date_prevu_fin),
                             noms_signataires:avenant_agep.noms_signataires,
+                            type_avenant:avenant_agep.type_avenant,
+                            observation:avenant_agep.observation,
                             statu:avenant_agep.statu,
                             etat_validation:0                
                             
                         });
-    
+    console.log(datas);
                         apiFactory.add("avenant_agep/index",datas, config).success(function (data)
                         {
                             if (!NouvelItemAvenant_agep) 
@@ -1650,6 +1727,8 @@
                                     vm.selectedItemAvenant_agep.date_prevu_fin = new Date(avenant_agep.date_prevu_fin) ;
                                     vm.selectedItemAvenant_agep.date_signature = new Date(avenant_agep.date_signature) ;
                                     vm.selectedItemAvenant_agep.noms_signataires = avenant_agep.noms_signataires ; 
+                                    vm.selectedItemAvenant_agep.type_avenant = avenant_agep.type_avenant ;
+                                    vm.selectedItemAvenant_agep.observation = avenant_agep.observation ;
                                     vm.selectedItemAvenant_agep.statu = avenant_agep.statu ;                                
                                 }
                                 else
@@ -1684,6 +1763,8 @@
                                 date_prevu_fin : new Date(avenant_agep.date_prevu_fin) ,
                                 date_signature : new Date(avenant_agep.date_signature) ,
                                 noms_signataires : avenant_agep.noms_signataires  ,
+                                type_avenant : avenant_agep.type_avenant  ,
+                                observation : avenant_agep.observation  ,
                                 statu : avenant_agep.statu 
                                 }
                                 vm.allAvenant_agep.unshift(item) ;
@@ -1707,10 +1788,13 @@
                             ||(currentItemAvenant_agep.date_prevu_fin   != convert_date(item.date_prevu_fin) )
                             ||(currentItemAvenant_agep.date_signature   != convert_date(item.date_signature) )
                             ||(currentItemAvenant_agep.noms_signataires != item.noms_signataires )
+                            ||(currentItemAvenant_agep.type_avenant != item.type_avenant )
+                            ||(currentItemAvenant_agep.observation != item.observation )
                             ||(currentItemAvenant_agep.statu            != item.statu )
                             )                    
                         { 
-                                insert_in_baseAvenant_agep(item,suppression);                         
+                                insert_in_baseAvenant_agep(item,suppression); 
+                                                    
                         }
                         else
                         { 
@@ -1737,6 +1821,8 @@
                                 date_prevu_fin : vm.selectedItemAvenant_agep.date_prevu_fin ,
                                 date_signature : vm.selectedItemAvenant_agep.date_signature ,
                                 noms_signataires : vm.selectedItemAvenant_agep.noms_signataires  ,
+                                type_avenant : vm.selectedItemAvenant_agep.type_avenant  ,
+                                observation : vm.selectedItemAvenant_agep.observation  ,
                                 statu : "TERMINE" 
                                 };
                     insert_in_baseAvenant_agep(item,0);
@@ -1755,6 +1841,8 @@
                                 date_prevu_fin : vm.selectedItemAvenant_agep.date_prevu_fin ,
                                 date_signature : vm.selectedItemAvenant_agep.date_signature ,
                                 noms_signataires : vm.selectedItemAvenant_agep.noms_signataires  ,
+                                type_avenant : vm.selectedItemAvenant_agep.type_avenant  ,
+                                observation : vm.selectedItemAvenant_agep.observation  ,
                                 statu : "RESILIE" 
                                 };
                     insert_in_baseAvenant_agep(item,0);
@@ -1763,6 +1851,9 @@
         
         //FIN Etat_paiement NEW CODE
 
-
+        vm.change_input = function(date)
+        {
+            return date_input= new Date(date);
+        }
     }
 })();
