@@ -199,6 +199,156 @@
                           </tbody>
                         </table>
                     </md-tab> 
+
+                    <md-tab label="Avenant au Contrat N° {{vm.selected_contrat_ugp_agex.numero_contrat}}" ng-disabled="!vm.selected_contrat_ugp_agex.id" ng-click="vm.get_avenant()">
+                        <div style="widht:100%;">    
+                            <md-button type="submit"class="md-raised custum_button_new" aria-label="Nouveau" ng-click="vm.ajout_contrat_ugp_agex_avenant()" style="width:10%;"><md-icon md-font-icon="icon-plus" class="s16 center" style="color: white;"></md-icon>
+                              Nouveau
+                            </md-button>
+                            <md-button type="submit" class="md-raised custum_button" ng-if="vm.selected_contrat_ugp_agex_avenant.id" aria-label="Modifier" ng-click="vm.modif_contrat_ugp_agex_avenant()" style="width:10%;"><md-icon md-font-icon="icon-table-edit" class="s16" style="color: white;"></md-icon>
+                              Modifier
+                            </md-button>
+                            <md-button type="submit" class="md-raised custum_button_del" ng-if="vm.selected_contrat_ugp_agex_avenant.id" aria-label="Supprimer" ng-click="vm.supprimer_contrat_ugp_agex_avenant()" style="width:10%;">
+                                <md-icon md-font-icon="icon-close-circle-outline" class="s16" style="color: white;"></md-icon>
+                              Supprimer
+                            </md-button>
+                        </div>
+                        <!--FORM  AGEX-->       
+                         
+                            <form ng-show="vm.affichage_masque_avenant" name="form_contrat_ugp_agex_avenant" class="md-inline-form" novalidate >
+
+                                <div layout="column" layout-gt-xs="row" flex>
+                                   
+                                        
+
+                                        <md-input-container flex="100" flex-gt-xs="30">
+                                            <label>Type avenant</label>
+                                            <md-select ng-model="vm.contrat_ugp_agex_avenant.type" name="type" >
+                                                <!--md-option value="0">-</md-option!-->
+                                                <md-option value="Financier">Financier</md-option>
+                                                <md-option value="Délai">Délai</md-option>
+                                                <md-option value="Financier et délai">Financier et délai</md-option>
+                                                
+                                            </md-select>
+                                            <div ng-messages="form_contrat_ugp_agex_avenant.type.$error"
+                                                  role="alert">
+                                                  <div ng-message="required">
+                                                    <span>Type avenant Obligatoire.</span>
+                                                  </div>
+                                                </div>
+                                        </md-input-container>
+
+                                        
+
+                                      
+                                </div>
+                                <div layout="column" layout-gt-xs="row" flex>
+                                    <md-input-container flex="100" flex-gt-xs="100">
+                                        <label>Objet du Contrat</label>
+                                        <textarea name="objet_contrat" ng-model="vm.contrat_ugp_agex_avenant.objet_contrat" required md-select-on-focus></textarea>
+                                        <div ng-messages="form_contrat_ugp_agex_avenant.objet_contrat.$error"
+                                          role="alert">
+                                          <div ng-message="required">
+                                            <span>Objet du Contrat obligatoire.</span>
+                                          </div>
+                                        </div>
+                                    </md-input-container>
+                   
+                                </div>
+
+                                <div layout="column" layout-gt-xs="row" flex>
+                                    <md-input-container flex="100" flex-gt-xs="10" ng-show="vm.contrat_ugp_agex_avenant.type != 'Délai'">
+                                      <input  type="number" name="montant_contrat" ng-model="vm.contrat_ugp_agex_avenant.montant_contrat"
+                                        placeholder="Montant du Contrat"    ng-init="vm.contrat_ugp_agex_avenant.montant_contrat=0"
+                                        required>
+                                        <div ng-messages="form_contrat_ugp_agex_avenant.montant_contrat.$error"
+                                          role="alert">
+                                          <div ng-message="required">
+                                            <span>Montant du Contrat obligatoire.</span>
+                                          </div>
+                                        </div>
+                                    </md-input-container>
+
+                                    <div style="margin-top: 14px !important; font-size: 13px !important;">
+                                        <label>Date signature:</label>
+                                        <md-datepicker  ng-model="vm.contrat_ugp_agex_avenant.date_signature" md-placeholder="Date signature" md-min-date="vm.date_signature_avenant_min" md-max-date="vm.date_now" required>                       
+                                        </md-datepicker>
+                                    </div>
+                                    <div style="margin-top: 14px !important; font-size: 13px !important;">
+                                        <label>Fin Contrat :</label>
+                                        <md-datepicker  ng-model="vm.contrat_ugp_agex_avenant.date_prevu_fin_contrat" md-placeholder="Date Fin Contrat" md-min-date="vm.contrat_ugp_agex_avenant.date_signature" ng-disabled="!vm.contrat_ugp_agex_avenant.date_signature" required>                       
+                                        </md-datepicker>
+                                    </div>
+
+                                    <md-input-container flex="100" flex-gt-xs="10">
+                                        <label>Status</label>
+                                        <md-select ng-model="vm.contrat_ugp_agex_avenant.status_contrat" name="status_contrat" required>
+                                            <md-option value="En cours">En cours</md-option>
+                                            <md-option value="Terminé">Terminé</md-option>
+                                            <md-option value="Résilié">Résilié</md-option>
+                                            
+                                            
+                                        </md-select>
+                                        <div ng-messages="form_contrat_ugp_agex_avenant.status_contrat.$error"
+                                              role="alert">
+                                              <div ng-message="required">
+                                                <span>Status Obligatoire.</span>
+                                              </div>
+                                            </div>
+                                    </md-input-container>
+                                </div>
+
+                                <div layout="column" layout-gt-xs="row" flex ng-show="vm.contrat_ugp_agex_avenant.status_contrat=='Résilié'">
+                                    <md-input-container flex="100" flex-gt-xs="100">
+                                        <label>Note de résiliation</label>
+                                        <textarea name="note_resiliation" ng-model="vm.contrat_ugp_agex_avenant.note_resiliation"  md-select-on-focus ng-required="vm.contrat_ugp_agex_avenant.status_contrat=='Résilié'"></textarea>
+                                        <div ng-messages="form_contrat_ugp_agex_avenant.note_resiliation.$error"
+                                          role="alert">
+                                          <div ng-message="required">
+                                            <span>Note de résiliation obligatoire.</span>
+                                          </div>
+                                        </div>
+                                    </md-input-container>
+                   
+                                </div>
+                                <div>
+                                    <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                        ng-disabled="form_contrat_ugp_agex_avenant.$invalid||vm.affiche_load " ng-click="vm.save_in_bdd_avenant(vm.contrat_ugp_agex_avenant,0)">
+                                        Enregistrer
+                                    </md-button>
+                                    <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annuler_avenant()">
+                                        Annuler
+                                    </md-button>
+                                </div>
+                            </form>
+                                        
+                        <!--FORM  AGEX--> 
+                        <table class="dataTable row-border hover cell-border text-center" datatable="ng"
+                          dt-options="vm.dtOptions_new" ms-responsive-table>
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::vm.entete_contrat_ugp_agex_avenant">
+                                <div class="table-header">
+                                  <span class="column-title text-center">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="cua in vm.all_contrat_ugp_agex_avenant"  ng-class="{selected: cua.$selected}" ng-click="vm.selection_avenant(cua)">
+                                <td>{{cua.type}}</td>
+                                
+                                <td>{{cua.objet_contrat}}</td>
+                                <td>{{vm.formatMillier(cua.montant_contrat)}} KMF</td>
+                                <td>{{cua.date_signature  | date:'dd/MM/yyyy'}}</td>
+                                <td>{{cua.date_prevu_fin_contrat  | date:'dd/MM/yyyy'}}</td>
+                                <td>{{cua.status_contrat}}</td>
+                                <td>{{cua.note_resiliation}}</td>
+                              <!--   <td>{{vm.aff_validation(cua.etat_validation)}}</td> -->
+                            </tr>
+                          </tbody>
+                        </table>
+                    </md-tab> 
                     <md-tab label="Signataires | Contrat N° {{vm.selected_contrat_ugp_agex.numero_contrat}}" ng-disabled="!vm.selected_contrat_ugp_agex.id" ng-click="vm.get_all_contrat_ugp_agex_signataires()">
                         <div class="price-table style-1 md-whiteframe-1dp" layout="column">
                             <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">

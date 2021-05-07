@@ -106,6 +106,7 @@
             vm.selection = function (item) 
             {
                 vm.selected_contrat_ugp_agex = item ;
+                vm.date_signature_avenant_min = new Date(item.date_prevu_fin_contrat);
                 console.log(item);
             }
 
@@ -1639,5 +1640,237 @@
 
             //fin contrat_ugp_agex_pv_remise_details..
         //FIN contrat_ugp_agex_pv_remise_details 
+
+        //CONTRAT UGP AVENANT/ AGEX
+            vm.affichage_masque_avenant = false ;
+            var nouvelle_contrat_ugp_agex_avenant = false ;
+            vm.contrat_ugp_agex_avenant = {};
+
+            vm.entete_contrat_ugp_agex_avenant = 
+            [
+                {titre:"Type"},
+             
+                {titre:"Objet du contrat"},
+                {titre:"Montant du contrat"},
+                {titre:"Date signature contrat"},
+                {titre:"Date prévu fin contrat"},
+                {titre:"Status"},
+                {titre:"Note de résiliation"}/*,
+                {titre:"Etat de validation"}*/
+            ];
+
+            vm.get_avenant = function()
+            {
+                
+                apiFactory.getParamsDynamic("Contrat_ugp_agex_avenant/index?id_contrat_ugp_agex="+vm.selected_contrat_ugp_agex.id).then(function(result)
+                {
+                    vm.all_contrat_ugp_agex_avenant = result.data.response;
+                });
+
+            }
+
+            
+
+            vm.selection_avenant = function (item) 
+            {
+                vm.selected_contrat_ugp_agex_avenant = item ;
+                console.log(item);
+            }
+
+            $scope.$watch('vm.selected_contrat_ugp_agex_avenant', function() {
+                if (!vm.all_contrat_ugp_agex_avenant) return;
+                vm.all_contrat_ugp_agex_avenant.forEach(function(item) {
+                    item.$selected = false;
+                });
+                vm.selected_contrat_ugp_agex_avenant.$selected = true;
+            })
+
+            vm.ajout_contrat_ugp_agex_avenant = function () 
+            {
+                vm.affichage_masque_avenant = true ;
+                vm.contrat_ugp_agex_avenant.status_contrat = "En cours";
+                nouvelle_contrat_ugp_agex_avenant = true;
+
+            }
+
+            vm.annuler_avenant = function () 
+            {
+                vm.affichage_masque_avenant = false ;
+                nouvelle_contrat_ugp_agex_avenant = false;
+            }
+
+            vm.modif_contrat_ugp_agex_avenant = function () 
+            {
+                vm.affichage_masque_avenant = true ;
+                nouvelle_contrat_ugp_agex_avenant = false;
+
+                vm.contrat_ugp_agex_avenant.type = vm.selected_contrat_ugp_agex_avenant.type ;
+                //vm.contrat_ugp_agex_avenant.id_contrat_ugp_agex = vm.selected_contrat_ugp_agex_avenant.id_contrat_ugp_agex ;
+                //vm.contrat_ugp_agex_avenant.id_sous_projet = vm.selected_contrat_ugp_agex_avenant.id_sous_projet ;
+                vm.contrat_ugp_agex_avenant.objet_contrat = vm.selected_contrat_ugp_agex_avenant.objet_contrat ;
+                vm.contrat_ugp_agex_avenant.montant_contrat = Number(vm.selected_contrat_ugp_agex_avenant.montant_contrat) ;
+                vm.contrat_ugp_agex_avenant.date_signature = new Date(vm.selected_contrat_ugp_agex_avenant.date_signature) ;
+                vm.contrat_ugp_agex_avenant.date_prevu_fin_contrat = new Date(vm.selected_contrat_ugp_agex_avenant.date_prevu_fin_contrat) ;
+                vm.contrat_ugp_agex_avenant.status_contrat = vm.selected_contrat_ugp_agex_avenant.status_contrat ;
+                vm.contrat_ugp_agex_avenant.note_resiliation = vm.selected_contrat_ugp_agex_avenant.note_resiliation ;
+            }
+
+            vm.supprimer_contrat_ugp_agex_avenant = function()
+            {
+                vm.affichage_masque_avenant = false ;
+                
+                var confirm = $mdDialog.confirm()
+                  .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                  .textContent('')
+                  .ariaLabel('Lucky day')
+                  .clickOutsideToClose(true)
+                  .parent(angular.element(document.body))
+                  .ok('ok')
+                  .cancel('annuler');
+                $mdDialog.show(confirm).then(function() {
+
+                vm.save_in_bdd_avenant(vm.selected_contrat_ugp_agex_avenant,1);
+                }, function() {
+                //alert('rien');
+                });
+            }
+
+            vm.save_in_bdd_avenant = function(data_masque, etat_suppression)
+            {
+                vm.affiche_load = true ;
+                var config = {
+                        headers : {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                        }
+                    };
+
+                    var id = 0 ;
+
+                    if (!nouvelle_contrat_ugp_agex_avenant) 
+                    {
+                        id = vm.selected_contrat_ugp_agex_avenant.id ;
+                    }
+
+                    if (data_masque.status_contrat !='Résilié') 
+                    {
+                        data_masque.note_resiliation = '';
+                    }
+
+
+                   
+
+                    var datas = $.param(
+                    {
+                        
+                        id:id,      
+                        supprimer:etat_suppression,
+                        type:data_masque.type,
+                        id_contrat_ugp_agex:vm.selected_contrat_ugp_agex.id,
+                       // id_sous_projet:data_masque.id_sous_projet,
+                        objet_contrat:data_masque.objet_contrat,
+                        montant_contrat:data_masque.montant_contrat,
+                        date_signature:convert_to_date_sql(data_masque.date_signature),
+                        date_prevu_fin_contrat:convert_to_date_sql(data_masque.date_prevu_fin_contrat),
+                        status_contrat:data_masque.status_contrat,
+                        note_resiliation:data_masque.note_resiliation,
+                        etat_validation:0                
+                        
+                    });
+
+                    apiFactory.add("Contrat_ugp_agex_avenant/index",datas, config).success(function (data)
+                    {
+                        var agex = vm.all_agex.filter(function(obj)
+                        {
+                            return obj.id == data_masque.id_contrat_ugp_agex ;
+                        });
+
+                      /*  var sp = vm.all_sous_projet.filter(function(obj)
+                        {
+                            return obj.id == data_masque.id_sous_projet ;
+                        });*/
+
+                                        
+
+
+                        if (!nouvelle_contrat_ugp_agex_avenant) 
+                        {
+                            if (etat_suppression == 0) 
+                            {
+
+                                vm.selected_contrat_ugp_agex_avenant.type = data_masque.type ;
+
+                                /*vm.selected_contrat_ugp_agex_avenant.id_contrat_ugp_agex = data_masque.id_contrat_ugp_agex ;
+                                vm.selected_contrat_ugp_agex_avenant.nom_agex = agex[0].Nom ;
+                                vm.selected_contrat_ugp_agex_avenant.intervenant_agex = agex[0].intervenant_agex ;
+                                vm.selected_contrat_ugp_agex_avenant.nom_contact_agex = agex[0].nom_contact_agex ;
+                                vm.selected_contrat_ugp_agex_avenant.numero_phone_contact = agex[0].numero_phone_contact ;
+                                vm.selected_contrat_ugp_agex_avenant.adresse_agex = agex[0].adresse_agex ;*/
+
+
+                                /*vm.selected_contrat_ugp_agex_avenant.id_sous_projet = data_masque.id_sous_projet ;
+                                vm.selected_contrat_ugp_agex_avenant.description_sous_projet = sp[0].description ;*/
+
+
+                                vm.selected_contrat_ugp_agex_avenant.objet_contrat = data_masque.objet_contrat ;
+                                vm.selected_contrat_ugp_agex_avenant.montant_contrat = data_masque.montant_contrat ;
+                                vm.selected_contrat_ugp_agex_avenant.date_signature = data_masque.date_signature ;
+                                vm.selected_contrat_ugp_agex_avenant.date_prevu_fin_contrat = data_masque.date_prevu_fin_contrat ;
+                                vm.selected_contrat_ugp_agex_avenant.status_contrat = data_masque.status_contrat ;
+                                vm.selected_contrat_ugp_agex_avenant.note_resiliation = data_masque.note_resiliation ;
+                                
+
+                                vm.contrat_ugp_agex_avenant = {} ;
+
+                                
+                            }
+                            else
+                            {
+                                vm.all_contrat_ugp_agex_avenant = vm.all_contrat_ugp_agex_avenant.filter(function(obj)
+                                {
+                                    return obj.id !== vm.selected_contrat_ugp_agex_avenant.id ;
+                                });
+                            }
+
+                        }
+                        else
+                        {
+                            var item = {
+                                id:String(data.response) ,
+
+                                type : data_masque.type ,
+
+                                id_contrat_ugp_agex : vm.selected_contrat_ugp_agex.id ,
+                                /*nom_agex : agex[0].Nom ,
+                                intervenant_agex : agex[0].intervenant_agex ,
+                                nom_contact_agex : agex[0].nom_contact_agex ,
+                                numero_phone_contact : agex[0].numero_phone_contact ,
+                                adresse_agex : agex[0].adresse_agex ,*/
+
+
+                                /*id_sous_projet : data_masque.id_sous_projet ,
+                                description_sous_projet : sp[0].description ,*/
+
+
+                                objet_contrat : data_masque.objet_contrat ,
+                                montant_contrat : data_masque.montant_contrat ,
+                                date_signature : data_masque.date_signature ,
+                                date_prevu_fin_contrat : data_masque.date_prevu_fin_contrat ,
+                                status_contrat : data_masque.status_contrat ,
+                                note_resiliation : data_masque.note_resiliation ,
+
+                                $selected:true
+                            }
+
+                            vm.all_contrat_ugp_agex_avenant.unshift(item) ;
+                            vm.contrat_ugp_agex_avenant = {} ;
+                        }
+                        nouvelle_contrat_ugp_agex_avenant = false ;
+                        vm.affichage_masque_avenant = false ;
+                        vm.affiche_load = false ;
+                    })
+                    .error(function (data) {alert("Une erreur s'est produit");});
+            }
+
+        //CONTRAT UGP AVENANT/ AGEX
     }
 })();

@@ -10,6 +10,9 @@ $card-header-height: $header-height - $card-toolbar-height;
 $header-height-xs: 160px;
 $card-header-height-sm: $header-height-xs - $card-toolbar-height;
 
+.page-layout.simple.fullwidth {
+    background-color: white;
+}
 .md-toast-content {
     background-color: #e72a31 !important;
     color: rgb(250,250,250);
@@ -19,7 +22,9 @@ $card-header-height-sm: $header-height-xs - $card-toolbar-height;
     color: rgb(255,255,255) !important;
     background-color:  #5c935c !important;
 }
-
+.md-button.md-default-theme.md-raised[disabled], .md-button.md-raised[disabled]{
+    background-color: rgba(0,0,0,0.12) !important;
+}
 .custum_button{ 
     color: rgb(255,255,255) !important;
     background-color: #8e00f4 !important;

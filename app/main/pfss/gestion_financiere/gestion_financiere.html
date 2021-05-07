@@ -1,0 +1,401 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Suivi budgétaire</span>
+                    <span class="parent"> </span>
+                    <!--md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;">Groupe ML/PL</span-->
+                </div>
+    
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>
+                <md-tabs md-dynamic-height>
+                    <md-tab label="Suivi budgétaire">
+                        <div style="widht:100%;">    
+                            <md-button type="submit"class="md-raised custum_button_new" aria-label="Nouveau" ng-click="vm.open_masque_filtre()" style="width:10%;"><md-icon md-font-icon="icon-file-find" class="s16 center" style="color: white;"></md-icon>
+                              Rechercher
+                            </md-button>
+                            <md-button type="submit"class="md-raised custum_button_new" aria-label="Nouveau" ng-click="vm.ajout_gestion_financiere()" style="width:10%;"><md-icon md-font-icon="icon-plus" class="s16 center" style="color: white;"></md-icon>
+                              Nouveau
+                            </md-button>
+                            <md-button type="submit" class="md-raised custum_button" ng-if="vm.selected_gestion_financiere.id" aria-label="Modifier" ng-click="vm.modif_gestion_financiere()" style="width:10%;"><md-icon md-font-icon="icon-table-edit" class="s16" style="color: white;"></md-icon>
+                              Modifier
+                            </md-button>
+                            <md-button type="submit" class="md-raised custum_button_del" ng-if="vm.selected_gestion_financiere.id" aria-label="Supprimer" ng-click="vm.supprimer_gestion_financiere()" style="width:10%;">
+                                <md-icon md-font-icon="icon-close-circle-outline" class="s16" style="color: white;"></md-icon>
+                              Supprimer
+                            </md-button>
+                        </div>
+                        <form ng-show="vm.affichage_masque_filtre" name="form_filtre" class="md-inline-form" novalidate >
+                            <div layout="column" layout-gt-xs="row" flex>
+
+                              <div style="margin-top: 14px !important; font-size: 13px !important;">
+                                  <label>Du:</label>
+                                  <md-datepicker  ng-model="vm.filtre.date_debut" md-placeholder="Date" md-max-date="vm.filtre.date_fin" required>                       
+                                  </md-datepicker>
+                              </div>
+
+                              <div style="margin-top: 14px !important; font-size: 13px !important;">
+                                  <label>Au:</label>
+                                  <md-datepicker  ng-model="vm.filtre.date_fin" md-placeholder="Date" md-min-date="vm.filtre.date_debut" md-max-date="vm.date_now" required>                       
+                                  </md-datepicker>
+                              </div>
+
+                              <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                  ng-disabled="form_filtre.$invalid||vm.affiche_load " ng-click="vm.get_suivi_budgetaire(vm.filtre)">
+                                  Afficher les données
+                              </md-button>
+                              <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.fermer_masque_filtre()">
+                                  Fermer
+                              </md-button>
+
+
+                            </div>
+
+                            
+
+                         
+                        </form>
+                        <!--FORM  AGEX-->       
+                         
+                            <form ng-show="vm.affichage_masque" name="form_gestion_financiere" class="md-inline-form" novalidate >
+
+                                <div layout="column" layout-gt-xs="row" flex>
+
+                                  <div style="margin-top: 14px !important; font-size: 13px !important;">
+                                      <label>Date:</label>
+                                      <md-datepicker  ng-model="vm.gestion_financiere.date" md-placeholder="Date" md-max-date="vm.date_now" required>                       
+                                      </md-datepicker>
+                                  </div>
+
+
+                                </div>
+
+                                <div layout="column" layout-gt-xs="row" flex>
+                       
+                                  <md-input-container flex="100" flex-gt-xs="50" >
+                                      <label>Composante</label>
+                                      <md-select ng-model="vm.gestion_financiere.id_composante" name="id_composante"  required>
+                                          
+                                          <md-option  value="1">Composante 1</md-option>
+                                          <md-option  value="2">Composante 2</md-option>
+                                          <md-option  value="3">Composante 3</md-option>
+                                          
+                                      </md-select>
+                                      <div ng-messages="form_gestion_financiere.id_composante.$error"
+                                            role="alert">
+                                        <div ng-message="required">
+                                          <span>Composante Obligatoire.</span>
+                                        </div>
+                                      </div>
+                                  </md-input-container>
+
+                                  <md-input-container flex="100" flex-gt-xs="50" >
+                                      <label>Activité</label>
+                                      <md-select ng-model="vm.gestion_financiere.id_sous_projet" name="id_sous_projet"  required>
+                                          
+                                          <md-option ng-repeat="sp in vm.all_sous_projet" value="{{sp.id}}">{{sp.code}}</md-option>
+                                          
+                                      </md-select>
+                                      <div ng-messages="form_gestion_financiere.id_sous_projet.$error"
+                                            role="alert">
+                                        <div ng-message="required">
+                                          <span>Activité Obligatoire.</span>
+                                        </div>
+                                      </div>
+                                  </md-input-container>
+                                      
+                                </div>
+                                <div layout="column" layout-gt-xs="row" flex>
+
+                                  <md-input-container flex="100" flex-gt-xs="25" >
+                                      <label>Île</label>
+                                      <md-select ng-model="vm.gestion_financiere.id_ile" name="id_ile" ng-change="vm.get_region_by_ile()" required>
+                                          
+                                          <md-option ng-repeat="sp in vm.all_ile" value="{{sp.id}}">{{sp.Ile}}</md-option>
+                                          
+                                      </md-select>
+                                      <div ng-messages="form_gestion_financiere.id_ile.$error"
+                                            role="alert">
+                                        <div ng-message="required">
+                                          <span>Île Obligatoire.</span>
+                                        </div>
+                                      </div>
+
+                                  </md-input-container>
+
+                                  <md-input-container flex="100" flex-gt-xs="25" >
+                                      <label>Préfécture</label>
+                                      <md-select ng-model="vm.gestion_financiere.id_region" name="id_region" ng-disabled="!vm.gestion_financiere.id_ile" required>
+                                          
+                                          <md-option ng-repeat="sp in vm.all_region" value="{{sp.id}}">{{sp.Region}}</md-option>
+                                          
+                                      </md-select>
+                                      <div ng-messages="form_gestion_financiere.id_region.$error"
+                                            role="alert">
+                                        <div ng-message="required">
+                                          <span>Préfécture Obligatoire.</span>
+                                        </div>
+                                      </div>
+
+                                  </md-input-container>
+
+                                  <md-input-container flex="100" flex-gt-xs="25" >
+                                      <label>Commune</label>
+                                      <md-select ng-model="vm.gestion_financiere.id_commune" name="id_commune" ng-disabled="!vm.gestion_financiere.id_region" required>
+                                          
+                                          <md-option ng-repeat="sp in vm.all_commune" value="{{sp.id}}">{{sp.Commune}}</md-option>
+                                          
+                                      </md-select>
+                                      <div ng-messages="form_gestion_financiere.id_commune.$error"
+                                            role="alert">
+                                        <div ng-message="required">
+                                          <span>Commune Obligatoire.</span>
+                                        </div>
+                                      </div>
+
+                                  </md-input-container>
+
+                                  <md-input-container flex="100" flex-gt-xs="25" >
+                                      <label>Village</label>
+                                      <md-select ng-model="vm.gestion_financiere.id_village" name="id_village" ng-disabled="!vm.gestion_financiere.id_commune" required>
+                                          
+                                          <md-option ng-repeat="sp in vm.all_village" value="{{sp.id}}">{{sp.Village}}</md-option>
+                                          
+                                      </md-select>
+                                      <div ng-messages="form_gestion_financiere.id_village.$error"
+                                            role="alert">
+                                        <div ng-message="required">
+                                          <span>Village Obligatoire.</span>
+                                        </div>
+                                      </div>
+
+                                  </md-input-container>
+
+                                </div>
+
+                               
+
+                                <div layout="column" layout-gt-xs="row" flex>
+                                    <md-input-container flex="100" flex-gt-xs="50">
+                                      <input  type="number" name="montant_engage" ng-model="vm.gestion_financiere.montant_engage"
+                                        placeholder="Montant engagé (KMF)"    ng-init="vm.gestion_financiere.montant_engage=0"
+                                        required>
+                                        <div ng-messages="form_gestion_financiere.montant_engage.$error"
+                                          role="alert">
+                                          <div ng-message="required">
+                                            <span>Montant engagé obligatoire.</span>
+                                          </div>
+                                        </div>
+                                    </md-input-container>
+
+                             
+
+                                    <md-input-container flex="100" flex-gt-xs="50">
+                                      <input  type="number" name="montant_paye" ng-model="vm.gestion_financiere.montant_paye"
+                                        placeholder="Montant payé (KMF)"    ng-init="vm.gestion_financiere.montant_paye=0"
+                                        required>
+                                        <div ng-messages="form_gestion_financiere.montant_paye.$error"
+                                          role="alert">
+                                          <div ng-message="required">
+                                            <span>Montant payé obligatoire.</span>
+                                          </div>
+                                        </div>
+                                    </md-input-container>
+
+                                    
+                                    
+
+                                    
+                                </div>
+                            
+                                
+                                <div>
+                                    <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                        ng-disabled="form_gestion_financiere.$invalid||vm.affiche_load " ng-click="vm.save_in_bdd(vm.gestion_financiere,0)">
+                                        Enregistrer
+                                    </md-button>
+                                    <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annuler()">
+                                        Annuler
+                                    </md-button>
+                                </div>
+                            </form>
+                                        
+                        <!--FORM  AGEX--> 
+                        <table class="dataTable row-border hover cell-border text-center" datatable="ng"
+                          dt-options="vm.dtOptions_new" ms-responsive-table>
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::vm.entete_gestion_financiere">
+                                <div class="table-header">
+                                  <span class="column-title text-center">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="cua in vm.all_gestion_financiere"  ng-class="{selected: cua.$selected}" ng-click="vm.selection(cua)">
+                                
+                                <td>{{cua.date  | date:'dd/MM/yyyy'}}</td>
+                               
+                                <td>{{cua.code_composante}}</td>
+                                <td>{{cua.code_sous_projet}}</td>
+                                <td>{{cua.Ile}}</td>
+                                <td>{{cua.Region}}</td>
+                                <td>{{cua.Commune}}</td>
+                                <td>{{cua.Village}}</td>
+
+                                <td>{{vm.formatMillier(cua.montant_engage)}} KMF</td>
+                                <td>{{vm.formatMillier(cua.montant_paye)}} KMF</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </md-tab> 
+                    <md-tab label="Etat de sortie">
+                        <form name="form_filtre_etat" class="md-inline-form" novalidate >
+
+                        <div layout="column" layout-gt-xs="row">
+                            
+                            <md-input-container flex="100" flex-gt-xs="20">
+                                      
+                                <label>Requête</label>
+                                <md-select ng-model="vm.filtre_etat.pivot" required>
+
+                                    <md-option ng-repeat="piv in vm.pivots" value="{{piv.id}}" > {{piv.titre}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container flex="100" flex-gt-xs="60">
+                            </md-input-container>
+                            
+                        </div>
+
+                        <div layout="column" layout-gt-xs="row">
+                          <div style="margin-top: 14px !important; font-size: 13px !important;">
+                              <label>Du:</label>
+                              <md-datepicker  ng-model="vm.filtre_etat.date_debut" md-placeholder="Date" md-max-date="vm.filtre_etat.date_fin" required>                       
+                              </md-datepicker>
+                          </div>
+
+                          <div style="margin-top: 14px !important; font-size: 13px !important;">
+                              <label>Au:</label>
+                              <md-datepicker  ng-model="vm.filtre_etat.date_fin" md-placeholder="Date" md-min-date="vm.filtre_etat.date_debut" md-max-date="vm.date_now" required>                       
+                              </md-datepicker>
+                          </div>
+                        </div>
+
+                        <div layout="column" layout-gt-xs="row" flex ng-show="vm.filtre_etat.pivot == 'situtation_activite'">
+
+                          <md-input-container flex="100" flex-gt-xs="25" >
+                              <label>Île</label>
+                              <md-select ng-model="vm.filtre_etat.id_ile" name="id_ile" ng-change="vm.get_region_by_ile()" ng-required="vm.filtre_etat.pivot == 'situtation_activite'">
+                                  
+                                  <md-option ng-repeat="sp in vm.all_ile" value="{{sp.id}}">{{sp.Ile}}</md-option>
+                                  
+                              </md-select>
+                              <div ng-messages="form_filtre_etat.id_ile.$error"
+                                    role="alert">
+                                <div ng-message="required">
+                                  <span>Île Obligatoire.</span>
+                                </div>
+                              </div>
+
+                          </md-input-container>
+
+                          <md-input-container flex="100" flex-gt-xs="25" >
+                              <label>Préfécture</label>
+                              <md-select ng-model="vm.filtre_etat.id_region" name="id_region" ng-disabled="!vm.filtre_etat.id_ile" ng-required="vm.filtre_etat.pivot == 'situtation_activite'">
+                                  
+                                  <md-option ng-repeat="sp in vm.all_region" value="{{sp.id}}">{{sp.Region}}</md-option>
+                                  
+                              </md-select>
+                              <div ng-messages="form_filtre_etat.id_region.$error"
+                                    role="alert">
+                                <div ng-message="required">
+                                  <span>Préfécture Obligatoire.</span>
+                                </div>
+                              </div>
+
+                          </md-input-container>
+
+                          <md-input-container flex="100" flex-gt-xs="25" >
+                              <label>Commune</label>
+                              <md-select ng-model="vm.filtre_etat.id_commune" name="id_commune" ng-disabled="!vm.filtre_etat.id_region" ng-required="vm.filtre_etat.pivot == 'situtation_activite'">
+                                  
+                                  <md-option ng-repeat="sp in vm.all_commune" value="{{sp.id}}">{{sp.Commune}}</md-option>
+                                  
+                              </md-select>
+                              <div ng-messages="form_filtre_etat.id_commune.$error"
+                                    role="alert">
+                                <div ng-message="required">
+                                  <span>Commune Obligatoire.</span>
+                                </div>
+                              </div>
+
+                          </md-input-container>
+
+                          <md-input-container flex="100" flex-gt-xs="25" >
+                              <label>Village</label>
+                              <md-select ng-model="vm.filtre_etat.id_village" name="id_village" ng-disabled="!vm.filtre_etat.id_commune" ng-required="vm.filtre_etat.pivot == 'situtation_activite'">
+                                  
+                                  <md-option ng-repeat="sp in vm.all_village" value="{{sp.id}}">{{sp.Village}}</md-option>
+                                  
+                              </md-select>
+                              <div ng-messages="form_filtre_etat.id_village.$error"
+                                    role="alert">
+                                <div ng-message="required">
+                                  <span>Village Obligatoire.</span>
+                                </div>
+                              </div>
+
+                          </md-input-container>
+
+                        </div>
+
+                       
+
+                        <div>
+                            <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer" ng-disabled="form_filtre_etat.$invalid||vm.affiche_load" ng-click="vm.get_etat(vm.filtre_etat,0)"> 
+                              <md-icon md-font-icon="icon-refresh" class="s16 center" style="color: white;"></md-icon>
+                              Actualiser
+                            </md-button>
+                            <!-- <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer" ng-disabled="form_filtre_etat.$invalid||vm.affiche_load" ng-click="vm.get_etat(vm.filtre_etat,1)"> Export excel
+                            </md-button> -->
+                        
+                        </div>
+                    </form>
+                    <!--TABLE LISTES etat-->
+                    <div style="padding-top:10px;">
+
+                        <table ng-table="tableetat" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                            <thead>
+                                <tr>
+                                    <th class="secondary-text" ng-repeat="c in ::vm.entete_etat">
+                                        <div class="table-header">
+                                            <span class="column-title text-center">{{c}}</span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="cm in vm.reporting"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_etat(cm)">                                       
+                                    <td ng-repeat="c in ::vm.entete_etat">{{vm.replace_point(vm.formatMillier(cm[c]))}}</td>
+                                    
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+
+                   </div>
+                    </md-tab> 
+                </md-tabs>
+            </div>
+        </div>
+    </div>
