@@ -161,7 +161,7 @@
                .cancel('Annuler');
              $mdDialog.show(confirm).then(function() {
 
-             vm.enregistrer_Pges(1);
+             vm.enregistrerPges(1);
              }, function() {
              //alert('rien');
              });
@@ -380,7 +380,7 @@
                       .cancel('Annuler');
                     $mdDialog.show(confirm).then(function() {
 
-                    vm.enregistrer_Pges_phases(1);
+                    vm.enregistrerPges_phases(1);
                     }, function() {
                     //alert('rien');
                     });
