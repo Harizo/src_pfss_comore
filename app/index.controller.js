@@ -53,7 +53,7 @@
                         controller: 'Toast_contrat_agepCtrl',
                         templateUrl: 'app/main/pfss/contrat_agep/toast_contrat_agep.html',
                         hideDelay: 0,
-                        position: 'top right',
+                        position: 'bottom right',
                         locals:{param: resultat}
                       });
                 

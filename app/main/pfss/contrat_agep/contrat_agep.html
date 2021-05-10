@@ -185,7 +185,7 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr ng-repeat="contr in vm.allContrat_agep"  ng-class="{selected: contr.$selected, colorby: contr.nbr_jour_restant<5 && contr.statu=='EN COURS'}" ng-click="vm.selection(contr)">
+                            <tr ng-repeat="contr in vm.allContrat_agep"  ng-class="{selected: contr.$selected, colorby: contr.retard}" ng-click="vm.selection(contr)">
                                 <td>{{contr.numero_contrat}}</td>
                                 <td>{{contr.agep.identifiant}}</td>
                                 <td>{{contr.agep.adresse}}</td>                               
@@ -498,12 +498,12 @@
                                                   <label>Menage</label>
                                                   <md-select ng-model="paie.id_menage" name="id_menage" ng-change="vm.change_menage(paie)">
                                                       <md-option ng-repeat="mena in vm.allMenage" value="{{mena.id}}">
-                                                          {{mena.identifiant_menage}}
+                                                          {{mena.identifiant_menage}} - {{mena.nomchefmenage}} 
                                                       </md-option>                                                
                                                   </md-select>
                                               </md-input-container> 
                                             </span>
-                                            <span ng-if="!paie.$edit"> {{paie.menage.identifiant_menage}}</span>
+                                            <span ng-if="!paie.$edit"> {{paie.menage.identifiant_menage}}  - {{paie.menage.nomchefmenage}}</span>
                                         </td>
                                         <td>
                                           <span ng-if="paie.$edit">
@@ -609,8 +609,8 @@
                         <form ng-show="vm.affichage_masque" name="formavenant_agep" class="md-inline-form" novalidate >
 
                           <div layout="column" layout-gt-xs="row" flex>                                   
-                            <md-input-container flex="100" flex-gt-xs="40">
-                              <input  type="text" name="numero_avenant" ng-model="vm.avenant_agep.numero_avenant" placeholder="N° Avenant"    ng-init="vm.avenant_agep.numero_avenant=''" required>
+                            <md-input-container flex="100" flex-gt-xs="10">
+                              <input  type="text" name="numero_avenant" ng-model="vm.avenant_agep.numero_avenant" placeholder="N° Avenant" ng-init="vm.avenant_agep.numero_avenant=''" required md-select-on-focus>
                               <div ng-messages="formavenant_agep.numero_avenant.$error"role="alert">
                                   <div ng-message="required">
                                       <span>N° avenant obligatoire.</span>
@@ -668,7 +668,7 @@
                               </md-input-container>
                               
 
-                            <md-input-container flex="100" flex-gt-xs="30">
+                            <md-input-container flex="100" flex-gt-xs="10">
                               <label>Type</label>
                               <md-select ng-model="vm.avenant_agep.type_avenant" name="type_avenant">
                                 <md-option value="FINANCIER">FINANCIER</md-option>
@@ -681,9 +681,9 @@
                                 </div>
                               </div>
                           </md-input-container>
-                              <md-input-container flex="100" flex-gt-xs="10">
+                              <md-input-container flex="100" flex-gt-xs="10" ng-if="vm.avenant_agep.type_avenant!='DELAI'">
                                 <label>Montant du avenant</label>
-                                  <input name="montant_avenant" type="number" ng-model="vm.avenant_agep.montant_avenant" required md-select-on-focus>
+                                  <input name="montant_avenant" type="number" ng-model="vm.avenant_agep.montant_avenant" required md-select-on-focus >
                                     <div ng-messages="formavenant_agep.montant_avenant.$error" role="alert">
                                       <div ng-message="required">
                                           <span>Montant du avenant obligatoire.</span>
@@ -778,7 +778,8 @@
                                 <!--td>{{aven.sous_projet.description}}</td-->
                                 <td>{{aven.objet_avenant}}</td>
                                 <td>{{aven.type_avenant}}</td>
-                                <td>{{aven.montant_avenant}}</td>
+                                <td ng-if="aven.montant_avenant==0">-</td>
+                                <td ng-if="aven.montant_avenant!=0">{{aven.montant_avenant}}</td>
                                 <td>{{aven.modalite_avenant}}</td>
                                 <td>{{aven.date_prevu_fin | date:'dd/MM/yyyy'}}</td>
                                 <td>{{aven.noms_signataires}}</td>

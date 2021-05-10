@@ -27,12 +27,12 @@
         });
 
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.communaute_idb', {
+        /*msNavigationServiceProvider.saveItem('pfss.communaute_idb', {
             title: 'Communaute / IDB',
             icon  : 'icon-tile-four',
             state: 'app.pfss_communaute_idb',
 			weight:2,
-        });
+        });*/
     }
 
 })();
