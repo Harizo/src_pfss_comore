@@ -166,7 +166,8 @@
 					$edit: true,
 					$selected: true,
 					id:'0',
-					code: null,
+					code_numero: null,
+					code_passation: null,
 					libelle: null,
 					id_type_infrastructure: null,
 					statu: 'ELIGIBLE' 
@@ -210,7 +211,7 @@
 			  .cancel('Annuler');
 			$mdDialog.show(confirm).then(function() {
 
-			vm.enregistrer_Infrastructure_eligible(1);
+			vm.enregistrerInfrastructure_eligible(1);
 			}, function() {
 			//alert('rien');
 			});
@@ -239,7 +240,8 @@
 					vm.selectedItemInfrastructure_eligible.$selected = false;
 					vm.selectedItemInfrastructure_eligible.$edit = false;
 
-					vm.selectedItemInfrastructure_eligible.code      = current_selectedItemInfrastructure_eligible.code;
+					vm.selectedItemInfrastructure_eligible.code_numero      = current_selectedItemInfrastructure_eligible.code_numero;
+					vm.selectedItemInfrastructure_eligible.code_passation      = current_selectedItemInfrastructure_eligible.code_passation;
 					vm.selectedItemInfrastructure_eligible.id_type_infrastructure      = current_selectedItemInfrastructure_eligible.type_infrastructure.id;
 					vm.selectedItemInfrastructure_eligible.libelle  = current_selectedItemInfrastructure_eligible.libelle;
 					
@@ -258,16 +260,21 @@
 					'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
 				}
 			};
-
+			var village_id = vm.filtre_eligible.id_village;
+			if (vm.nouvelItemInfrastructure_eligible==false)
+			{
+				village_id = vm.selectedItemInfrastructure_eligible.id_village
+			}
 
 			var datas = $.param(
 			{                        
 				supprimer        :etat_suppression,
 				id               : vm.selectedItemInfrastructure_eligible.id,
-				code     : vm.selectedItemInfrastructure_eligible.code,      
+				code_numero     : vm.selectedItemInfrastructure_eligible.code_numero,
+				code_passation     : vm.selectedItemInfrastructure_eligible.code_passation,      
 				id_type_infrastructure        : vm.selectedItemInfrastructure_eligible.id_type_infrastructure,
 				libelle    : vm.selectedItemInfrastructure_eligible.libelle,      
-				id_village  : vm.filtre_eligible.id_village,
+				id_village  : village_id,
 				statu: "ELIGIBLE"
 
 			});
@@ -308,6 +315,7 @@
 					vm.selectedItemInfrastructure_eligible.$edit = false ;
 					vm.selectedItemInfrastructure_eligible.$selected = false ;
 					vm.selectedItemInfrastructure_eligible.id = String(data.response) ;
+					vm.selectedItemInfrastructure_eligible.id_village = vm.filtre_eligible.id_village ;
 
 					vm.nouvelItemInfrastructure_eligible = false ;
 					vm.selectedItemInfrastructure_eligible = {};
@@ -350,7 +358,8 @@
 			{                        
 				supprimer        		:0,
 				id               		: infrastructure.id,
-				code     				: infrastructure.code,      
+				code_numero     				: infrastructure.code_numero,
+				code_passation     				: infrastructure.code_passation,      
 				id_type_infrastructure  : infrastructure.id_type_infrastructure,
 				libelle    				: infrastructure.libelle,      
 				id_village  			: infrastructure.id_village,
@@ -459,6 +468,7 @@
 
 	vm.infrastructure_choisi_column = 
 	[	
+		{titre:"Code /Numero"},
 		{titre:"Code /passation de marché"},
 		{titre:"Libelle"},		
 		{titre:"Type infrastructure"},
@@ -499,7 +509,8 @@
 		{                        
 			supprimer        :0,
 			id               : vm.selectedItemInfrastructure_choisi.id,
-			code     : vm.selectedItemInfrastructure_choisi.code,      
+			code_passation     : vm.selectedItemInfrastructure_choisi.code_passation, 
+			code_numero     : vm.selectedItemInfrastructure_choisi.code_numero,     
 			id_type_infrastructure        : vm.selectedItemInfrastructure_choisi.type_infrastructure.id,
 			libelle    : vm.selectedItemInfrastructure_choisi.libelle,      
 			id_village  : vm.filtre_choisi.id_village,
@@ -578,7 +589,8 @@
 		//var infras = {};
         dg.affiche_load = true;
 		dg.infrastructuredialog ={  id: dataInfra.id,
-									code: dataInfra.code,
+									code_numero: dataInfra.code_numero,
+									code_passation: dataInfra.code_passation,
 									libelle: dataInfra.libelle,
 									id_type_infrastructure: dataInfra.type_infrastructure.id,
 									id_village: dataInfra.id_village 
@@ -589,6 +601,8 @@
 		console.log(dataInfra);
 		console.log(dataTypeinfra);
         dg.communaute_idbdialog_column = [
+		{titre:"Code/numero"
+        },
         {titre:"Code/passation de marché"
         },
         {titre:"Libelle"

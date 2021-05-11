@@ -48,23 +48,26 @@
         if (id_user > 0) 
         {
             var permission = [];
-            
-            apiFactory.getcount_contrat_agep("count_contrat_agep",Number(4)).then(function(result) 
+            /*apiFactory.getcount_contrat_agep("count_contrat_agep",Number(1)).then(function(result) 
             {
                 var x = result.data.response;
                 vs.content = Number(x[0].nbr_contrat);
                 vs.color = '#F44336' ;
                 console.log(x);
-            });
-
-            apiFactory.getOne("utilisateurs/index", id_user).then(function(result) 
+            });*/
+            apiFactory.getAPIgeneraliserREST("count_contrat_agep/index","menu","andrana","id_sous_p",Number(4)).then(function(result) 
             {
-                var user = result.data.response; 
+                var x = result.data.response;
+                vs.content = x.length;
+                vs.color = '#F44336' ;
+                console.log(x );
+                console.log(vs.content );
+            });
 
                 //**************************************************
                 if (id_user) 
                 {
-                    $interval(function(){apiFactory.getcount_contrat_agep("count_contrat_agep",Number(4)).then(function(result) 
+                    /*$interval(function(){apiFactory.getcount_contrat_agep("count_contrat_agep",Number(1)).then(function(result) 
                     {
                         var resultat = result.data.response;
 
@@ -75,13 +78,20 @@
                         console.log(resultat);
                     
 
+                    });},15000) ;*/
+                    $interval(function(){apiFactory.getAPIgeneraliserREST("count_contrat_agep/index","menu","andrana","id_sous_p",Number(4)).then(function(result) 
+                    {
+                        var resultat = result.data.response;
+
+                        if (vs.content != Number(resultat.length)) 
+                        {
+                            vs.content = Number(resultat.length) ;
+                        };
+                        console.log(resultat);                    
+
                     });},15000) ;
                 }
                 //**************************************************
-                      
-                
-
-            });
         }
      
     }

@@ -190,10 +190,10 @@
                                       <span ng-if="infras.$edit">
                                           <md-input-container style="width:100%;display: flex !important;">
                                             <label>Code</label>                                                
-                                            <input type="text" name="code"  ng-model="infras.code"/>
+                                            <input type="text" name="code_numero"  ng-model="infras.code_numero"/>
                                           </md-input-container>
                                       </span>
-                                      <span ng-if="!infras.$edit"> {{infras.code}}</span>
+                                      <span ng-if="!infras.$edit"> {{infras.code_numero}}</span>
                                     </td> 
                                   <td>
                                       <span ng-if="infras.$edit">
@@ -364,8 +364,11 @@
                                         
                                       
                                       <td>
-                                          <span> {{infras.code}}</span>
+                                          <span> {{infras.code_numero}}</span>
                                         </td> 
+                                        <td>
+                                          <span> {{infras.code_passation}}</span>
+                                        </td>
                                       <td>
                                           <span> {{infras.libelle}}</span>
                                         </td>  
