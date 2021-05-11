@@ -27,16 +27,22 @@
                             <!--md-button type="submit" ng-show="(vm.filtre.id_region)&&(vm.filtre.id_region)&&(vm.filtre.id_commune)&&(vm.filtre.village_id) &&(vm.filtre.id_sous_projet)  && !vm.affichage_masque" class="md-raised md-green-800-bg" aria-label="Nouveau" ng-click="vm.ajouter_menage()" style="width:10%;">
                               Nouveau
                             </md-button-->
-                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised md-blue-800-bg" aria-label="Modifier" ng-click="vm.modifier()" style="width:10%;">
+                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised custum_button" aria-label="Modifier" ng-click="vm.modifier()" style="width:10%;">
+							<md-icon md-font-icon="icon-table-edit" class="s16" style="color: white;"></md-icon>
                               Modifier
                             </md-button>
-                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised md-yellow-800-bg" aria-label="Modifier" ng-click="vm.modifier_statut('PRESELECTIONNE')" style="width:17%;">
-                              Retour liste présélectionné
+                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised bouton_preselectionne" aria-label="Modifier" ng-click="vm.modifier_statut('PRESELECTIONNE')" style="color: white !important; background-color: #33C7FF  !important;width: auto !important; font-size: 10px;font-weight: bold;;width:11%;">
+							<md-icon md-font-icon="icon-select" class="s16" style="color: white;"></md-icon>
+                              Retour présélectionné
                             </md-button>
 							<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
 							  ng-if="!vm.affichage_masque" ng-disabled="filtrepardateform.$invalid||vm.affiche_load" ng-click="vm.export_carte_beneficiaire(vm.filtre)">
 							  Carte bénéficiaire
 							</md-button>
+                            <!--md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque"  ng-disabled="vm.selectedItem.utilisateur_id!=vm.user_id" class="md-raised custum_button_del" aria-label="Sortir" ng-click="vm.modifier_statut('SORTI')" style="width:10%;">
+							<md-icon md-font-icon="icon-logout" class="s16" style="color: white;"></md-icon>
+                              Sorti programme
+                            </md-button-->
                             <md-button type="submit" ng-show="vm.afficherboutonModifSupr==1" ng-disabled="vm.selectedItem.utilisateur_id!=vm.user_id" class="md-raised md-accent" aria-label="Supprimer" ng-click="vm.supprimer()" style="width:10%;">
                               Supprimer
                             </md-button>
@@ -129,7 +135,7 @@
                                 </md-input-container>
 								<div layout="column" layout-gt-xs="col" flex flex-gt-xs="10">
 									<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
-										  ng-if="!vm.affichage_masque" ng-disabled="filtrepardateform.$invalid||vm.affiche_load || vm.selectedItem" ng-click="vm.filtrer(vm.filtre)"  style="height:40% !important;">
+										  ng-if="!vm.affichage_masque" ng-disabled="filtrepardateform.$invalid||vm.affiche_load || vm.selectedItem.id" ng-click="vm.filtrer(vm.filtre)"  style="height:40% !important;">
 										  Actualiser
 									</md-button>
 								</div>	
@@ -730,18 +736,21 @@
 								  <td>{{menage.nom_conjoint}}</td>
 								  <td>{{menage.Addresse}}</td>
 								  <td>{{menage.statut}}</td>                
+								  <td>{{vm.affichage_etat_statut(menage.inscrit)}}</td>                
+								  <td>{{vm.affichage_etat_statut(menage.preselectionne)}}</td>                
+								  <td>{{vm.affichage_etat_statut(menage.beneficiaire)}}</td>                
 								  <td>{{vm.etat_envoie(menage.id_serveur_centrale)}}</td>                
 								</tr>
 							  </tbody>
 							</table>
 						</div>	
                     </md-tab>   
-                    <md-tab label="Informations saisies lors de l’inscription" ng-disabled="!vm.selectedItem.id" ng-click="vm.charger_detail_reponse_menage(vm.selectedItem)">
+                    <md-tab label="Informations saisies lors de l’inscription" ng-disabled="!vm.selectedItem.id">
 						<fieldset>
 							<div layout="column" layout-gt-xs="row" flex>
 								<md-input-container flex-gt-xs="15">
 									<input type="number"  name="taille_menage" ng-model="vm.filtre.taille_menage"
-									placeholder="Taille du ménage" >
+									placeholder="Taille du ménage" readonly >
 									<div ng-messages="filtrepardateform.taille_menage.$error"
 										role="alert">
 										<div ng-message="required">
@@ -751,17 +760,17 @@
 								</md-input-container>
 								<md-input-container flex-gt-xs="15">
 									<input type="number"  name="nombre_personne_plus_soixantedixans" ng-model="vm.filtre.nombre_personne_plus_soixantedixans"
-									placeholder="o	Nbr personnes plus de70 ans" >
+									placeholder="Personnes +70 ans" >
 									<div ng-messages="filtrepardateform.nombre_personne_plus_soixantedixans.$error"
 										role="alert">
 										<div ng-message="required">
-											<span>Nbr personnes plus de70 ans </span>
+											<span>Personnes +70 ans </span>
 										</div>
 									</div>
 								</md-input-container>
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_enfant_moins_six_ans" ng-model="vm.filtre.nombre_enfant_moins_six_ans"
-									placeholder="Enfants moins de 6 ans" >
+									placeholder="Enfants moins de 6 ans" ng-change="vm.Sommer_Membre_Menages(vm.filtre)">
 									<div ng-messages="filtrepardateform.nombre_enfant_moins_six_ans.$error"
 										role="alert">
 										<div ng-message="required">
@@ -771,7 +780,7 @@
 								</md-input-container>
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_enfant_moins_quinze_ans" ng-model="vm.filtre.nombre_enfant_moins_quinze_ans"
-									placeholder="Enf moins de 15 ans" >
+									placeholder="Enf moins de 15 ans"  ng-change="vm.Sommer_Membre_Menages(vm.filtre)">
 									<div ng-messages="filtrepardateform.nombre_enfant_moins_quinze_ans.$error"
 										role="alert">
 										<div ng-message="required">
@@ -801,7 +810,7 @@
 								</md-input-container>
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_personne_handicape" ng-model="vm.filtre.nombre_personne_handicape"
-									placeholder="Personnes handicapées" >
+									placeholder="Personnes handicapées"  ng-change="vm.Sommer_Membre_Menages(vm.filtre)">
 									<div ng-messages="filtrepardateform.nombre_personne_handicape.$error"
 										role="alert">
 										<div ng-message="required">
@@ -811,7 +820,7 @@
 								</md-input-container>
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_adulte_travail" ng-model="vm.filtre.nombre_adulte_travail"
-									placeholder="Adultes qui travaillent" >
+									placeholder="Adultes qui travaillent"  ng-change="vm.Sommer_Membre_Menages(vm.filtre)">
 									<div ng-messages="filtrepardateform.nombre_adulte_travail.$error"
 										role="alert">
 										<div ng-message="required">
@@ -821,7 +830,7 @@
 								</md-input-container>
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_membre_a_etranger" ng-model="vm.filtre.nombre_membre_a_etranger"
-									placeholder="Membres à l’étranger" >
+									placeholder="Membres à l’étranger"  ng-change="vm.Sommer_Membre_Menages(vm.filtre)">
 									<div ng-messages="filtrepardateform.nombre_membre_a_etranger.$error"
 										role="alert">
 										<div ng-message="required">
@@ -1007,9 +1016,411 @@
 								</fieldset>
 							</div>
 							<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>						 
-							  <md-button class="md-raised md-primary" ng-disabled="!vm.selectedItem.id" ng-click="vm.sauvegarder_reponse_menage(vm.selectedItem.id)">Enregistrer</md-button>                         
+							  <md-button class="md-raised md-primary" ng-disabled="!vm.selectedItem.id" ng-click="vm.sauvegarder_reponse_menage(vm.selectedItem.id_menage)">Enregistrer</md-button>                         
 							</section>
 						</fieldset>
+					</md-tab>
+                    <md-tab label="Informations saisies après enquête" ng-disabled="!vm.selectedItem.id">
+						<fieldset>
+							<div layout="column" layout-gt-xs="row" flex>
+								<md-input-container flex-gt-xs="15">
+									<input type="number"  name="taille_menage_enquete" ng-model="vm.filtre.taille_menage_enquete"
+									placeholder="Taille du ménage" readonly>
+									<div ng-messages="filtrepardateform.taille_menage.$error"
+										role="alert">
+										<div ng-message="required">
+											<span>Taille du ménage</span>
+										</div>
+									</div>
+								</md-input-container>
+								<md-input-container flex-gt-xs="15">
+									<input type="number"  name="nombre_personne_plus_soixantedixans_enquete" ng-model="vm.filtre.nombre_personne_plus_soixantedixans_enquete"
+									placeholder="Personnes +70 ans" ng-change="vm.Sommer_Membre_Menage(vm.filtre)">
+									<div ng-messages="filtrepardateform.nombre_personne_plus_soixantedixans_enquete.$error"
+										role="alert">
+										<div ng-message="required">
+											<span>Personnes +70 ans </span>
+										</div>
+									</div>
+								</md-input-container>
+								<md-input-container flex-gt-xs="10">
+									<input type="number"  name="nombre_enfant_moins_six_ans_enquete" ng-model="vm.filtre.nombre_enfant_moins_six_ans_enquete"
+									placeholder="Enfants moins de 6 ans" ng-change="vm.Sommer_Membre_Menage(vm.filtre)">
+									<div ng-messages="filtrepardateform.nombre_enfant_moins_six_ans_enquete.$error"
+										role="alert">
+										<div ng-message="required">
+											<span>Enfants moins de 6 ans </span>
+										</div>
+									</div>
+								</md-input-container>
+								<md-input-container flex-gt-xs="10">
+									<input type="number"  name="nombre_enfant_moins_quinze_ans_enquete" ng-model="vm.filtre.nombre_enfant_moins_quinze_ans_enquete"
+									placeholder="Enf moins de 15 ans" ng-change="vm.Sommer_Membre_Menage(vm.filtre)" >
+									<div ng-messages="filtrepardateform.nombre_enfant_moins_quinze_ans_enquete.$error"
+										role="alert">
+										<div ng-message="required">
+											<span>Enf moins de 15 ans </span>
+										</div>
+									</div>
+								</md-input-container>
+								<md-input-container flex-gt-xs="10">
+									<input type="number"  name="nombre_enfant_non_scolarise_enquete" ng-model="vm.filtre.nombre_enfant_non_scolarise_enquete"
+									placeholder="6-14 ans non scolarisé " >
+									<div ng-messages="filtrepardateform.nombre_enfant_non_scolarise_enquete.$error"
+										role="alert">
+										<div ng-message="required">
+											<span>6-14 ans non scolarisé </span>
+										</div>
+									</div>
+								</md-input-container>
+								<md-input-container flex-gt-xs="10">
+									<input type="number"  name="nombre_enfant_scolarise_enquete" ng-model="vm.filtre.nombre_enfant_scolarise_enquete"
+									placeholder="Enf 6-14 ans scolarisé " >
+									<div ng-messages="filtrepardateform.nombre_enfant_scolarise_enquete.$error"
+										role="alert">
+										<div ng-message="required">
+											<span>Enf 6-14 ans scolarisé </span>
+										</div>
+									</div>
+								</md-input-container>
+								<md-input-container flex-gt-xs="10">
+									<input type="number"  name="nombre_personne_handicape_enquete" ng-model="vm.filtre.nombre_personne_handicape_enquete"
+									placeholder="Personnes handicapées" ng-change="vm.Sommer_Membre_Menage(vm.filtre)">
+									<div ng-messages="filtrepardateform.nombre_personne_handicape_enquete.$error"
+										role="alert">
+										<div ng-message="required">
+											<span>Personnes handicapées</span>
+										</div>
+									</div>
+								</md-input-container>
+								<md-input-container flex-gt-xs="10">
+									<input type="number"  name="nombre_adulte_travail_enquete" ng-model="vm.filtre.nombre_adulte_travail_enquete"
+									placeholder="Adultes qui travaillent" ng-change="vm.Sommer_Membre_Menage(vm.filtre)" >
+									<div ng-messages="filtrepardateform.nombre_adulte_travail_enquete.$error"
+										role="alert">
+										<div ng-message="required">
+											<span>Adultes qui travaillent</span>
+										</div>
+									</div>
+								</md-input-container>
+								<md-input-container flex-gt-xs="10">
+									<input type="number"  name="nombre_membre_a_etranger_enquete" ng-model="vm.filtre.nombre_membre_a_etranger_enquete"
+									placeholder="Membres à l’étranger" ng-change="vm.Sommer_Membre_Menage(vm.filtre)" >
+									<div ng-messages="filtrepardateform.nombre_membre_a_etranger_enquete.$error"
+										role="alert">
+										<div ng-message="required">
+											<span>Membres à l’étranger</span>
+										</div>
+									</div>
+								</md-input-container>
+							</div>
+							<div layout="column" layout-gt-xs="row" flex>
+								<md-input-container flex="100" flex-gt-xs="15">
+									  <label>Maison non dure (tôle, planche, feuille)</label>
+										<md-select ng-model="vm.filtre.maison_non_dure_enquete" name="maison_non_dure_enquete"  >
+										  <md-option  value="1">Oui</md-option>
+										  <md-option  value="0">Non</md-option>										  
+										</md-select>
+										<div ng-messages="individu_form.sexe.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Maison non dure (tôle, planche, feuille)</span>
+										  </div>
+										</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="15">
+									  <label>Accès à l’électricité</label>
+										<md-select ng-model="vm.filtre.acces_electricite_enquete" name="acces_electricite_enquete"  >
+										  <md-option  value="1">Oui</md-option>
+										  <md-option  value="0">Non</md-option>										  
+										</md-select>
+										<div ng-messages="individu_form.sexe.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Accès à l’électricité</span>
+										  </div>
+										</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="15">
+									  <label>Accès à l’eau de robinet</label>
+										<md-select ng-model="vm.filtre.acces_eau_robinet_enquete" name="acces_eau_robinet_enquete"  >
+										  <md-option  value="1">Oui</md-option>
+										  <md-option  value="0">Non</md-option>										  
+										</md-select>
+										<div ng-messages="individu_form.sexe.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Accès à l’eau de robinet</span>
+										  </div>
+										</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="15">
+									  <label>Logement endommagé par Kenneth</label>
+										<md-select ng-model="vm.filtre.logement_endommage_enquete" name="logement_endommage_enquete"  >
+										  <md-option  value="1">Oui</md-option>
+										  <md-option  value="0">Non</md-option>										  
+										</md-select>
+										<div ng-messages="individu_form.sexe.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Logement endommagé par Kenneth</span>
+										  </div>
+										</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="15">
+									  <label>Niveau de dégâts </label>
+										<md-select ng-model="vm.filtre.niveau_degat_logement_enquete" name="niveau_degat_logement_enquete"  ng-disabled="vm.filtre.logement_endommage_enquete==0">
+										  <md-option  value="1">Complètement détruit</md-option>
+										  <md-option  value="2">Dégât majeur habitable</md-option>										  
+										  <md-option  value="3">Dégât mineur</md-option>										  
+										</md-select>
+										<div ng-messages="individu_form.sexe.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Niveau de dégâts</span>
+										  </div>
+										</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="15">
+									  <label>Réhabilitation</label>
+										<md-select ng-model="vm.filtre.rehabilitation_enquete" name="rehabilitation_enquete"  ng-disabled="vm.filtre.logement_endommage==0">
+										  <md-option  value="1">Nouvelle construction</md-option>
+										  <md-option  value="2">Réhabilitation complète</md-option>										  
+										  <md-option  value="3">Réhabilitation partielle</md-option>										  
+										  <md-option  value="4">Aucune réhabilitation</md-option>										  
+										</md-select>
+										<div ng-messages="individu_form.sexe.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Réhabilitation</span>
+										  </div>
+										</div>
+								</md-input-container>
+							</div>
+							<div layout="column" layout-gt-xs="row" flex>
+								<md-input-container flex="100" flex-gt-xs="15">
+									  <label>Bénéficiaire d’autres programmes</label>
+										<md-select ng-model="vm.filtre.beneficiaire_autre_programme_enquete" name="beneficiaire_autre_programme_enquete"  >
+										  <md-option  value="1">Oui</md-option>
+										  <md-option  value="0">Non</md-option>										  
+										</md-select>
+										<div ng-messages="individu_form.sexe.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Bénéficiaire d’autres programmes</span>
+										  </div>
+										</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="15">
+									  <label>Existe-t-il de membres fonctionnaires </label>
+										<md-select ng-model="vm.filtre.membre_fonctionnaire_enquete" name="membre_fonctionnaire_enquete"  >
+										  <md-option  value="1">Oui</md-option>
+										  <md-option  value="0">Non</md-option>										  
+										</md-select>
+										<div ng-messages="individu_form.sexe.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Existe-t-il de membres fonctionnaires </span>
+										  </div>
+										</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="15">
+									  <label>Possédez-vous une antenne parabolique </label>
+										<md-select ng-model="vm.filtre.antenne_parabolique_enquete" name="antenne_parabolique_enquete"  >
+										  <md-option  value="1">Oui</md-option>
+										  <md-option  value="0">Non</md-option>										  
+										</md-select>
+										<div ng-messages="individu_form.sexe.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Possédez-vous une antenne parabolique </span>
+										  </div>
+										</div>
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="15">
+									  <label>Possédez-vous un frigo </label>
+										<md-select ng-model="vm.filtre.possede_frigo_enquete" name="possede_frigo_enquete"  >
+										  <md-option  value="1">Oui</md-option>
+										  <md-option  value="0">Non</md-option>										  
+										</md-select>
+										<div ng-messages="individu_form.sexe.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Possédez-vous un frigo</span>
+										  </div>
+										</div>
+								</md-input-container>
+							</div>
+						</fieldset>
+						<div style="clear:both;"></div>	
+						<fieldset>					
+							<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>						 
+							  <md-button class="md-raised md-primary" ng-disabled="!vm.selectedItem.id" ng-click="vm.sauvegarder_reponse_menage(vm.selectedItem.id_menage)">Enregistrer</md-button>                         
+							</section>
+						</fieldset>
+					</md-tab>
+                    <md-tab label="Comparaison" ng-disabled="!vm.selectedItem.id">
+						<fieldset>
+							<div layout="column" layout-gt-xs="row" flex>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.taille_menage!=vm.filtre.taille_menage_enquete">
+									<input readonly ng-if="vm.filtre.taille_menage!=vm.filtre.taille_menage_enquete" input type="text"  ng-model="vm.filtre.taille_menage_enquete1"
+									placeholder="Taille du ménage" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.taille_menage==vm.filtre.taille_menage_enquete">
+									<input readonly  ng-if="vm.filtre.taille_menage==vm.filtre.taille_menage_enquete" type="text" ng-model="vm.filtre.taille_menage_enquete1"
+									placeholder="Taille du ménage" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.nombre_personne_plus_soixantedixans!=vm.filtre.nombre_personne_plus_soixantedixans_enquete">
+									<input readonly  ng-if="vm.filtre.nombre_personne_plus_soixantedixans!=vm.filtre.nombre_personne_plus_soixantedixans_enquete" type="text"  ng-model="vm.filtre.nombre_personne_plus_soixantedixans_enquete1"
+									placeholder="Personnes +70 ans" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.nombre_personne_plus_soixantedixans==vm.filtre.nombre_personne_plus_soixantedixans_enquete">
+									<input readonly  ng-if="vm.filtre.nombre_personne_plus_soixantedixans==vm.filtre.nombre_personne_plus_soixantedixans_enquete" type="text"  ng-model="vm.filtre.nombre_personne_plus_soixantedixans_enquete1"
+									placeholder="Personnes +70 ans" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.nombre_enfant_moins_six_ans!=vm.filtre.nombre_enfant_moins_six_ans_enquete">
+									<input readonly  ng-if="vm.filtre.nombre_enfant_moins_six_ans!=vm.filtre.nombre_enfant_moins_six_ans_enquete"  type="text"  name="nombre_enfant_moins_six_ans_enquete" ng-model="vm.filtre.nombre_enfant_moins_six_ans_enquete1"
+									placeholder="Enfants moins de 6 ans" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.nombre_enfant_moins_six_ans==vm.filtre.nombre_enfant_moins_six_ans_enquete">
+									<input readonly  ng-if="vm.filtre.nombre_enfant_moins_six_ans==vm.filtre.nombre_enfant_moins_six_ans_enquete"  type="text"  name="nombre_enfant_moins_six_ans_enquete" ng-model="vm.filtre.nombre_enfant_moins_six_ans_enquete1"
+									placeholder="Enfants moins de 6 ans" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.nombre_enfant_moins_quinze_ans!=vm.filtre.nombre_enfant_moins_quinze_ans_enquete">
+									<input readonly  ng-if="vm.filtre.nombre_enfant_moins_quinze_ans!=vm.filtre.nombre_enfant_moins_quinze_ans_enquete"  type="text"  ng-model="vm.filtre.nombre_enfant_moins_quinze_ans_enquete1"
+									placeholder="Enf moins de 15 ans" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.nombre_enfant_moins_quinze_ans==vm.filtre.nombre_enfant_moins_quinze_ans_enquete">
+									<input readonly  ng-if="vm.filtre.nombre_enfant_moins_quinze_ans==vm.filtre.nombre_enfant_moins_quinze_ans_enquete"  type="text" ng-model="vm.filtre.nombre_enfant_moins_quinze_ans_enquete1"
+									placeholder="Enf moins de 15 ans" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.nombre_enfant_non_scolarise!=vm.filtre.nombre_enfant_non_scolarise_enquete">
+									<input readonly  ng-if="vm.filtre.nombre_enfant_non_scolarise!=vm.filtre.nombre_enfant_non_scolarise_enquete"  type="text"  name="nombre_enfant_non_scolarise_enquete" ng-model="vm.filtre.nombre_enfant_non_scolarise_enquete1"
+									placeholder="6-14 ans non scolarisé " >
+								</md-input-container>
+								<md-input-container  flex="100" flex-gt-xs="30" ng-if="vm.filtre.nombre_enfant_non_scolarise==vm.filtre.nombre_enfant_non_scolarise_enquete">
+									<input readonly  ng-if="vm.filtre.nombre_enfant_non_scolarise==vm.filtre.nombre_enfant_non_scolarise_enquete"  type="text"  name="nombre_enfant_non_scolarise_enquete" ng-model="vm.filtre.nombre_enfant_non_scolarise_enquete1"
+									placeholder="6-14 ans non scolarisé " >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30"  ng-if="vm.filtre.nombre_enfant_scolarise!=vm.filtre.nombre_enfant_scolarise_enquete">
+									<input readonly  ng-if="vm.filtre.nombre_enfant_scolarise!=vm.filtre.nombre_enfant_scolarise_enquete"  type="text"  name="nombre_enfant_scolarise_enquete" ng-model="vm.filtre.nombre_enfant_scolarise_enquete1"
+									placeholder="Enf 6-14 ans scolarisé " >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30"  ng-if="vm.filtre.nombre_enfant_scolarise==vm.filtre.nombre_enfant_scolarise_enquete">
+									<input readonly  ng-if="vm.filtre.nombre_enfant_scolarise==vm.filtre.nombre_enfant_scolarise_enquete"  type="text"  name="nombre_enfant_scolarise_enquete" ng-model="vm.filtre.nombre_enfant_scolarise_enquete1"
+									placeholder="Enf 6-14 ans scolarisé " >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.nombre_personne_handicape!=vm.filtre.nombre_personne_handicape_enquete">
+									<input readonly  ng-if="vm.filtre.nombre_personne_handicape!=vm.filtre.nombre_personne_handicape_enquete"  type="text"  ng-model="vm.filtre.nombre_personne_handicape_enquete1"
+									placeholder="Personnes handicapées" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.nombre_personne_handicape==vm.filtre.nombre_personne_handicape_enquete">
+									<input readonly  ng-if="vm.filtre.nombre_personne_handicape==vm.filtre.nombre_personne_handicape_enquete"  type="text"  ng-model="vm.filtre.nombre_personne_handicape_enquete1"
+									placeholder="Personnes handicapées" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.nombre_adulte_travail!=vm.filtre.nombre_adulte_travail_enquete">
+									<input readonly  ng-if="vm.filtre.nombre_adulte_travail!=vm.filtre.nombre_adulte_travail_enquete"  type="text"  name="nombre_adulte_travail_enquete" ng-model="vm.filtre.nombre_adulte_travail_enquete1"
+									placeholder="Adultes qui travaillent" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.nombre_adulte_travail==vm.filtre.nombre_adulte_travail_enquete">
+									<input readonly  ng-if="vm.filtre.nombre_adulte_travail==vm.filtre.nombre_adulte_travail_enquete"  type="text"  name="nombre_adulte_travail_enquete" ng-model="vm.filtre.nombre_adulte_travail_enquete1"
+									placeholder="Adultes qui travaillent" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.nombre_membre_a_etranger!=vm.filtre.nombre_membre_a_etranger_enquete">
+									<input readonly ng-if="vm.filtre.nombre_membre_a_etranger!=vm.filtre.nombre_membre_a_etranger_enquete" type="text"  name="nombre_membre_a_etranger_enquete" ng-model="vm.filtre.nombre_membre_a_etranger_enquete1"
+									placeholder="Membres à l’étranger" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.nombre_membre_a_etranger==vm.filtre.nombre_membre_a_etranger_enquete">
+									<input readonly ng-if="vm.filtre.nombre_membre_a_etranger==vm.filtre.nombre_membre_a_etranger_enquete" type="text"  name="nombre_membre_a_etranger_enquete" ng-model="vm.filtre.nombre_membre_a_etranger_enquete1"
+									placeholder="Membres à l’étranger" >
+								</md-input-container>
+							</div>
+							<div layout="column" layout-gt-xs="row" flex>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.maison_non_dure!=vm.filtre.maison_non_dure_enquete">
+									<input readonly  ng-if="vm.filtre.maison_non_dure!=vm.filtre.maison_non_dure_enquete"  type="text"  ng-model="vm.filtre.maison_non_dure_enquete1"
+									placeholder="Maison non dure (tôle, planche, feuille)" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.maison_non_dure==vm.filtre.maison_non_dure_enquete">
+									<input readonly  ng-if="vm.filtre.maison_non_dure==vm.filtre.maison_non_dure_enquete"  type="text"  ng-model="vm.filtre.maison_non_dure_enquete1"
+									placeholder="Maison non dure (tôle, planche, feuille)" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.acces_electricite!=vm.filtre.acces_electricite_enquete">
+									<input readonly  ng-if="vm.filtre.acces_electricite!=vm.filtre.acces_electricite_enquete"  type="text"  ng-model="vm.filtre.acces_electricite_enquete1"
+									placeholder="Accès à l’électricité" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.acces_electricite==vm.filtre.acces_electricite_enquete">
+									<input readonly  ng-if="vm.filtre.acces_electricite==vm.filtre.acces_electricite_enquete"  type="text"  ng-model="vm.filtre.acces_electricite_enquete1"
+									placeholder="Accès à l’électricité" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.acces_eau_robinet!=vm.filtre.acces_eau_robinet_enquete">
+									<input readonly  ng-if="vm.filtre.acces_eau_robinet!=vm.filtre.acces_eau_robinet_enquete"  type="text"  ng-model="vm.filtre.acces_eau_robinet_enquete1"
+									placeholder="Accès à l’eau de robinet" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.acces_eau_robinet==vm.filtre.acces_eau_robinet_enquete">
+									<input readonly  ng-if="vm.filtre.acces_eau_robinet==vm.filtre.acces_eau_robinet_enquete"  type="text"  ng-model="vm.filtre.acces_eau_robinet_enquete1"
+									placeholder="Accès à l’eau de robinet" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.logement_endommage!=vm.filtre.logement_endommage_enquete">
+									<input readonly  ng-if="vm.filtre.logement_endommage!=vm.filtre.logement_endommage_enquete"  type="text"  ng-model="vm.filtre.logement_endommage_enquete1"
+									placeholder="Logement endommagé par Kenneth" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.logement_endommage==vm.filtre.logement_endommage_enquete">
+									<input readonly  ng-if="vm.filtre.logement_endommage==vm.filtre.logement_endommage_enquete"  type="text"  ng-model="vm.filtre.logement_endommage_enquete1"
+									placeholder="Logement endommagé par Kenneth" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.niveau_degat_logement!=vm.filtre.niveau_degat_logement_enquete" >
+									<input readonly  ng-if="vm.filtre.niveau_degat_logement!=vm.filtre.niveau_degat_logement_enquete"  type="text"  ng-model="vm.filtre.niveau_degat_logement_enquete1"
+									placeholder="Niveau de dégâts" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.niveau_degat_logement==vm.filtre.niveau_degat_logement_enquete" >
+									<input readonly  ng-if="vm.filtre.niveau_degat_logement==vm.filtre.niveau_degat_logement_enquete"  type="text"  ng-model="vm.filtre.niveau_degat_logement_enquete1"
+									placeholder="Niveau de dégâts" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.rehabilitation!=vm.filtre.rehabilitation_enquete">
+									<input readonly  ng-if="vm.filtre.rehabilitation!=vm.filtre.rehabilitation_enquete"  type="text"  ng-model="vm.filtre.rehabilitation_enquete1"
+									placeholder="Réhabilitation" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.rehabilitation==vm.filtre.rehabilitation_enquete">
+									<input readonly  ng-if="vm.filtre.rehabilitation==vm.filtre.rehabilitation_enquete"  type="text"  ng-model="vm.filtre.rehabilitation_enquete1"
+									placeholder="Réhabilitation" >
+								</md-input-container>
+							</div>
+							<div layout="column" layout-gt-xs="row" flex>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.beneficiaire_autre_programme!=vm.filtre.beneficiaire_autre_programme_enquete">
+									<input readonly  ng-if="vm.filtre.beneficiaire_autre_programme!=vm.filtre.beneficiaire_autre_programme_enquete"  type="text"  ng-model="vm.filtre.beneficiaire_autre_programme_enquete1"
+									placeholder="Bénéficiaire d’autres programmes" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.beneficiaire_autre_programme==vm.filtre.beneficiaire_autre_programme_enquete">
+									<input readonly  ng-if="vm.filtre.beneficiaire_autre_programme==vm.filtre.beneficiaire_autre_programme_enquete"  type="text"  ng-model="vm.filtre.beneficiaire_autre_programme_enquete1"
+									placeholder="Bénéficiaire d’autres programmes" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.membre_fonctionnaire!=vm.filtre.membre_fonctionnaire_enquete">
+									<input readonly  ng-if="vm.filtre.membre_fonctionnaire!=vm.filtre.membre_fonctionnaire_enquete"  type="text"  ng-model="vm.filtre.membre_fonctionnaire_enquete1"
+									placeholder="Existe-t-il de membres fonctionnaires" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.membre_fonctionnaire==vm.filtre.membre_fonctionnaire_enquete">
+									<input readonly  ng-if="vm.filtre.membre_fonctionnaire==vm.filtre.membre_fonctionnaire_enquete"  type="text"  ng-model="vm.filtre.membre_fonctionnaire_enquete1"
+									placeholder="Existe-t-il de membres fonctionnaires" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.antenne_parabolique!=vm.filtre.antenne_parabolique_enquete">
+									<input readonly  ng-if="vm.filtre.antenne_parabolique!=vm.filtre.antenne_parabolique_enquete"  type="text"  ng-model="vm.filtre.antenne_parabolique_enquete1"
+									placeholder="Possédez-vous une antenne parabolique" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.antenne_parabolique==vm.filtre.antenne_parabolique_enquete">
+									<input readonly  ng-if="vm.filtre.antenne_parabolique==vm.filtre.antenne_parabolique_enquete"  type="text"  ng-model="vm.filtre.antenne_parabolique_enquete1"
+									placeholder="Possédez-vous une antenne parabolique" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.possede_frigo!=vm.filtre.possede_frigo_enquete">
+									<input readonly  ng-if="vm.filtre.possede_frigo!=vm.filtre.possede_frigo_enquete"  type="text"  ng-model="vm.filtre.possede_frigo_enquete1"
+									placeholder="Possédez-vous un frigo" >
+								</md-input-container>
+								<md-input-container flex="100" flex-gt-xs="30" ng-if="vm.filtre.possede_frigo==vm.filtre.possede_frigo_enquete">
+									<input readonly  ng-if="vm.filtre.possede_frigo==vm.filtre.possede_frigo_enquete"  type="text"  ng-model="vm.filtre.possede_frigo_enquete1"
+									placeholder="Possédez-vous un frigo" >
+								</md-input-container>
+							</div>
+						</fieldset>
+						<div style="clear:both;"></div>	
 					</md-tab>
  					<!-- Fin Onglet variable intervention-->
                         <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>

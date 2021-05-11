@@ -1,0 +1,32 @@
+<md-dialog aria-label="Informations à remplir pour le PTA">
+<form name="saisiedatasortieform" class="md-inline-form" novalidate >
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Saisie date de sortie</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+        </md-button>
+      </div>
+    </md-toolbar>
+				<div layout="column" layout-gt-xs="row">
+					<md-input-container>
+						<span>Date : </span>
+					</md-input-container>					
+					<md-datepicker ng-model="date_sortie"  md-max-date="date_max" md-placeholder="Enter date sortie" ng-change="modifierdate_sortie(date_sortie)" required>                 		
+					</md-datepicker>
+				</div>
+    <md-dialog-actions layout="row">
+      <!--md-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" md-autofocus>
+        More on Wikipedia
+      </md-button-->
+      <span flex></span>
+      <md-button ng-click="cancel()" >
+        Annuler
+      </md-button>
+      <md-button ng-click="answer(date_sortie)" style="margin-right:20px;" ng-disabled="saisiedatasortieform.$invalid" >
+        Accepter
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
+

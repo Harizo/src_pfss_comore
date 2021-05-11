@@ -45,7 +45,7 @@
             'app.pfss.idb',
 
 
-            'app.pfss.gestion_financiere'
+            'app.pfss.gestion_financiere',
 
             'app.pfss.macc',
             //'app.pfss.gestion_budgetaire',

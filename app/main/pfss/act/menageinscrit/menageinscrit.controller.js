@@ -16,7 +16,7 @@
         responsive: true
       };
       vm.menage_column = [{titre:"Identifiant"},{titre:"N° d'enreg"},{titre:"Chef Ménage"},{titre:"Age"},{titre:"Sexe"},{titre:"Conjoint"},
-      {titre:"Addresse"},{titre:"Statut"},{titre:"Inscr"},{titre:"Presél"},{titre:"Bénéf"},{titre:"Etat envoie"}];
+      {titre:"Adresse"},{titre:"Statut"},{titre:"Inscr"},{titre:"Presél"},{titre:"Bénéf"},{titre:"Etat envoie"}];
       // vm.menage_column = [{titre:"Numero d'enregistrement"},{titre:"Chef Ménage"},
       // {titre:"Age chef de ménage"},{titre:"Sexe"},{titre:"Addresse"},{titre:"Personne inscrire"},{titre:"Etat envoie"}];
       vm.individu_column = [{titre:"Nom et prénom"},{titre:"Date de naissance"},{titre:"Sexe"},{titre:"Lien de parenté"},{titre:"Scolarisé"},{titre:"Activite"},{titre:"Aptitude"},{titre:"Travailleur"}];
@@ -130,7 +130,7 @@
         { 
           vm.all_village = result.data.response;    
           vm.filtre.village_id = null ; 
-         
+        
         });
       }
 		apiFactory.getAll("liste_variable/index").then(function(result){
@@ -228,27 +228,46 @@
 			vm.filtre.carte_electorale_conjoint = "" ;
 			vm.filtre.telephone_chef_menage = "" ;
 			vm.filtre.telephone_conjoint = "" ;
-			vm.filtre.nombre_personne_plus_soixantedixans = "" ;
-			vm.filtre.taille_menage = "" ;
-			vm.filtre.nombre_enfant_moins_quinze_ans = "" ;
-			vm.filtre.nombre_enfant_non_scolarise = "" ;
-			vm.filtre.nombre_enfant_scolarise = "" ;
-			vm.filtre.nombre_enfant_moins_six_ans = "" ;
-			vm.filtre.nombre_personne_handicape = "" ;
-			vm.filtre.nombre_adulte_travail = "" ;
-			vm.filtre.nombre_membre_a_etranger = "" ;
-			vm.filtre.maison_non_dure = "" ;
-			vm.filtre.acces_electricite = "" ;
-			vm.filtre.acces_eau_robinet = "" ;
-			vm.filtre.logement_endommage = "" ;
-			vm.filtre.niveau_degat_logement = "" ;
-			vm.filtre.rehabilitation  = "" ;
-			vm.filtre.beneficiaire_autre_programme  = "" ;
-			vm.filtre.membre_fonctionnaire  = "" ;
-			vm.filtre.antenne_parabolique  = "" ;
-			vm.filtre.possede_frigo  = "" ;
-			vm.filtre.score_obtenu  = "" ;
-			vm.filtre.rang_obtenu  = "" ;
+			vm.filtre.nombre_personne_plus_soixantedixans = null ;
+			vm.filtre.taille_menage = null ;
+			vm.filtre.nombre_enfant_moins_quinze_ans = null ;
+			vm.filtre.nombre_enfant_non_scolarise = null ;
+			vm.filtre.nombre_enfant_scolarise = null ;
+			vm.filtre.nombre_enfant_moins_six_ans = null ;
+			vm.filtre.nombre_personne_handicape = null ;
+			vm.filtre.nombre_adulte_travail = null ;
+			vm.filtre.nombre_membre_a_etranger = null ;
+			vm.filtre.maison_non_dure = null ;
+			vm.filtre.acces_electricite = null ;
+			vm.filtre.acces_eau_robinet = null ;
+			vm.filtre.logement_endommage = null ;
+			vm.filtre.niveau_degat_logement = null ;
+			vm.filtre.rehabilitation  = null ;
+			vm.filtre.beneficiaire_autre_programme  = null ;
+			vm.filtre.membre_fonctionnaire  = null ;
+			vm.filtre.antenne_parabolique  = null ;
+			vm.filtre.possede_frigo  = null ;
+			vm.filtre.nombre_personne_plus_soixantedixans_enquete = null ;
+			vm.filtre.taille_menage_enquete = null ;
+			vm.filtre.nombre_enfant_moins_quinze_ans_enquete = null ;
+			vm.filtre.nombre_enfant_non_scolarise_enquete = null ;
+			vm.filtre.nombre_enfant_scolarise_enquete = null ;
+			vm.filtre.nombre_enfant_moins_six_ans_enquete = null ;
+			vm.filtre.nombre_personne_handicape_enquete = null ;
+			vm.filtre.nombre_adulte_travail_enquete = null ;
+			vm.filtre.nombre_membre_a_etranger_enquete = null ;
+			vm.filtre.maison_non_dure_enquete = null ;
+			vm.filtre.acces_electricite_enquete = null ;
+			vm.filtre.acces_eau_robinet_enquete = null ;
+			vm.filtre.logement_endommage_enquete = null ;
+			vm.filtre.niveau_degat_logement_enquete = null ;
+			vm.filtre.rehabilitation_enquete  = null ;
+			vm.filtre.beneficiaire_autre_programme_enquete  = null ;
+			vm.filtre.membre_fonctionnaire_enquete  = null ;
+			vm.filtre.antenne_parabolique_enquete  = null ;
+			vm.filtre.possede_frigo_enquete  = null ;
+			vm.filtre.score_obtenu  = null ;
+			vm.filtre.rang_obtenu  = null ;
 			vm.filtre.statut  = "INSCRIT" ;
 			vm.filtre.inapte  = '0' ;
 			vm.filtre.inscrit  = 1 ;
@@ -358,6 +377,44 @@
 			vm.filtre.antenne_parabolique  =  parseInt(vm.selectedItem.antenne_parabolique) ;
 			if(vm.selectedItem.possede_frigo)
 			vm.filtre.possede_frigo  =  parseInt(vm.selectedItem.possede_frigo) ;
+			if(vm.selectedItem.nombre_personne_plus_soixantedixans_enquete)
+			vm.filtre.nombre_personne_plus_soixantedixans_enquete =  parseInt(vm.selectedItem.nombre_personne_plus_soixantedixans_enquete) ;
+			if(vm.selectedItem.taille_menage_enquete)
+			vm.filtre.taille_menage_enquete =  parseInt(vm.selectedItem.taille_menage_enquete) ;
+			if(vm.selectedItem.nombre_enfant_moins_quinze_ans_enquete)
+			vm.filtre.nombre_enfant_moins_quinze_ans_enquete =  parseInt(vm.selectedItem.nombre_enfant_moins_quinze_ans_enquete) ;
+			if(vm.selectedItem.nombre_enfant_non_scolarise_enquete)
+			vm.filtre.nombre_enfant_non_scolarise_enquete =  parseInt(vm.selectedItem.nombre_enfant_non_scolarise_enquete) ;
+			if(vm.selectedItem.nombre_enfant_scolarise_enquete)
+			vm.filtre.nombre_enfant_scolarise_enquete =  parseInt(vm.selectedItem.nombre_enfant_scolarise_enquete) ;
+			if(vm.selectedItem.nombre_enfant_moins_six_ans_enquete)
+			vm.filtre.nombre_enfant_moins_six_ans_enquete =  parseInt(vm.selectedItem.nombre_enfant_moins_six_ans_enquete) ;
+			if(vm.selectedItem.nombre_personne_handicape_enquete)
+			vm.filtre.nombre_personne_handicape_enquete =  parseInt(vm.selectedItem.nombre_personne_handicape_enquete) ;
+			if(vm.selectedItem.nombre_adulte_travail_enquete)
+			vm.filtre.nombre_adulte_travail_enquete =  parseInt(vm.selectedItem.nombre_adulte_travail_enquete) ;
+			if(vm.selectedItem.nombre_membre_a_etranger_enquete)
+			vm.filtre.nombre_membre_a_etranger_enquete =  parseInt(vm.selectedItem.nombre_membre_a_etranger_enquete) ;
+			if(vm.selectedItem.maison_non_dure_enquete)
+			vm.filtre.maison_non_dure_enquete =  parseInt(vm.selectedItem.maison_non_dure_enquete) ;
+			if(vm.selectedItem.acces_electricite_enquete)
+			vm.filtre.acces_electricite_enquete =  parseInt(vm.selectedItem.acces_electricite_enquete) ;
+			if(vm.selectedItem.acces_eau_robinet_enquete)
+			vm.filtre.acces_eau_robinet_enquete =  parseInt(vm.selectedItem.acces_eau_robinet_enquete) ;
+			if(vm.selectedItem.logement_endommage_enquete)
+			vm.filtre.logement_endommage_enquete =  parseInt(vm.selectedItem.logement_endommage_enquete) ;
+			if(vm.selectedItem.niveau_degat_logement_enquete)
+			vm.filtre.niveau_degat_logement_enquete =  parseInt(vm.selectedItem.niveau_degat_logement_enquete) ;
+			if(vm.selectedItem.rehabilitation_enquete)
+			vm.filtre.rehabilitation_enquete  =  parseInt(vm.selectedItem.rehabilitation_enquete) ;
+			if(vm.selectedItem.beneficiaire_autre_programme_enquete)
+			vm.filtre.beneficiaire_autre_programme_enquete  =  parseInt(vm.selectedItem.beneficiaire_autre_programme_enquete) ;
+			if(vm.selectedItem.membre_fonctionnaire_enquete)
+			vm.filtre.membre_fonctionnaire_enquete  =  parseInt(vm.selectedItem.membre_fonctionnaire_enquete) ;
+			if(vm.selectedItem.antenne_parabolique_enquete)
+			vm.filtre.antenne_parabolique_enquete  =  parseInt(vm.selectedItem.antenne_parabolique_enquete) ;
+			if(vm.selectedItem.possede_frigo_enquete)
+			vm.filtre.possede_frigo_enquete  =  parseInt(vm.selectedItem.possede_frigo_enquete) ;
 			if(vm.selectedItem.score_obtenu)
 			vm.filtre.score_obtenu  =  parseInt(vm.selectedItem.score_obtenu) ;
 			if(vm.selectedItem.rang_obtenu)
@@ -617,9 +674,7 @@
 				if(parseInt(vil.id)==parseInt(vm.filtre.village_id)) {
 					vm.filtre.village = vil.Village; 
 					vm.filtre.vague=vil.vague;
-					if(vil.zip) {
-						vm.filtre.zip=vil.zip.id;
-					}	
+					vm.filtre.zip=vil.id_zip;
 					vm.nontrouvee=false;
 				}
 			});			
@@ -923,6 +978,25 @@
                       membre_fonctionnaire: menage.membre_fonctionnaire,
                       antenne_parabolique: menage.antenne_parabolique,
                       possede_frigo: menage.possede_frigo,
+                      nombre_personne_plus_soixantedixans_enquete: menage.nombre_personne_plus_soixantedixans_enquete,
+                      taille_menage_enquete: menage.taille_menage_enquete,
+                      nombre_enfant_moins_quinze_ans_enquete: menage.nombre_enfant_moins_quinze_ans_enquete,
+                      nombre_enfant_non_scolarise_enquete: menage.nombre_enfant_non_scolarise_enquete,
+                      nombre_enfant_scolarise_enquete: menage.nombre_enfant_scolarise_enquete,
+                      nombre_enfant_moins_six_ans_enquete: menage.nombre_enfant_moins_six_ans_enquete,
+                      nombre_personne_handicape_enquete: menage.nombre_personne_handicape_enquete,
+                      nombre_adulte_travail_enquete: menage.nombre_adulte_travail_enquete,
+                      nombre_membre_a_etranger_enquete: menage.nombre_membre_a_etranger_enquete,
+                      maison_non_dure_enquete: menage.maison_non_dure_enquete,
+                      acces_electricite_enquete: menage.acces_electricite_enquete,
+                      acces_eau_robinet_enquete: menage.acces_eau_robinet_enquete,
+                      logement_endommage_enquete: menage.logement_endommage_enquete,
+                      niveau_degat_logement_enquete: menage.niveau_degat_logement_enquete,
+                      rehabilitation_enquete: menage.rehabilitation_enquete,
+                      beneficiaire_autre_programme_enquete: menage.beneficiaire_autre_programme_enquete,
+                      membre_fonctionnaire_enquete: menage.membre_fonctionnaire_enquete,
+                      antenne_parabolique_enquete: menage.antenne_parabolique_enquete,
+                      possede_frigo_enquete: menage.possede_frigo_enquete,
                       score_obtenu: menage.score_obtenu,
                       rang_obtenu: menage.rang_obtenu,
                       NomTravailleur: menage.NomTravailleur,
@@ -989,6 +1063,7 @@
 						nombre_personne_handicape: menage.nombre_personne_handicape,
 						nombre_adulte_travail: menage.nombre_adulte_travail,
 						nombre_membre_a_etranger: menage.nombre_membre_a_etranger,
+						maison_non_dure: menage.maison_non_dure,
 						acces_electricite: menage.acces_electricite,
 						acces_eau_robinet: menage.acces_eau_robinet,
 						logement_endommage: menage.logement_endommage,
@@ -998,6 +1073,25 @@
 						membre_fonctionnaire: menage.membre_fonctionnaire,
 						antenne_parabolique: menage.antenne_parabolique,
 						possede_frigo: menage.possede_frigo,
+						nombre_personne_plus_soixantedixans_enquete: menage.nombre_personne_plus_soixantedixans_enquete,
+						taille_menage_enquete: menage.taille_menage_enquete,
+						nombre_enfant_moins_quinze_ans_enquete: menage.nombre_enfant_moins_quinze_ans_enquete,
+						nombre_enfant_non_scolarise_enquete: menage.nombre_enfant_non_scolarise_enquete,
+						nombre_enfant_scolarise_enquete: menage.nombre_enfant_scolarise_enquete,
+						nombre_enfant_moins_six_ans_enquete: menage.nombre_enfant_moins_six_ans_enquete,
+						nombre_personne_handicape_enquete: menage.nombre_personne_handicape_enquete,
+						nombre_adulte_travail_enquete: menage.nombre_adulte_travail_enquete,
+						nombre_membre_a_etranger_enquete: menage.nombre_membre_a_etranger_enquete,
+						maison_non_dure_enquete: menage.maison_non_dure_enquete,
+						acces_electricite_enquete: menage.acces_electricite_enquete,
+						acces_eau_robinet_enquete: menage.acces_eau_robinet_enquete,
+						logement_endommage_enquete: menage.logement_endommage_enquete,
+						niveau_degat_logement_enquete: menage.niveau_degat_logement_enquete,
+						rehabilitation_enquete: menage.rehabilitation_enquete,
+						beneficiaire_autre_programme_enquete: menage.beneficiaire_autre_programme_enquete,
+						membre_fonctionnaire_enquete: menage.membre_fonctionnaire_enquete,
+						antenne_parabolique_enquete: menage.antenne_parabolique_enquete,
+						possede_frigo_enquete : menage.possede_frigo_enquete,
 						score_obtenu: menage.score_obtenu,
 						rang_obtenu: menage.rang_obtenu,
 						statut: menage.statut,
@@ -1064,6 +1158,7 @@
 						vm.selectedItem.nombre_personne_handicape = vm.filtre.nombre_personne_handicape  ;
 						vm.selectedItem.nombre_adulte_travail = vm.filtre.nombre_adulte_travail  ;
 						vm.selectedItem.nombre_membre_a_etranger = vm.filtre.nombre_membre_a_etranger  ;
+						vm.selectedItem.maison_non_dure = vm.filtre.maison_non_dure  ;
 						vm.selectedItem.acces_electricite = vm.filtre.acces_electricite  ;
 						vm.selectedItem.acces_eau_robinet = vm.filtre.acces_eau_robinet  ;
 						vm.selectedItem.logement_endommage = vm.filtre.logement_endommage  ;
@@ -1242,12 +1337,251 @@
 					vm.filtre.antenne_parabolique  =  parseInt(vm.selectedItem.antenne_parabolique) ;
 					if(vm.selectedItem.possede_frigo)
 					vm.filtre.possede_frigo  =  parseInt(vm.selectedItem.possede_frigo) ;
+					if(vm.selectedItem.nombre_personne_plus_soixantedixans_enquete)
+					vm.filtre.nombre_personne_plus_soixantedixans_enquete =  parseInt(vm.selectedItem.nombre_personne_plus_soixantedixans_enquete) ;
+					if(vm.selectedItem.taille_menage_enquete)
+					vm.filtre.taille_menage_enquete =  parseInt(vm.selectedItem.taille_menage_enquete) ;
+					if(vm.selectedItem.nombre_enfant_moins_quinze_ans_enquete)
+					vm.filtre.nombre_enfant_moins_quinze_ans_enquete =  parseInt(vm.selectedItem.nombre_enfant_moins_quinze_ans_enquete) ;
+					if(vm.selectedItem.nombre_enfant_non_scolarise_enquete)
+					vm.filtre.nombre_enfant_non_scolarise_enquete =  parseInt(vm.selectedItem.nombre_enfant_non_scolarise_enquete) ;
+					if(vm.selectedItem.nombre_enfant_scolarise_enquete)
+					vm.filtre.nombre_enfant_scolarise_enquete =  parseInt(vm.selectedItem.nombre_enfant_scolarise_enquete) ;
+					if(vm.selectedItem.nombre_enfant_moins_six_ans_enquete)
+					vm.filtre.nombre_enfant_moins_six_ans_enquete =  parseInt(vm.selectedItem.nombre_enfant_moins_six_ans_enquete) ;
+					if(vm.selectedItem.nombre_personne_handicape_enquete)
+					vm.filtre.nombre_personne_handicape_enquete =  parseInt(vm.selectedItem.nombre_personne_handicape_enquete) ;
+					if(vm.selectedItem.nombre_adulte_travail_enquete)
+					vm.filtre.nombre_adulte_travail_enquete =  parseInt(vm.selectedItem.nombre_adulte_travail_enquete) ;
+					if(vm.selectedItem.nombre_membre_a_etranger_enquete)
+					vm.filtre.nombre_membre_a_etranger_enquete =  parseInt(vm.selectedItem.nombre_membre_a_etranger_enquete) ;
+					if(vm.selectedItem.maison_non_dure_enquete)
+					vm.filtre.maison_non_dure_enquete =  parseInt(vm.selectedItem.maison_non_dure_enquete) ;
+					if(vm.selectedItem.acces_electricite_enquete)
+					vm.filtre.acces_electricite_enquete =  parseInt(vm.selectedItem.acces_electricite_enquete) ;
+					if(vm.selectedItem.acces_eau_robinet_enquete)
+					vm.filtre.acces_eau_robinet_enquete =  parseInt(vm.selectedItem.acces_eau_robinet_enquete) ;
+					if(vm.selectedItem.logement_endommage_enquete)
+					vm.filtre.logement_endommage_enquete =  parseInt(vm.selectedItem.logement_endommage_enquete) ;
+					if(vm.selectedItem.niveau_degat_logement_enquete)
+					vm.filtre.niveau_degat_logement_enquete =  parseInt(vm.selectedItem.niveau_degat_logement_enquete) ;
+					if(vm.selectedItem.rehabilitation_enquete)
+					vm.filtre.rehabilitation_enquete  =  parseInt(vm.selectedItem.rehabilitation_enquete) ;
+					if(vm.selectedItem.beneficiaire_autre_programme_enquete)
+					vm.filtre.beneficiaire_autre_programme_enquete  =  parseInt(vm.selectedItem.beneficiaire_autre_programme_enquete) ;
+					if(vm.selectedItem.membre_fonctionnaire_enquete)
+					vm.filtre.membre_fonctionnaire_enquete  =  parseInt(vm.selectedItem.membre_fonctionnaire_enquete) ;
+					if(vm.selectedItem.antenne_parabolique_enquete)
+					vm.filtre.antenne_parabolique_enquete  =  parseInt(vm.selectedItem.antenne_parabolique_enquete) ;
+					if(vm.selectedItem.possede_frigo_enquete)
+					vm.filtre.possede_frigo_enquete  =  parseInt(vm.selectedItem.possede_frigo_enquete) ;
 					if(vm.selectedItem.score_obtenu)
 					vm.filtre.score_obtenu  =  parseInt(vm.selectedItem.score_obtenu) ;
 					if(vm.selectedItem.rang_obtenu)
 					vm.filtre.rang_obtenu  =  parseInt(vm.selectedItem.rang_obtenu) ;
 					if(vm.selectedItem.inapte)
 					vm.filtre.inapte  =  parseInt(vm.selectedItem.inapte) ;
+					////////////:COMPARAISON				
+					vm.filtre.nombre_personne_plus_soixantedixans_enquete1 =  "OK";
+					vm.filtre.taille_menage_enquete1 =  "OK";
+					vm.filtre.nombre_enfant_moins_quinze_ans_enquete1 =  "OK";
+					vm.filtre.nombre_enfant_non_scolarise_enquete1 =  "OK";
+					vm.filtre.nombre_enfant_scolarise_enquete1=  "OK";
+					vm.filtre.nombre_enfant_moins_six_ans_enquete1 =  "OK";
+					vm.filtre.nombre_personne_handicape_enquete1 =  "OK";
+					vm.filtre.nombre_adulte_travail_enquete1 =  "OK";
+					vm.filtre.nombre_membre_a_etranger_enquete1 =  "OK";
+					vm.filtre.maison_non_dure_enquete1=  "OK";
+					vm.filtre.acces_electricite_enquete1 =  "OK";
+					vm.filtre.acces_eau_robinet_enquete1 =  "OK";
+					vm.filtre.logement_endommage_enquete1 =  "OK";
+					vm.filtre.niveau_degat_logement_enquete1 =  "OK";
+					vm.filtre.rehabilitation_enquete1  =  "OK";
+					vm.filtre.beneficiaire_autre_programme_enquete1  =  "OK";
+					vm.filtre.membre_fonctionnaire_enquete1  =  "OK";
+					vm.filtre.antenne_parabolique_enquete1  =  "OK";
+					vm.filtre.possede_frigo_enquete1  = "OK";
+
+					if(vm.selectedItem.nombre_personne_plus_soixantedixans!=vm.selectedItem.nombre_personne_plus_soixantedixans_enquete) {
+						vm.filtre.nombre_personne_plus_soixantedixans_enquete1 = vm.selectedItem.nombre_personne_plus_soixantedixans + " - " + vm.selectedItem.nombre_personne_plus_soixantedixans_enquete;
+					}
+					if(vm.selectedItem.taille_menage!=vm.selectedItem.taille_menage_enquete) {
+						vm.filtre.taille_menage_enquete1 = vm.selectedItem.taille_menage + " - " + vm.selectedItem.taille_menage_enquete;
+					}	
+					if(vm.selectedItem.nombre_enfant_moins_quinze_ans!=vm.selectedItem.nombre_enfant_moins_quinze_ans_enquete) {
+						vm.filtre.nombre_enfant_moins_quinze_ans_enquete1 = vm.selectedItem.nombre_enfant_moins_quinze_ans + " - " + vm.selectedItem.nombre_enfant_moins_quinze_ans_enquete;
+					}	
+					if(vm.selectedItem.nombre_enfant_non_scolarise!=vm.selectedItem.nombre_enfant_non_scolarise_enquete) { 
+						vm.filtre.nombre_enfant_non_scolarise_enquete1 =  vm.selectedItem.nombre_enfant_non_scolarise + " - " + vm.selectedItem.nombre_enfant_non_scolarise_enquete ;
+					}	
+					if(vm.selectedItem.nombre_enfant_scolarise!=vm.selectedItem.nombre_enfant_scolarise_enquete) {
+						vm.filtre.nombre_enfant_scolarise_enquete1 =  vm.selectedItem.nombre_enfant_scolarise + " - " + vm.selectedItem.nombre_enfant_scolarise_enquete;
+					}	
+					if(vm.selectedItem.nombre_enfant_moins_six_ans!=vm.selectedItem.nombre_enfant_moins_six_ans_enquete) {
+						vm.filtre.nombre_enfant_moins_six_ans_enquete1 =  vm.selectedItem.nombre_enfant_moins_six_ans + " - " + vm.selectedItem.nombre_enfant_moins_six_ans_enquete ;
+					}	
+					if(vm.selectedItem.nombre_personne_handicape!=vm.selectedItem.nombre_personne_handicape_enquete) {
+						vm.filtre.nombre_personne_handicape_enquete1 =  vm.selectedItem.nombre_personne_handicape + " - " + vm.selectedItem.nombre_personne_handicape_enquete;
+					}	
+					if(vm.selectedItem.nombre_adulte_travail!=vm.selectedItem.nombre_adulte_travail_enquete) {
+						vm.filtre.nombre_adulte_travail_enquete1 =  vm.selectedItem.nombre_adulte_travail + " - " + vm.selectedItem.nombre_adulte_travail_enquete;
+					}	
+					if(vm.selectedItem.nombre_membre_a_etranger!=vm.selectedItem.nombre_membre_a_etranger_enquete) {
+						vm.filtre.nombre_membre_a_etranger_enquete1 = vm.selectedItem.nombre_membre_a_etranger + " - " + vm.selectedItem.nombre_membre_a_etranger_enquete;
+					}	
+					if(vm.selectedItem.maison_non_dure!=vm.selectedItem.maison_non_dure_enquete) {
+						if(parseInt(vm.selectedItem.maison_non_dure)==1) {
+							vm.cas1 = "Oui";
+						} else {
+							vm.cas1 = "Non";
+						}
+						if(parseInt(vm.selectedItem.maison_non_dure_enquete)==1) {
+							vm.cas2 = "Oui";
+						} else {
+							vm.cas2 = "Non";
+						}
+						vm.filtre.maison_non_dure_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					if(vm.selectedItem.acces_electricite!=vm.selectedItem.acces_electricite) {
+						if(parseInt(vm.selectedItem.acces_electricite)==1) {
+							vm.cas1 = "Oui";
+						} else {
+							vm.cas1 = "Non";
+						}
+						if(parseInt(vm.selectedItem.acces_electricite)==1) {
+							vm.cas2 = "Oui";
+						} else {
+							vm.cas2 = "Non";
+						}
+						vm.filtre.acces_electricite_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					if(vm.selectedItem.acces_eau_robinet!=vm.selectedItem.acces_eau_robinet_enquete) {
+						if(parseInt(vm.selectedItem.acces_eau_robinet)==1) {
+							vm.cas1 = "Oui";
+						} else {
+							vm.cas1 = "Non";
+						}
+						if(parseInt(vm.selectedItem.acces_eau_robinet_enquete)==1) {
+							vm.cas2 = "Oui";
+						} else {
+							vm.cas2 = "Non";
+						}
+						vm.filtre.acces_eau_robinet_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					if(vm.selectedItem.logement_endommage!=vm.selectedItem.logement_endommage_enquete) {
+						if(parseInt(vm.selectedItem.logement_endommage)==1) {
+							vm.cas1 = "Oui";
+						} else {
+							vm.cas1 = "Non";
+						}
+						if(parseInt(vm.selectedItem.logement_endommage_enquete)==1) {
+							vm.cas2 = "Oui";
+						} else {
+							vm.cas2 = "Non";
+						}
+						vm.filtre.logement_endommage_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					if(vm.selectedItem.niveau_degat_logement!=vm.selectedItem.niveau_degat_logement_enquete) {
+						vm.filtre.niveau_degat_logement_enquete1 = vm.selectedItem.niveau_degat_logement + " - " + vm.selectedItem.niveau_degat_logement_enquete;
+						if(parseInt(vm.selectedItem.niveau_degat_logement)==1) {
+							vm.cas1 = "Complètement détruit";
+						} else if(parseInt(vm.selectedItem.niveau_degat_logement)==2) {
+							vm.cas1 ="Dégât majeur habitable";
+						} else if(parseInt(vm.selectedItem.niveau_degat_logement)==3) {
+							vm.cas1 ="Dégât mineur";
+						} else {
+							vm.cas1 ="";
+						}	
+						if(parseInt(vm.selectedItem.niveau_degat_logement_enquete)==1) {
+							vm.cas2 = "Complètement détruit";
+						} else if(parseInt(vm.selectedItem.niveau_degat_logement_enquete)==2) {
+							vm.cas2 ="Dégât majeur habitable";
+						} else if(parseInt(vm.selectedItem.niveau_degat_logement_enquete)==3) {
+							vm.cas2 ="Dégât mineur";
+						} else {
+							vm.cas2 ="";
+						}	
+						vm.filtre.niveau_degat_logement_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					if(vm.selectedItem.rehabilitation!=vm.selectedItem.rehabilitation_enquete) {
+						if(parseInt(vm.selectedItem.rehabilitation)==1) {
+							vm.cas1 = "Nouvelle construction";
+						} else if(parseInt(vm.selectedItem.rehabilitation)==2) {
+							vm.cas1 ="Réhabilitation complète";
+						} else if(parseInt(vm.selectedItem.rehabilitation)==3) {
+							vm.cas1 ="Réhabilitation partielle";
+						} else if(parseInt(vm.selectedItem.rehabilitation)==4){
+							vm.cas1 ="Aucune réhabilitation";
+						} else {
+							vm.cas1 ="";
+						}	
+						if(parseInt(vm.selectedItem.rehabilitation_enquete)==1) {
+							vm.cas2 = "Nouvelle construction";
+						} else if(parseInt(vm.selectedItem.rehabilitation_enquete)==2) {
+							vm.cas2 ="Réhabilitation complète";
+						} else if(parseInt(vm.selectedItem.rehabilitation_enquete)==3) {
+							vm.cas2 ="Réhabilitation partielle";
+						} else  if(parseInt(vm.selectedItem.rehabilitation_enquete)==4) {
+							vm.cas2 ="Aucune réhabilitation";
+						} else {
+							vm.cas2 ="";
+						}	
+						vm.filtre.rehabilitation_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					if(vm.selectedItem.beneficiaire_autre_programme!=vm.selectedItem.beneficiaire_autre_programme_enquete) {
+						if(parseInt(vm.selectedItem.beneficiaire_autre_programme)==1) {
+							vm.cas1 = "Oui";
+						} else {
+							vm.cas1 = "Non";
+						}
+						if(parseInt(vm.selectedItem.beneficiaire_autre_programme_enquete)==1) {
+							vm.cas2 = "Oui";
+						} else {
+							vm.cas2 = "Non";
+						}
+						vm.filtre.beneficiaire_autre_programme_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					if(vm.selectedItem.membre_fonctionnaire!=vm.selectedItem.membre_fonctionnaire_enquete) {
+						if(parseInt(vm.selectedItem.membre_fonctionnaire)==1) {
+							vm.cas1 = "Oui";
+						} else {
+							vm.cas1 = "Non";
+						}
+						if(parseInt(vm.selectedItem.membre_fonctionnaire_enquete)==1) {
+							vm.cas2 = "Oui";
+						} else {
+							vm.cas2 = "Non";
+						}
+						vm.filtre.membre_fonctionnaire_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					if(vm.selectedItem.antenne_parabolique!=vm.selectedItem.antenne_parabolique_enquete) {
+						vm.filtre.antenne_parabolique_enquete1  = vm.selectedItem.antenne_parabolique + " - " + vm.selectedItem.antenne_parabolique_enquete ;
+						if(parseInt(vm.selectedItem.antenne_parabolique)==1) {
+							vm.cas1 = "Oui";
+						} else {
+							vm.cas1 = "Non";
+						}
+						if(parseInt(vm.selectedItem.antenne_parabolique_enquete)==1) {
+							vm.cas2 = "Oui";
+						} else {
+							vm.cas2 = "Non";
+						}
+						vm.filtre.antenne_parabolique_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					if(vm.selectedItem.possede_frigo!=vm.selectedItem.possede_frigo_enquete) {
+						if(parseInt(vm.selectedItem.possede_frigo)==1) {
+							vm.cas1 = "Oui";
+						} else {
+							vm.cas1 = "Non";
+						}
+						if(parseInt(vm.selectedItem.possede_frigo_enquete)==1) {
+							vm.cas2 = "Oui";
+						} else {
+							vm.cas2 = "Non";
+						}
+						vm.filtre.possede_frigo_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					////////////:COMPARAISON				
 					vm.affiche_load=false;
 				})
 		}	
@@ -1284,6 +1618,25 @@
 				txtTmp += "membre_fonctionnaire" +":\"" + vm.filtre.membre_fonctionnaire + "\",";
 				txtTmp += "antenne_parabolique" +":\"" + vm.filtre.antenne_parabolique + "\",";
 				txtTmp += "possede_frigo" +":\"" + vm.filtre.possede_frigo + "\",";
+				txtTmp += "nombre_personne_plus_soixantedixans_enquete" +":\"" + vm.filtre.nombre_personne_plus_soixantedixans_enquete + "\",";
+				txtTmp += "taille_menage_enquete" +":\"" + vm.filtre.taille_menage_enquete + "\",";
+				txtTmp += "nombre_enfant_moins_quinze_ans_enquete" +":\"" + vm.filtre.nombre_enfant_moins_quinze_ans_enquete + "\",";
+				txtTmp += "nombre_enfant_non_scolarise_enquete" +":\"" + vm.filtre.nombre_enfant_non_scolarise_enquete + "\",";
+				txtTmp += "nombre_enfant_scolarise_enquete" +":\"" + vm.filtre.nombre_enfant_scolarise_enquete + "\",";
+				txtTmp += "nombre_enfant_moins_six_ans_enquete" +":\"" + vm.filtre.nombre_enfant_moins_six_ans_enquete + "\",";
+				txtTmp += "nombre_personne_handicape_enquete" +":\"" + vm.filtre.nombre_personne_handicape_enquete + "\",";
+				txtTmp += "nombre_adulte_travail_enquete" +":\"" + vm.filtre.nombre_adulte_travail_enquete + "\",";
+				txtTmp += "nombre_membre_a_etranger_enquete" +":\"" + vm.filtre.nombre_membre_a_etranger_enquete + "\",";
+				txtTmp += "maison_non_dure_enquete" +":\"" + vm.filtre.maison_non_dure_enquete + "\",";
+				txtTmp += "acces_electricite_enquete" +":\"" + vm.filtre.acces_electricite_enquete + "\",";
+				txtTmp += "acces_eau_robinet_enquete" +":\"" + vm.filtre.acces_eau_robinet_enquete + "\",";
+				txtTmp += "logement_endommage_enquete" +":\"" + vm.filtre.logement_endommage_enquete + "\",";
+				txtTmp += "niveau_degat_logement_enquete" +":\"" + vm.filtre.niveau_degat_logement_enquete + "\",";
+				txtTmp += "rehabilitation_enquete" +":\"" + vm.filtre.rehabilitation_enquete + "\",";
+				txtTmp += "beneficiaire_autre_programme_enquete" +":\"" + vm.filtre.beneficiaire_autre_programme_enquete + "\",";
+				txtTmp += "membre_fonctionnaire_enquete" +":\"" + vm.filtre.membre_fonctionnaire_enquete + "\",";
+				txtTmp += "antenne_parabolique_enquete" +":\"" + vm.filtre.antenne_parabolique_enquete + "\",";
+				txtTmp += "possede_frigo_enquete" +":\"" + vm.filtre.possede_frigo_enquete + "\",";
 				txtTmp += "score_obtenu" +":\"" + vm.filtre.score_obtenu + "\",";
 				txtTmp += "rang_obtenu" +":\"" + vm.filtre.rang_obtenu + "\",";
 				txtTmp += "inapte" +":\"" + vm.filtre.inapte + "\",";
@@ -1315,6 +1668,246 @@
 					vm.selectedItem.detail_reponse_menage_unique = []; 	
 					vm.selectedItem.detail_reponse_menage_multiple = data.response.variable_choix_multiple; 
 					vm.selectedItem.detail_reponse_menage_unique = data.response.variable_choix_unique; 
+					vm.selectedItem.nombre_personne_plus_soixantedixans= vm.filtre.nombre_personne_plus_soixantedixans ;
+					vm.selectedItem.taille_menage= vm.filtre.taille_menage ;
+					vm.selectedItem.nombre_enfant_moins_quinze_ans= vm.filtre.nombre_enfant_moins_quinze_ans ;
+					vm.selectedItem.nombre_enfant_non_scolarise= vm.filtre.nombre_enfant_non_scolarise ;
+					vm.selectedItem.nombre_enfant_scolarise= vm.filtre.nombre_enfant_scolarise ;
+					vm.selectedItem.nombre_enfant_moins_six_ans= vm.filtre.nombre_enfant_moins_six_ans ;
+					vm.selectedItem.nombre_personne_handicape= vm.filtre.nombre_personne_handicape ;
+					vm.selectedItem.nombre_adulte_travail= vm.filtre.nombre_adulte_travail ;
+					vm.selectedItem.nombre_membre_a_etranger= vm.filtre.nombre_membre_a_etranger ;
+					vm.selectedItem.maison_non_dure= vm.filtre.maison_non_dure ;
+					vm.selectedItem.acces_electricite= vm.filtre.acces_electricite ;
+					vm.selectedItem.acces_eau_robinet= vm.filtre.acces_eau_robinet ;
+					vm.selectedItem.logement_endommage= vm.filtre.logement_endommage ;
+					vm.selectedItem.niveau_degat_logement= vm.filtre.niveau_degat_logement ;
+					vm.selectedItem.rehabilitation= vm.filtre.rehabilitation ;
+					vm.selectedItem.beneficiaire_autre_programme =vm.filtre.beneficiaire_autre_programme ;
+					vm.selectedItem.membre_fonctionnaire= vm.filtre.membre_fonctionnaire ;
+					vm.selectedItem.antenne_parabolique= vm.filtre.antenne_parabolique ;
+					vm.selectedItem.possede_frigo= vm.filtre.possede_frigo ;
+					vm.selectedItem.nombre_personne_plus_soixantedixans_enquete= vm.filtre.nombre_personne_plus_soixantedixans_enquete ;
+					vm.selectedItem.taille_menage_enquete= vm.filtre.taille_menage_enquete ;
+					vm.selectedItem.nombre_enfant_moins_quinze_ans_enquete= vm.filtre.nombre_enfant_moins_quinze_ans_enquete ;
+					vm.selectedItem.nombre_enfant_non_scolarise_enquete= vm.filtre.nombre_enfant_non_scolarise_enquete ;
+					vm.selectedItem.nombre_enfant_scolarise_enquete= vm.filtre.nombre_enfant_scolarise_enquete ;
+					vm.selectedItem.nombre_enfant_moins_six_ans_enquete= vm.filtre.nombre_enfant_moins_six_ans_enquete ;
+					vm.selectedItem.nombre_personne_handicape_enquete =vm.filtre.nombre_personne_handicape_enquete ;
+					vm.selectedItem.nombre_adulte_travail_enquete= vm.filtre.nombre_adulte_travail_enquete ;
+					vm.selectedItem.nombre_membre_a_etranger_enquete= vm.filtre.nombre_membre_a_etranger_enquete ;
+					vm.selectedItem.maison_non_dure_enquete= vm.filtre.maison_non_dure_enquete ;
+					vm.selectedItem.acces_electricite_enquete= vm.filtre.acces_electricite_enquete ;
+					vm.selectedItem.acces_eau_robinet_enquete= vm.filtre.acces_eau_robinet_enquete ;
+					vm.selectedItem.logement_endommage_enquete= vm.filtre.logement_endommage_enquete ;
+					vm.selectedItem.niveau_degat_logement_enquete= vm.filtre.niveau_degat_logement_enquete ;
+					vm.selectedItem.rehabilitation_enquete= vm.filtre.rehabilitation_enquete ;
+					vm.selectedItem.beneficiaire_autre_programme_enquete= vm.filtre.beneficiaire_autre_programme_enquete ;
+					vm.selectedItem.membre_fonctionnaire_enquete= vm.filtre.membre_fonctionnaire_enquete ;
+					vm.selectedItem.antenne_parabolique_enquete= vm.filtre.antenne_parabolique_enquete ;
+					vm.selectedItem.possede_frigo_enquete= vm.filtre.possede_frigo_enquete ;
+					////////////:COMPARAISON				
+					vm.filtre.nombre_personne_plus_soixantedixans_enquete1 =  "OK";
+					vm.filtre.taille_menage_enquete1 =  "OK";
+					vm.filtre.nombre_enfant_moins_quinze_ans_enquete1 =  "OK";
+					vm.filtre.nombre_enfant_non_scolarise_enquete1 =  "OK";
+					vm.filtre.nombre_enfant_scolarise_enquete1=  "OK";
+					vm.filtre.nombre_enfant_moins_six_ans_enquete1 =  "OK";
+					vm.filtre.nombre_personne_handicape_enquete1 =  "OK";
+					vm.filtre.nombre_adulte_travail_enquete1 =  "OK";
+					vm.filtre.nombre_membre_a_etranger_enquete1 =  "OK";
+					vm.filtre.maison_non_dure_enquete1=  "OK";
+					vm.filtre.acces_electricite_enquete1 =  "OK";
+					vm.filtre.acces_eau_robinet_enquete1 =  "OK";
+					vm.filtre.logement_endommage_enquete1 =  "OK";
+					vm.filtre.niveau_degat_logement_enquete1 =  "OK";
+					vm.filtre.rehabilitation_enquete1  =  "OK";
+					vm.filtre.beneficiaire_autre_programme_enquete1  =  "OK";
+					vm.filtre.membre_fonctionnaire_enquete1  =  "OK";
+					vm.filtre.antenne_parabolique_enquete1  =  "OK";
+					vm.filtre.possede_frigo_enquete1  = "OK";
+
+					if(vm.selectedItem.nombre_personne_plus_soixantedixans!=vm.selectedItem.nombre_personne_plus_soixantedixans_enquete) {
+						vm.filtre.nombre_personne_plus_soixantedixans_enquete1 = vm.selectedItem.nombre_personne_plus_soixantedixans + " - " + vm.selectedItem.nombre_personne_plus_soixantedixans_enquete;
+					}
+					if(vm.selectedItem.taille_menage!=vm.selectedItem.taille_menage_enquete) {
+						vm.filtre.taille_menage_enquete1 = vm.selectedItem.taille_menage + " - " + vm.selectedItem.taille_menage_enquete;
+					}	
+					if(vm.selectedItem.nombre_enfant_moins_quinze_ans!=vm.selectedItem.nombre_enfant_moins_quinze_ans_enquete) {
+						vm.filtre.nombre_enfant_moins_quinze_ans_enquete1 = vm.selectedItem.nombre_enfant_moins_quinze_ans + " - " + vm.selectedItem.nombre_enfant_moins_quinze_ans_enquete;
+					}	
+					if(vm.selectedItem.nombre_enfant_non_scolarise!=vm.selectedItem.nombre_enfant_non_scolarise_enquete) { 
+						vm.filtre.nombre_enfant_non_scolarise_enquete1 =  vm.selectedItem.nombre_enfant_non_scolarise + " - " + vm.selectedItem.nombre_enfant_non_scolarise_enquete ;
+					}	
+					if(vm.selectedItem.nombre_enfant_scolarise!=vm.selectedItem.nombre_enfant_scolarise_enquete) {
+						vm.filtre.nombre_enfant_scolarise_enquete1 =  vm.selectedItem.nombre_enfant_scolarise + " - " + vm.selectedItem.nombre_enfant_scolarise_enquete;
+					}	
+					if(vm.selectedItem.nombre_enfant_moins_six_ans!=vm.selectedItem.nombre_enfant_moins_six_ans_enquete) {
+						vm.filtre.nombre_enfant_moins_six_ans_enquete1 =  vm.selectedItem.nombre_enfant_moins_six_ans + " - " + vm.selectedItem.nombre_enfant_moins_six_ans_enquete ;
+					}	
+					if(vm.selectedItem.nombre_personne_handicape!=vm.selectedItem.nombre_personne_handicape_enquete) {
+						vm.filtre.nombre_personne_handicape_enquete1 =  vm.selectedItem.nombre_personne_handicape + " - " + vm.selectedItem.nombre_personne_handicape_enquete;
+					}	
+					if(vm.selectedItem.nombre_adulte_travail!=vm.selectedItem.nombre_adulte_travail_enquete) {
+						vm.filtre.nombre_adulte_travail_enquete1 =  vm.selectedItem.nombre_adulte_travail + " - " + vm.selectedItem.nombre_adulte_travail_enquete;
+					}	
+					if(vm.selectedItem.nombre_membre_a_etranger!=vm.selectedItem.nombre_membre_a_etranger_enquete) {
+						vm.filtre.nombre_membre_a_etranger_enquete1 = vm.selectedItem.nombre_membre_a_etranger + " - " + vm.selectedItem.nombre_membre_a_etranger_enquete;
+					}	
+					if(vm.selectedItem.maison_non_dure!=vm.selectedItem.maison_non_dure_enquete) {
+						if(parseInt(vm.selectedItem.maison_non_dure)==1) {
+							vm.cas1 = "Oui";
+						} else {
+							vm.cas1 = "Non";
+						}
+						if(parseInt(vm.selectedItem.maison_non_dure_enquete)==1) {
+							vm.cas2 = "Oui";
+						} else {
+							vm.cas2 = "Non";
+						}
+						vm.filtre.maison_non_dure_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					if(vm.selectedItem.acces_electricite!=vm.selectedItem.acces_electricite) {
+						if(parseInt(vm.selectedItem.acces_electricite)==1) {
+							vm.cas1 = "Oui";
+						} else {
+							vm.cas1 = "Non";
+						}
+						if(parseInt(vm.selectedItem.acces_electricite)==1) {
+							vm.cas2 = "Oui";
+						} else {
+							vm.cas2 = "Non";
+						}
+						vm.filtre.acces_electricite_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					if(vm.selectedItem.acces_eau_robinet!=vm.selectedItem.acces_eau_robinet_enquete) {
+						if(parseInt(vm.selectedItem.acces_eau_robinet)==1) {
+							vm.cas1 = "Oui";
+						} else {
+							vm.cas1 = "Non";
+						}
+						if(parseInt(vm.selectedItem.acces_eau_robinet_enquete)==1) {
+							vm.cas2 = "Oui";
+						} else {
+							vm.cas2 = "Non";
+						}
+						vm.filtre.acces_eau_robinet_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					if(vm.selectedItem.logement_endommage!=vm.selectedItem.logement_endommage_enquete) {
+						if(parseInt(vm.selectedItem.logement_endommage)==1) {
+							vm.cas1 = "Oui";
+						} else {
+							vm.cas1 = "Non";
+						}
+						if(parseInt(vm.selectedItem.logement_endommage_enquete)==1) {
+							vm.cas2 = "Oui";
+						} else {
+							vm.cas2 = "Non";
+						}
+						vm.filtre.logement_endommage_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					if(vm.selectedItem.niveau_degat_logement!=vm.selectedItem.niveau_degat_logement_enquete) {
+						vm.filtre.niveau_degat_logement_enquete1 = vm.selectedItem.niveau_degat_logement + " - " + vm.selectedItem.niveau_degat_logement_enquete;
+						if(parseInt(vm.selectedItem.niveau_degat_logement)==1) {
+							vm.cas1 = "Complètement détruit";
+						} else if(parseInt(vm.selectedItem.niveau_degat_logement)==2) {
+							vm.cas1 ="Dégât majeur habitable";
+						} else if(parseInt(vm.selectedItem.niveau_degat_logement)==3) {
+							vm.cas1 ="Dégât mineur";
+						} else {
+							vm.cas1 ="";
+						}	
+						if(parseInt(vm.selectedItem.niveau_degat_logement_enquete)==1) {
+							vm.cas2 = "Complètement détruit";
+						} else if(parseInt(vm.selectedItem.niveau_degat_logement_enquete)==2) {
+							vm.cas2 ="Dégât majeur habitable";
+						} else if(parseInt(vm.selectedItem.niveau_degat_logement_enquete)==3) {
+							vm.cas2 ="Dégât mineur";
+						} else {
+							vm.cas2 ="";
+						}	
+						vm.filtre.niveau_degat_logement_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					if(vm.selectedItem.rehabilitation!=vm.selectedItem.rehabilitation_enquete) {
+						if(parseInt(vm.selectedItem.rehabilitation)==1) {
+							vm.cas1 = "Nouvelle construction";
+						} else if(parseInt(vm.selectedItem.rehabilitation)==2) {
+							vm.cas1 ="Réhabilitation complète";
+						} else if(parseInt(vm.selectedItem.rehabilitation)==3) {
+							vm.cas1 ="Réhabilitation partielle";
+						} else if(parseInt(vm.selectedItem.rehabilitation)==4){
+							vm.cas1 ="Aucune réhabilitation";
+						} else {
+							vm.cas1 ="";
+						}	
+						if(parseInt(vm.selectedItem.rehabilitation_enquete)==1) {
+							vm.cas2 = "Nouvelle construction";
+						} else if(parseInt(vm.selectedItem.rehabilitation_enquete)==2) {
+							vm.cas2 ="Réhabilitation complète";
+						} else if(parseInt(vm.selectedItem.rehabilitation_enquete)==3) {
+							vm.cas2 ="Réhabilitation partielle";
+						} else  if(parseInt(vm.selectedItem.rehabilitation_enquete)==4) {
+							vm.cas2 ="Aucune réhabilitation";
+						} else {
+							vm.cas2 ="";
+						}	
+						vm.filtre.rehabilitation_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					if(vm.selectedItem.beneficiaire_autre_programme!=vm.selectedItem.beneficiaire_autre_programme_enquete) {
+						if(parseInt(vm.selectedItem.beneficiaire_autre_programme)==1) {
+							vm.cas1 = "Oui";
+						} else {
+							vm.cas1 = "Non";
+						}
+						if(parseInt(vm.selectedItem.beneficiaire_autre_programme_enquete)==1) {
+							vm.cas2 = "Oui";
+						} else {
+							vm.cas2 = "Non";
+						}
+						vm.filtre.beneficiaire_autre_programme_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					if(vm.selectedItem.membre_fonctionnaire!=vm.selectedItem.membre_fonctionnaire_enquete) {
+						if(parseInt(vm.selectedItem.membre_fonctionnaire)==1) {
+							vm.cas1 = "Oui";
+						} else {
+							vm.cas1 = "Non";
+						}
+						if(parseInt(vm.selectedItem.membre_fonctionnaire_enquete)==1) {
+							vm.cas2 = "Oui";
+						} else {
+							vm.cas2 = "Non";
+						}
+						vm.filtre.membre_fonctionnaire_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					if(vm.selectedItem.antenne_parabolique!=vm.selectedItem.antenne_parabolique_enquete) {
+						vm.filtre.antenne_parabolique_enquete1  = vm.selectedItem.antenne_parabolique + " - " + vm.selectedItem.antenne_parabolique_enquete ;
+						if(parseInt(vm.selectedItem.antenne_parabolique)==1) {
+							vm.cas1 = "Oui";
+						} else {
+							vm.cas1 = "Non";
+						}
+						if(parseInt(vm.selectedItem.antenne_parabolique_enquete)==1) {
+							vm.cas2 = "Oui";
+						} else {
+							vm.cas2 = "Non";
+						}
+						vm.filtre.antenne_parabolique_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					if(vm.selectedItem.possede_frigo!=vm.selectedItem.possede_frigo_enquete) {
+						if(parseInt(vm.selectedItem.possede_frigo)==1) {
+							vm.cas1 = "Oui";
+						} else {
+							vm.cas1 = "Non";
+						}
+						if(parseInt(vm.selectedItem.possede_frigo_enquete)==1) {
+							vm.cas2 = "Oui";
+						} else {
+							vm.cas2 = "Non";
+						}
+						vm.filtre.possede_frigo_enquete1 =  vm.cas1 + " - " + vm.cas2;
+					}	
+					////////////:COMPARAISON				
+																			
 					vm.menage_prevu=data.response.menage_prevu;
 					vm.individu_prevu=data.response.individu_prevu;
 					vm.groupe_prevu=data.response.groupe_prevu;
@@ -1357,7 +1950,51 @@
 					}		
 				});				
 			}
-		}		
+		}	
+		vm.Sommer_Membre_Menages=function() {
+			vm.total=0;
+			if(vm.filtre.nombre_personne_plus_soixantedixans) {
+				vm.total=vm.total + parseInt(vm.filtre.nombre_personne_plus_soixantedixans);
+			}
+			if(vm.filtre.nombre_enfant_moins_six_ans) {
+				vm.total=vm.total + parseInt(vm.filtre.nombre_enfant_moins_six_ans);
+			}
+			if(vm.filtre.nombre_enfant_moins_quinze_ans) {
+				vm.total=vm.total + parseInt(vm.filtre.nombre_enfant_moins_quinze_ans);
+			}
+			if(vm.filtre.nombre_personne_handicape) {
+				vm.total=vm.total + parseInt(vm.filtre.nombre_personne_handicape);
+			}
+			if(vm.filtre.nombre_adulte_travail) {
+				vm.total=vm.total + parseInt(vm.filtre.nombre_adulte_travail);
+			}
+			if(vm.filtre.nombre_membre_a_etranger) {
+				vm.total=vm.total + parseInt(vm.filtre.nombre_membre_a_etranger);
+			}
+			vm.filtre.taille_menage=vm.total;
+		}	
+		vm.Sommer_Membre_Menage=function() {
+			vm.total=0;
+			if(vm.filtre.nombre_personne_plus_soixantedixans_enquete) {
+				vm.total=vm.total + parseInt(vm.filtre.nombre_personne_plus_soixantedixans_enquete);
+			}
+			if(vm.filtre.nombre_enfant_moins_six_ans_enquete) {
+				vm.total=vm.total + parseInt(vm.filtre.nombre_enfant_moins_six_ans_enquete);
+			}
+			if(vm.filtre.nombre_enfant_moins_quinze_ans_enquete) {
+				vm.total=vm.total + parseInt(vm.filtre.nombre_enfant_moins_quinze_ans_enquete);
+			}
+			if(vm.filtre.nombre_personne_handicape_enquete) {
+				vm.total=vm.total + parseInt(vm.filtre.nombre_personne_handicape_enquete);
+			}
+			if(vm.filtre.nombre_adulte_travail_enquete) {
+				vm.total=vm.total + parseInt(vm.filtre.nombre_adulte_travail_enquete);
+			}
+			if(vm.filtre.nombre_membre_a_etranger_enquete) {
+				vm.total=vm.total + parseInt(vm.filtre.nombre_membre_a_etranger_enquete);
+			}
+			vm.filtre.taille_menage_enquete=vm.total;
+		}	
 		// FIN DIFFRENTES FONCTIONS UTILES POUR LA SAUVEGARDE VARIABLE INTERVENTION
 
 	}
