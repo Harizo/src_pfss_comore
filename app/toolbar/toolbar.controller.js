@@ -160,12 +160,10 @@
                         position: 'bottom right',
                         locals:{param: resultat},
                         highlightAction: false
-                      });
-                
+                      });                
             }
             
-            console.log(resultat);
-                    
+            console.log(resultat);    
 
         });
         }
@@ -185,7 +183,7 @@
             $mdDialog.show({
               controller: Liste_contrat_agepController,
               templateUrl: 'app/main/pfss/contrat_agep/liste_contrat_agep_alert.html',
-              parent: angular.element(document.body),
+              parent: angular.element('#toast_contrat'),
               locals:{contrat: param},
               clickOutsideToClose:true
             })
