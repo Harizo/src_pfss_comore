@@ -53,7 +53,9 @@
           vm.all_region = result.data.response;   
           vm.filtre_eligible.id_region = null ; 
           vm.filtre_eligible.id_commune = null ; 
-          vm.filtre_eligible.id_village = null ; 
+          vm.filtre_eligible.id_village = null ;
+          vm.filtre_eligible.id_zip = null ; 
+          vm.filtre_eligible.vague = null ;
           
         });
 		vm.allInfrastructure_eligible = [] ;
@@ -66,7 +68,9 @@
         { 
           vm.all_commune = result.data.response; 
           vm.filtre_eligible.id_commune = null ; 
-          vm.filtre_eligible.id_village = null ;           
+          vm.filtre_eligible.id_village = null ;
+          vm.filtre_eligible.id_zip = null ; 
+          vm.filtre_eligible.vague = null ;           
         });
 		vm.allInfrastructure_eligible = [] ;
       }
@@ -85,7 +89,9 @@
         apiFactory.getAPIgeneraliserREST("village/index","cle_etrangere",vm.filtre_eligible.id_commune).then(function(result)
         { 
           vm.all_village = result.data.response; 
-          vm.filtre_eligible.id_village = null ;           
+          vm.filtre_eligible.id_village = null ; 
+          vm.filtre_eligible.id_zip = null ; 
+          vm.filtre_eligible.vague = null ;          
         });
 		vm.allInfrastructure_eligible = [] ;
       }
@@ -101,20 +107,43 @@
           {
             return obj.id == vm.filtre_eligible.id_village;
           });
-          vm.filtre_eligible.vague = vil[0].vague;
-          apiFactory.getAPIgeneraliserREST("zip/index",'id',vil[0].zip.id).then(function(result){
-            vm.allZip.push(result.data.response);
-            
-            if (result.data.response)
-            {
-              vm.filtre_eligible.id_zip = result.data.response.id;
-            }
-            else
-            {
-				vm.filtre_eligible.id_zip = null;
-            }
-            
-          });
+		  if (vil.length!=0)
+		  {
+			  if (vil[0].vague)
+			  {
+				vm.filtre_eligible.vague = vil[0].vague;
+			  }
+			  else
+			  {
+				vm.filtre_eligible.vague = null ; 
+			  }
+			  if (vil[0].zip)
+			  {
+				apiFactory.getAPIgeneraliserREST("zip/index",'id',vil[0].zip.id).then(function(result){
+					vm.allZip.push(result.data.response);
+					
+					if (result.data.response)
+					{
+					  vm.filtre_eligible.id_zip = result.data.response.id;
+					}
+					else
+					{
+						vm.filtre_eligible.id_zip = null;
+					}
+					
+				  });
+			  }
+			  else
+			  {
+				vm.filtre_eligible.id_zip = null ; 
+			  }
+
+		  }
+		  else
+		  {
+			vm.filtre_eligible.id_zip = null;
+			vm.filtre_eligible.vague = null ; 
+		  }
         }
 	  vm.get_infrastructure_eligible = function()
 	  {
@@ -161,12 +190,60 @@
 		vm.ajouterInfrastructure_eligible = function()
 		{
 			vm.nouvelItemInfrastructure_eligible = true ;
-			var item = 
+			apiFactory.getAPIgeneraliserREST("infrastructure/index","menu","getinfrastructurebyvillageandeligible","id_village",vm.filtre_eligible.id_village).then(function(result) { 				
+				var liste_infrastructure = result.data.response;
+				var numero_code= null;
+				if (liste_infrastructure.length==0)
+				{
+					var ile = vm.all_ile.filter(function(obj)
+					{
+							return obj.id == vm.filtre_eligible.id_ile;
+					});
+					var reg = vm.all_region.filter(function(obj)
+					{
+							return obj.id == vm.filtre_eligible.id_region;
+					});
+					var com = vm.all_commune.filter(function(obj)
+					{
+							return obj.id == vm.filtre_eligible.id_commune;
+					});
+					var vil = vm.all_village.filter(function(obj)
+					{
+							return obj.id == vm.filtre_eligible.id_village;
+					});
+					numero_code = ile[0].Ile.substring(0, 3)+'/'+reg[0].Region.substring(0, 3)+'/'+com[0].Commune.substring(0, 3)+'/'+vil[0].Village.substring(0, 3)+'/1';
+				}
+				else
+				{	
+					var ile = vm.all_ile.filter(function(obj)
+					{
+							return obj.id == vm.filtre_eligible.id_ile;
+					});
+					var reg = vm.all_region.filter(function(obj)
+					{
+							return obj.id == vm.filtre_eligible.id_region;
+					});
+					var com = vm.all_commune.filter(function(obj)
+					{
+							return obj.id == vm.filtre_eligible.id_commune;
+					});
+					var vil = vm.all_village.filter(function(obj)
+					{
+							return obj.id == vm.filtre_eligible.id_village;
+					});
+					
+					var last_id = Math.max.apply(Math, liste_infrastructure.map(function(o){return o.id;}));					
+					var data_laste_infrastructure = liste_infrastructure.filter(function(obj){return obj.id == String(last_id) ;});
+					var laste_numero_infrastructure = Math.max.apply(Math, data_laste_infrastructure.map(function(o){return o.code_numero.split('/')[4];}));
+					numero_code=ile[0].Ile.substring(0, 3)+'/'+reg[0].Region.substring(0, 3)+'/'+com[0].Commune.substring(0, 3)+'/'+vil[0].Village.substring(0, 3)+'/'+(parseInt(laste_numero_infrastructure)+1)
+				}    
+				vm.affiche_load = false ;
+				var item = 
 				{                            
 					$edit: true,
 					$selected: true,
 					id:'0',
-					code_numero: null,
+					code_numero: numero_code,
 					code_passation: null,
 					libelle: null,
 					id_type_infrastructure: null,
@@ -174,15 +251,17 @@
 					
 				} ;
 
-			vm.allInfrastructure_eligible.unshift(item);
-			vm.allInfrastructure_eligible.forEach(function(af)
-			{
-			  if(af.$selected == true)
-			  {
-				vm.selectedItemInfrastructure_eligible = af;
-				
-			  }
+				vm.allInfrastructure_eligible.unshift(item);
+				vm.allInfrastructure_eligible.forEach(function(af)
+				{
+				if(af.$selected == true)
+				{
+					vm.selectedItemInfrastructure_eligible = af;
+					
+				}
+				});
 			});
+			
 		}
 
 		vm.modifierInfrastructure_eligible = function()
@@ -393,6 +472,8 @@
 			vm.filtre_choisi.id_region = null ; 
 			vm.filtre_choisi.id_commune = null ; 
 			vm.filtre_choisi.id_village = null ; 
+			vm.filtre_choisi.id_zip = null;
+			vm.filtre_choisi.vague = null;
 			
 		  });
 		  vm.allInfrastructure_choisi = [] ;
@@ -405,7 +486,9 @@
 		  { 
 			vm.all_commune = result.data.response; 
 			vm.filtre_choisi.id_commune = null ; 
-			vm.filtre_choisi.id_village = null ;           
+			vm.filtre_choisi.id_village = null ;  
+			vm.filtre_choisi.id_zip = null;
+			vm.filtre_choisi.vague = null;          
 		  });
 		  vm.allInfrastructure_choisi = [] ;
 		}
@@ -421,10 +504,14 @@
 		}*/
 		vm.filtre_choisi_village = function()
       {
+		vm.filtre_choisi.id_village = null ; 
+		vm.filtre_choisi.id_zip = null;
+		vm.filtre_choisi.vague = null;  
+		console.log(vm.filtre_choisi) ;  
         apiFactory.getAPIgeneraliserREST("village/index","cle_etrangere",vm.filtre_choisi.id_commune).then(function(result)
         { 
           vm.all_village = result.data.response; 
-          vm.filtre_choisi.id_village = null ;           
+          console.log(vm.all_village) ;        
         });
 		vm.allInfrastructure_choisi = [] ;
       }
@@ -440,20 +527,43 @@
           {
             return obj.id == vm.filtre_choisi.id_village;
           });
-          vm.filtre_choisi.vague = vil[0].vague;
-          apiFactory.getAPIgeneraliserREST("zip/index",'id',vil[0].zip.id).then(function(result){
-            vm.allZip.push(result.data.response);
-            
-            if (result.data.response)
-            {
-              vm.filtre_choisi.id_zip = result.data.response.id;
-            }
-            else
-            {
-				vm.filtre_choisi.id_zip = null;
-            }
-            
-          });
+		  if (vil.length!=0)
+		  {
+			  if (vil[0].vague)
+			  {
+				vm.filtre_choisi.vague = vil[0].vague;
+			  }
+			  else
+			  {
+				vm.filtre_choisi.vague = null ; 
+			  }
+			  if (vil[0].zip)
+			  {
+				apiFactory.getAPIgeneraliserREST("zip/index",'id',vil[0].zip.id).then(function(result){
+					vm.allZip.push(result.data.response);
+					
+					if (result.data.response)
+					{
+					  vm.filtre_choisi.id_zip = result.data.response.id;
+					}
+					else
+					{
+						vm.filtre_choisi.id_zip = null;
+					}
+					
+				  });
+			  }
+			  else
+			  {
+				vm.filtre_choisi.id_zip = null ; 
+			  }
+
+		  }
+		  else
+		  {
+			vm.filtre_choisi.id_zip = null;
+			vm.filtre_choisi.vague = null ; 
+		  }
         }
 		vm.get_infrastructure_choisi = function()
 		{

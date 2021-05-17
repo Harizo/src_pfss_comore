@@ -654,7 +654,7 @@
 			  .cancel('Annuler');
 			$mdDialog.show(confirm).then(function() {
 
-			vm.enregistrer_Fichepresencebienetre(1);
+			vm.enregistrerFichepresencebienetre(1);
 			}, function() {
 			//alert('rien');
 			});
@@ -894,7 +894,7 @@
 			  .cancel('Annuler');
 			$mdDialog.show(confirm).then(function() {
 
-			vm.enregistrer_Fiche_supervision_mlpl(1);
+			vm.enregistrerFiche_supervision_mlpl(1);
 			}, function() {
 			//alert('rien');
 			});
@@ -1114,7 +1114,7 @@
 			  .cancel('Annuler');
 			$mdDialog.show(confirm).then(function() {
 
-			vm.enregistrer_Point_a_verifier_mlpl(1);
+			vm.enregistrerPoint_a_verifier_mlpl(1);
 			}, function() {
 			//alert('rien');
 			});
@@ -1302,7 +1302,7 @@
 			  .cancel('Annuler');
 			$mdDialog.show(confirm).then(function() {
 
-			vm.enregistrer_Probleme_solution_mlpl(1);
+			vm.enregistrerProbleme_solution_mlpl(1);
 			}, function() {
 			//alert('rien');
 			});
@@ -1509,7 +1509,7 @@
 			  .cancel('Annuler');
 			$mdDialog.show(confirm).then(function() {
 
-			vm.enregistrer_Livrable_mlpl(1);
+			vm.enregistrerLivrable_mlpl(1);
 			}, function() {
 			//alert('rien');
 			});
@@ -1717,7 +1717,7 @@
 			  .cancel('Annuler');
 			$mdDialog.show(confirm).then(function() {
 
-			vm.enregistrer_Point_controle_mlpl(1);
+			vm.enregistrerPoint_controle_mlpl(1);
 			}, function() {
 			//alert('rien');
 			});
