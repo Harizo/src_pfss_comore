@@ -1,0 +1,420 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Données de bases</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;">Type de l'activité, ARSE, ACT</span>
+                </div>
+    
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <!--div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                    <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                    <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                </div-->
+                <div style="clear:both;"></div>
+                <md-tabs md-dynamic-height layout="column" flex>
+                    
+                       <md-tab label="IDB" ng-click="vm.get_all_type_infrastructure_agr()" layout="column" flex>
+                        <md-tab-body>
+
+
+                            <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                                <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                    <div layout="row" layout-align="start center">
+                                    <div class="border-right">
+
+                                        
+                                      <span class="md-headline">TYPE ACTIVITE</span>
+                                    </div>
+                                      <div class="border-right" ng-if="!vm.selected_type_infrastructure_agr.id&&!vm.nouvelle_type_infrastructure_agr">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_type_infrastructure_agr()">
+                                          <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                          <md-tooltip><span>Ajouter</span></md-tooltip>
+                                        </md-button>
+                                      </div> 
+                                      <div class="border-right" ng-if="vm.selected_type_infrastructure_agr.id&&!vm.selected_type_infrastructure_agr.$edit">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_type_infrastructure_agr()">
+                                          <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                          <md-tooltip><span>Modifier</span></md-tooltip>
+                                        </md-button>
+                                      </div>    
+                                      <div class="border-right" ng-if="vm.selected_type_infrastructure_agr.id&&!vm.selected_type_infrastructure_agr.$edit">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_type_infrastructure_agr()">
+                                          <md-icon md-font-icon="icon-delete"></md-icon>
+                                          <md-tooltip><span>Supprimer</span></md-tooltip>
+                                        </md-button>
+                                      </div>  
+
+                                      <div class="border-right" ng-if="vm.selected_type_infrastructure_agr.id">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_type_infrastructure_agr()">
+                                          <md-icon md-font-icon="icon-cancel"></md-icon>
+                                          <md-tooltip><span>Annuler</span></md-tooltip>
+                                        </md-button>
+                                      </div>   
+
+                                      <div ng-if="vm.selected_type_infrastructure_agr.$edit">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_type_infrastructure_agr(0)">
+                                          <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                          <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                        </md-button>
+                                      </div>                
+                                    </div>
+                                </header>
+
+
+                                <table ng-table="type_infrastructure_agr" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.type_infrastructure_agr_column">
+                                                <div class="table-header">
+                                                    <span class="column-title text-center">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="cm in vm.all_type_infrastructure_agr"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_type_infrastructure_agr(cm)">  
+                                                                                 
+                                            
+                                            <td>
+
+                                                    
+                                                <span ng-if="cm.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Code</label>
+                                                      <input type="text" name="code"  ng-model="cm.code"/>
+                                                    </md-input-container>   
+                                                    
+                                                </span>
+                                                <span ng-if="!cm.$edit">
+                                                    {{cm.code}}
+                                                </span>
+                                            </td>
+                                            <td>
+
+                                                <span ng-if="cm.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Libelle</label>
+                                                      <input type="text" name="libelle" ng-model="cm.libelle"/>
+                                                  </md-input-container>
+
+                                              </span>
+                                              <span ng-if="!cm.$edit">
+                                                  {{cm.libelle}}
+                                              
+
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </md-tab-body>
+                    </md-tab>
+
+                    <md-tab label="ARSE" ng-click="vm.get_all_agr()" layout="column" flex>
+                        <md-tab-body>
+
+
+                            <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                                <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                    <div layout="row" layout-align="start center">
+                                    <div class="border-right">
+
+                                        
+                                      <span class="md-headline">Type ARSE</span>
+                                      <!--span class="md-headline">Type AGR</span-->
+                                    </div>
+                                      <div class="border-right" ng-if="!vm.selected_agr.id&&!vm.nouvelle_agr">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_agr()">
+                                          <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                          <md-tooltip><span>Ajouter</span></md-tooltip>
+                                        </md-button>
+                                      </div> 
+                                      <div class="border-right" ng-if="vm.selected_agr.id&&!vm.selected_agr.$edit">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_agr()">
+                                          <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                          <md-tooltip><span>Modifier</span></md-tooltip>
+                                        </md-button>
+                                      </div>    
+                                      <div class="border-right" ng-if="vm.selected_agr.id&&!vm.selected_agr.$edit">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_agr()">
+                                          <md-icon md-font-icon="icon-delete"></md-icon>
+                                          <md-tooltip><span>Supprimer</span></md-tooltip>
+                                        </md-button>
+                                      </div>  
+
+                                      <div class="border-right" ng-if="vm.selected_agr.id">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_agr()">
+                                          <md-icon md-font-icon="icon-cancel"></md-icon>
+                                          <md-tooltip><span>Annuler</span></md-tooltip>
+                                        </md-button>
+                                      </div>   
+
+                                      <div ng-if="vm.selected_agr.$edit">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_agr(0)">
+                                          <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                          <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                        </md-button>
+                                      </div>                
+                                    </div>
+                                </header>
+
+
+                                <table ng-table="agr" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.agr_column">
+                                                <div class="table-header">
+                                                    <span class="column-title text-center">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="cm in vm.all_agr"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_agr(cm)">  
+                                                                                 
+                                            
+                                            <td>
+
+                                                    
+                                                <span ng-if="cm.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Code</label>
+                                                      <input type="text" name="code"  ng-model="cm.code"/>
+                                                    </md-input-container>   
+                                                    
+                                                </span>
+                                                <span ng-if="!cm.$edit">
+                                                    {{cm.code}}
+                                                </span>
+                                            </td>
+                                            <td>
+
+                                                <span ng-if="cm.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Libelle</label>
+                                                      <input type="text" name="libelle" ng-model="cm.libelle"/>
+                                                  </md-input-container>
+
+                                              </span>
+                                              <span ng-if="!cm.$edit">
+                                                  {{cm.libelle}}
+
+                                                  </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </md-tab-body>
+                    </md-tab>
+
+                     <md-tab label="ACT"  layout="column" flex>
+                        <md-tab-body>
+
+
+                            <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                                <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                    <div layout="row" layout-align="start center">
+                                    <div class="border-right">
+
+                                        
+                                      <span class="md-headline">Type Activite ACT</span>
+                                    </div>
+                                      <div class="border-right" ng-if="!vm.selected_type_activite_act.id&&!vm.nouvelle_type_activite_act">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_type_activite_act()">
+                                          <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                          <md-tooltip><span>Ajouter</span></md-tooltip>
+                                        </md-button>
+                                      </div> 
+                                      <div class="border-right" ng-if="vm.selected_type_activite_act.id&&!vm.selected_type_activite_act.$edit">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_type_activite_act()">
+                                          <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                          <md-tooltip><span>Modifier</span></md-tooltip>
+                                        </md-button>
+                                      </div>    
+                                      <div class="border-right" ng-if="vm.selected_type_activite_act.id&&!vm.selected_type_activite_act.$edit">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_type_activite_act()">
+                                          <md-icon md-font-icon="icon-delete"></md-icon>
+                                          <md-tooltip><span>Supprimer</span></md-tooltip>
+                                        </md-button>
+                                      </div>  
+
+                                      <div class="border-right" ng-if="vm.selected_type_activite_act.id">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_type_activite_act()">
+                                          <md-icon md-font-icon="icon-cancel"></md-icon>
+                                          <md-tooltip><span>Annuler</span></md-tooltip>
+                                        </md-button>
+                                      </div>   
+
+                                      <div ng-if="vm.selected_type_activite_act.$edit">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_type_activite_act(0)">
+                                          <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                          <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                        </md-button>
+                                      </div>                
+                                    </div>
+                                </header>
+
+
+                                <table ng-table="type_activite_act" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.type_activite_act_column">
+                                                <div class="table-header">
+                                                    <span class="column-title text-center">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="cm in vm.all_type_activite_act"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_type_activite_act(cm)">  
+                                                                                 
+                                            
+                                            <td>
+
+                                                    
+                                                <span ng-if="cm.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Code</label>
+                                                      <input type="text" name="code"  ng-model="cm.code"/>
+                                                    </md-input-container>   
+                                                    
+                                                </span>
+                                                <span ng-if="!cm.$edit">
+                                                    {{cm.code}}
+                                                </span>
+                                            </td>
+                                            <td>
+
+                                                <span ng-if="cm.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Libelle</label>
+                                                      <input type="text" name="libelle" ng-model="cm.libelle"/>
+                                                  </md-input-container>
+
+                                              </span>
+                                              <span ng-if="!cm.$edit">
+                                                  {{cm.libelle}}
+
+                                                  </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </md-tab-body>
+                    </md-tab>
+
+                     <md-tab label="Activite ACT" ng-click="vm.get_all_activite_act()" layout="column" flex ng-disabled='!vm.selected_type_activite_act.id'> 
+                        <md-tab-body>
+
+
+                            <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                                <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                    <div layout="row" layout-align="start center">
+                                    <div class="border-right">
+
+                                        
+                                      <span class="md-headline">Activite ACT</span>
+                                    </div>
+                                      <div class="border-right" ng-if="!vm.selected_activite_act.id&&!vm.nouvelle_activite_act">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_activite_act()">
+                                          <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                          <md-tooltip><span>Ajouter</span></md-tooltip>
+                                        </md-button>
+                                      </div> 
+                                      <div class="border-right" ng-if="vm.selected_activite_act.id&&!vm.selected_activite_act.$edit">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_activite_act()">
+                                          <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                          <md-tooltip><span>Modifier</span></md-tooltip>
+                                        </md-button>
+                                      </div>    
+                                      <div class="border-right" ng-if="vm.selected_activite_act.id&&!vm.selected_activite_act.$edit">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_activite_act()">
+                                          <md-icon md-font-icon="icon-delete"></md-icon>
+                                          <md-tooltip><span>Supprimer</span></md-tooltip>
+                                        </md-button>
+                                      </div>  
+
+                                      <div class="border-right" ng-if="vm.selected_activite_act.id">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_activite_act()">
+                                          <md-icon md-font-icon="icon-cancel"></md-icon>
+                                          <md-tooltip><span>Annuler</span></md-tooltip>
+                                        </md-button>
+                                      </div>   
+
+                                      <div ng-if="vm.selected_activite_act.$edit">
+                                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_activite_act(0)">
+                                          <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                          <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                        </md-button>
+                                      </div>                
+                                    </div>
+                                </header>
+
+
+                                <table ng-table="activite_act" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.activite_act_column">
+                                                <div class="table-header">
+                                                    <span class="column-title text-center">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="cm in vm.all_activite_act"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_activite_act(cm)">  
+                                                                                 
+                                            
+                                            <td>
+
+                                                    
+                                                <span ng-if="cm.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Code</label>
+                                                      <input type="text" name="code"  ng-model="cm.code"/>
+                                                    </md-input-container>   
+                                                    
+                                                </span>
+                                                <span ng-if="!cm.$edit">
+                                                    {{cm.code}}
+                                                </span>
+                                            </td>
+                                            <td>
+
+                                                <span ng-if="cm.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Libelle</label>
+                                                      <input type="text" name="libelle" ng-model="cm.libelle"/>
+                                                  </md-input-container>
+
+                                              </span>
+                                              <span ng-if="!cm.$edit">
+                                                  {{cm.libelle}}
+
+                                                  </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </md-tab-body>
+                    </md-tab>
+
+
+                                
+
+                                            
+
+                        

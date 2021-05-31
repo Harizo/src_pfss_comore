@@ -28,18 +28,54 @@
       apiFactory.getAll("consultant_ong/index").then(function(result) { 
 				vm.allConsultant_ong = result.data.response;    
 			});
+			vm.get_region = function(item)
+			{
+			  apiFactory.getAPIgeneraliserREST("region/index","cle_etrangere",item.ile_id).then(function(result)
+			  { 
+				vm.allRegion = result.data.response;   
+				item.id_region = null ; 
+				item.id_commune = null ; 
+				item.id_village = null ;
+				console.log(vm.allRegion);
+				console.log(item);
+			  });
+	  
+			}
+	  
+			vm.get_commune = function(item)
+			{
+			  apiFactory.getAPIgeneraliserREST("commune/index","cle_etrangere",item.id_region).then(function(result)
+			  { 
+				vm.allCommune = result.data.response; 
+				item.id_commune = null ; 
+				item.id_village = null ; 
+				console.log(vm.allCommune);         
+			  });
+			}
+			vm.get_village = function(item)
+			{
+			  apiFactory.getAPIgeneraliserREST("village/index","cle_etrangere",item.id_commune).then(function(result)
+			  { 
+				vm.allVillage = result.data.response; 
+				item.id_village = null ; 
+				console.log(vm.allVillage);        
+			  });
+			}
       //DEBUT FICHE PRESENCE BIEN ETRE
 
 		vm.consultant_ong_column = 
 		[
 			{titre:"Ile"},
-      {titre:"Code"},
+      		{titre:"Code"},
 			{titre:"Nom cosultant"},
 			{titre:"Raison social"},
-			{titre:"Contact"},
+			{titre:"Personne à contacter"},
 			{titre:"Fonction du contact"},
-			{titre:"Telephone du contact"},
-			{titre:"Adresse"}
+			{titre:"Téléphone du contact"},
+			{titre:"Adresse"},
+			{titre:"Préfecture"},
+			{titre:"Commune"},
+			{titre:"Village"}
 		]; 
 
 		vm.selection = function(item)
@@ -74,12 +110,15 @@
 					id:'0',
 					ile_id: null,
 					code: '',
-					nom_cosultant: '', 
+					nom_consultant: '', 
 					raison_social: '', 
 					contact: '',
 					fonction_contact: '',
 					telephone_contact: '',
-					adresse: ''
+					adresse: '',
+					id_village: null,
+					id_commune: null,
+					id_region: null
 					
 				} ;
 
@@ -101,9 +140,24 @@
 		
 			current_selectedItem = angular.copy(vm.selectedItem);
 			      
-      vm.selectedItem.ile_id = vm.selectedItem.ile.id;
+      		vm.selectedItem.ile_id = vm.selectedItem.ile.id;
+      		vm.selectedItem.id_village = vm.selectedItem.village.id;
+      		vm.selectedItem.id_commune = vm.selectedItem.commune.id;
+      		vm.selectedItem.id_region = vm.selectedItem.region.id;
+			  apiFactory.getAPIgeneraliserREST("region/index","cle_etrangere",vm.selectedItem.ile.id).then(function(result)
+			  { 
+				vm.allRegion = result.data.response;				
+			  });
+			  apiFactory.getAPIgeneraliserREST("commune/index","cle_etrangere",vm.selectedItem.region.id).then(function(result)
+			  { 
+				vm.allCommune = result.data.response;				
+			  });
+			  apiFactory.getAPIgeneraliserREST("village/index","cle_etrangere",vm.selectedItem.commune.id).then(function(result)
+			  { 
+				vm.allVillage = result.data.response;				
+			  });
 			/*vm.selectedItem.code = vm.selectedItem.code;
-			vm.selectedItem.nom_cosultant = vm.selectedItem.nom_cosultant;
+			vm.selectedItem.nom_consultant = vm.selectedItem.nom_consultant;
 			vm.selectedItem.contact = vm.selectedItem.contact;
 			vm.selectedItem.fonction_contact = vm.selectedItem.fonction_contact;
 			vm.selectedItem.telephone_contact = vm.selectedItem.telephone_contact;
@@ -152,14 +206,17 @@
 					vm.selectedItem.$selected = false;
 					vm.selectedItem.$edit = false;
           
-          vm.selectedItem.ile_id = current_selectedItem.ile.id;
-          vm.selectedItem.code = current_selectedItem.code;
-          vm.selectedItem.nom_cosultant = current_selectedItem.nom_cosultant;
-          vm.selectedItem.raison_social = current_selectedItem.raison_social;
-          vm.selectedItem.contact = current_selectedItem.contact;
-          vm.selectedItem.fonction_contact = current_selectedItem.fonction_contact;
-          vm.selectedItem.telephone_contact = current_selectedItem.telephone_contact;
-          vm.selectedItem.adresse = current_selectedItem.adresse;
+					vm.selectedItem.ile_id = current_selectedItem.ile.id;
+					vm.selectedItem.code = current_selectedItem.code;
+					vm.selectedItem.nom_consultant = current_selectedItem.nom_consultant;
+					vm.selectedItem.raison_social = current_selectedItem.raison_social;
+					vm.selectedItem.contact = current_selectedItem.contact;
+					vm.selectedItem.fonction_contact = current_selectedItem.fonction_contact;
+					vm.selectedItem.telephone_contact = current_selectedItem.telephone_contact;
+					vm.selectedItem.adresse = current_selectedItem.adresse;
+					vm.selectedItem.id_region = current_selectedItem.region.id;
+					vm.selectedItem.id_commune = current_selectedItem.commune.id;
+					vm.selectedItem.id_village = current_selectedItem.village.id;
 					
 					vm.selectedItem = {};
 				}
@@ -184,13 +241,16 @@
 				supprimer     :etat_suppression,
 				id            : vm.selectedItem.id,     
 				ile_id        : vm.selectedItem.ile_id,
-        code          : vm.selectedItem.code,
-        nom_cosultant : vm.selectedItem.nom_cosultant,
-        raison_social : vm.selectedItem.raison_social,
-        contact : vm.selectedItem.contact,
-        fonction_contact : vm.selectedItem.fonction_contact,
-        telephone_contact : vm.selectedItem.telephone_contact,
-        adresse : vm.selectedItem.adresse
+				code          : vm.selectedItem.code,
+				nom_consultant : vm.selectedItem.nom_consultant,
+				raison_social : vm.selectedItem.raison_social,
+				contact : vm.selectedItem.contact,
+				fonction_contact : vm.selectedItem.fonction_contact,
+				telephone_contact : vm.selectedItem.telephone_contact,
+				adresse : vm.selectedItem.adresse,     
+				id_region     : vm.selectedItem.id_region,     
+				id_commune    : vm.selectedItem.id_commune,     
+				id_village    : vm.selectedItem.id_village
 
 			});
 
@@ -201,12 +261,27 @@
 				{
 					if (etat_suppression == 0) 
 					{  
-            var il = vm.allIle.filter(function(obj)
+            			var il = vm.allIle.filter(function(obj)
 						{
 							return obj.id == vm.selectedItem.ile_id;
-						});      
+						});
+            			var reg = vm.allRegion.filter(function(obj)
+						{
+							return obj.id == vm.selectedItem.id_region;
+						});
+            			var com = vm.allCommune.filter(function(obj)
+						{
+							return obj.id == vm.selectedItem.id_commune;
+						});
+            			var vil = vm.allVillage.filter(function(obj)
+						{
+							return obj.id == vm.selectedItem.id_village;
+						});        
                                   
-						vm.selectedItem.ile = il[0] ;                      
+						vm.selectedItem.ile = il[0] ;
+						vm.selectedItem.region = reg[0] ;
+						vm.selectedItem.commune = com[0] ;
+						vm.selectedItem.village = vil[0] ;                      
 						vm.selectedItem.$edit = false ;
 						vm.selectedItem.$selected = false ;
 						vm.selectedItem = {} ;
@@ -224,18 +299,35 @@
 				}
 				else
 				{   
-          var il = vm.allIle.filter(function(obj)
+          				var il = vm.allIle.filter(function(obj)
 						{
 							return obj.id == vm.selectedItem.ile_id;
-						});      
+						}); 
+						
+            			var reg = vm.allRegion.filter(function(obj)
+						{
+							return obj.id == vm.selectedItem.id_region;
+						});
+            			var com = vm.allCommune.filter(function(obj)
+						{
+							return obj.id == vm.selectedItem.id_commune;
+						});
+            			var vil = vm.allVillage.filter(function(obj)
+						{
+							return obj.id == vm.selectedItem.id_village;
+						});        
                                   
-					vm.selectedItem.ile = il[0] ;
-					vm.selectedItem.$edit = false ;
-					vm.selectedItem.$selected = false ;
-					vm.selectedItem.id = String(data.response) ;
+						vm.selectedItem.region = reg[0] ;
+						vm.selectedItem.commune = com[0] ;
+						vm.selectedItem.village = vil[0] ;      
+                                  
+						vm.selectedItem.ile = il[0] ;
+						vm.selectedItem.$edit = false ;
+						vm.selectedItem.$selected = false ;
+						vm.selectedItem.id = String(data.response) ;
 
-					vm.nouvelItem = false ;
-					vm.selectedItem = {};
+						vm.nouvelItem = false ;
+						vm.selectedItem = {};
 
 				}
 			})

@@ -1,19 +1,13 @@
-<md-toast id="toast_contrat">
-    <div flex class="md-toast-content" style="display:block !important;"> 
+<md-toast >
       <span>Notification de fin de contrat AGEP</span> 
-      <md-button ng-click="liste_contrat()" class="md-raised md-primary green-800-bg">
-        détails
-        <md-tooltip><span>Voir liste contrat AGEP </span></md-tooltip>
-      </md-button>
-    <md-button ng-click="closeToast_agep()" class="md-fab md-mini green-800-bg" style="float: right;"><md-icon md-font-icon="icon-close" class="s16" ></md-icon>
-      <md-tooltip><span>Fermer</span></md-tooltip>
-    </md-button></div> 
-    <!--div style="display: block !important;" class="md-toast-action">
-      <md-button ng-click="liste_contrat()">
-        Voir detail
+      <md-action>
+
+        <md-button ng-click="liste_contrat()" class="md-raised md-primary green-800-bg">
+          détails
+          <md-tooltip><span>Voir liste contrat AGEP </span></md-tooltip>
+        </md-button>
+      <md-button ng-click="closeToast_agep()" class="md-fab md-mini green-800-bg" style="float: right;"><md-icon md-font-icon="icon-close" class="s16" ></md-icon>
+        <md-tooltip><span>Fermer</span></md-tooltip>
       </md-button> 
-    <md-button ng-click="closeToast()">
-      Fermer
-    </md-button>
-    </div-->
+      </md-action>
   </md-toast>

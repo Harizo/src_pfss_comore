@@ -87,7 +87,7 @@
                            </md-input-container>
                            <md-input-container flex="100" flex-gt-xs="90">
                              <label>Zip</label>
-                               <md-select ng-model="vm.filtre_eligible.id_zip" name="zip" ng-disabled="!vm.filtre_eligible.id_zip"  required>
+                               <md-select ng-model="vm.filtre_eligible.id_zip" name="zip" ng-disabled="!vm.filtre_eligible.id_village"  required>
                                 
                                  <md-option ng-repeat="zip in vm.allZip" value="{{zip.id}}" >
                                    {{zip.libelle}}

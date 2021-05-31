@@ -50,6 +50,9 @@
             'app.pfss.macc',
             //'app.pfss.gestion_budgetaire',
 
+            'app.pfss.formation_ml',
+            'app.pfss.realisation_ebe'
+
 
  
        ])

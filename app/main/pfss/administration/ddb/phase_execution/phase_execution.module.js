@@ -3,8 +3,8 @@
     'use strict';
 
     angular
-        .module('app.pfss.ddb_adm.phaseexecution', [])
-        .run(testPermission)
+        .module('app.pfss.ddb_adm.phase_execution', [])
+        //.run(testPermission)
         .config(config);
         var vs ;
 
@@ -13,27 +13,27 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.pfss_ddb_phaseexecution', {
-            url      : '/donnees-de-base/type-phaseexecution',
+        $stateProvider.state('app.pfss_ddb_phase_execution', {
+            url      : '/donnees-de-base/phase_execution',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/pfss/administration/ddb/phaseexecution/phaseexecution.html',
-                    controller : 'PhaseexecutionController as vm'
+                    templateUrl: 'app/main/pfss/administration/ddb/phase_execution/phase_execution.html',
+                    controller : 'phase_executionController as vm'
                 }
             },
-            bodyClass: 'phaseexecution',
+            bodyClass: 'phase_execution',
             data : {
               authorizer : true,
               permitted : ["USER","PERSONNEL","ADMIN"],
-              page: "Phase execution"
+              page: "phase_execution"
             }
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.phaseexecution', {
-            title: "Phase execution et année",
-            icon  : 'icon-square-inc',
-            state: 'app.pfss_ddb_phaseexecution',
+        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.phase_execution', {
+            title: "Phase d'exécution et Année",
+            icon  : 'icon-swap-horizontal',
+            state: 'app.pfss_ddb_phase_execution',
             weight: 8
             // hidden: function()
             // {
@@ -67,4 +67,7 @@
      
     }
 
-})();
+    })();
+
+
+

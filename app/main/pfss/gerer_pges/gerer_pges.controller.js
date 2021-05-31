@@ -25,7 +25,7 @@
         vm.nouvelItemPges_phases = false ;
         vm.allPges_phases = [] ;
         vm.affiche_load = false ;
-        vm.tab_pges_phase = false; 
+       // vm.tab_pges_phase = false; 
         vm.dtOptions_new =
         {
             dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
@@ -42,18 +42,131 @@
         {
             vm.allPges = result.data.response;
             console.log(vm.allPges);
-        });*/
-        apiFactory.getAPIgeneraliserREST("pges/index","menu","getpgesBysousprojet",'id_sous_projet',id_sous_projet_state).then(function(result) { 
+        });*/apiFactory.getAll("ile/index").then(function(result)
+        { 
+            vm.all_ile = result.data.response;    
+            
+          });
+          apiFactory.getAll("type_infrastructure/index").then(function(result)
+          { 
+            vm.allType_infrastructure = result.data.response;    
+            
+          });
+  
+       vm.filtre_region = function()
+        {
+          apiFactory.getAPIgeneraliserREST("region/index","cle_etrangere",vm.filtre.id_ile).then(function(result)
+          { 
+            vm.all_region = result.data.response;   
+            vm.filtre.id_region = null ; 
+            vm.filtre.id_commune = null ; 
+            vm.filtre.id_village = null ;
+            vm.filtre.id_zip = null ; 
+            vm.filtre.vague = null ;
+            
+          });
+          vm.allInfrastructure_eligible = [] ;
+  
+        }
+  
+        vm.filtre_commune = function()
+        {
+          apiFactory.getAPIgeneraliserREST("commune/index","cle_etrangere",vm.filtre.id_region).then(function(result)
+          { 
+            vm.all_commune = result.data.response; 
+            vm.filtre.id_commune = null ; 
+            vm.filtre.id_village = null ;
+            vm.filtre.id_zip = null ; 
+            vm.filtre.vague = null ;           
+          });
+          vm.allInfrastructure_eligible = [] ;
+        }
+        vm.filtre_village = function()
+        {
+          apiFactory.getAPIgeneraliserREST("village/index","cle_etrangere",vm.filtre.id_commune).then(function(result)
+          { 
+            vm.all_village = result.data.response; 
+            vm.filtre.id_village = null ; 
+            vm.filtre.id_zip = null ; 
+            vm.filtre.vague = null ;          
+          });
+          vm.allInfrastructure_eligible = [] ;
+        }
+        vm.filtre_zip = function()
+          {
+            vm.allZip=[];
+            //item.id_communaute = null;
+            
+            /*apiFactory.getAPIgeneraliserREST("communaute/index","menu","getcommunautebycommune","id_commune",item.id_commune).then(function(result){
+              vm.allCommunaute = result.data.response;
+            });*/
+            apiFactory.getAPIgeneraliserREST("infrastructure/index","menu","getinfrastructurebyvillageandchoisitype","id_village",vm.filtre.id_village).then(function(result) { 				
+                vm.allInfrastructure_choisi = result.data.response;
+                console.log(vm.allInfrastructure_choisi);
+            });
+            var vil = vm.all_village.filter(function(obj)
+            {
+              return obj.id == vm.filtre.id_village;
+            });
+            if (vil.length!=0)
+            {
+                if (vil[0].vague)
+                {
+                  vm.filtre.vague = vil[0].vague;
+                }
+                else
+                {
+                  vm.filtre.vague = null ; 
+                }
+                if (vil[0].zip)
+                {
+                  apiFactory.getAPIgeneraliserREST("zip/index",'id',vil[0].zip.id).then(function(result){
+                      vm.allZip.push(result.data.response);
+                      
+                      if (result.data.response)
+                      {
+                        vm.filtre.id_zip = result.data.response.id;
+                      }
+                      else
+                      {
+                          vm.filtre.id_zip = null;
+                      }
+                      
+                    });
+                }
+                else
+                {
+                  vm.filtre.id_zip = null ; 
+                }
+  
+            }
+            else
+            {
+              vm.filtre.id_zip = null;
+              vm.filtre.vague = null ; 
+            }
+
+          }
+          
+	  vm.get_pges = function()
+	  {
+		vm.affiche_load = true ; 
+        apiFactory.getAPIgeneraliserREST("pges/index","menu","getpgesBysousprojetvillage",'id_sous_projet',id_sous_projet_state,'id_village',vm.filtre.id_village).then(function(result) { 
             vm.allPges = result.data.response;
-            console.log(vm.allPges);
-        });
+            vm.affiche_load = false ;
+        });	
+        
+	}
+        
          //PGES
 
          vm.pges_column = 
          [
              {titre:"Bureau d\'étude"},
              {titre:"Référence contrat"},
-             //{titre:"Sous projet"},
+             {titre:"Infrastructure"},
+             {titre:"Type infrastructure"},
+             {titre:"Montant total"},
              {titre:"Description environnementale"},
              {titre:"Composante zone susceptible"},
              {titre:"Problèmes environnementaux"},
@@ -73,7 +186,7 @@
              if (!vm.selectedItemPges.$edit) 
              {
                  vm.nouvelItemPges = false ;
-                 vm.tab_pges_phase = true;  
+                 //vm.tab_pges_phase = true;  
 
              }
 
@@ -110,7 +223,9 @@
                      date_etablissement: '',      
                      date_visa_ugp: '',      
                      nom_prenom_ugp: '',     
-                     //id_sous_projet: null,  
+                     id_infrastructure: null,
+                     infrastructure : {code_type:null, libelle_type:null},     
+                     montant_total: null  
                      
                  } ;
 
@@ -144,7 +259,8 @@
              vm.selectedItemPges.date_visa_ugp            = new Date(vm.selectedItemPges.date_visa_ugp);      
              vm.selectedItemPges.nom_prenom_ugp           = vm.selectedItemPges.nom_prenom_ugp;      
              vm.selectedItemPges.date_etablissement       = new Date(vm.selectedItemPges.date_etablissement);    
-             //vm.selectedItemPges.id_sous_projet           = vm.selectedItemPges.sous_projet.id; 
+             vm.selectedItemPges.id_infrastructure        = vm.selectedItemPges.infrastructure.id;      
+             vm.selectedItemPges.montant_total            =parseFloat(vm.selectedItemPges.montant_total);
          }
 
          vm.supprimerPges = function()
@@ -202,7 +318,8 @@
                      vm.selectedItemPges.date_visa_ugp            = current_selectedItemPges.date_visa_ugp;      
                      vm.selectedItemPges.nom_prenom_ugp           = current_selectedItemPges.nom_prenom_ugp;      
                      vm.selectedItemPges.date_etablissement       = current_selectedItemPges.date_etablissement;     
-                     //vm.selectedItemPges.id_sous_projet           = current_selectedItemPges.sous_projet.id;
+                     vm.selectedItemPges.id_infrastructure        = current_selectedItemPges.infrastructure.id;     
+                     vm.selectedItemPges.montant_total            = current_selectedItemPges.montant_total;
                      
                      vm.selectedItemPges = {};
                  }
@@ -220,7 +337,11 @@
                      'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
                  }
              };
-
+             var villa = vm.filtre.id_village;
+             if (vm.nouvelItemPges==false)
+             {
+                 villa = vm.selectedItemPges.id_village
+             }
 
              var datas = $.param(
              {                        
@@ -238,7 +359,10 @@
                  date_visa_ugp            : convert_date(vm.selectedItemPges.date_visa_ugp),      
                  nom_prenom_ugp           : vm.selectedItemPges.nom_prenom_ugp,      
                  date_etablissement       : convert_date(vm.selectedItemPges.date_etablissement),                        
-                 id_sous_projet           : id_sous_projet_state
+                 id_sous_projet           : id_sous_projet_state,      
+                 id_infrastructure        : vm.selectedItemPges.id_infrastructure,      
+                 id_village               : villa,                       
+                 montant_total            : vm.selectedItemPges.montant_total
              });
 
              apiFactory.add("pges/index",datas, config).success(function (data)
@@ -248,11 +372,12 @@
                  {
                      if (etat_suppression == 0) 
                      {   
-                        /* var sousp = vm.allSous_projet.filter(function(obj)
+                         var infra = vm.allInfrastructure_choisi.filter(function(obj)
                          {
-                             return obj.id == vm.selectedItemPges.id_sous_projet;
-                         });*/
-                         //vm.selectedItemPges.sous_projet = sousp[0] ;
+                             return obj.id == vm.selectedItemPges.id_infrastructure;
+                         });
+                         console.log(infra);
+                         vm.selectedItemPges.infrastructure = infra[0] ;
                          vm.selectedItemPges.$edit = false ;
                          vm.selectedItemPges.$selected = false ;
                          vm.selectedItemPges = {} ;
@@ -270,14 +395,16 @@
                  }
                  else
                  {   
-                     /*var sousp = vm.allSous_projet.filter(function(obj)
-                     {
-                         return obj.id == vm.selectedItemPges.id_sous_projet;
-                     });*/
-                     //vm.selectedItemPges.sous_projet = sousp[0] ;
+                    var infra = vm.allInfrastructure_choisi.filter(function(obj)
+                    {
+                        return obj.id == vm.selectedItemPges.id_infrastructure;
+                    });
+                    console.log(infra);
+                    vm.selectedItemPges.infrastructure = infra[0] ;
                      vm.selectedItemPges.$edit = false ;
                      vm.selectedItemPges.$selected = false ;
                      vm.selectedItemPges.id = String(data.response) ;
+                     vm.selectedItemPges.id_village = villa ;
 
                      vm.nouvelItemPges = false ;
                      vm.selectedItemPges = {};
@@ -285,6 +412,16 @@
                  }
              })
              .error(function (data) {alert("Une erreur s'est produit");});
+         }
+         vm.change_infrastructure = function(item)
+         {
+            var infra = vm.allInfrastructure_choisi.filter(function(obj)
+            {
+                return obj.id == item.id_infrastructure;
+            });
+            console.log(infra);
+            vm.selectedItemPges.infrastructure.code_type = infra[0].code_type;
+            vm.selectedItemPges.infrastructure.libelle_type = infra[0].libelle_type;
          }             
 
         //PGES phases
@@ -295,8 +432,9 @@
                     {titre:"Impacts"},
                     {titre:"Mesures"},
                     {titre:"Responsable"},
-                    {titre:"Calendrier d\'execution"},
-                    {titre:"Coût estimatif"}
+                    {titre:"Calendrier d\'exécution"},
+                    {titre:"Coût estimatif"},
+                    {titre:"Phase"}
                 ]; 
 
                 vm.selectionPges_phases = function(item)
@@ -306,7 +444,7 @@
                     if (!vm.selectedItemPges_phases.$edit) 
                     {
                         vm.nouvelItemPges_phases = false ;
-                        vm.tab_pges_phase_phases = true;  
+                        //vm.tab_pges_phase_phases = true;  
 
                     }
 
@@ -336,7 +474,8 @@
                             mesures: '',
                             responsable: '',
                             calendrier_execution: '',
-                            cout_estimatif: ''  
+                            cout_estimatif: '',
+                            phase: null  
                             
                         } ;
 
@@ -357,12 +496,12 @@
                     vm.selectedItemPges_phases.$edit = true;
                 
                     current_selectedItemPges_phases = angular.copy(vm.selectedItemPges_phases);
-                    
+                    /*
                     vm.selectedItemPges_phases.description  = vm.selectedItemPges_phases.description;
                     vm.selectedItemPges_phases.impacts      = vm.selectedItemPges_phases.impacts;
                     vm.selectedItemPges_phases.mesures      = vm.selectedItemPges_phases.mesures;
                     vm.selectedItemPges_phases.responsable  = vm.selectedItemPges_phases.responsable;      
-                    vm.selectedItemPges_phases.calendrier_execution    = vm.selectedItemPges_phases.calendrier_execution;      
+                    vm.selectedItemPges_phases.calendrier_execution    = vm.selectedItemPges_phases.calendrier_execution;*/      
                     vm.selectedItemPges_phases.cout_estimatif  = parseFloat(vm.selectedItemPges_phases.cout_estimatif);  
                 }
 
@@ -378,9 +517,40 @@
                       .parent(angular.element(document.body))
                       .ok('OK')
                       .cancel('Annuler');
-                    $mdDialog.show(confirm).then(function() {
-
-                    vm.enregistrerPges_phases(1);
+                    $mdDialog.show(confirm).then(function()
+                    {   
+                        var Pges_phases_array = vm.allPges_phases.filter(function(obj)
+                            {
+                                return obj.id !== vm.selectedItemPges_phases.id;
+                            });
+                        var total_phase = 0;
+                        if (Pges_phases_array.length!=0)
+                        {                
+                            for(var i = 0; i < Pges_phases_array.length; i++){
+                                var montant_current = Pges_phases_array[i];
+                                total_phase += parseFloat(montant_current.cout_estimatif);
+                            }
+                        }
+                        if (parseFloat(vm.selectedItemPges.montant_total)!=total_phase)
+                        {
+                            var confirm = $mdDialog.confirm()
+                            .title('Avertissement!!')
+                            .htmlContent('En suppriment cet enregistrement, il y aura une différence entre le montant total dans PGES et la somme de coût dans Phase PGES '+'<br><div>'+ 'Cliquer sur OK pour continuer'+'</div>')
+                            .ariaLabel('Lucky day')
+                            .clickOutsideToClose(true)
+                            .parent(angular.element(document.body))
+                            .ok('OK')
+                            .cancel('Annuler');
+                            $mdDialog.show(confirm).then(function()
+                            {
+                                vm.enregistrerPges_phases(1);
+                            }, function() {
+                            });
+                        }
+                        else
+                        {
+                            vm.enregistrerPges_phases(1);
+                        }
                     }, function() {
                     //alert('rien');
                     });
@@ -414,7 +584,8 @@
                             vm.selectedItemPges_phases.mesures      = current_selectedItemPges_phases.mesures;
                             vm.selectedItemPges_phases.responsable  = current_selectedItemPges_phases.responsable;      
                             vm.selectedItemPges_phases.calendrier_execution    = current_selectedItemPges_phases.calendrier_execution;      
-                            vm.selectedItemPges_phases.cout_estimatif  = current_selectedItemPges_phases.cout_estimatif;
+                            vm.selectedItemPges_phases.cout_estimatif  = current_selectedItemPges_phases.cout_estimatif;      
+                            vm.selectedItemPges_phases.phase  = current_selectedItemPges_phases.phase;
                             
                             vm.selectedItemPges_phases = {};
                         }
@@ -443,46 +614,100 @@
                         mesures                 : vm.selectedItemPges_phases.mesures,      
                         responsable             : vm.selectedItemPges_phases.responsable,
                         calendrier_execution    : vm.selectedItemPges_phases.calendrier_execution,      
-                        cout_estimatif          : vm.selectedItemPges_phases.cout_estimatif,       
+                        cout_estimatif          : vm.selectedItemPges_phases.cout_estimatif,      
+                        phase                   : vm.selectedItemPges_phases.phase,       
                         id_pges                 : vm.selectedItemPges.id
 
 
                     });
-
-                    apiFactory.add("pges_phases/index",datas, config).success(function (data)
+                    if (etat_suppression!=1)
                     {
-                        vm.affiche_load = false ;
-                        if (!vm.nouvelItemPges_phases) 
+                        var total_phase = 0;
+                        if (vm.allPges_phases.length!=0)
+                        {                
+                            for(var i = 0; i < vm.allPges_phases.length; i++){
+                                var montant_current = vm.allPges_phases[i];
+                                total_phase += parseFloat(montant_current.cout_estimatif);
+                            }
+                        }
+                        if (parseFloat(vm.selectedItemPges.montant_total)!=total_phase)
                         {
-                            if (etat_suppression == 0) 
-                            {                                  
-                                vm.selectedItemPges_phases.$edit = false ;
-                                vm.selectedItemPges_phases.$selected = false ;
-                                vm.selectedItemPges_phases = {} ;
-                            }
-                            else
+                            var confirm = $mdDialog.confirm()
+                            .title('Etes-vous sûr de cet enregistrement ?')
+                            .htmlContent('Il y a une différence entre le montant total dans PGES et la somme de coût dans Phase PGES '+'<br>'+ 'Cliquer sur OK pour confirmer')
+                            .ariaLabel('Lucky day')
+                            .clickOutsideToClose(true)
+                            .parent(angular.element(document.body))
+                            .ok('OK')
+                            .cancel('Annuler');
+                            $mdDialog.show(confirm).then(function()
                             {
-                                vm.allPges_phases = vm.allPges_phases.filter(function(obj)
+                                apiFactory.add("pges_phases/index",datas, config).success(function (data)
                                 {
-                                    return obj.id !== vm.selectedItemPges_phases.id;
-                                });
+                                    vm.affiche_load = false ;
+                                    if (!vm.nouvelItemPges_phases) 
+                                    {                              
+                                        vm.selectedItemPges_phases.$edit = false ;
+                                        vm.selectedItemPges_phases.$selected = false ;
+                                        vm.selectedItemPges_phases = {} ;
 
-                                vm.selectedItemPges_phases = {} ;
-                            }
+                                    }
+                                    else
+                                    {   
+                                        vm.selectedItemPges_phases.$edit = false ;
+                                        vm.selectedItemPges_phases.$selected = false ;
+                                        vm.selectedItemPges_phases.id = String(data.response) ;
 
+                                        vm.nouvelItemPges_phases = false ;
+                                        vm.selectedItemPges_phases = {};
+
+                                    }
+                                })
+                                .error(function (data) {alert("Une erreur s'est produit");});
+                            }, function() {
+                            });
                         }
                         else
-                        {   
-                            vm.selectedItemPges_phases.$edit = false ;
-                            vm.selectedItemPges_phases.$selected = false ;
-                            vm.selectedItemPges_phases.id = String(data.response) ;
+                        {
+                            apiFactory.add("pges_phases/index",datas, config).success(function (data)
+                            {
+                                vm.affiche_load = false ;
+                                if (!vm.nouvelItemPges_phases) 
+                                {                               
+                                    vm.selectedItemPges_phases.$edit = false ;
+                                    vm.selectedItemPges_phases.$selected = false ;
+                                    vm.selectedItemPges_phases = {} ;
 
-                            vm.nouvelItemPges_phases = false ;
-                            vm.selectedItemPges_phases = {};
+                                }
+                                else
+                                {   
+                                    vm.selectedItemPges_phases.$edit = false ;
+                                    vm.selectedItemPges_phases.$selected = false ;
+                                    vm.selectedItemPges_phases.id = String(data.response) ;
 
+                                    vm.nouvelItemPges_phases = false ;
+                                    vm.selectedItemPges_phases = {};
+
+                                }
+                            })
+                            .error(function (data) {alert("Une erreur s'est produit");});
                         }
-                    })
-                    .error(function (data) {alert("Une erreur s'est produit");});
+                    }
+                    else
+                    {
+                        apiFactory.add("pges_phases/index",datas, config).success(function (data)
+                        {
+                            vm.allPges_phases = vm.allPges_phases.filter(function(obj)
+                            {
+                                return obj.id !== vm.selectedItemPges_phases.id;
+                            });
+
+                            vm.selectedItemPges_phases = {} ;
+                        })
+                        .error(function (data) {alert("Une erreur s'est produit");});
+                    }
+                                        
+                    
                 }
 
                 vm.click_tab_phases = function()

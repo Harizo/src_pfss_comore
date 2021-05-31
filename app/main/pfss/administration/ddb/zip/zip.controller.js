@@ -12,6 +12,7 @@
 		var id_utilisateur = $cookieStore.get('id');
 		vm.serveur_central = serveur_central ;
 		vm.affiche = true;
+    vm.nombre_zap = 0;
 		/* ***************Debut milieu**********************/  
         vm.mainGridMilieu =
         {
@@ -431,6 +432,8 @@
                     apiFactory.getAll("zip/index").then(function success(response)
                     {
                         e.success(response.data.response);
+                        vm.nombre_zap = response.data.response.length;
+                        console.log(vm.nombre_zap);
                     }, function error(response)
                         {
                           vm.showAlert('Erreur','Erreur de lecture');
@@ -471,41 +474,42 @@
                 //suppression zip
                 destroy: function (e)
                 {
-					// Demande de confirmation de suppression
-					var confirm = $mdDialog.confirm()
-						.title('Etes-vous sûr de supprimer cet enregistrement ?')
-						.textContent('')
-						.ariaLabel('Lucky day')
-						.clickOutsideToClose(true)
-						.parent(angular.element(document.body))
-						.ok('supprimer')
-						.cancel('annuler');
-					$mdDialog.show(confirm).then(function() {  
-						// demande de confirmation de suppression OK => enregitrement à supprimer
-						var config ={headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};                   
-						var datas = $.param({
-								supprimer: 1,
-								id:        e.data.models[0].id               
-							});
-						apiFactory.add("zip/index",datas, config).success(function (data)
-						{                
-						  e.success(e.data.models);
-						  /***********Debut add historique***********/
-							  var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
-							  var datas = $.param({
-									  action:"Suppression : zip de libelle de " + e.data.models[0].libelle,
-									  id_utilisateur: id_utilisateur
-							  });
-									
-							  apiFactory.add("historique_utilisateur/index",datas, config).success(function (data) {
-							  });
-						  /***********Fin add historique***********/
-						}).error(function (data) {
-							vm.showAlert('Erreur','Erreur lors de la suppression de donnée');
-						});
-					}, function() {
-						// Aucune action = sans suppression
-					});               
+                    // Demande de confirmation de suppression
+                    var confirm = $mdDialog.confirm()
+                      .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                      .textContent('')
+                      .ariaLabel('Lucky day')
+                      .clickOutsideToClose(true)
+                      .parent(angular.element(document.body))
+                      .ok('supprimer')
+                      .cancel('annuler');
+                    $mdDialog.show(confirm).then(function() {  
+                      // demande de confirmation de suppression OK => enregitrement à supprimer
+                      var config ={headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};                   
+                      var datas = $.param({
+                          supprimer: 1,
+                          id:        e.data.models[0].id               
+                        });
+                      apiFactory.add("zip/index",datas, config).success(function (data)
+                      {                
+                        e.success(e.data.models);
+                        vm.nombre_zap = vm.nombre_zap - 1;
+                        /***********Debut add historique***********/
+                          var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
+                          var datas = $.param({
+                              action:"Suppression : zip de libelle de " + e.data.models[0].libelle,
+                              id_utilisateur: id_utilisateur
+                          });
+                            
+                          apiFactory.add("historique_utilisateur/index",datas, config).success(function (data) {
+                          });
+                        /***********Fin add historique***********/
+                      }).error(function (data) {
+                        vm.showAlert('Erreur','Erreur lors de la suppression de donnée');
+                      });
+                    }, function() {
+                      // Aucune action = sans suppression
+                    });               
                 },
                 //creation zip
                 create: function(e)
@@ -522,6 +526,8 @@
                     { 
                       e.data.models[0].id = String(data.response);               
                       e.success(e.data.models);
+                      
+                      vm.nombre_zap = vm.nombre_zap + 1;
 
                       /***********Debut add historique***********/
                         var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
@@ -565,7 +571,7 @@
           // height: 550,
           toolbar: [{               
                template: '<label id="table_titre">ZIP</label>'
-			   				+'<a class="k-button k-button-icontext k-grid-add addzip" href="\\#" ng-if="vm.serveur_central">' 
+			   				+'<a class="k-button k-button-icontext k-grid-add addzip" href="\\#" ng-if="vm.serveur_central && vm.nombre_zap<8">' 
 			   				+'<md-icon md-font-icon="icon-playlist-plus"></md-icon>'
 							+'<md-tooltip><span>Ajout</span></md-tooltip>'
 						+'</a>'

@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pfss.ddb_adm.type_infrastructure', [])
+        .module('app.pfss.ddb_adm.type_infrastructure_agr', [])
         .run(testPermission)
         .config(config);
         var vs ;
@@ -13,31 +13,30 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.pfss_ddb_type_infrastructure', {
-            url      : '/donnees-de-base/type-infrastructure',
+        $stateProvider.state('app.pfss_ddb_type_infrastructure_agr', {
+            url      : '/donnees-de-base/type_infrastructure_agr',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/pfss/administration/ddb/type_infrastructure/type_infrastructure.html',
-                    controller : 'Type_infrastructureController as vm'
+                    templateUrl: 'app/main/pfss/administration/ddb/type_infrastructure_agr/type_infrastructure_agr.html',
+                    controller : 'type_infrastructure_agrController as vm'
                 }
             },
-            bodyClass: 'type_infrastructure',
+            bodyClass: 'type_infrastructure_agr',
             data : {
               authorizer : true,
               permitted : ["USER","PERSONNEL","ADMIN"],
-              page: "Type infrastructure"
+              page: "type_infrastructure_agr"
             }
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.type_infrastructure', {
-            title: "Type d'activité,ARSE et ACT",
-            icon  : 'icon-yelp',
-            state: 'app.pfss_ddb_type_infrastructure',
-            weight: 5
+        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.type_infrastructure_agr', {
+            title: "Type de l'activité, ARSE, ACT",
+            icon  : 'icon-swap-horizontal',
+            state: 'app.pfss_ddb_type_infrastructure_agr',
             // hidden: function()
             // {
-                    //return vs;
+                    // return vs;
             // }
         });
     }
@@ -67,4 +66,7 @@
      
     }
 
-})();
+    })();
+
+
+

@@ -29,7 +29,7 @@
                     if (tab.length > 0) 
                     {
                         $mdToast.show({
-                        hideDelay: 0,
+                        hideDelay: false,
                         position: 'bottom right',
                         controller: 'ToastCtrl',
                         templateUrl: 'app/main/pfss/gerer_mdp/mdtoast.html'
@@ -43,7 +43,7 @@
             });
             
         
-        apiFactory.getAPIgeneraliserREST("contrat_agep/index",'menu','getallcontrat_alert').then(function(result) 
+        /*apiFactory.getAPIgeneraliserREST("contrat_agep/index",'menu','getallcontrat_alert').then(function(result) 
         {
             var resultat = result.data.response;
             console.log(resultat);
@@ -53,7 +53,7 @@
                         controller: 'Toast_contrat_agepCtrl',
                         templateUrl: 'app/main/pfss/contrat_agep/toast_contrat_agep.html',
                         hideDelay: 0,
-                        position: 'bottom right',
+                        position: 'top right',
                         locals:{param: resultat}
                       });
                 
@@ -62,7 +62,7 @@
             console.log(resultat);
                     
 
-        });
+        });*/
         }
 
 

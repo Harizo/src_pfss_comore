@@ -21,19 +21,284 @@
                     <md-tab label="PAC">
                         <md-tab-body>
                             <div style="overflow: auto; width: 100%;">
-                                <fieldset layout="column" layout-gt-xs="row">
-                                    <legend>
-                                            PAC
-                                        <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterPac()">
-                                          <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
+                                <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                    <div layout="row" layout-align="start center">
+                                    <div class="border-right">
+                                        
+                                      <span class="md-headline">PAC &nbsp</span>
+                                    </div>
+                                      <div class="border-right" ng-if="!vm.selectedItemPac.id">
+                                        <md-button class="md-icon-button" style=" font-size:11px " aria-label="add ajout" ng-click="vm.ajouterPac()">
+                                          <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                          <md-tooltip><span>Ajouter</span></md-tooltip>
                                         </md-button>
-            
-                                        <!--md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('pac/index','pac')">
-                                          <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
-                                        </md-button-->
-                                    </legend>
-                                    <div flex>
-                                        <table ng-table="tablePac" id="tablePac" class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions">
+                                      </div> 
+                                      <div class="border-right" ng-if="vm.selectedItemPac.id">
+                                        <md-button class="md-icon-button" aria-label="add modif" style=" font-size:11px " ng-click="vm.modifierPac()">
+                                          <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                          <md-tooltip><span>Modifier</span></md-tooltip>
+                                        </md-button>
+                                      </div>    
+                                      <div class="border-right" ng-if="vm.selectedItemPac.id">
+                                        <md-button class="md-icon-button" aria-label="add suppression" style=" font-size:11px " ng-click="vm.supprimerPac()">
+                                          <md-icon md-font-icon="icon-delete"></md-icon>
+                                          <md-tooltip><span>Supprimer</span></md-tooltip>
+                                        </md-button>
+                                      </div> 
+                                      <div class="border-right" ng-if="vm.selectedItemPac.id">
+                                        <md-button class="md-icon-button" aria-label="add Annuler" style=" font-size:11px " ng-click="vm.annulerPac()">
+                                          <md-icon md-font-icon="icon-cancel"></md-icon>
+                                          <md-tooltip><span>Annuler</span></md-tooltip>
+                                        </md-button>
+                                      </div>                  
+                                    </div>
+                                </header>
+                                
+                        <!----------FORM AGEP--------------->       
+                         
+                                <form ng-show="vm.affichage_masque" name="formpac" class="md-inline-form" novalidate >
+
+                                    <div layout="column" layout-gt-xs="row" flex> 
+        
+                                    <md-input-container flex="100" flex-gt-xs="30">
+                                        <label>Ile</label>
+                                        <md-select ng-model="vm.pac.id_ile" name="id_ile" ng-change="vm.change_ile()">
+                                            <md-option ng-repeat="ile in vm.allIle" value="{{ile.id}}">
+                                                {{ile.Ile}}
+                                            </md-option>                                                
+                                        </md-select>
+                                        <div ng-messages="formpac.id_ile.$error" role="alert">
+                                            <div ng-message="required">
+                                            <span>ile Obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex="100" flex-gt-xs="30">
+                                        <label>Préfecture</label>
+                                        <md-select ng-model="vm.pac.id_region" name="id_region" ng-change="vm.change_region()">
+                                            <md-option ng-repeat="region in vm.allRegion" value="{{region.id}}">
+                                                {{region.Region}}
+                                            </md-option>                                                
+                                        </md-select>
+                                        <div ng-messages="formpac.id_region.$error" role="alert">
+                                            <div ng-message="required">
+                                            <span>Préfecture Obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex="100" flex-gt-xs="30">
+                                        <label>Commune</label>
+                                        <md-select ng-model="vm.pac.id_commune" name="id_commune" ng-change="vm.change_commune()">
+                                            <md-option ng-repeat="commune in vm.allCommune" value="{{commune.id}}">
+                                                {{commune.Commune}}
+                                            </md-option>                                                
+                                        </md-select>
+                                        <div ng-messages="formpac.id_commune.$error" role="alert">
+                                            <div ng-message="required">
+                                            <span>Commune Obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex="100" flex-gt-xs="30">
+                                        <label>Village</label>
+                                        <md-select ng-model="vm.pac.id_village" name="id_village" ng-change="vm.change_village()">
+                                            <md-option ng-repeat="village in vm.allVillage" value="{{village.id}}">
+                                                {{village.Village}}
+                                            </md-option>                                                
+                                        </md-select>
+                                        <div ng-messages="formpac.id_village.$error" role="alert">
+                                            <div ng-message="required">
+                                            <span>Village Obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex="100" flex-gt-xs="30">
+                                        <label>Zip</label>
+                                        <md-select ng-model="vm.pac.id_zip" name="id_zip" required disabled>
+                                            <md-option ng-repeat="zip in vm.allZip" value="{{zip.id}}">
+                                                {{zip.libelle}}
+                                            </md-option>                                                
+                                        </md-select>
+                                        <div ng-messages="formpac.id_zip.$error" role="alert">
+                                            <div ng-message="required">
+                                            <span>Zip Obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex="100" flex-gt-xs="40">
+                                        <label>Vague</label>
+                                        <input  type="text" name="vague" ng-model="vm.pac.vague"  aria-label="vague" disabled>
+                                        <div ng-messages="formpac.vague.$error"role="alert">
+                                            <div ng-message="required">
+                                                <span>vague obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+        
+                                <div layout="column" layout-gt-xs="row" flex>
+                                    
+                                    <md-input-container flex="100" flex-gt-xs="30">
+                                        <label>Type AGR</label>
+                                        <md-select ng-model="vm.pac.id_type_agr" name="id_type_agr" required>
+                                            <md-option ng-repeat="type_agr in vm.allType_agr" value="{{type_agr.id}}">
+                                                {{type_agr.libelle}}
+                                            </md-option>                                                
+                                        </md-select>
+                                        <div ng-messages="formpac.id_type_agr.$error" role="alert">
+                                            <div ng-message="required">
+                                            <span>Type AGR Obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex="100" flex-gt-xs="40">
+                                        <label>Libelle AGR</label>
+                                        <input  type="text" name="libelle" ng-model="vm.pac.libelle"  aria-label="libelle" required>
+                                        <div ng-messages="formpac.libelle.$error"role="alert">
+                                            <div ng-message="required">
+                                                <span>Libelle AGR obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex="100" flex-gt-xs="40">
+                                        <label>Milieu physique</label>
+                                        <input  type="text" name="milieu_physique" ng-model="vm.pac.milieu_physique"  aria-label="milieu_physique" required>
+                                        <div ng-messages="formpac.milieu_physique.$error"role="alert">
+                                            <div ng-message="required">
+                                                <span>Milieu physique obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex="100" flex-gt-xs="40">
+                                        <label>Condition climatique</label>
+                                        <input  type="text" name="condition_climatique" ng-model="vm.pac.condition_climatique"  aria-label="condition_climatique" required>
+                                        <div ng-messages="formpac.condition_climatique.$error"role="alert">
+                                            <div ng-message="required">
+                                                <span>Condition climatique obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+        
+                                <div layout="column" layout-gt-xs="row" flex>
+                                        
+                                    <md-input-container flex="100" flex-gt-xs="40">                                        
+                                        <label>Difficulté socio-economique</label>
+                                        <input  type="text" name="diffi_socio_eco" ng-model="vm.pac.diffi_socio_eco"  aria-label="diffi_socio_eco" required>
+                                        <div ng-messages="formpac.diffi_socio_eco.$error"role="alert">
+                                            <div ng-message="required">
+                                                <span>Difficulté socio-economique obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex="100" flex-gt-xs="40">
+                                        <label>Infrastructure publique et sociale</label>
+                                        <input  type="text" name="infra_pub_soc" ng-model="vm.pac.infra_pub_soc"  aria-label="infra_pub_soc" required>
+                                        <div ng-messages="formpac.infra_pub_soc.$error"role="alert">
+                                            <div ng-message="required">
+                                                <span>Infrastructure publique et sociale obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex="100" flex-gt-xs="40">
+                                        <label>Analyse des problématiques</label>
+                                        <input  type="text" name="analyse_pro" ng-model="vm.pac.analyse_pro"  aria-label="analyse_pro" required>
+                                        <div ng-messages="formpac.analyse_pro.$error"role="alert">
+                                            <div ng-message="required">
+                                                <span>Analyse des problématiques obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex="100" flex-gt-xs="40">
+                                        <label>Identification et priorisation des ARS</label>
+                                        <input  type="number" name="identi_prio_arse" ng-model="vm.pac.identi_prio_arse"  aria-label="identi_prio_arse" required>
+                                        <div ng-messages="formpac.identi_prio_arse.$error"role="alert">
+                                            <div ng-message="required">
+                                                <span>Identification et priorisation des ARSE obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex="100" flex-gt-xs="40">
+                                        <label>Marché locale et régional ARSE</label>
+                                        <input  type="text" name="marche_loc_reg_arse" ng-model="vm.pac.marche_loc_reg_arse"  aria-label="marche_loc_reg_arse" required>
+                                        <div ng-messages="formpac.marche_loc_reg_arse.$error"role="alert">
+                                            <div ng-message="required">
+                                                <span>Marché locale et régional ARSE obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>             
+                                </div>
+        
+                                <div layout="column" layout-gt-xs="row" flex>
+                                    <md-input-container flex="100" flex-gt-xs="40">
+                                        <label>Description des activités</label>
+                                        <input  type="text" name="description_activite" ng-model="vm.pac.description_activite"  aria-label="description_activite" required>
+                                        <div ng-messages="formpac.description_activite.$error"role="alert">
+                                            <div ng-message="required">
+                                                <span>Description des activités obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex="100" flex-gt-xs="40">
+                                        <label>Estimation des besoins</label>
+                                        <input  type="text" name="estimation_besoin" ng-model="vm.pac.estimation_besoin"  aria-label="estimation_besoin" required>
+                                        <div ng-messages="formpac.estimation_besoin.$error"role="alert">
+                                            <div ng-message="required">
+                                                <span>Estimation des besoins obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex="100" flex-gt-xs="40">
+                                        <label>Etude économique</label>
+                                        <input  type="text" name="etude_eco" ng-model="vm.pac.etude_eco"  aria-label="etude_eco" required>
+                                        <div ng-messages="formpac.etude_eco.$error"role="alert">
+                                            <div ng-message="required">
+                                                <span>Etude économique obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex="100" flex-gt-xs="40">
+                                        <label>Structures d’appui</label>
+                                        <input  type="text" name="structure_appui" ng-model="vm.pac.structure_appui"  aria-label="structure_appui" required>
+                                        <div ng-messages="formpac.structure_appui.$error"role="alert">
+                                            <div ng-message="required">
+                                                <span>Structures d’appui obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex="100" flex-gt-xs="40">
+                                        <label>Impact environnementaux</label>
+                                        <input  type="text" name="impact_env" ng-model="vm.pac.impact_env"  aria-label="impact_env" required>
+                                        <div ng-messages="formpac.impact_env.$error"role="alert">
+                                            <div ng-message="required">
+                                                <span>Impact environnementaux obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex="100" flex-gt-xs="40">
+                                        <label>Impact sociaux</label>
+                                        <input  type="text" name="impact_sociau" ng-model="vm.pac.impact_sociau"  aria-label="impact_sociau" required>
+                                        <div ng-messages="formpac.impact_sociau.$error"role="alert">
+                                            <div ng-message="required">
+                                                <span>Impact sociaux obligatoire.</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>                  
+                                </div>
+        
+                                    <div>
+                                        <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                                ng-disabled="formpac.$invalid " ng-click="vm.ajoutPac(vm.pac,0)">
+                                                Enregistrer
+                                        </md-button>
+                                        <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerPac()">
+                                                Annuler
+                                        </md-button>
+                                    </div>
+                                </form>
+                                          
+                          
+                                        <table ng-table="tablePac" class="dataTable row-border hover cell-border text-center" datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
                                             <thead>
                                                 <tr>
                                                     <th class="secondary-text" ng-repeat="c in ::vm.pac_column">
@@ -46,225 +311,137 @@
                                             <tbody>
                                                 <tr ng-repeat="pa in vm.allPac"  ng-class="{selected: pa.$selected}" ng-click="vm.selectionPac(pa)">                                       
                                                     
-                                                    <td style="width:100% !important;">
-                                                        <span ng-if="pa.$edit">
-                                                            <md-input-container style="width:100%; display: flex !important;">
-                                                              <label>Ile</label>
-                                                                <md-select ng-model="pa.id_ile"  style="width:90px;overflow: hidden;text-overflow: ellipsis;" ng-change="vm.modifierIle(pa)">
-                                                                    <md-option value=''>&nbsp;</md-option>
-                                                                  <md-option ng-repeat="vil in vm.allIle" value="{{vil.id}}">
-                                                                    {{vil.Ile}}
-                                                                  </md-option>
-                                                                </md-select>
-                                                            </md-input-container>  
-                                                        </span>
-                                                        <span ng-if="!pa.$edit">{{pa.ile.Ile}}</span>
-                                                    </td>
-                                                    <td style="width:100% !important;">
-                                                        <span ng-if="pa.$edit">
-                                                            <md-input-container style="width:100%; display: flex !important;">
-                                                              <label>Préfecture</label>
-                                                                <md-select ng-model="pa.id_region"  style="width:90px;overflow: hidden;text-overflow: ellipsis;" ng-disabled="!pa.id_ile" ng-change="vm.modifierRegion(pa)">
-                                                                    <md-option value=''>&nbsp;</md-option>
-                                                                  <md-option ng-repeat="reg in vm.allRegion" value="{{reg.id}}">
-                                                                    {{reg.Region}}
-                                                                  </md-option>
-                                                                </md-select>
-                                                            </md-input-container>  
-                                                        </span>
-                                                        <span ng-if="!pa.$edit">{{pa.region.Region}}</span>
-                                                    </td>
-                                                    <td style="width:100% !important;">
-                                                        <span ng-if="pa.$edit">
-                                                            <md-input-container style="width:100%; display: flex !important;">
-                                                              <label>Commune</label>
-                                                                <md-select ng-model="pa.id_commune"  style="width:90px;overflow: hidden;text-overflow: ellipsis;" ng-disabled="!pa.id_region">
-                                                                
-                                                                  <md-option ng-repeat="comu in vm.allCommune" value="{{comu.id}}">
-                                                                    {{comu.Commune}}
-                                                                  </md-option>
-                                                                </md-select>
-                                                            </md-input-container>  
-                                                        </span>
-                                                        <span ng-if="!pa.$edit">{{pa.commune.Commune}}</span>
-                                                    </td>
-                                                    <td style="width:100% !important;">
-                                                        <span ng-if="pa.$edit">
-                                                            <md-input-container style="width:100%; display: flex !important;">
-                                                              <label>Zip</label>
-                                                                <md-select ng-model="pa.id_zip"  style="width:90px;overflow: hidden;text-overflow: ellipsis;">
-                                                                
-                                                                  <md-option ng-repeat="zp in vm.allZip" value="{{zp.id}}">
-                                                                    {{zp.libelle}}
-                                                                  </md-option>
-                                                                </md-select>
-                                                            </md-input-container>  
-                                                        </span>
-                                                        <span ng-if="!pa.$edit">{{pa.zip.libelle}}</span>
-                                                    </td>
-                                                    <td style="width:100% !important;">
-                                                        <span ng-if="pa.$edit">
-                                                            <md-input-container style="width:100% !important; display: flex !important;">
-                                                                <label>Milieu physique</label>
-                                                                <input name="milieu_physique" type="text" ng-model="pa.milieu_physique"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!pa.$edit">{{pa.milieu_physique}}</span>
-                                                    </td>
-                                                    <td style="width:100% !important;">
-                                                        <span ng-if="pa.$edit">
-                                                            <md-input-container style="width:100% !important; display: flex !important;">
-                                                                <label>Condition limatique</label>
-                                                                <input name="condition_climatique" type="text" ng-model="pa.condition_climatique"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!pa.$edit">{{pa.condition_climatique}}</span>
-                                                    </td>
-                                                    <td style="width:100% !important;">
-                                                        <span ng-if="pa.$edit">
-                                                            <md-input-container style="width:100% !important; display: flex !important;">
-                                                                <label>Difficulté socio-économique</label>
-                                                                <input name="diffi_socio_eco" type="text" ng-model="pa.diffi_socio_eco"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!pa.$edit">{{pa.diffi_socio_eco}}</span>
-                                                    </td>
-                                                    <td style="width:100% !important;">
-                                                        <span ng-if="pa.$edit">
-                                                            <md-input-container style="width:100% !important; display: flex !important;">
-                                                                <label>Infrastructure publique et sociale</label>
-                                                                <input name="infra_pub_soc" type="text" ng-model="pa.infra_pub_soc"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!pa.$edit">{{pa.infra_pub_soc}}</span>
-                                                    </td>
-                                                    <td style="width:100% !important;">
-                                                        <span ng-if="pa.$edit">
-                                                            <md-input-container style="width:100% !important; display: flex !important;">
-                                                                <label>Analyse des problématiques</label>
-                                                                <input name="analyse_pro" type="text" ng-model="pa.analyse_pro"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!pa.$edit">{{pa.analyse_pro}}</span>
-                                                    </td>
-                                                    <td style="width:100% !important;">
-                                                        <span ng-if="pa.$edit">
-                                                            <md-input-container style="width:100% !important; display: flex !important;">
-                                                                <label>Identification et priorisation des ARSE</label>
-                                                                <input name="identi_prio_arse" type="text" ng-model="pa.identi_prio_arse"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!pa.$edit">{{pa.identi_prio_arse}}</span>
-                                                    </td>
-                                                    <td style="width:100% !important;">
-                                                        <span ng-if="pa.$edit">
-                                                            <md-input-container style="width:100% !important; display: flex !important;">
-                                                                <label>Marché locale et régional ARSE</label>
-                                                                <input name="marche_loc_reg_arse" type="text" ng-model="pa.marche_loc_reg_arse"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!pa.$edit">{{pa.marche_loc_reg_arse}}</span>
-                                                    </td>
-                                                    <td style="width:100% !important;">
-                                                        <span ng-if="pa.$edit">
-                                                            <md-input-container style="width:100% !important; display: flex !important;">
-                                                                <label>Description des activités</label>
-                                                                <input name="description_activite" type="text" ng-model="pa.description_activite"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!pa.$edit">{{pa.description_activite}}</span>
-                                                    </td>
-                                                    <td style="width:100% !important;">
-                                                        <span ng-if="pa.$edit">
-                                                            <md-input-container style="width:100% !important; display: flex !important;">
-                                                                <label>Estimation des besoins</label>
-                                                                <input name="estimation_besoin" type="text" ng-model="pa.estimation_besoin"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!pa.$edit">{{pa.estimation_besoin}}</span>
-                                                    </td>
-                                                    <td style="width:100% !important;">
-                                                        <span ng-if="pa.$edit">
-                                                            <md-input-container style="width:100% !important; display: flex !important;">
-                                                                <label>Etude économique</label>
-                                                                <input name="etude_eco" type="text" ng-model="pa.etude_eco"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!pa.$edit">{{pa.etude_eco}}</span>
-                                                    </td>
-                                                    <td style="width:100% !important;">
-                                                        <span ng-if="pa.$edit">
-                                                            <md-input-container style="width:100% !important; display: flex !important;">
-                                                                <label>Structures d’appui</label>
-                                                                <input name="structure_appui" type="text" ng-model="pa.structure_appui"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!pa.$edit">{{pa.structure_appui}}</span>
-                                                    </td>
-                                                    <td style="width:100% !important;">
-                                                        <span ng-if="pa.$edit">
-                                                            <md-input-container style="width:100% !important; display: flex !important;">
-                                                                <label>Impact environnementaux</label>
-                                                                <input name="impact_env" type="text" ng-model="pa.impact_env"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!pa.$edit">{{pa.impact_env}}</span>
-                                                    </td>
-                                                    <td style="width:100% !important;">
-                                                        <span ng-if="pa.$edit">
-                                                            <md-input-container style="width:100% !important; display: flex !important;">
-                                                                <label>Impact sociaux</label>
-                                                                <input name="impact_sociau" type="text" ng-model="pa.impact_sociau"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!pa.$edit">{{pa.impact_sociau}}</span>
-                                                    </td>
-                                                    <td style="width:15% !important;">
-                                                        <a ng-if="!pa.$edit" ng-click="vm.modifierPac(pa)" title="Modifier">
-                                                            <span class="icon-table-edit"></span>
-                                                        </a>
-                                                        <a ng-if="!pa.$edit" ng-click="vm.supprimerPac(pa)" title="Supprimer">
-                                                            <span class="icon-delete"></span>
-                                                        </a>
-                                                        <a ng-if="pa.$edit" ng-click="vm.annulerPac(pa)" title="Annuler modification">
-                                                            <span class="icon-cancel"></span>
-                                                        </a>
-                                                        <a ng-if="pa.$edit && pa.id_ile && pa.id_region && pa.id_commune && pa.id_zip && pa.milieu_physique 
-                                                        && pa.condition_climatique && pa.diffi_socio_eco && pa.infra_pub_soc && pa.analyse_pro 
-                                                        && pa.identi_prio_arse && pa.description_activite && pa.estimation_besoin && pa.etude_eco && pa.structure_appui && pa.impact_env && pa.impact_sociau" ng-click="vm.ajoutPac(pa,0)" title="Sauvegarder">
-                                                            <span class="icon-content-save"></span>
-                                                        </a>
-                                                    </td>
+                                                    <td>{{pa.ile.Ile}}</td>
+                                                    <td>{{pa.region.Region}} </td>
+                                                    <td>{{pa.commune.Commune}}</td>
+                                                    <td>{{pa.village.Village}}</td>
+                                                    <td>{{pa.zip.libelle}}</td>
+                                                    <td>{{pa.village.vague}}</td>
+                                                    <td>{{pa.type_agr.code}}</td>
+                                                    <td>{{pa.libelle}}</td>
+                                                    <td>{{pa.milieu_physique}}</td>
+                                                    <td>{{pa.condition_climatique}}</td>
+                                                    <td>{{pa.diffi_socio_eco}}</td>
+                                                    <td>{{pa.infra_pub_soc}}</td>
+                                                    <td>{{pa.analyse_pro}}</td>
+                                                    <td>{{pa.identi_prio_arse}}</td>
+                                                    <td>{{pa.marche_loc_reg_arse}}</td>
+                                                    <td>{{pa.description_activite}}</td>
+                                                    <td>{{pa.estimation_besoin}}</td>
+                                                    <td>{{pa.etude_eco}}</td>
+                                                    <td>{{pa.structure_appui}}</td>
+                                                    <td>{{pa.impact_env}}</td>
+                                                    <td>{{pa.impact_sociau}}</td>
                                                 </tr>
                                             </tbody>
-                                        </table>
-                                    </div>
-                                    
-                                </fieldset>
+                                        </table>                                   
                             </div>
                             
                         </md-tab-body>
                     </md-tab>
-                    <md-tab label="Calendrier des activités" ng-disabled="!vm.showtab_calendrier" ng-click="vm.click_calendrier_activites()">
+                    <md-tab label="PAC DETAIL" ng-click="vm.click_pac_detail()" ng-disabled="!vm.selectedItemPac.id">
                         <md-tab-body>
-                            <br>
-                            <div style="overflow: auto; width: 100%;">
-                                <fieldset layout="column" layout-gt-xs="row">
-                                    <legend>
-                                            Calendrier des activités
-                                        <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterCalendrier_activites()">
-                                          <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
-                                        </md-button>
-            
-                                        <!--md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('calendrier_activites/index','calendrier_activites')">
-                                          <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
-                                        </md-button-->
-                                    </legend>
-                                    <div flex>
-                                        <table ng-table="tableCalendrier_activites" id="tableCalendrier_activites" class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions">
+                            <!------FORM PAC--------->
+                          <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                            <div layout="row" layout-align="start center">
+                            <div class="border-right">
+                                
+                              <span class="md-headline">PAC &nbsp</span>
+                            </div>
+                              <div class="border-right" ng-if="!vm.selectedItemPac_detail.id">
+                                <md-button class="md-icon-button" style=" font-size:11px " aria-label="add ajout" ng-click="vm.ajouterPac_detail()">
+                                  <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                  <md-tooltip><span>Ajouter</span></md-tooltip>
+                                </md-button>
+                              </div> 
+                              <div class="border-right" ng-if="vm.selectedItemPac_detail.id">
+                                <md-button class="md-icon-button" aria-label="add modif" style=" font-size:11px " ng-click="vm.modifierPac_detail()">
+                                  <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                  <md-tooltip><span>Modifier</span></md-tooltip>
+                                </md-button>
+                              </div>    
+                              <div class="border-right" ng-if="vm.selectedItemPac_detail.id">
+                                <md-button class="md-icon-button" aria-label="add suppression" style=" font-size:11px " ng-click="vm.supprimerPac_detail()">
+                                  <md-icon md-font-icon="icon-delete"></md-icon>
+                                  <md-tooltip><span>Supprimer</span></md-tooltip>
+                                </md-button>
+                              </div> 
+                              <div class="border-right" ng-if="vm.selectedItemPac_detail.id">
+                                <md-button class="md-icon-button" aria-label="add Annuler" style=" font-size:11px " ng-click="vm.annulerPac_detail()">
+                                  <md-icon md-font-icon="icon-cancel"></md-icon>
+                                  <md-tooltip><span>Annuler</span></md-tooltip>
+                                </md-button>
+                              </div>                  
+                            </div>
+                        </header>
+                        
+                <!----------FORM AGEP--------------->       
+                 
+                        <form ng-show="vm.affichage_masque_detail" name="formpac_detail" class="md-inline-form" novalidate >
+                            <div layout="column" layout-gt-xs="row" flex>
+                                
+                                <md-input-container flex="100" flex-gt-xs="40">
+                                    <label>Numéro d'ordre</label>
+                                    <input  type="text" name="numero" ng-model="vm.pac_detail.numero"  aria-label="numero" required disabled>
+                                    <div ng-messages="formpac_detail.numero.$error"role="alert">
+                                        <div ng-message="required">
+                                            <span>numéro AGR obligatoire.</span>
+                                        </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="40">
+                                    <label>Les besoins</label>
+                                    <input  type="text" name="besoin" ng-model="vm.pac_detail.besoin"  aria-label="besoin" required>
+                                    <div ng-messages="formpac_detail.besoin.$error"role="alert">
+                                        <div ng-message="required">
+                                            <span>Les besoins</span>
+                                        </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="40">
+                                    <label>Durée</label>
+                                    <input  type="number" name="duree" ng-model="vm.pac_detail.duree"  aria-label="duree" required>
+                                    <div ng-messages="formpac_detail.duree.$error"role="alert">
+                                        <div ng-message="required">
+                                            <span>Durée obligatoire.</span>
+                                        </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="40">
+                                    <label>Le coût</label>
+                                    <input  type="number" name="cout" ng-model="vm.pac_detail.cout"  aria-label="cout" required>
+                                    <div ng-messages="formpac_detail.cout.$error"role="alert">
+                                        <div ng-message="required">
+                                            <span>Le coût obligatoire.</span>
+                                        </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="40">
+                                    <label>Calendrier de l'activité</label>
+                                    <input  type="text" name="calendrier_activite" ng-model="vm.pac_detail.calendrier_activite"  aria-label="calendrier_activite" required>
+                                    <div ng-messages="formpac_detail.calendrier_activite.$error"role="alert">
+                                        <div ng-message="required">
+                                            <span>Calendrier de l'activité obligatoire.</span>
+                                        </div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+
+                                <div>
+                                    <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                            ng-disabled="formpac_detail.$invalid " ng-click="vm.ajoutPac_detail(vm.pac_detail,0)">
+                                            Enregistrer
+                                    </md-button>
+                                    <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerPac_detail()">
+                                            Annuler
+                                    </md-button>
+                                </div>
+                        </form>
+                                
+                                        <table ng-table="tablePac_detail" class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions">
                                             <thead>
                                                 <tr>
-                                                    <th class="secondary-text" ng-repeat="c in ::vm.calendrier_activites_column">
+                                                    <th class="secondary-text" ng-repeat="c in ::vm.pac_detail_column">
                                                         <div class="table-header">
                                                             <span class="column-title">{{c.titre}}</span>
                                                         </div>
@@ -272,238 +449,16 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="cal in vm.allCalendrier_activites"  ng-class="{selected: cal.$selected}" ng-click="vm.selectionCalendrier_activites(cal)">                                       
+                                                <tr ng-repeat="tabl in vm.allPac_detail"  ng-class="{selected: tabl.$selected}" ng-click="vm.selectionPac_detail(tabl)">                                       
                                                 
-                                                    <td >
-                                                        <span ng-if="cal.$edit">
-                                                            <md-input-container style="width:100% !important; display: flex !important;">
-                                                                <label>Activités</label>
-                                                                <input name="activite" type="text" ng-model="cal.activite"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!cal.$edit">{{cal.activite}}</span>
-                                                    </td>
-                                                    <td >
-                                                        <span ng-if="cal.$edit">
-                                                            <md-input-container style="width:100% !important;display: flex !important; ">
-                                                                <label>Numero</label>
-                                                                <input name="numero" type="number" ng-model="cal.numero"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!cal.$edit">{{cal.numero}}</span>
-                                                    </td>
-                                                    <!--td >
-                                                        <span ng-if="cal.$edit">
-                                                            <md-input-container style="width:100% !important; ">
-                                                                <label>Mois</label>
-                                                                <input name="mois" type="text" ng-model="cal.mois"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!cal.$edit">{{cal.mois}}</span>
-                                                    </td-->
-                                                    <td >
-                                                        <span ng-if="cal.$edit">
-                                                            <md-input-container style="width:100%;">
-                                                              <label>Mois</label>
-                                                                <md-select ng-model="cal.mois"  style="width:90px;overflow: hidden;text-overflow: ellipsis;">
-                                                                    <md-option value='Janvier'>Janvier</md-option>
-                                                                    <md-option value='Fevrier'>Fevrier</md-option>
-                                                                    <md-option value='Mars'>Mars</md-option>
-                                                                    <md-option value="Avril">Avril</md-option>
-                                                                    <md-option value="Mai">Mai</md-option>
-                                                                    <md-option value="Juin">Juin</md-option>
-                                                                    <md-option value="Juillet">Juillet</md-option>
-                                                                    <md-option value="Août">Août</md-option>
-                                                                    <md-option value="Septembre">Septembre</md-option>
-                                                                    <md-option value="Octobre">Octobre</md-option>
-                                                                    <md-option value="Novembre">Novembre</md-option>
-                                                                    <md-option value="Décembre">Décembre</md-option>
-                                                                </md-select>
-                                                            </md-input-container>  
-                                                        </span>
-                                                        <span ng-if="!cal.$edit">{{cal.mois}}</span>
-                                                    </td>
-                                                    <td >
-                                                        <a ng-if="!cal.$edit" ng-click="vm.modifierCalendrier_activites(cal)" title="Modifier">
-                                                            <span class="icon-table-edit"></span>
-                                                        </a>
-                                                        <a ng-if="!cal.$edit" ng-click="vm.supprimerCalendrier_activites(cal)" title="Supprimer">
-                                                            <span class="icon-delete"></span>
-                                                        </a>
-                                                        <a ng-if="cal.$edit" ng-click="vm.annulerCalendrier_activites(cal)" title="Annuler modification">
-                                                            <span class="icon-cancel"></span>
-                                                        </a>
-                                                        <a ng-if="cal.$edit && cal.activite && cal.mois && cal.numero" ng-click="vm.ajoutCalendrier_activites(cal,0)" title="Sauvegarder">
-                                                            <span class="icon-content-save"></span>
-                                                        </a>
-                                                    </td>
+                                                    <td >{{tabl.numero}}</td>
+                                                    <td >{{tabl.besoin}}</td>
+                                                    <td >{{tabl.duree}}</td>
+                                                    <td >{{tabl.cout}}</td>
+                                                    <td >{{tabl.calendrier_activite}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </div>
-                            </fieldset>
-                        </div>
-                        </md-tab-body>
-                    </md-tab>
-                    <md-tab label="Tableau recapitulatif" ng-disabled="!vm.showtab_calendrier" ng-click="vm.click_tableau_recap_pac()">
-                        <md-tab-body>
-                            <br>
-                            <div style="overflow: auto; width: 100%;">
-                                <fieldset layout="column" layout-gt-xs="row">
-                                    <legend>
-                                        Tableau recapitulatif
-                                        <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterTableau_recap_pac()">
-                                          <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
-                                        </md-button>
-            
-                                        <!--md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('tableau_recap_pac/index','tableau_recap_pac')">
-                                          <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
-                                        </md-button-->
-                                    </legend>
-                                    <div flex>
-                                        <table ng-table="tableTableau_recap_pacs" id="tableTableau_recap_pacs" class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions">
-                                            <thead>
-                                                <tr>
-                                                    <th class="secondary-text" ng-repeat="c in ::vm.tableau_recap_pac_column">
-                                                        <div class="table-header">
-                                                            <span class="column-title">{{c.titre}}</span>
-                                                        </div>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr ng-repeat="tabl in vm.allTableau_recap_pac"  ng-class="{selected: tabl.$selected}" ng-click="vm.selectionTableau_recap_pac(tabl)">                                       
-                                                
-                                                    <td >
-                                                        <span ng-if="tabl.$edit">
-                                                            <md-input-container style="width:100% !important; ">
-                                                                <label>Les besoins</label>
-                                                                <input name="besoin" type="text" ng-model="tabl.besoin"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!tabl.$edit">{{tabl.besoin}}</span>
-                                                    </td>
-                                                    <td >
-                                                        <span ng-if="tabl.$edit">
-                                                            <md-input-container style="width:100% !important; ">
-                                                                <label>Durée</label>
-                                                                <input name="duree" type="number" ng-model="tabl.duree"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!tabl.$edit">{{tabl.duree}}</span>
-                                                    </td>
-                                                    <td >
-                                                        <span ng-if="tabl.$edit">
-                                                            <md-input-container style="width:100% !important; ">
-                                                                <label>Cout</label>
-                                                                <input name="cout" type="number" ng-model="tabl.cout"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!tabl.$edit">{{tabl.cout}}</span>
-                                                    </td>
-                                                    <td >
-                                                        <a ng-if="!tabl.$edit" ng-click="vm.modifierTableau_recap_pac(tabl)" title="Modifier">
-                                                            <span class="icon-table-edit"></span>
-                                                        </a>
-                                                        <a ng-if="!tabl.$edit" ng-click="vm.supprimerTableau_recap_pac(tabl)" title="Supprimer">
-                                                            <span class="icon-delete"></span>
-                                                        </a>
-                                                        <a ng-if="tabl.$edit" ng-click="vm.annulerTableau_recap_pac(tabl)" title="Annuler modification">
-                                                            <span class="icon-cancel"></span>
-                                                        </a>
-                                                        <a ng-if="tabl.$edit && tabl.besoin && tabl.cout && tabl.duree" ng-click="vm.ajoutTableau_recap_pac(tabl,0)" title="Sauvegarder">
-                                                            <span class="icon-content-save"></span>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                            </fieldset>
-                        </div>
-                        </md-tab-body>
-                    </md-tab>
-                    <md-tab label="Activite AGR" ng-disabled="!vm.showtab_activite_agr" ng-click="vm.click_activite_agr()">
-                        <md-tab-body>
-                            <br>
-                            <div style="overflow: auto; width: 100%;">
-                                <fieldset layout="column" layout-gt-xs="row">
-                                    <legend>
-                                        Activité AGR
-                                        <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterActivite_agr()">
-                                          <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
-                                        </md-button>
-            
-                                        <!--md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('activite_agr/index','activite_agr')">
-                                          <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
-                                        </md-button-->
-                                    </legend>
-                                    <div flex>
-                                        <table ng-table="tableActivite_agr" id="tableActivite_agr" class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions">
-                                            <thead>
-                                                <tr>
-                                                    <th class="secondary-text" ng-repeat="c in ::vm.activite_agr_column">
-                                                        <div class="table-header">
-                                                            <span class="column-title">{{c.titre}}</span>
-                                                        </div>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr ng-repeat="activ in vm.allActivite_agr"  ng-class="{selected: activ.$selected}" ng-click="vm.selectionActivite_agr(activ)">                                       
-                                                
-                                                    <td>
-                                                        <span ng-if="activ.$edit">
-                                                            <md-input-container style="width:100%; display: flex !important;">
-                                                              <label>Type AGR</label>
-                                                                <md-select ng-model="activ.id_type_agr"  style="width:90px;overflow: hidden;text-overflow: ellipsis;">
-                                                                    <md-option value=''>&nbsp;</md-option>
-                                                                  <md-option ng-repeat="typ in vm.allType_agr" value="{{typ.id}}">
-                                                                    {{typ.libelle}}
-                                                                  </md-option>
-                                                                </md-select>
-                                                            </md-input-container>  
-                                                        </span>
-                                                        <span ng-if="!activ.$edit">{{activ.type_agr.libelle}}</span>
-                                                    </td>
-                                                    <td >
-                                                        <span ng-if="activ.$edit">
-                                                            <md-input-container style="width:100% !important; display: flex !important;">
-                                                                <label>Code</label>
-                                                                <input name="code" type="text" ng-model="activ.code"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!activ.$edit">{{activ.code}}</span>
-                                                    </td>
-                                                    <td >
-                                                        <span ng-if="activ.$edit">
-                                                            <md-input-container style="width:100% !important; display: flex !important;">
-                                                                <label>Libelle</label>
-                                                                <input name="libelle" type="text" ng-model="activ.libelle"/>
-                                                            </md-input-container>   
-                                                        </span>
-                                                        <span ng-if="!activ.$edit">{{activ.libelle}}</span>
-                                                    </td>
-                                                    <td>                                                        
-                                                        <a ng-if="!activ.$edit" ng-click="vm.modifierActivite_agr(activ)" title="Modifier">
-                                                            <span class="icon-table-edit"></span>
-                                                        </a>
-                                                        <a ng-if="!activ.$edit" ng-click="vm.supprimerActivite_agr(activ)" title="Supprimer">
-                                                            <span class="icon-delete"></span>
-                                                        </a>
-                                                        <a ng-if="activ.$edit" ng-click="vm.annulerActivite_agr(activ)" title="Annuler modification">
-                                                            <span class="icon-cancel"></span>
-                                                        </a>
-                                                        <a ng-if="activ.$edit && activ.id_type_agr && activ.code && activ.libelle" ng-click="vm.ajoutActivite_agr(activ,0)" title="Sauvegarder">
-                                                            <span class="icon-content-save"></span>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                            </fieldset>
-                        </div>
                         </md-tab-body>
                     </md-tab>
                     <md-tab>

@@ -32,10 +32,10 @@
 
         // Navigation
         msNavigationServiceProvider.saveItem('pfss.idb.communaute_idb', {
-            title: 'Communaute/IDB',
+            title: 'Infrastructure/IDB',
             icon  : 'icon-data',
             state: 'app.pfss_idb_communaute_idb',
-			weight:8,
+			weight:1,
             //badge:vs,
         });
     }
