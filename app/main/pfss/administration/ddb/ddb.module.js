@@ -14,14 +14,20 @@
             'app.pfss.ddb_adm.nomenclatureintervention',
             'app.pfss.ddb_adm.typeplainte',
             'app.pfss.ddb_adm.planactionreinstallation',
-            'app.pfss.ddb_adm.type_infrastructure',
+            //'app.pfss.ddb_adm.type_infrastructure',
             'app.pfss.ddb_adm.indicateur',
             'app.pfss.ddb_adm.zip',
-            'app.pfss.ddb_adm.phaseexecution',
+            'app.pfss.ddb_adm.phase_execution',
             'app.pfss.ddb_adm.gerer_pac',
             'app.pfss.ddb_adm.consultant_ong',
-            'app.pfss.ddb_adm.composante'
+
+            'app.pfss.ddb_adm.composante',
+
+            'app.pfss.ddb_adm.liendeparente',
+            'app.pfss.ddb_adm.variableindividu',
+
             //'app.pfss.ddb_adm.communaute.inscription',
+            'app.pfss.ddb_adm.type_infrastructure_agr',
             ] ;
 
     angular

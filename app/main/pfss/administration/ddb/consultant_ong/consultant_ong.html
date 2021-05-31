@@ -51,7 +51,8 @@
                                 </md-button>
                               </div>   
 
-                              <div ng-if="vm.selectedItem.$edit">
+                              <div ng-if="vm.selectedItem.$edit && vm.selectedItem.ile_id && vm.selectedItem.code && vm.selectedItem.nom_consultant && vm.selectedItem.raison_social && vm.selectedItem.contact && vm.selectedItem.fonction_contact && vm.selectedItem.telephone_contact
+                              && vm.selectedItem.adresse && vm.selectedItem.id_region && vm.selectedItem.id_commune && vm.selectedItem.id_village>''">
                                 <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer(0)">
                                   <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                                   <md-tooltip><span>Enregistrer</span></md-tooltip>
@@ -79,8 +80,8 @@
                                         <span ng-if="consu.$edit">
                                             <md-input-container style="width:100%;display: flex !important;">
                                               <label>Ile</label> 
-                                              <md-select ng-model="consu.ile_id" required>										 
-                                                  <md-option ng-repeat="ile in vm.allIle" value="{{ile.id}}" >
+                                              <md-select ng-model="consu.ile_id" required ng-change="vm.get_region(consu)">										 
+                                                  <md-option ng-repeat="ile in vm.allIle" value="{{ile.id}}">
                                                       {{ile.Code}} - {{ile.Ile}}
                                                   </md-option>
                                               </md-select>
@@ -101,7 +102,7 @@
                                             <span ng-if="consu.$edit">
                                                 <md-input-container style="width:100%;display: flex !important;">
                                                     <label>Nom cosultant</label>                                                
-                                                    <input type="text" name="nom_cosultant"  ng-model="consu.nom_cosultant"/>
+                                                    <input type="text" name="nom_consultant"  ng-model="consu.nom_consultant"/>
                                                 </md-input-container>
                                             </span>
                                             <span ng-if="!consu.$edit"> {{consu.nom_consultant}}</span>
@@ -150,7 +151,46 @@
                                                 </md-input-container>
                                             </span>
                                             <span ng-if="!consu.$edit"> {{consu.adresse}}</span>
-                                        </td>                                                                         
+                                        </td>
+                                        <td>
+                                            <span ng-if="consu.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>region</label> 
+                                                  <md-select ng-model="consu.id_region" required ng-change="vm.get_commune(consu)">										 
+                                                      <md-option ng-repeat="reg in vm.allRegion" value="{{reg.id}}" >
+                                                          {{reg.Code}} - {{reg.Region}}
+                                                      </md-option>
+                                                  </md-select>
+                                                </md-input-container>
+                                            </span>
+                                            <span ng-if="!consu.$edit"> {{consu.region.Region}}</span>
+                                          </td> 
+                                          <td>
+                                              <span ng-if="consu.$edit">
+                                                  <md-input-container style="width:100%;display: flex !important;">
+                                                    <label>Commune</label> 
+                                                    <md-select ng-model="consu.id_commune" required ng-change="vm.get_village(consu)">										 
+                                                        <md-option ng-repeat="com in vm.allCommune" value="{{com.id}}">
+                                                            {{com.Code}} - {{com.Commune}}
+                                                        </md-option>
+                                                    </md-select>
+                                                  </md-input-container>
+                                              </span>
+                                              <span ng-if="!consu.$edit"> {{consu.commune.Commune}}</span>
+                                            </td> 
+                                            <td>
+                                                <span ng-if="consu.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                      <label>Village</label> 
+                                                      <md-select ng-model="consu.id_village" required>										 
+                                                          <md-option ng-repeat="vil in vm.allVillage" value="{{vil.id}}">
+                                                              {{vil.Code}} - {{vil.Village}}
+                                                          </md-option>
+                                                      </md-select>
+                                                    </md-input-container>
+                                                </span>
+                                                <span ng-if="!consu.$edit"> {{consu.village.Village}}</span>
+                                              </td>                                                                         
 
                                 </tr>
                             </tbody>

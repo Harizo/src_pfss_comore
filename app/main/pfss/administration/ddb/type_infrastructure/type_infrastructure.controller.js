@@ -29,7 +29,7 @@
             $mdSidenav(sidenavId).toggle();
 			console.log('aiza');
         }
-		vm.allitem_infrastructure = [{id: '1', nom: 'INFRASTRUCTURE'},{id: '2', nom: 'AGR'},{id: '3', nom: 'ACT'}]
+		vm.allitem_infrastructure = [{id: '1', nom: 'IDB'},{id: '2', nom: 'ARSE'},{id: '3', nom: 'ACT'}]
     
 		//vm.allitem_infrastructure = [{id: '2', nom: 'AGR'},{id: '3', nom: 'Activité'}]
 		
@@ -39,10 +39,10 @@
           switch (infras.id) 
                     {
                       case "1":
-                        vm.titre_contenu="CONTENU INFRASTRUCTURE";
+                        vm.titre_contenu="CONTENU IDB";
                         break;
                       case "2":
-                        vm.titre_contenu="CONTENU AGR";
+                        vm.titre_contenu="CONTENU ARSE";
                         break;
                         case "3":
                           vm.titre_contenu="CONTENU ACT";
@@ -79,7 +79,7 @@
                         e.success(response.data.response);
                         vm.selected_item = vm.allitem_infrastructure[0];
                         console.log(vm.selected_item);
-                        vm.titre_contenu="CONTENU INFRASTRUCTURE";
+                        vm.titre_contenu="CONTENU IDB";
                     }, function error(response)
                         {
                           vm.showAlert('Erreur','Erreur de lecture');
@@ -213,7 +213,7 @@
           
           // height: 550,
           toolbar: [{               
-               template: '<label id="table_titre">TYPE INFRASTRUCTURE</label>'
+               template: '<label id="table_titre">TYPE D\'ACIVITE</label>'
 			   				+'<a class="k-button k-button-icontext k-grid-add addinfrastructure" href="\\#" ng-if="vm.serveur_central">' 
 			   				+'<md-icon md-font-icon="icon-playlist-plus"></md-icon>'
 							+'<md-tooltip><span>Ajout</span></md-tooltip>'
@@ -639,7 +639,7 @@
       
       // height: 550,
       toolbar: [{               
-           template: '<label id="table_titre">TYPE AGR</label>'
+           template: '<label id="table_titre">TYPE ARSE</label>'
              +'<a class="k-button k-button-icontext k-grid-add" href="\\#" ng-if="vm.serveur_central">' 
              +'<md-icon md-font-icon="icon-playlist-plus"></md-icon>'
           +'<md-tooltip><span>Ajout</span></md-tooltip>'

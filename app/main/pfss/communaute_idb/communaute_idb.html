@@ -87,7 +87,7 @@
                            </md-input-container>
                            <md-input-container flex="100" flex-gt-xs="90">
                              <label>Zip</label>
-                               <md-select ng-model="vm.filtre_eligible.id_zip" name="zip" ng-disabled="!vm.filtre_eligible.id_zip"  required>
+                               <md-select ng-model="vm.filtre_eligible.id_zip" name="zip" ng-disabled="!vm.filtre_eligible.id_village"  required>
                                 
                                  <md-option ng-repeat="zip in vm.allZip" value="{{zip.id}}" >
                                    {{zip.libelle}}
@@ -190,7 +190,7 @@
                                       <span ng-if="infras.$edit">
                                           <md-input-container style="width:100%;display: flex !important;">
                                             <label>Code</label>                                                
-                                            <input type="text" name="code_numero"  ng-model="infras.code_numero"/>
+                                            <input type="text" name="code_numero"  ng-model="infras.code_numero" disabled/>
                                           </md-input-container>
                                       </span>
                                       <span ng-if="!infras.$edit"> {{infras.code_numero}}</span>
@@ -263,7 +263,7 @@
 
                                <md-input-container flex="100" flex-gt-xs="90">
                                  <label>Commune</label>
-                                   <md-select ng-model="vm.filtre_choisi.id_commune" name="commune" ng-disabled="!vm.filtre_choisi.id_region" ng-change="vm.filtre_choisi_communaute()" required>
+                                   <md-select ng-model="vm.filtre_choisi.id_commune" name="commune" ng-disabled="!vm.filtre_choisi.id_region" ng-change="vm.filtre_choisi_village()" required>
                                     
                                      <md-option ng-repeat="commune in vm.all_commune" value="{{commune.id}}" >
                                        {{commune.Commune}}

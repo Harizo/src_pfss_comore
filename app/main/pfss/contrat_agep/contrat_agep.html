@@ -18,7 +18,7 @@
                 <div style="clear:both;"></div>
                 <md-tabs md-dynamic-height>
                     <md-tab label="Contrat AGEP">
-                        <div style="widht:100%;">    
+                        <!--div style="widht:100%;">    
                             <md-button type="submit"class="md-raised md-accent " aria-label="Nouveau" ng-click="vm.ajouterContrat_agep()" style="width:10%;">
                               Nouveau
                             </md-button>
@@ -34,20 +34,57 @@
                             <md-button type="submit" class="md-raised  md-pink-900-bg" ng-if="vm.selectedItemContrat_agep.id && vm.selectedItemContrat_agep.statu=='EN COURS'" aria-label="Resilie" ng-click="vm.resilieContrat_agep()" style="width:10%;">                                
                               Resilié
                             </md-button>
-                        </div>
+                        </div-->
+                        <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                          <div layout="row" layout-align="start center">
+                          <div class="border-right">
+                              
+                            <span class="md-headline">C0NTRAT AGEP &nbsp</span>
+                          </div>
+                            <div class="border-right" >
+                              <md-button class="md-icon-button" style=" font-size:11px " aria-label="add Type coût divers" ng-click="vm.ajouterContrat_agep()">
+                                <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                <md-tooltip><span>Ajouter</span></md-tooltip>
+                              </md-button>
+                            </div> 
+                            <div class="border-right" ng-if="vm.selectedItemContrat_agep.id">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" style=" font-size:11px " ng-click="vm.modifContrat_agep()" ng-disabled="vm.selectedItemContrat_agep.statu=='RESILIE' || vm.selectedItemContrat_agep.statu=='TERMINE'">
+                                <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                <md-tooltip><span>Modifier</span></md-tooltip>
+                              </md-button>
+                            </div>    
+                            <div class="border-right" ng-if="vm.selectedItemContrat_agep.id">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" style=" font-size:11px " ng-click="vm.supprimerContrat_agep()" ng-disabled="vm.selectedItemContrat_agep.statu=='RESILIE' || vm.selectedItemContrat_agep.statu=='TERMINE'">
+                                <md-icon md-font-icon="icon-delete"></md-icon>
+                                <md-tooltip><span>Supprimer</span></md-tooltip>
+                              </md-button>
+                            </div>     
+                            <div class="border-right" ng-if="vm.selectedItemContrat_agep.id">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" style=" font-size:11px " ng-click="vm.terminerContrat_agep()" ng-disabled="vm.selectedItemContrat_agep.statu=='RESILIE' || vm.selectedItemContrat_agep.statu=='TERMINE'">
+                                <md-icon md-font-icon="icon-calendar-check" style="color: darkgreen;"></md-icon>
+                                <md-tooltip><span>Términer</span></md-tooltip>
+                              </md-button>
+                            </div>     
+                            <div class="border-right" ng-if="vm.selectedItemContrat_agep.id">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" style=" font-size:11px " ng-click="vm.resilieContrat_agep()" ng-disabled="vm.selectedItemContrat_agep.statu=='RESILIE' || vm.selectedItemContrat_agep.statu=='TERMINE'">
+                                <md-icon md-font-icon="icon-calendar-remove" class="md-raised md-warn"></md-icon>
+                                <md-tooltip><span>Résilier</span></md-tooltip>
+                              </md-button>
+                            </div>  
+
+                            <div class="border-right" ng-if="vm.selectedItemContrat_agep.id">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" style=" font-size:11px " ng-click="vm.annulerContrat_agep()" ng-disabled="vm.selectedItemContrat_agep.statu=='RESILIE' || vm.selectedItemContrat_agep.statu=='TERMINE'">
+                                <md-icon md-font-icon="icon-cancel"></md-icon>
+                                <md-tooltip><span>Annuler</span></md-tooltip>
+                              </md-button>
+                            </div>                  
+                          </div>
+                      </header>
                         <!----------FORM AGEP--------------->       
                          
                         <form ng-show="vm.affichage_masque" name="formcontrat_agep" class="md-inline-form" novalidate >
 
-                          <div layout="column" layout-gt-xs="row" flex>                                   
-                            <md-input-container flex="100" flex-gt-xs="40">
-                              <input  type="text" name="numero_contrat" ng-model="vm.contrat_agep.numero_contrat" placeholder="N° Contrat"    ng-init="vm.contrat_agep.numero_contrat=''" required>
-                              <div ng-messages="formcontrat_agep.numero_contrat.$error"role="alert">
-                                  <div ng-message="required">
-                                      <span>N° Contrat obligatoire.</span>
-                                  </div>
-                              </div>
-                            </md-input-container>
+                          <div layout="column" layout-gt-xs="row" flex> 
 
                             <md-input-container flex="100" flex-gt-xs="30">
                                 <label>AGEP</label>
@@ -67,6 +104,15 @@
                               <div ng-messages="formcontrat_agep.adresse.$error"role="alert">
                                   <div ng-message="required">
                                       <span>Adresse obligatoire.</span>
+                                  </div>
+                              </div>
+                            </md-input-container>
+                                                              
+                            <md-input-container flex="100" flex-gt-xs="40" ng-disabled="!vm.contrat_agep.id_agep">
+                              <input  type="text" name="numero_contrat" ng-model="vm.contrat_agep.numero_contrat" placeholder="N° Contrat"    ng-init="vm.contrat_agep.numero_contrat=''" required disabled>
+                              <div ng-messages="formcontrat_agep.numero_contrat.$error"role="alert">
+                                  <div ng-message="required">
+                                      <span>N° Contrat obligatoire.</span>
                                   </div>
                               </div>
                             </md-input-container>
@@ -186,9 +232,10 @@
                           </thead>
                           <tbody>
                             <tr ng-repeat="contr in vm.allContrat_agep"  ng-class="{selected: contr.$selected, colorby: contr.retard}" ng-click="vm.selection(contr)">
-                                <td>{{contr.numero_contrat}}</td>
+                                
                                 <td>{{contr.agep.identifiant}}</td>
-                                <td>{{contr.agep.adresse}}</td>                               
+                                <td>{{contr.agep.adresse}}</td> 
+                                <td>{{contr.numero_contrat}}</td>                              
                                 <!--td>{{contr.sous_projet.description}}</td-->
                                 <td>{{contr.objet_contrat}}</td>
                                 <td>{{contr.montant_contrat}}</td>
@@ -204,7 +251,7 @@
                         </table>
                     </md-tab> 
                   
-                    <md-tab label="Gérer paiement" ng-disabled="!vm.selectedItemContrat_agep.id || vm.selectedItemContrat_agep.statu=='RESILIE'" ng-click="vm.click_etat_paiement()">
+                    <md-tab label="Gérer paiement" ng-disabled="!vm.selectedItemContrat_agep.id" ng-click="vm.click_etat_paiement()">
                         <div class="price-table style-1 md-whiteframe-1dp" layout="column">
                             <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                                 <div layout="row" layout-align="start center">
@@ -213,33 +260,33 @@
                                   <span class="md-headline">PAIEMENT &nbsp</span>
                                 </div>
                                   <div class="border-right" ng-if="!vm.selectedItemEtat_paiement.id && !vm.nouvelleItemEtat_paiement">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterEtat_paiement()">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterEtat_paiement()" ng-disabled="vm.selectedItemContrat_agep.statu=='RESILIE'">
                                       <md-icon md-font-icon="icon-plus-box"></md-icon>
                                       <md-tooltip><span>Ajouter</span></md-tooltip>
                                     </md-button>
                                   </div> 
                                   <div class="border-right" ng-if="vm.selectedItemEtat_paiement.id && !vm.selectedItemEtat_paiement.$edit">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierEtat_paiement()">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierEtat_paiement()" ng-disabled="vm.selectedItemContrat_agep.statu=='RESILIE'">
                                       <md-icon md-font-icon="icon-table-edit"></md-icon>
                                       <md-tooltip><span>Modifier</span></md-tooltip>
                                     </md-button>
                                   </div>    
                                   <div class="border-right" ng-if="vm.selectedItemEtat_paiement.id && !vm.selectedItemEtat_paiement.$edit">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerEtat_paiement()">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerEtat_paiement()" ng-disabled="vm.selectedItemContrat_agep.statu=='RESILIE'">
                                       <md-icon md-font-icon="icon-delete"></md-icon>
                                       <md-tooltip><span>Supprimer</span></md-tooltip>
                                     </md-button>
                                   </div>  
 
                                   <div class="border-right" ng-if="vm.selectedItemEtat_paiement.id">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerEtat_paiement()">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerEtat_paiement()" ng-disabled="vm.selectedItemContrat_agep.statu=='RESILIE'">
                                       <md-icon md-font-icon="icon-cancel"></md-icon>
                                       <md-tooltip><span>Annuler</span></md-tooltip>
                                     </md-button>
                                   </div>   
 
                                   <div ng-if="vm.selectedItemEtat_paiement.$edit">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerEtat_paiement(0)">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerEtat_paiement(0)" ng-disabled="vm.selectedItemContrat_agep.statu=='RESILIE'">
                                       <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                                       <md-tooltip><span>Enregistrer</span></md-tooltip>
                                     </md-button>
@@ -586,31 +633,79 @@
                             </table>
                         </div>
                     </md-tab>
-                    <md-tab label="AVENANT CONTRAT AGEP" ng-disabled="!vm.selectedItemContrat_agep.id || vm.selectedItemContrat_agep.statu=='RESILIE'" ng-click="vm.click_avenant_agep()">
-                        <div style="widht:100%;">    
-                            <md-button type="submit"class="md-raised md-accent " aria-label="Nouveau" ng-click="vm.ajouterAvenant_agep()" style="width:10%;">
+                    <md-tab label="AVENANT CONTRAT AGEP" ng-disabled="!vm.selectedItemContrat_agep.id" ng-click="vm.click_avenant_agep()">
+                        <!--div style="widht:100%;">    
+                            <md-button type="submit"class="md-raised md-accent " aria-label="Nouveau" ng-click="vm.ajouterAvenant_agep()" style="width:10%;" ng-disabled="vm.selectedItemContrat_agep.statu=='RESILIE'">
                               Nouveau
                             </md-button>
-                            <md-button type="submit" class="md-raised md-blue-600-bg" ng-if="vm.selectedItemAvenant_agep.id" aria-label="Modifier" ng-click="vm.modifAvenant_agep()" style="width:10%;">
+                            <md-button type="submit" class="md-raised md-blue-600-bg" ng-if="vm.selectedItemAvenant_agep.id" aria-label="Modifier" ng-click="vm.modifAvenant_agep()" style="width:10%;" ng-disabled="vm.selectedItemContrat_agep.statu=='RESILIE'">
                               Modifier
                             </md-button>
-                            <md-button type="submit" class="md-raised md-warn" ng-if="vm.selectedItemAvenant_agep.id" aria-label="Supprimer" ng-click="vm.supprimerAvenant_agep()" style="width:10%;">                                
+                            <md-button type="submit" class="md-raised md-warn" ng-if="vm.selectedItemAvenant_agep.id" aria-label="Supprimer" ng-click="vm.supprimerAvenant_agep()" style="width:10%;" ng-disabled="vm.selectedItemContrat_agep.statu=='RESILIE'">                                
                               Supprimer
                             </md-button>
-                            <md-button type="submit" class="md-raised md-accent" ng-if="vm.selectedItemAvenant_agep.id && vm.selectedItemAvenant_agep.statu=='EN COURS'" aria-label="Terminer" ng-click="vm.terminerAvenant_agep()" style="width:10%;">                                
+                            <md-button type="submit" class="md-raised md-accent" ng-if="vm.selectedItemAvenant_agep.id && vm.selectedItemAvenant_agep.statu=='EN COURS'" aria-label="Terminer" ng-click="vm.terminerAvenant_agep()" style="width:10%;" ng-disabled="vm.selectedItemContrat_agep.statu=='RESILIE'">                                
                               Terminé
                             </md-button>
-                            <md-button type="submit" class="md-raised  md-pink-900-bg" ng-if="vm.selectedItemAvenant_agep.id && vm.selectedItemAvenant_agep.statu=='EN COURS'" aria-label="Resilie" ng-click="vm.resilieAvenant_agep()" style="width:10%;">                                
+                            <md-button type="submit" class="md-raised  md-pink-900-bg" ng-if="vm.selectedItemAvenant_agep.id && vm.selectedItemAvenant_agep.statu=='EN COURS'" aria-label="Resilie" ng-click="vm.resilieAvenant_agep()" style="width:10%;"ng-disabled="vm.selectedItemContrat_agep.statu=='RESILIE'">                                
                               Resilié
                             </md-button>
-                        </div>
+                        </div-->
+                        <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                          <div layout="row" layout-align="start center">
+                          <div class="border-right">
+                              
+                            <span class="md-headline">AVENANT AGEP &nbsp</span>
+                          </div>
+                          <div layout="row" ng-if="vm.selectedItemContrat_agep.statu=='EN COURS'">
+                            <div class="border-right" >
+                              <md-button class="md-icon-button" style=" font-size:11px " aria-label="add Type coût divers" ng-click="vm.ajouterAvenant_agep()">
+                                <md-icon md-font-icon="icon-plus-box" ></md-icon>
+                                <md-tooltip><span>Ajouter</span></md-tooltip>
+                              </md-button>
+                            </div> 
+                            <div class="border-right" ng-if="vm.selectedItemAvenant_agep.id">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" style=" font-size:11px " ng-click="vm.modifAvenant_agep()" ng-disabled="vm.selectedItemAvenant_agep.statu=='RESILIE' || vm.selectedItemAvenant_agep.statu=='TERMINE'">
+                                <md-icon md-font-icon="icon-table-edit" ></md-icon>
+                                <md-tooltip><span>Modifier</span></md-tooltip>
+                              </md-button>
+                            </div>    
+                            <div class="border-right" ng-if="vm.selectedItemAvenant_agep.id">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" style=" font-size:11px " ng-click="vm.supprimerAvenant_agep()" ng-disabled="vm.selectedItemAvenant_agep.statu=='RESILIE' || vm.selectedItemAvenant_agep.statu=='TERMINE'">
+                                <md-icon md-font-icon="icon-delete" ></md-icon>
+                                <md-tooltip><span>Supprimer</span></md-tooltip>
+                              </md-button>
+                            </div>     
+                            <div class="border-right" ng-if="vm.selectedItemAvenant_agep.id">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" style=" font-size:11px " ng-click="vm.terminerAvenant_agep()" ng-disabled="vm.selectedItemAvenant_agep.statu=='RESILIE' || vm.selectedItemAvenant_agep.statu=='TERMINE'">
+                                <md-icon md-font-icon="icon-calendar-check" style="color: darkgreen;"></md-icon>
+                                <md-tooltip><span>Terminer</span></md-tooltip>
+                              </md-button>
+                            </div>     
+                            <div class="border-right" ng-if="vm.selectedItemAvenant_agep.id">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" style=" font-size:11px " ng-click="vm.resilieAvenant_agep()" ng-disabled="vm.selectedItemAvenant_agep.statu=='RESILIE' || vm.selectedItemAvenant_agep.statu=='TERMINE'">
+                                <md-icon md-font-icon="icon-calendar-remove" class="md-raised md-warn"></md-icon>
+                                <md-tooltip><span>Resilier</span></md-tooltip>
+                              </md-button>
+                            </div>  
+
+                            <div class="border-right" ng-if="vm.selectedItemAvenant_agep.id">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" style=" font-size:11px " ng-click="vm.annulerAvenant_agep()" ng-disabled="vm.selectedItemAvenant_agep.statu=='RESILIE' || vm.selectedItemAvenant_agep.statu=='TERMINE'">
+                                <md-icon md-font-icon="icon-cancel" ></md-icon>
+                                <md-tooltip><span>Annuler</span></md-tooltip>
+                              </md-button>
+                            </div> 
+                          </div>
+                                             
+                          </div>
+                      </header>
                         <!----------FORM AGEP--------------->       
                          
-                        <form ng-show="vm.affichage_masque" name="formavenant_agep" class="md-inline-form" novalidate >
+                        <form ng-show="vm.affichage_masque_avenant" name="formavenant_agep" class="md-inline-form" novalidate >
 
                           <div layout="column" layout-gt-xs="row" flex>                                   
                             <md-input-container flex="100" flex-gt-xs="10">
-                              <input  type="text" name="numero_avenant" ng-model="vm.avenant_agep.numero_avenant" placeholder="N° Avenant" ng-init="vm.avenant_agep.numero_avenant=''" required md-select-on-focus>
+                              <input  type="text" name="numero_avenant" ng-model="vm.avenant_agep.numero_avenant" placeholder="N° Avenant" ng-init="vm.avenant_agep.numero_avenant=''" required md-select-on-focus disabled>
                               <div ng-messages="formavenant_agep.numero_avenant.$error"role="alert">
                                   <div ng-message="required">
                                       <span>N° avenant obligatoire.</span>
@@ -658,11 +753,11 @@
 
                           <div layout="column" layout-gt-xs="row" flex-->
                               <md-input-container flex="100" flex-gt-xs="10">
-                                <label>Objet du avenant</label>
+                                <label>Objet de l'avenant</label>
                                   <textarea name="objet_avenant" ng-model="vm.avenant_agep.objet_avenant" required md-select-on-focus></textarea>
                                     <div ng-messages="formavenant_agep.objet_avenant.$error" role="alert">
                                       <div ng-message="required">
-                                          <span>Objet du avenant obligatoire.</span>
+                                          <span>Objet de l'avenant obligatoire.</span>
                                       </div>
                                     </div>
                               </md-input-container>
@@ -670,10 +765,10 @@
 
                             <md-input-container flex="100" flex-gt-xs="10">
                               <label>Type</label>
-                              <md-select ng-model="vm.avenant_agep.type_avenant" name="type_avenant">
+                              <md-select ng-model="vm.avenant_agep.type_avenant" name="type_avenant" required>
                                 <md-option value="FINANCIER">FINANCIER</md-option>
-                                <md-option value="DELAI">DELAI</md-option>
-                                <md-option value="FINANCIER/DELAI">FINANCIER/DELAI</md-option>                                                  
+                                <md-option value="AU DELAI">AU DELAI</md-option>
+                                <md-option value="FINANCIER/AU DELAI">FINANCIER/AU DELAI</md-option>                                                  
                               </md-select>
                               <div ng-messages="formavenant_agep.type_avenant.$error" role="alert">
                                 <div ng-message="required">
@@ -681,12 +776,12 @@
                                 </div>
                               </div>
                           </md-input-container>
-                              <md-input-container flex="100" flex-gt-xs="10" ng-if="vm.avenant_agep.type_avenant!='DELAI'">
-                                <label>Montant du avenant</label>
-                                  <input name="montant_avenant" type="number" ng-model="vm.avenant_agep.montant_avenant" required md-select-on-focus >
+                              <md-input-container flex="100" flex-gt-xs="10" ng-if="vm.avenant_agep.type_avenant!='AU DELAI'">
+                                <label>Montant de l'avenant</label>
+                                  <input name="montant_avenant" type="number" ng-model="vm.avenant_agep.montant_avenant" required md-select-on-focus ng-disabled="!vm.avenant_agep.type_avenant">
                                     <div ng-messages="formavenant_agep.montant_avenant.$error" role="alert">
                                       <div ng-message="required">
-                                          <span>Montant du avenant obligatoire.</span>
+                                          <span>Montant de l'avenant obligatoire.</span>
                                       </div>
                                     </div>
                               </md-input-container>
@@ -695,7 +790,7 @@
                                         placeholder="Modalité du avenant" required>
                                 <div ng-messages="formavenant_agep.modalite_avenant.$error" role="alert">
                                     <div ng-message="required">
-                                      <span>Modalite du avenant obligatoire.</span>
+                                      <span>Modalite de l'avenant obligatoire.</span>
                                     </div>
                                 </div>
                               </md-input-container>
@@ -726,8 +821,9 @@
                             </md-input-container>
                             <md-datepicker  ng-model="vm.avenant_agep.date_prevu_fin" md-placeholder="Date Fin avenant" ng-disabled="!vm.avenant_agep.date_signature" md-min-date="vm.min_date_prevu_fin">                       
                             </md-datepicker>                              
-
-                            <md-input-container flex="100" flex-gt-xs="10">
+                          </div>
+                          <div layout="column" layout-gt-xs="row" flex>
+                            <md-input-container flex="100" flex-gt-xs="90">
                               <label>Observation</label>
                                 <textarea name="observation" ng-model="vm.avenant_agep.observation" required md-select-on-focus></textarea>
                                   <div ng-messages="formavenant_agep.observation.$error" role="alert">

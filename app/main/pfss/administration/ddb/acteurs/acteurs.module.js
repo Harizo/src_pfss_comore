@@ -34,6 +34,7 @@
             title: "Sous-projet/Acteurs/Type transfert",
             icon  : 'icon-swap-horizontal',
             state: 'app.pfss_ddb_acteurs',
+			weight: 2
             // hidden: function()
             // {
                     // return vs;

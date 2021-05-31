@@ -4,12 +4,11 @@
     var my_toast_agep=null;
     angular
         .module('app.toolbar')
-        .controller('Toast_contrat_agepCtrl', Toast_contrat_agepCtrl)
         .controller('Liste_contrat_agepController', Liste_contrat_agepController)
         .controller('ToolbarController', ToolbarController);
 
     /** @ngInject */
-    function ToolbarController($rootScope, $mdSidenav, $translate, $mdToast, loginService, cookieService, $location,apiFactory,$cookieStore,$document)
+    function ToolbarController($scope,$rootScope, $mdSidenav, $translate, $mdDialog, loginService, cookieService, $location,apiFactory,$cookieStore,$document)
     {
         var vm = this;
         // Data
@@ -140,79 +139,74 @@
         {
             vm.bodyEl.toggleClass('ms-navigation-horizontal-mobile-menu-active');
         }
-
+        $scope.click_here=function()
+        {
+            console.log('mety');
+        }
         var id_user = $cookieStore.get('id');
 
         if (id_user) 
-        {            
-        
-        apiFactory.getAPIgeneraliserREST("contrat_agep/index",'menu','getallcontrat_alert').then(function(result) 
-        {
-            var resultat = result.data.response;
-            console.log(resultat);
-            if (parseInt(resultat.length)!=0)
-            {   
-                 my_toast_agep =   $mdToast.show({
-                        controller: 'Toast_contrat_agepCtrl',
-                        templateUrl: 'app/main/pfss/contrat_agep/toast_contrat_agep.html',
-                        hideDelay: 0,
-                        //parent: $document[0].querySelector('#toast_contrat'),
-                        position: 'bottom right',
-                        locals:{param: resultat},
-                        highlightAction: false
-                      });
-                
-            }
-            
-            console.log(resultat);
-                    
+        { 
+            apiFactory.getAPIgeneraliserREST("contrat_agep/index",'menu','getallcontrat_alert').then(function(result) 
+            {
+                var resultat = result.data.response;
+                if (parseInt(resultat.length)!=0)
+                { 
+                    toastr.error(
+                                    "Cliquer ici pour plus de détails",
+                                    'Notification de fin de contrat AGEP',
+                                    {  
+                                        closeButton: true,
+                                        tapToDismiss: false,
+                                        extendedTimeOut:0,
+                                        timeOut: 0,
+                                        fadeOut:0,                    
+                                        preventDuplicates: true,
+                                        preventOpenDuplicates: true,
+                                        onclick: function()
+                                        {
+                                            affiche_liste_contrat(resultat); 
+                                        }
+                                    }
+                                );              
+                }   
 
-        });
+            });
         }
-          
-    }
-    
-    function Toast_contrat_agepCtrl($mdToast, $mdDialog, $scope,param) 
-    {
-      $scope.data_toast = param;
-        $scope.closeToast_agep = function() 
-        {
-          $mdToast.hide(my_toast_agep);
-        };
-
-        $scope.liste_contrat = function()
+        function affiche_liste_contrat(param) 
         {
             $mdDialog.show({
-              controller: Liste_contrat_agepController,
-              templateUrl: 'app/main/pfss/contrat_agep/liste_contrat_agep_alert.html',
-              parent: angular.element(document.body),
-              locals:{contrat: param},
-              clickOutsideToClose:true
-            })
+                controller: Liste_contrat_agepController,
+                templateUrl: 'app/main/pfss/contrat_agep/liste_contrat_agep_alert.html',
+                //parent: angular.element('#toast_contrat'),
+                locals:{contrat: param},
+                clickOutsideToClose:true
+                });
         }
-
-   
-    }
-    
+          
+    }    
 
     function Liste_contrat_agepController($scope, $mdDialog,contrat) 
     {
        
-      $scope.contrat_liste = contrat; 
-      $scope.dtOptions = {
-        dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
-        pagingType: 'simple',
-        autoWidth: false,
-        order: [] 
-     };
-          $scope.hide = function() {
+        $scope.contrat_liste = contrat; 
+        $scope.dtOptions =
+        {
+            dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
+            pagingType: 'simple',
+            autoWidth: false,
+            order: [] 
+        };
+        
+        $scope.hide = function()
+        {
             $mdDialog.hide();
-          };
+        };
 
-          $scope.cancel = function() {
+        $scope.cancel = function()
+        {
             $mdDialog.cancel();
-
-          };
+        };
 
         $scope.contrat_agep_column = 
         [

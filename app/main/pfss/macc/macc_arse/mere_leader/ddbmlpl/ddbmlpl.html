@@ -1,0 +1,365 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Mère leader père leader</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;">Données référentielles</span>
+                </div>
+    
+                <div class="title">Données référentielles mère leader père leader</div>
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>
+				<md-progress-circular ng-if="vm.affiche_load" class="md-accent" aria-label="Rating" md-mode="indeterminate" md-diameter="64"></md-progress-circular> 
+				<div ng-if="vm.affiche_load" style="position:relative;top: -30px;  left: 60px;color: #039be5">
+					Chargement,veuillez patienter s'il vous plait ...
+				</div>
+                <md-tabs md-dynamic-height>
+                    <md-tab label="Raison visite domicile" ng-click="vm.Select_table(1)">
+                        <md-tab-body>
+                            <fieldset>
+                                <legend>
+                                        Raison visite domicile
+                                    <button ng-click="vm.ajouterRaisonvisitedomicile()" title="Ajouter une Raison visite domicile" style="font-size: 24px;font-weight: bold;background-color: rgb(255,255,255);color: rgb(3,155,229);">+</button>
+                                </legend>
+                                <table ng-table="tableDdbmlplRaisonvisitedomicile" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.ddb_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="tlog in vm.allRecordsRaisonvisitedomicile"  ng-class="{selected: tlog.$selected}" ng-click="vm.selectionRaisonvisitedomicile(tlog)">										
+                                            <td>
+                                                <span ng-if="tlog.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Description</label>
+                                                        <input name="description" type="text" ng-model="tlog.description"/>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!tlog.$edit">{{tlog.description}}</span>
+                                            </td>
+                                            <td>
+                                                <a ng-if="!tlog.$edit" ng-click="vm.modifierRaisonvisitedomicile(tlog)" title="Modifier">
+                                                    <span class="icon-table-edit"></span>
+                                                </a>
+                                                <a ng-if="!tlog.$edit" ng-click="vm.supprimerRaisonvisitedomicile(tlog)" title="Supprimer">
+                                                    <span class="icon-delete"></span>
+                                                </a>
+                                                <a ng-if="tlog.$edit" ng-click="vm.annulerRaisonvisitedomicile(tlog)" title="Annuler modification">
+                                                    <span class="icon-cancel"></span>
+                                                </a>
+                                                <a ng-if="tlog.$edit && tlog.description >''" ng-click="vm.ajout(tlog,0)" title="Sauvegarder">
+                                                    <span class="icon-content-save"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>		
+                    <md-tab label="Résolution visite"  ng-click="vm.Select_table(2)">
+                        <md-tab-body>
+                            <fieldset>
+                                <legend>
+                                        Résolution visite à domicile
+                                    <button ng-click="vm.ajouterResolutionvisitedomicile()" title="Ajouter une Résolution visite à domicile" style="font-size: 24px;font-weight: bold;background-color: rgb(255,255,255);color: rgb(3,155,229);">+</button>
+                                </legend>
+                                <table ng-table="tableDdbmlplResolutionvisitedomicile" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.ddb_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="ologt in vm.allRecordsResolutionvisitedomicile"  ng-class="{selected: ologt.$selected}" ng-click="vm.selectionResolutionvisitedomicile(ologt)">										
+                                            <td>
+                                                <span ng-if="ologt.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Description</label>
+                                                        <input name="description" type="text" ng-model="ologt.description"/>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!ologt.$edit">{{ologt.description}}</span>
+                                            </td>
+                                            <td>
+                                                <a ng-if="!ologt.$edit" ng-click="vm.modifierResolutionvisitedomicile(ologt)" title="Modifier">
+                                                    <span class="icon-table-edit"></span>
+                                                </a>
+                                                <a ng-if="!ologt.$edit" ng-click="vm.supprimerResolutionvisitedomicile(ologt)" title="Supprimer">
+                                                    <span class="icon-delete"></span>
+                                                </a>
+                                                <a ng-if="ologt.$edit" ng-click="vm.annulerResolutionvisitedomicile(ologt)" title="Annuler modification">
+                                                    <span class="icon-cancel"></span>
+                                                </a>
+                                                <a ng-if="ologt.$edit && ologt.description >''" ng-click="vm.ajout(ologt,0)" title="Sauvegarder">
+                                                    <span class="icon-content-save"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>		
+                    <md-tab label="Thème sensibilisation"  ng-click="vm.Select_table(3)">
+                        <md-tab-body>
+                            <fieldset>
+                                <legend>
+                                        Thème de sensibilisation
+                                    <button ng-click="vm.ajouterThemesensibilisation()" title="Ajouter un Thème de sensibilisation" style="font-size: 24px;font-weight: bold;background-color: rgb(255,255,255);color: rgb(3,155,229);">+</button>
+                                </legend>
+                                <table ng-table="tableDdbmlplThemesensibilisation" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.ddb_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="rvtt in vm.allRecordsThemesensibilisation"  ng-class="{selected: rvtt.$selected}" ng-click="vm.selectionThemesensibilisation(rvtt)">										
+                                            <td>
+                                                <span ng-if="rvtt.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Description</label>
+                                                        <input name="description" type="text" ng-model="rvtt.description"/>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!rvtt.$edit">{{rvtt.description}}</span>
+                                            </td>
+                                            <td>
+                                                <a ng-if="!rvtt.$edit" ng-click="vm.modifierThemesensibilisation(rvtt)" title="Modifier">
+                                                    <span class="icon-table-edit"></span>
+                                                </a>
+                                                <a ng-if="!rvtt.$edit" ng-click="vm.supprimerThemesensibilisation(rvtt)" title="Supprimer">
+                                                    <span class="icon-delete"></span>
+                                                </a>
+                                                <a ng-if="rvtt.$edit" ng-click="vm.annulerThemesensibilisation(rvtt)" title="Annuler modification">
+                                                    <span class="icon-cancel"></span>
+                                                </a>
+                                                <a ng-if="rvtt.$edit && rvtt.description >''" ng-click="vm.ajout(rvtt,0)" title="Sauvegarder">
+                                                    <span class="icon-content-save"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>		
+                    <md-tab label="Projet du groupe" ng-click="vm.Select_table(4)">
+                        <md-tab-body>
+                            <fieldset>
+                                <legend>
+                                        Projet du groupe ML/PL
+                                    <button ng-click="vm.ajouterProjetdugroupe()" title="Ajouter un Projet du groupe ML/PL" style="font-size: 24px;font-weight: bold;background-color: rgb(255,255,255);color: rgb(3,155,229);">+</button>
+                                </legend>
+                                <table ng-table="tableDdbmlplProjetdugroupe" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.ddb_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="rvts in vm.allRecordsProjetdugroupe"  ng-class="{selected: rvts.$selected}" ng-click="vm.selectionProjetdugroupe(rvts)">										
+                                            <td>
+                                                <span ng-if="rvts.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Description</label>
+                                                        <input name="description" type="text" ng-model="rvts.description"/>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!rvts.$edit">{{rvts.description}}</span>
+                                            </td>
+                                            <td>
+                                                <a ng-if="!rvts.$edit" ng-click="vm.modifierProjetdugroupe(rvts)" title="Modifier">
+                                                    <span class="icon-table-edit"></span>
+                                                </a>
+                                                <a ng-if="!rvts.$edit" ng-click="vm.supprimerProjetdugroupe(rvts)" title="Supprimer">
+                                                    <span class="icon-delete"></span>
+                                                </a>
+                                                <a ng-if="rvts.$edit" ng-click="vm.annulerProjetdugroupe(rvts)" title="Annuler modification">
+                                                    <span class="icon-cancel"></span>
+                                                </a>
+                                                <a ng-if="rvts.$edit && rvts.description >''" ng-click="vm.ajout(rvts,0)" title="Sauvegarder">
+                                                    <span class="icon-content-save"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>		
+                    <md-tab label="Problème rencontré" ng-click="vm.Select_table(5)">
+                        <md-tab-body>
+                            <fieldset>
+                                <legend>
+                                        Problème rencontré
+                                    <button ng-click="vm.ajouterProblemerencontre()" title="Ajouter un Problème rencontré" style="font-size: 24px;font-weight: bold;background-color: rgb(255,255,255);color: rgb(3,155,229);">+</button>
+                                </legend>
+                                <table ng-table="tableDdbmlplProblemerencontre" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.ddb_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="rvtm in vm.allRecordsProblemerencontre"  ng-class="{selected: rvtm.$selected}" ng-click="vm.selectionProblemerencontre(rvtm)">										
+                                            <td>
+                                                <span ng-if="rvtm.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Description</label>
+                                                        <input name="description" type="text" ng-model="rvtm.description"/>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!rvtm.$edit">{{rvtm.description}}</span>
+                                            </td>
+                                            <td>
+                                                <a ng-if="!rvtm.$edit" ng-click="vm.modifierProblemerencontre(rvtm)" title="Modifier">
+                                                    <span class="icon-table-edit"></span>
+                                                </a>
+                                                <a ng-if="!rvtm.$edit" ng-click="vm.supprimerProblemerencontre(rvtm)" title="Supprimer">
+                                                    <span class="icon-delete"></span>
+                                                </a>
+                                                <a ng-if="rvtm.$edit" ng-click="vm.annulerProblemerencontre(rvtm)" title="Annuler modification">
+                                                    <span class="icon-cancel"></span>
+                                                </a>
+                                                <a ng-if="rvtm.$edit && rvtm.description >''" ng-click="vm.ajout(rvtm,0)" title="Sauvegarder">
+                                                    <span class="icon-content-save"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>		
+                    <md-tab label="Résolution problème" ng-click="vm.Select_table(6)">
+                        <md-tab-body>
+                            <fieldset>
+                                <legend>
+                                        Résolution au problème
+                                    <button ng-click="vm.ajouterResolutionprobleme()" title="Ajouter une Résolution au problème" style="font-size: 24px;font-weight: bold;background-color: rgb(255,255,255);color: rgb(3,155,229);">+</button>
+                                </legend>
+                                <table ng-table="tableDdbmlplResolutionprobleme" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.ddb_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="secl in vm.allRecordsResolutionprobleme"  ng-class="{selected: secl.$selected}" ng-click="vm.selectionResolutionprobleme(secl)">										
+                                            <td>
+                                                <span ng-if="secl.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Description</label>
+                                                        <input name="description" type="text" ng-model="secl.description"/>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!secl.$edit">{{secl.description}}</span>
+                                            </td>
+                                            <td>
+                                                <a ng-if="!secl.$edit" ng-click="vm.modifierResolutionprobleme(secl)" title="Modifier">
+                                                    <span class="icon-table-edit"></span>
+                                                </a>
+                                                <a ng-if="!secl.$edit" ng-click="vm.supprimerResolutionprobleme(secl)" title="Supprimer">
+                                                    <span class="icon-delete"></span>
+                                                </a>
+                                                <a ng-if="secl.$edit" ng-click="vm.annulerResolutionprobleme(secl)" title="Annuler modification">
+                                                    <span class="icon-cancel"></span>
+                                                </a>
+                                                <a ng-if="secl.$edit && secl.description >''" ng-click="vm.ajout(secl,0)" title="Sauvegarder">
+                                                    <span class="icon-content-save"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>		
+                    <md-tab label="Espace bien être" ng-click="vm.Select_table(7)">
+                        <md-tab-body>
+                            <fieldset>
+                                <legend>
+                                        Espace bien être
+                                    <button ng-click="vm.ajouterEspacebienetre()" title="Ajouter un espace de bien être" style="font-size: 24px;font-weight: bold;background-color: rgb(255,255,255);color: rgb(3,155,229);">+</button>
+                                </legend>
+                                <table ng-table="tableDdbmlplEspacebienetre" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="c in ::vm.ddb_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{c.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="esp in vm.allRecordsEspacebienetre"  ng-class="{selected: esp.$selected}" ng-click="vm.selectionEspacebienetre(esp)">										
+                                            <td>
+                                                <span ng-if="esp.$edit">
+                                                    <md-input-container style="width:100%;">
+                                                        <label>Description</label>
+                                                        <input name="description" type="text" ng-model="esp.description"/>
+                                                    </md-input-container>	
+                                                </span>
+                                                <span ng-if="!esp.$edit">{{esp.description}}</span>
+                                            </td>
+                                            <td>
+                                                <a ng-if="!esp.$edit" ng-click="vm.modifierEspacebienetre(esp)" title="Modifier">
+                                                    <span class="icon-table-edit"></span>
+                                                </a>
+                                                <a ng-if="!esp.$edit" ng-click="vm.supprimerEspacebienetre(esp)" title="Supprimer">
+                                                    <span class="icon-delete"></span>
+                                                </a>
+                                                <a ng-if="esp.$edit" ng-click="vm.annulerEspacebienetre(esp)" title="Annuler modification">
+                                                    <span class="icon-cancel"></span>
+                                                </a>
+                                                <a ng-if="esp.$edit && esp.description >''" ng-click="vm.ajout(esp,0)" title="Sauvegarder">
+                                                    <span class="icon-content-save"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>		
+                </md-tabs>
+            </div>
+        </div>
+    </div>
+    

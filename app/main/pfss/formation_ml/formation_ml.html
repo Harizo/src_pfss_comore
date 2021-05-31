@@ -1,0 +1,531 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Formation ML |&nbsp {{vm.type_sous_projet}}</span>
+                    <span class="parent"> </span>
+                    <!--md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;">Groupe ML/PL</span-->
+                </div>
+    
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>
+                <md-tabs md-dynamic-height>
+                    <md-tab label="Formation ML">
+                      <form name="filtreform" class="md-inline-form" novalidate >
+                        <div layout="column" layout-gt-xs="row" flex>
+                           <md-input-container flex="100" flex-gt-xs="90">
+                             <label>Île</label>
+                               <md-select ng-model="vm.filtre.id_ile" name="ile" ng-change="vm.filtre_region()" required>
+                                
+                                 <md-option ng-repeat="ile in vm.all_ile" value="{{ile.id}}" >
+                                   {{ile.Ile}}
+                                 </md-option>
+
+                               </md-select>
+                               <div ng-messages="filtreform.ile.$error"
+                                 role="alert">
+                                 <div ng-message="required">
+                                   <span>Île obligatoire</span>
+                                 </div>
+                               </div>
+                           </md-input-container>
+
+                           <md-input-container flex="100" flex-gt-xs="90">
+                             <label>Préfecture</label>
+                               <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_ile" required>
+                                 
+                                 <md-option ng-repeat="region in vm.all_region" value="{{region.id}}" >
+                                   {{region.Region}}
+                                 </md-option>
+
+                               </md-select>
+                               <div ng-messages="filtreform.region.$error"
+                                 role="alert">
+                                 <div ng-message="required">
+                                   <span>Région obligatoire</span>
+                                 </div>
+                               </div>
+                           </md-input-container>
+
+                           <md-input-container flex="100" flex-gt-xs="90">
+                             <label>Commune</label>
+                               <md-select ng-model="vm.filtre.id_commune" name="commune" ng-disabled="!vm.filtre.id_region" ng-change="vm.filtre_village()" required>
+                                
+                                 <md-option ng-repeat="commune in vm.all_commune" value="{{commune.id}}" >
+                                   {{commune.Commune}}
+                                 </md-option>
+
+                               </md-select>
+                               <div ng-messages="filtreform.commune.$error"
+                                 role="alert">
+                                 <div ng-message="required">
+                                   <span>Commune obligatoire</span>
+                                 </div>
+                               </div>
+                           </md-input-container>
+                          
+                       </div>	
+                      <div>                            
+                        <section layout="row" layout-sm="column" layout-align="left" layout-wrap>
+                      
+                          <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                             ng-disabled="filtreform.$invalid||vm.affiche_load" ng-click="vm.get_formation_ml(vm.filtre)">
+                            Actualiser
+                          </md-button>                              
+                        </section>                         
+                       </div>
+                   </form>
+                        <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                          <div layout="row" layout-align="start center">
+                          <div class="border-right">
+                              
+                            <span class="md-headline">Formation ML &nbsp</span>
+                          </div>
+                            <div class="border-right" ng-if="vm.filtre.id_commune && !vm.selectedItemFormation_ml.id">
+                              <md-button class="md-icon-button" style=" font-size:11px " aria-label="Ajout" ng-click="vm.ajouterFormation_ml()">
+                                <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                <md-tooltip><span>Ajouter</span></md-tooltip>
+                              </md-button>
+                            </div> 
+                            <div class="border-right" ng-if="vm.selectedItemFormation_ml.id">
+                              <md-button class="md-icon-button" aria-label="Modifier" style=" font-size:11px " ng-click="vm.modifFormation_ml()">
+                                <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                <md-tooltip><span>Modifier</span></md-tooltip>
+                              </md-button>
+                            </div>    
+                            <div class="border-right" ng-if="vm.selectedItemFormation_ml.id">
+                              <md-button class="md-icon-button" aria-label="Suppression" style=" font-size:11px " ng-click="vm.supprimerFormation_ml()">
+                                <md-icon md-font-icon="icon-delete"></md-icon>
+                                <md-tooltip><span>Supprimer</span></md-tooltip>
+                              </md-button>
+                            </div>    
+                            <div class="border-right" ng-if="vm.selectedItemFormation_ml.id">
+                              <md-button class="md-icon-button" aria-label="Annuler" style=" font-size:11px " ng-click="vm.annulerFormation_ml()">
+                                <md-icon md-font-icon="icon-cancel"></md-icon>
+                                <md-tooltip><span>Annuler</span></md-tooltip>
+                              </md-button>
+                            </div>                  
+                          </div>
+                      </header>
+                        <!----------FORM AGEP--------------->       
+                         
+                        <form ng-show="vm.affichage_masque" name="formformation_ml" class="md-inline-form" novalidate >
+
+                          <div layout="column" layout-gt-xs="row" flex> 
+                            
+                            <md-input-container flex="100" flex-gt-xs="25">
+                                <label>Contrat ONG</label>
+                                <md-select ng-model="vm.formation_ml.id_contrat_consultant_ong" name="id_contrat_consultant_ong">
+                                    <md-option ng-repeat="mena in vm.allContrat_consultant_ong" value="{{mena.id}}">
+                                            {{mena.reference}}
+                                    </md-option>                                                
+                                  </md-select>
+                                  <div ng-messages="formformation_ml.id_contrat_consultant_ong.$error" role="alert">
+                                    <div ng-message="required">
+                                      <span>Contrat ONG Obligatoire.</span>
+                                    </div>
+                                  </div>
+                            </md-input-container> 
+                            <md-input-container flex="100" flex-gt-xs="25">
+                              <label>Numero</label>
+                              <input  type="number" name="numero" ng-model="vm.formation_ml.numero" required>
+                              <div ng-messages="formformation_ml.numero.$error"role="alert">
+                                  <div ng-message="required">
+                                      <span>Numero obligatoire.</span>
+                                  </div>
+                              </div>
+                            </md-input-container>
+                                                              
+                            <md-input-container flex="100" flex-gt-xs="25">
+                              <label>Description</label>
+                              <input  type="text" name="description" ng-model="vm.formation_ml.description" ng-init="vm.formation_ml.description=''" required>
+                              <div ng-messages="formformation_ml.description.$error"role="alert">
+                                  <div ng-message="required">
+                                      <span>Description obligatoire.</span>
+                                  </div>
+                              </div>
+                            </md-input-container>
+                                      
+                            <md-input-container flex="100" flex-gt-xs="25">
+                                <label>Lieu</label>
+                                  <input name="lieu" type="text" ng-model="vm.formation_ml.lieu" required md-select-on-focus>
+                                    <div ng-messages="formformation_ml.lieu.$error" role="alert">
+                                      <div ng-message="required">
+                                          <span>Lieu obligatoire.</span>
+                                      </div>
+                                    </div>
+                              </md-input-container>
+                   
+                          </div>
+
+                          <div layout="column" layout-gt-xs="row" flex>
+                              
+                              <div style="margin-top: 14px !important; font-size: 13px !important;" flex="100" flex-gt-xs="10">
+                                  <label>Date de debut formation:</label>
+                                  <md-datepicker  ng-model="vm.formation_ml.date_debut" md-placeholder="jj/mm/aaaa" md-max-date="vm.date_now" required>                       
+                                  </md-datepicker>
+                                  <label>Date de fin formation:</label>
+                                  <md-datepicker  ng-model="vm.formation_ml.date_fin" md-placeholder="jj/mm/aaaa" ng-disabled="!vm.formation_ml.date_debut" md-min-date="vm.formation_ml.date_debut">                       
+                                  </md-datepicker>
+                              </div>
+                            </div>
+
+                            <div>
+                                <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                        ng-disabled="formformation_ml.$invalid " ng-click="vm.ajoutFormation_ml(vm.formation_ml,0)">
+                                        Enregistrer
+                                </md-button>
+                                <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerFormation_ml()">
+                                        Annuler
+                                </md-button>
+                            </div>
+                            </form>
+                                        
+                        <!--FORM  agep--> 
+                        <table class="dataTable row-border hover cell-border text-center" datatable="ng"
+                          dt-options="vm.dtOptions_new" ms-responsive-table>
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::vm.formation_ml_column">
+                                <div class="table-header">
+                                  <span class="column-title text-center">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="contr in vm.allFormation_ml"  ng-class="{selected: contr.$selected}" ng-click="vm.selection(contr)">
+                                
+                                <td>{{contr.contrat_consultant_ong.reference}}</td>
+                                <td>{{contr.numero}}</td>
+                                <td>{{contr.description}}</td> 
+                                <td>{{contr.date_debut | date:'dd/MM/yyyy'}}</td>
+                                <td>{{contr.date_fin | date:'dd/MM/yyyy'}}</td>
+                                <td>{{contr.lieu}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </md-tab> 
+                  
+                    <md-tab label="Theme de formation ML" ng-disabled="!vm.selectedItemFormation_ml.id" ng-click="vm.click_theme_formation_ml()">
+                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                <div layout="row" layout-align="start center">
+                                <div class="border-right">
+                                    
+                                  <span class="md-headline">THEME DE FORMATION &nbsp</span>
+                                </div>
+                                  <div class="border-right" ng-if="!vm.selectedItemTheme_formation_ml.id && !vm.nouvelleItemTheme_formation_ml">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterTheme_formation_ml()">
+                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                      <md-tooltip><span>Ajouter</span></md-tooltip>
+                                    </md-button>
+                                  </div> 
+                                  <div class="border-right" ng-if="vm.selectedItemTheme_formation_ml.id && !vm.selectedItemTheme_formation_ml.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierTheme_formation_ml()">
+                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                      <md-tooltip><span>Modifier</span></md-tooltip>
+                                    </md-button>
+                                  </div>    
+                                  <div class="border-right" ng-if="vm.selectedItemTheme_formation_ml.id && !vm.selectedItemTheme_formation_ml.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerTheme_formation_ml()">
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Supprimer</span></md-tooltip>
+                                    </md-button>
+                                  </div>  
+
+                                  <div class="border-right" ng-if="vm.selectedItemTheme_formation_ml.id">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerTheme_formation_ml()">
+                                      <md-icon md-font-icon="icon-cancel"></md-icon>
+                                      <md-tooltip><span>Annuler</span></md-tooltip>
+                                    </md-button>
+                                  </div>   
+
+                                  <div ng-if="vm.selectedItemTheme_formation_ml.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerTheme_formation_ml(0)">
+                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                    </md-button>
+                                  </div>                
+                                </div>
+                            </header>
+                            
+                        
+                            <table ng-table="agep" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                                <thead>
+                                    <tr>
+                                        <th class="secondary-text" ng-repeat="c in ::vm.theme_formation_ml_column">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">{{c.titre}}</span>
+                                            </div>
+                                        </th>                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="theme_forma in vm.allTheme_formation_ml"  ng-class="{selected: theme_forma.$selected}" ng-click="vm.selectionTheme_formation_ml(theme_forma)">                                       
+                                       
+                                      
+                                      <td>
+                                        <span ng-if="theme_forma.$edit">
+                                          <md-input-container style="width:100%;display: flex !important;">
+                                              <label>Theme</label>
+                                              <md-select ng-model="theme_forma.id_theme_sensibilisation" name="id_theme_sensibilisation">
+                                                  <md-option ng-repeat="mena in vm.allTheme_sensibilisation" value="{{mena.id}}">
+                                                      {{mena.description}}
+                                                  </md-option>                                                
+                                              </md-select>
+                                          </md-input-container> 
+                                        </span>
+                                        <span ng-if="!theme_forma.$edit"> {{theme_forma.theme_sensibilisation.description}}</span>
+                                    </td>
+                                    <td>
+                                          <span ng-if="theme_forma.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Numero d'ordre</label>                                                
+                                                <input type="text" name="numero"  ng-model="theme_forma.numero"/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!theme_forma.$edit"> {{theme_forma.numero}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="theme_forma.$edit">
+                                            <md-datepicker ng-model="theme_forma.date_formation" md-max-date="vm.datenow" required>                       
+                                            </md-datepicker>
+                                          </span>                          
+                                          <span ng-if="!theme_forma.$edit">{{vm.formatDate(theme_forma.date_formation)}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </md-tab>
+                    <md-tab label="Outils de communication" ng-disabled="!vm.selectedItemFormation_ml.id" ng-click="vm.click_outils_communication()">
+                        <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                          
+                          <div class="border-right">
+                              
+                            <span class="md-headline">OUTILS DE COMMUNICATION &nbsp</span>
+                          </div>
+                          <div layout="row">  
+
+                            <div class="border-right" ng-if="vm.affiche_bouton_outils">
+                              <md-button class="md-icon-button" aria-label="add annuler" style=" font-size:11px " ng-click="vm.annulerOutils_communication()" ng-disabled="vm.selectedItemAvenant_agep.statu=='RESILIE' || vm.selectedItemAvenant_agep.statu=='TERMINE'">
+                                <md-icon md-font-icon="icon-cancel" ></md-icon>
+                                <md-tooltip><span>Annuler</span></md-tooltip>
+                              </md-button>
+                            </div>
+                            <div ng-if="vm.affiche_bouton_outils">
+                              <md-button class="md-icon-button" aria-label="add enregistrer" ng-click="vm.enregistrerOutils_communication()">
+                                <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                <md-tooltip><span>Enregistrer</span></md-tooltip>
+                              </md-button>
+                            </div>  
+                          </div>
+                      </header>
+                      <div layout="row" layout-align="center center">
+                        <fieldset class="standard flex" style="display:inline-block;vertical-align:top;">
+                          <legend>Outils de communication</legend>
+                          <div layout="row">
+                            <div  class="standard flex">                              
+                              <md-checkbox ng-model="vm.outil_communication.bache" 
+                              aria-label="bache"  
+                              style="margin: 4px;" 
+                              ng-change="vm.change_outils_communication(vm.outil_communication)">
+                              Les bâches
+                              </md-checkbox> <br> 
+                              <md-checkbox ng-model="vm.outil_communication.support_audio_visuel" 
+                                          aria-label="Support audio-visuel"  
+                                          style="margin: 4px;" 
+                                          ng-change="vm.change_outils_communication(vm.outil_communication)">
+                                          Les supports audio-visuels
+                              </md-checkbox> <br>
+                              <md-checkbox ng-model="vm.outil_communication.banderole" 
+                                          aria-label="Banderoles"  
+                                          style="margin: 4px;" 
+                                          ng-change="vm.change_outils_communication(vm.outil_communication)">
+                                          Banderoles
+                              </md-checkbox> <br>
+                              <md-checkbox ng-model="vm.outil_communication.facebook" 
+                                          aria-label="Facebook"  
+                                          style="margin: 4px;" 
+                                          ng-change="vm.change_outils_communication(vm.outil_communication)">
+                                          Facebook
+                              </md-checkbox> <br>
+                              <md-checkbox ng-model="vm.outil_communication.roll_up" 
+                                          aria-label="Roll-up"  
+                                          style="margin: 4px;" 
+                                          ng-change="vm.change_outils_communication(vm.outil_communication)">
+                                          Roll-up
+                              </md-checkbox> <br>
+                            </div>
+                            <div  class="standard flex">
+                                
+                              <md-checkbox ng-model="vm.outil_communication.depliant" 
+                              aria-label="Dépliant"  
+                              style="margin: 4px;" 
+                              ng-change="vm.change_outils_communication(vm.outil_communication)">
+                              Dépliant
+                              </md-checkbox> <br>
+                              <md-checkbox ng-model="vm.outil_communication.spot_audio_visuel" 
+                                          aria-label="Spot audio-visuel"  
+                                          style="margin: 4px;" 
+                                          ng-change="vm.change_outils_communication(vm.outil_communication)">
+                                          Spot audio-visuel
+                              </md-checkbox> <br>
+                              <md-checkbox ng-model="vm.outil_communication.television" 
+                                          aria-label="Les télévisions"  
+                                          style="margin: 4px;" 
+                                          ng-change="vm.change_outils_communication(vm.outil_communication)">
+                                          Les télévisions
+                              </md-checkbox>
+                            </div>
+                          </div>
+                         
+                        </fieldset>
+                        <fieldset class="standard flex" style="display:inline-block;vertical-align:top;">
+                          <legend>Les canaux</legend>
+                          
+                          <md-checkbox ng-model="vm.outil_communication.minaret" 
+                                      aria-label="Les minarets"  
+                                      style="margin: 4px;" 
+                                      ng-change="vm.change_outils_communication(vm.outil_communication)">
+                                      Les minarets
+                          </md-checkbox> <br>
+                          <md-checkbox ng-model="vm.outil_communication.megaphone" 
+                                      aria-label="Les mégaphones"  
+                                      style="margin: 4px;" 
+                                      ng-change="vm.change_outils_communication(vm.outil_communication)">
+                                      Les mégaphones
+                          </md-checkbox> <br>
+                          <md-checkbox ng-model="vm.outil_communication.radio_mobile" 
+                                      aria-label="Radio mobile"  
+                                      style="margin: 4px;" 
+                                      ng-change="vm.change_outils_communication(vm.outil_communication)">
+                                      Radio mobile
+                          </md-checkbox> <br>
+                          <md-checkbox ng-model="vm.outil_communication.carnaval" 
+                                      aria-label="Carnaval"  
+                                      style="margin: 4px;" 
+                                      ng-change="vm.change_outils_communication(vm.outil_communication)">
+                                      Carnaval
+                          </md-checkbox> <br>
+                          <md-checkbox ng-model="vm.outil_communication.caravane_communication" 
+                                      aria-label="Caravane de communication"  
+                                      style="margin: 4px;" 
+                                      ng-change="vm.change_outils_communication(vm.outil_communication)">
+                                      Caravane de communication
+                          </md-checkbox>
+                          
+                        </fieldset>
+                      </div>
+                    </md-tab>
+                    <md-tab label="Groupe participant formation" ng-disabled="!vm.selectedItemFormation_ml.id" ng-click="vm.click_groupe_participant_ml()">
+                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                <div layout="row" layout-align="start center">
+                                <div class="border-right">
+                                    
+                                  <span class="md-headline">GROUPE PARTICIPANT &nbsp</span>
+                                </div>
+                                  <div class="border-right" ng-if="!vm.selectedItemGroupe_participant_ml.id && !vm.nouvelleItemGroupe_participant_ml">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterGroupe_participant_ml()">
+                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                      <md-tooltip><span>Ajouter</span></md-tooltip>
+                                    </md-button>
+                                  </div> 
+                                  <div class="border-right" ng-if="vm.selectedItemGroupe_participant_ml.id && !vm.selectedItemGroupe_participant_ml.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierGroupe_participant_ml()">
+                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                      <md-tooltip><span>Modifier</span></md-tooltip>
+                                    </md-button>
+                                  </div>    
+                                  <div class="border-right" ng-if="vm.selectedItemGroupe_participant_ml.id && !vm.selectedItemGroupe_participant_ml.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerGroupe_participant_ml()">
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Supprimer</span></md-tooltip>
+                                    </md-button>
+                                  </div>  
+
+                                  <div class="border-right" ng-if="vm.selectedItemGroupe_participant_ml.id">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerGroupe_participant_ml()">
+                                      <md-icon md-font-icon="icon-cancel"></md-icon>
+                                      <md-tooltip><span>Annuler</span></md-tooltip>
+                                    </md-button>
+                                  </div>   
+
+                                  <div ng-if="vm.selectedItemGroupe_participant_ml.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerGroupe_participant_ml(0)">
+                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                    </md-button>
+                                  </div>                
+                                </div>
+                            </header>
+                            
+                        
+                            <table ng-table="groupe" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                                <thead>
+                                    <tr>
+                                        <th class="secondary-text" ng-repeat="c in ::vm.groupe_participant_ml_column">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">{{c.titre}}</span>
+                                            </div>
+                                        </th>                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="groupe_par in vm.allGroupe_participant_ml"  ng-class="{selected: groupe_par.$selected}" ng-click="vm.selectionGroupe_participant_ml(groupe_par)">                                       
+                                       
+                                      <td>
+                                        <span ng-if="groupe_par.$edit">
+                                          <md-input-container style="width:100%;display: flex !important;">
+                                              <label>Village</label>
+                                              <md-select ng-model="groupe_par.id_village" name="id_village" ng-change="vm.filtre_groupe_ml(groupe_par.id_village)">
+                                                  <md-option ng-repeat="vil in vm.all_village" value="{{vil.id}}">
+                                                      {{vil.Village}}
+                                                  </md-option>                                                
+                                              </md-select>
+                                          </md-input-container> 
+                                        </span>
+                                        <span ng-if="!groupe_par.$edit"> {{groupe_par.village.Village}}</span>
+                                    </td>
+                                      <td>
+                                        <span ng-if="groupe_par.$edit">
+                                          <md-input-container style="width:100%;display: flex !important;">
+                                              <label>Groupe ML/PL</label>
+                                              <md-select ng-model="groupe_par.id_groupe_ml_pl" name="id_groupe_ml_pl" ng-change="vm.change_groupe_ml(groupe_par)" ng-disabled="!groupe_par.id_village">
+                                                  <md-option ng-repeat="gr in vm.allGroupe_ml_pl" value="{{gr.id}}">
+                                                      {{gr.nom_groupe}}
+                                                  </md-option>                                                
+                                              </md-select>
+                                          </md-input-container> 
+                                        </span>
+                                        <span ng-if="!groupe_par.$edit"> {{groupe_par.groupe_ml_pl.nom_groupe}}</span>
+                                    </td>
+                                    <td>
+                                          <span ng-if="groupe_par.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Nom chef de village</label>                                                
+                                                <input type="text" name="numero"  ng-model="groupe_par.chef_village" disabled/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!groupe_par.$edit"> {{groupe_par.groupe_ml_pl.chef_village}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </md-tab> 
+                    <md-tab>
+                    </md-tab>
+                </md-tabs>
+            </div>
+        </div>
+    </div>

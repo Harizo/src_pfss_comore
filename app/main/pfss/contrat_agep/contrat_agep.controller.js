@@ -77,9 +77,9 @@
 
             vm.contrat_agep_column = 
             [
-                {titre:"Contrat N°"},
                 {titre:"AGEP"},
                 {titre:"Adresse de l'agep"},
+                {titre:"Contrat N°"},
                // {titre:"Sous projet"},
                 {titre:"Objet du contrat"},
                 {titre:"Montant du contrat"},
@@ -150,6 +150,7 @@
                 vm.contrat_agep.date_signature=null;
                 vm.contrat_agep.statu="EN COURS";		
                 vm.affichage_masque=true;
+                vm.selectedItemContrat_agep = {};
             }
             vm.annulerContrat_agep = function(item)
             {
@@ -186,7 +187,7 @@
 
             vm.supprimerContrat_agep = function()
             {
-                vm.affichage_masque_societe_crevette = false ;
+                vm.affichage_masque = false ;
                 
                 var confirm = $mdDialog.confirm()
                   .title('Etes-vous sûr de supprimer cet enregistrement ?')
@@ -340,51 +341,97 @@
                 insert_in_baseContrat_agep(item,suppression);		
             }
             vm.change_agep = function()
-            {
+            {   
                 var ag = vm.allAgep.filter(function(obj)
                 {
                     return obj.id == vm.contrat_agep.id_agep ;
                 });
                 vm.contrat_agep.adresse = ag[0].adresse;
+                if (NouvelItemContrat_agep == true)
+                {
+                    if (vm.allContrat_agep.length==0)
+                    {
+                        vm.contrat_agep.numero_contrat= ag[0].identifiant+'/'+vm.type_sous_projet+'/1';
+                    }
+                    else
+                    {
+                        var last_id = Math.max.apply(Math, vm.allContrat_agep.map(function(o){return o.id;}));					
+				        var data_laste_contrat_agep= vm.allContrat_agep.filter(function(obj){return obj.id == String(last_id) ;});
+				        var laste_numero_contrat = Math.max.apply(Math, data_laste_contrat_agep.map(function(o){return o.numero_contrat.split('/')[2];}));
+                        vm.contrat_agep.numero_contrat= ag[0].identifiant+'/'+vm.type_sous_projet+'/'+(parseInt(laste_numero_contrat)+1);
+                    }
+                }
+                else
+                {
+				    var current_contrat = vm.selectedItemContrat_agep.numero_contrat.split('/');
+                    vm.contrat_agep.numero_contrat= ag[0].identifiant+'/'+current_contrat[1]+'/'+current_contrat[2];
+                }
             }
             
             vm.terminerContrat_agep = function()
-            {   NouvelItemContrat_agep = false;
-                var item =
-                            {
-                            id : vm.selectedItemContrat_agep.id ,
-                            id_agep : vm.selectedItemContrat_agep.agep.id,
-                            id_sous_projet : vm.selectedItemContrat_agep.id_sous_projet ,
-                            numero_contrat : vm.selectedItemContrat_agep.numero_contrat ,
-                            objet_contrat : vm.selectedItemContrat_agep.objet_contrat ,
-                            montant_contrat : vm.selectedItemContrat_agep.montant_contrat ,
-                            montant_a_effectue_prevu : vm.selectedItemContrat_agep.montant_a_effectue_prevu ,
-                            modalite_contrat : vm.selectedItemContrat_agep.modalite_contrat ,
-                            date_prevu_fin : vm.selectedItemContrat_agep.date_prevu_fin ,
-                            date_signature : vm.selectedItemContrat_agep.date_signature ,
-                            noms_signataires : vm.selectedItemContrat_agep.noms_signataires  ,
-                            statu : "TERMINE" 
-                            };
-                insert_in_baseContrat_agep(item,0);
+            {   
+                var confirm = $mdDialog.confirm()
+                  .title('Etes-vous sûr de vouloir faire cet action ?')
+                  .textContent('')
+                  .ariaLabel('Lucky day')
+                  .clickOutsideToClose(true)
+                  .parent(angular.element(document.body))
+                  .ok('ok')
+                  .cancel('annuler');
+                $mdDialog.show(confirm).then(function() {
+
+                    NouvelItemContrat_agep = false;
+                    var item =
+                                {
+                                id : vm.selectedItemContrat_agep.id ,
+                                id_agep : vm.selectedItemContrat_agep.agep.id,
+                                id_sous_projet : vm.selectedItemContrat_agep.id_sous_projet ,
+                                numero_contrat : vm.selectedItemContrat_agep.numero_contrat ,
+                                objet_contrat : vm.selectedItemContrat_agep.objet_contrat ,
+                                montant_contrat : vm.selectedItemContrat_agep.montant_contrat ,
+                                montant_a_effectue_prevu : vm.selectedItemContrat_agep.montant_a_effectue_prevu ,
+                                modalite_contrat : vm.selectedItemContrat_agep.modalite_contrat ,
+                                date_prevu_fin : vm.selectedItemContrat_agep.date_prevu_fin ,
+                                date_signature : vm.selectedItemContrat_agep.date_signature ,
+                                noms_signataires : vm.selectedItemContrat_agep.noms_signataires  ,
+                                statu : "TERMINE" 
+                                };
+                    insert_in_baseContrat_agep(item,0);
+                }, function() {
+                });
+                
             }
             vm.resilieContrat_agep = function()
-            {   NouvelItemContrat_agep = false;
-                var item =
-                            {
-                            id : vm.selectedItemContrat_agep.id ,
-                            id_agep : vm.selectedItemContrat_agep.agep.id,
-                            id_sous_projet : vm.selectedItemContrat_agep.id_sous_projet ,
-                            numero_contrat : vm.selectedItemContrat_agep.numero_contrat ,
-                            objet_contrat : vm.selectedItemContrat_agep.objet_contrat ,
-                            montant_contrat : vm.selectedItemContrat_agep.montant_contrat ,
-                            montant_a_effectue_prevu : vm.selectedItemContrat_agep.montant_a_effectue_prevu ,
-                            modalite_contrat : vm.selectedItemContrat_agep.modalite_contrat ,
-                            date_prevu_fin : vm.selectedItemContrat_agep.date_prevu_fin ,
-                            date_signature : vm.selectedItemContrat_agep.date_signature ,
-                            noms_signataires : vm.selectedItemContrat_agep.noms_signataires  ,
-                            statu : "RESILIE" 
-                            };
-                insert_in_baseContrat_agep(item,0);
+            {   
+                var confirm = $mdDialog.confirm()
+                  .title('Etes-vous sûr de vouloir faire cet action ?')
+                  .textContent('')
+                  .ariaLabel('Lucky day')
+                  .clickOutsideToClose(true)
+                  .parent(angular.element(document.body))
+                  .ok('ok')
+                  .cancel('annuler');
+                $mdDialog.show(confirm).then(function() {
+
+                    NouvelItemContrat_agep = false;
+                    var item =
+                                {
+                                id : vm.selectedItemContrat_agep.id ,
+                                id_agep : vm.selectedItemContrat_agep.agep.id,
+                                id_sous_projet : vm.selectedItemContrat_agep.id_sous_projet ,
+                                numero_contrat : vm.selectedItemContrat_agep.numero_contrat ,
+                                objet_contrat : vm.selectedItemContrat_agep.objet_contrat ,
+                                montant_contrat : vm.selectedItemContrat_agep.montant_contrat ,
+                                montant_a_effectue_prevu : vm.selectedItemContrat_agep.montant_a_effectue_prevu ,
+                                modalite_contrat : vm.selectedItemContrat_agep.modalite_contrat ,
+                                date_prevu_fin : vm.selectedItemContrat_agep.date_prevu_fin ,
+                                date_signature : vm.selectedItemContrat_agep.date_signature ,
+                                noms_signataires : vm.selectedItemContrat_agep.noms_signataires  ,
+                                statu : "RESILIE" 
+                                };
+                    insert_in_baseContrat_agep(item,0);
+                }, function() {
+                });
             }
         //CONTRAT AGEP
 
@@ -404,7 +451,8 @@
                 vm.allMenage = result.data.response;
                 console.log(vm.allMenage);
                 vm.affiche_load =false;
-                }); 
+                });
+                vm.selectedItemEtat_paiement = {}; 
             }
             vm.modifierIle = function(item)
         {
@@ -1542,7 +1590,8 @@
             //Debut avenant AGEP
             
             vm.click_avenant_agep = function () 
-            {
+            {   
+                vm.selectedItemAvenant_agep = {};
                 vm.affiche_load = true ;
                 apiFactory.getAPIgeneraliserREST("avenant_agep/index","menu","getavenant_agepBycontrat",'id_contrat_agep',vm.selectedItemContrat_agep.id).then(function(result) { 
                     vm.allAvenant_agep = result.data.response;
@@ -1593,11 +1642,24 @@
                 }
                 vm.ajouterAvenant_agep = function ()
                 {
+                    if (vm.allAvenant_agep.length==0)
+                    {
+                        vm.avenant_agep.numero_avenant= vm.selectedItemContrat_agep.numero_contrat+"/1";
+                    }
+                    else
+                    {
+                        var last_id = Math.max.apply(Math, vm.allAvenant_agep.map(function(o){return o.id;}));					
+                        var data_laste_avenant_agep= vm.allAvenant_agep.filter(function(obj){return obj.id == String(last_id) ;});
+                        var laste_numero_avenant = Math.max.apply(Math, data_laste_avenant_agep.map(function(o){return o.numero_avenant.split('/')[3];}));
+                        vm.avenant_agep.numero_avenant= vm.selectedItemContrat_agep.numero_contrat+"/"+(parseInt(laste_numero_avenant)+1);
+                    }
+                    
+
                     vm.selectedItemAvenant_agep.$selected = false;
                     NouvelItemAvenant_agep = true ;
                     vm.avenant_agep.supprimer=0;
                     vm.avenant_agep.id=0;
-                    vm.avenant_agep.numero_avenant=null;
+                    //vm.avenant_agep.numero_avenant=null;
                     //vm.avenant_agep.id_agep=null;
                     //vm.avenant_agep.id_sous_projet=id_sous_projet_state;
                     vm.avenant_agep.objet_avenant=null;
@@ -1608,16 +1670,17 @@
                     vm.avenant_agep.type_avenant=null;
                     vm.avenant_agep.observation=null;
                     vm.avenant_agep.statu="EN COURS";		
-                    vm.affichage_masque=true;
+                    vm.affichage_masque_avenant=true;
                     vm.min_date_signature = new Date(vm.selectedItemContrat_agep.date_signature);
                     vm.min_date_prevu_fin = new Date(vm.selectedItemContrat_agep.date_prevu_fin);
+                    vm.selectedItemAvenant_agep ={};
                 }
                 vm.annulerAvenant_agep = function(item)
                 {
                     vm.selectedItemAvenant_agep={};
                     vm.selectedItemAvenant_agep.$selected = false;
                     NouvelItemAvenant_agep = false;
-                    vm.affichage_masque=false;
+                    vm.affichage_masque_avenant=false;
                     vm.avenant_agep = {};
                 };
                 /*vm.ajout_contrat_agep = function () 
@@ -1643,14 +1706,14 @@
                     vm.avenant_agep.type_avenant           = vm.selectedItemAvenant_agep.type_avenant ;
                     vm.avenant_agep.observation           = vm.selectedItemAvenant_agep.observation ;
                     vm.avenant_agep.statu           = vm.selectedItemAvenant_agep.statu ;
-                    vm.affichage_masque=true;
+                    vm.affichage_masque_avenant=true;
                     vm.min_date_signature = new Date(vm.selectedItemContrat_agep.date_signature);
                     vm.min_date_prevu_fin = new Date(vm.selectedItemContrat_agep.date_prevu_fin);
                 }
     
                 vm.supprimerAvenant_agep = function()
                 {
-                    vm.affichage_masque_societe_crevette = false ;
+                    vm.affichage_masque_avenant = false ;
                     
                     var confirm = $mdDialog.confirm()
                       .title('Etes-vous sûr de supprimer cet enregistrement ?')
@@ -1772,7 +1835,7 @@
                             }
                             NouvelItemAvenant_agep = false ;
                             vm.affiche_load = false ;
-                            vm.affichage_masque=false;
+                            vm.affichage_masque_avenant=false;
                             vm.avenant_agep = {};
                         })
                         .error(function (data) {alert("Une erreur s'est produit");});
@@ -1808,7 +1871,18 @@
                 }
                 
                 vm.terminerAvenant_agep = function()
-                {   NouvelItemAvenant_agep = false;
+                {   
+                    var confirm = $mdDialog.confirm()
+                  .title('Etes-vous sûr de vouloir faire cet action ?')
+                  .textContent('')
+                  .ariaLabel('Lucky day')
+                  .clickOutsideToClose(true)
+                  .parent(angular.element(document.body))
+                  .ok('ok')
+                  .cancel('annuler');
+                $mdDialog.show(confirm).then(function() {
+
+                    NouvelItemAvenant_agep = false;
                     var item =
                                 {
                                 id : vm.selectedItemAvenant_agep.id ,
@@ -1826,9 +1900,21 @@
                                 statu : "TERMINE" 
                                 };
                     insert_in_baseAvenant_agep(item,0);
+                }, function() {
+                });
                 }
                 vm.resilieAvenant_agep = function()
-                {   NouvelItemAvenant_agep = false;
+                {   
+                    var confirm = $mdDialog.confirm()
+                  .title('Etes-vous sûr de vouloir faire cet action ?')
+                  .textContent('')
+                  .ariaLabel('Lucky day')
+                  .clickOutsideToClose(true)
+                  .parent(angular.element(document.body))
+                  .ok('ok')
+                  .cancel('annuler');
+                $mdDialog.show(confirm).then(function() {
+                    NouvelItemAvenant_agep = false;
                     var item =
                                 {
                                 id : vm.selectedItemAvenant_agep.id ,
@@ -1846,6 +1932,8 @@
                                 statu : "RESILIE" 
                                 };
                     insert_in_baseAvenant_agep(item,0);
+                }, function() {
+                });
                 }
             //FIN AVENANT AGEP
         

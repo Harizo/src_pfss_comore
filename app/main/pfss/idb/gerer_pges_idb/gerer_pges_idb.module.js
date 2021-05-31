@@ -34,7 +34,7 @@
             title: 'Gérer PGES IDB',
             icon  : 'icon-data',
             state: 'app.pfss_idb_gerer_pges_idb',
-			weight:8,
+			weight:3,
            // badge:vs,
         });
     }
