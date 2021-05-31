@@ -48,9 +48,9 @@
 
 
 
-        apiFactory.getAll("sous_projet").then(function(result)
+        apiFactory.getAll("sous_rubrique").then(function(result)
         {
-            vm.all_sous_projet = result.data.response;
+            vm.all_sous_rubrique = result.data.response;
 
         });
 
@@ -140,6 +140,214 @@
                     return nbr;
             }
 
+        //sous_rubrique NEW CODE
+
+            vm.all_sous_rubrique = [] ;
+
+            vm.column_sous_rubrique =
+            [
+                {titre:"Code"},
+                {titre:"Libellé"},
+                {titre:"Montant"}
+            ];
+
+            vm.affiche_load = false ;
+
+            /*vm.get_all_sous_rubrique = function () 
+            {
+                vm.affiche_load = true ;
+                apiFactory.getAll("Sous_rubrique/index").then(function(result){
+                    vm.all_sous_rubrique = result.data.response;
+                    
+                    vm.affiche_load = false ;
+
+                });  
+            }*/
+
+            //sous_rubrique..
+                
+                vm.selected_sous_rubrique = {} ;
+                var current_selected_sous_rubrique = {} ;
+                 vm.nouvelle_sous_rubrique = false ;
+
+            
+                vm.selection_sous_rubrique = function(item)
+                {
+                    vm.selected_sous_rubrique = item ;
+
+                    if (!vm.selected_sous_rubrique.$edit) //si simple selection
+                    {
+                        vm.nouvelle_sous_rubrique = false ; 
+
+                    }
+
+                }
+
+                $scope.$watch('vm.selected_sous_rubrique', function()
+                {
+                    if (!vm.all_sous_rubrique) return;
+                    vm.all_sous_rubrique.forEach(function(item)
+                    {
+                        item.$selected = false;
+                    });
+                    vm.selected_sous_rubrique.$selected = true;
+
+                });
+
+                vm.ajouter_sous_rubrique = function()
+                {
+                    vm.nouvelle_sous_rubrique = true ;
+                    var item = 
+                        {
+                            
+                            $edit: true,
+                            $selected: true,
+                            id:'0',
+                            code:'',
+                            libelle:'',
+                            montant:0
+                            
+                        } ;
+
+                    vm.all_sous_rubrique.unshift(item);
+                    vm.all_sous_rubrique.forEach(function(af)
+                    {
+                      if(af.$selected == true)
+                      {
+                        vm.selected_sous_rubrique = af;
+                        
+                      }
+                    });
+                }
+
+                vm.modifier_sous_rubrique = function()
+                {
+                    vm.nouvelle_sous_rubrique = false ;
+                    vm.selected_sous_rubrique.$edit = true;
+                
+                    current_selected_sous_rubrique = angular.copy(vm.selected_sous_rubrique);
+
+                    vm.selected_sous_rubrique.montant = Number(vm.selected_sous_rubrique.montant);
+                }
+
+                vm.supprimer_sous_rubrique = function()
+                {
+
+                    
+                    var confirm = $mdDialog.confirm()
+                      .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                      .textContent('Cliquer sur OK pour confirmer')
+                      .ariaLabel('Lucky day')
+                      .clickOutsideToClose(true)
+                      .parent(angular.element(document.body))
+                      .ok('OK')
+                      .cancel('Annuler');
+                    $mdDialog.show(confirm).then(function() {
+
+                    vm.enregistrer_sous_rubrique(1);
+                    }, function() {
+                    //alert('rien');
+                    });
+                }
+
+                vm.annuler_sous_rubrique = function()
+                {
+                    if (vm.nouvelle_sous_rubrique) 
+                    {
+                        
+                        vm.all_sous_rubrique.shift();
+                        vm.selected_sous_rubrique = {} ;
+                        vm.nouvelle_sous_rubrique = false ;
+                    }
+                    else
+                    {
+                        
+
+                        if (!vm.selected_sous_rubrique.$edit) //annuler selection
+                        {
+                            vm.selected_sous_rubrique.$selected = false;
+                            vm.selected_sous_rubrique = {};
+                        }
+                        else
+                        {
+                            vm.selected_sous_rubrique.$selected = false;
+                            vm.selected_sous_rubrique.$edit = false;
+                            vm.selected_sous_rubrique.code = current_selected_sous_rubrique.code ;
+                            vm.selected_sous_rubrique.libelle = current_selected_sous_rubrique.libelle ;
+                            vm.selected_sous_rubrique.montant = Number(current_selected_sous_rubrique.montant) ;
+                            
+                            vm.selected_sous_rubrique = {};
+                        }
+
+                        
+
+                    }
+                }
+
+                vm.enregistrer_sous_rubrique = function(etat_suppression)
+                {
+                    vm.affiche_load = true ;
+                    var config = {
+                        headers : {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                        }
+                    };
+
+
+                    var datas = $.param(
+                    {
+                        
+                        supprimer:etat_suppression,
+                        id:vm.selected_sous_rubrique.id,
+
+                        code : vm.selected_sous_rubrique.code ,
+                        libelle : vm.selected_sous_rubrique.libelle ,
+                        montant : vm.selected_sous_rubrique.montant 
+                        
+                        
+                    });
+
+                    apiFactory.add("Sous_rubrique/index",datas, config).success(function (data)
+                    {
+                        vm.affiche_load = false ;
+                        if (!vm.nouvelle_sous_rubrique) 
+                        {
+                            if (etat_suppression == 0) 
+                            {
+                                vm.selected_sous_rubrique.$edit = false ;
+                                vm.selected_sous_rubrique.$selected = false ;
+                                vm.selected_sous_rubrique = {} ;
+                            }
+                            else
+                            {
+                                vm.all_sous_rubrique = vm.all_sous_rubrique.filter(function(obj)
+                                {
+                                    return obj.id !== vm.selected_sous_rubrique.id;
+                                });
+
+                                vm.selected_sous_rubrique = {} ;
+                            }
+
+                        }
+                        else
+                        {
+                            vm.selected_sous_rubrique.$edit = false ;
+                            vm.selected_sous_rubrique.$selected = false ;
+                            vm.selected_sous_rubrique.id = String(data.response) ;
+
+                            vm.nouvelle_sous_rubrique = false ;
+                            vm.selected_sous_rubrique = {};
+
+                        }
+                    })
+                    .error(function (data) {alert("Une erreur s'est produit");});
+                }
+
+            
+
+            //fin sous_rubrique..
+        //FIN sous_rubrique NEW CODE        
+
         //gestion_financiere
             vm.affichage_masque_filtre = false ;
             vm.affichage_masque = false ;
@@ -161,6 +369,8 @@
                 {titre:"Date"},
                 {titre:"Composante"},
                 {titre:"Activité"},
+                {titre:"ZIP"},
+                {titre:"Vague"},
                 {titre:"Ile"},
                 {titre:"Préfecture"},
                 {titre:"Commune"},
@@ -257,8 +467,10 @@
                 vm.gestion_financiere.date = new Date(vm.selected_gestion_financiere.date) ;
 
                 vm.gestion_financiere.id_composante = vm.selected_gestion_financiere.id_composante ;
+                vm.gestion_financiere.zip = vm.selected_gestion_financiere.zip ;
+                vm.gestion_financiere.vague = vm.selected_gestion_financiere.vague ;
 
-                vm.gestion_financiere.id_sous_projet = vm.selected_gestion_financiere.id_sous_projet ;
+                vm.gestion_financiere.id_sous_rubrique = vm.selected_gestion_financiere.id_sous_rubrique ;
 
                 vm.gestion_financiere.id_ile = vm.selected_gestion_financiere.id_ile ;
                 vm.gestion_financiere.id_region = vm.selected_gestion_financiere.id_region ;
@@ -319,7 +531,9 @@
 
                         date : convert_to_date_sql(data_masque.date) ,
                         id_composante : data_masque.id_composante ,
-                        id_sous_projet : data_masque.id_sous_projet ,
+                        zip : data_masque.zip ,
+                        vague : data_masque.vague ,
+                        id_sous_rubrique : data_masque.id_sous_rubrique ,
                         id_village : data_masque.id_village ,
                         montant_engage : data_masque.montant_engage ,
                         montant_paye : data_masque.montant_paye 
@@ -329,9 +543,9 @@
                     apiFactory.add("gestion_financiere/index",datas, config).success(function (data)
                     {
 
-                    	var sp = vm.all_sous_projet.filter(function (obj) 
+                    	var sp = vm.all_sous_rubrique.filter(function (obj) 
                     	{
-                    		return obj.id == data_masque.id_sous_projet ;
+                    		return obj.id == data_masque.id_sous_rubrique ;
                     	})
 
                     	var v = vm.all_village.filter(function (obj) 
@@ -362,9 +576,11 @@
 
                                 vm.selected_gestion_financiere.date = convert_to_date_sql(data_masque.date) ;
                                 vm.selected_gestion_financiere.id_composante = data_masque.id_composante ;
+                                vm.selected_gestion_financiere.zip = data_masque.zip ;
+                                vm.selected_gestion_financiere.vague = data_masque.vague ;
 
-                                vm.selected_gestion_financiere.id_sous_projet = data_masque.id_sous_projet ;
-                                vm.selected_gestion_financiere.code_sous_projet = sp[0].code ;
+                                vm.selected_gestion_financiere.id_sous_rubrique = data_masque.id_sous_rubrique ;
+                                vm.selected_gestion_financiere.code_sous_rubrique = sp[0].code ;
 
                                 vm.selected_gestion_financiere.id_village = data_masque.id_village ;
                                 vm.selected_gestion_financiere.Village = v[0].Village ;
@@ -402,9 +618,11 @@
 
                                 date : (data_masque.date) ,
                                 id_composante : data_masque.id_composante ,
+                                zip : data_masque.zip ,
+                                vague : data_masque.vague ,
 
-                                id_sous_projet : data_masque.id_sous_projet ,
-                                code_sous_projet : sp[0].code,
+                                id_sous_rubrique : data_masque.id_sous_rubrique ,
+                                code_sous_rubrique : sp[0].code,
 
                                 id_village : data_masque.id_village ,
                                 Village : v[0].Village ,
@@ -496,6 +714,7 @@
             [
         
                 {titre:"Situation par composante", id:"situtation_composante"},
+                {titre:"Situation par activité global", id:"situtation_activite_global"},
                 {titre:"Situation par activité", id:"situtation_activite"}
         
             ];

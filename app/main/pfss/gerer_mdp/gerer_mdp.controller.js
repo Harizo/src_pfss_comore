@@ -307,7 +307,7 @@
 
         //MDP
 
-        //mdp_communaute 
+        /*//mdp_communaute 
 
             vm.all_mdp_communaute = [] ;
 
@@ -524,6 +524,372 @@
                             vm.selected_mdp_communaute.$edit = false ;
                             vm.selected_mdp_communaute.$selected = false ;
                             vm.selected_mdp_communaute.id = String(data.response) ;
+
+                            vm.nouvelle_mdp_communaute = false ;
+                            vm.selected_mdp_communaute = {};
+
+                        }
+                    })
+                    .error(function (data) {alert("Une erreur s'est produit");});
+                }
+
+            
+
+            //fin mdp_communaute..
+        //FIN mdp_communaute*/
+
+        //mdp_communaute 
+
+            vm.all_mdp_communaute = [] ;
+
+            vm.communaute_column =
+            [
+                {titre:"Ile"},
+                {titre:"Préfecture"},
+                {titre:"Commune"},
+                {titre:"Village"},
+                {titre:"Nombre de bénéficiaires"}
+            ];
+
+
+            apiFactory.getAll("ile").then(function(result)
+            {
+                vm.all_ile = result.data.response;
+            });
+
+            apiFactory.getAll("region").then(function(result)
+            {
+                vm.all_regions = result.data.response;
+               
+
+                
+            });
+
+            apiFactory.getAll("commune").then(function(result)
+            {
+                vm.all_communes = result.data.response;
+                
+
+
+            });
+
+            apiFactory.getAll("village").then(function(result)
+            {
+                vm.all_villages = result.data.response;
+                
+
+            });
+
+            $scope.$watch('vm.selected_mdp_communaute.id_ile', function() 
+            {
+                if (!vm.selected_mdp_communaute.id_ile) return;
+                else
+                {
+
+                    vm.all_commune = [];
+                    vm.all_village = [];
+
+                
+
+                    vm.all_region = vm.all_regions;
+                    vm.all_region = vm.all_region.filter(function (obj)
+                    {
+                        return obj.ile.id == vm.selected_mdp_communaute.id_ile ;
+                    })
+                }
+                
+            })
+
+            $scope.$watch('vm.selected_mdp_communaute.id_region', function() 
+            {
+                if (!vm.selected_mdp_communaute.id_region) return;
+                else
+                {
+                    vm.all_village = [];
+
+
+             
+
+                    vm.all_commune = vm.all_communes;
+                    vm.all_commune = vm.all_commune.filter(function (obj)
+                    {
+                        return obj.prefecture.id == vm.selected_mdp_communaute.id_region ;
+                    })
+                }
+                
+            })
+
+            $scope.$watch('vm.selected_mdp_communaute.id_commune', function() 
+            {
+                if (!vm.selected_mdp_communaute.id_ile) return;
+                else
+                {
+                    
+                    vm.all_village = vm.all_villages;
+                    vm.all_village = vm.all_village.filter(function (obj)
+                    {
+                        return obj.commune.id == vm.selected_mdp_communaute.id_commune ;
+                    })
+                }
+                
+            })
+
+            vm.affiche_load = false ;
+
+            vm.get_all_mdp_communaute = function () 
+            {
+                vm.affiche_load = true ;
+                apiFactory.getAPIgeneraliserREST("mdp_communaute/index","id_mdp",vm.selected_mdp.id).then(function(result){
+                    vm.all_mdp_communaute = result.data.response;
+                    
+                    vm.affiche_load = false ;
+
+                });  
+            }
+
+
+
+
+            //mdp_communaute..
+                
+                vm.selected_mdp_communaute = {} ;
+                var current_selected_mdp_communaute = {} ;
+                 vm.nouvelle_mdp_communaute = false ;
+
+            
+                vm.selection_mdp_communaute = function(item)
+                {
+                    vm.selected_mdp_communaute = item ;
+
+                    if (!vm.selected_mdp_communaute.$edit) //si simple selection
+                    {
+                        vm.nouvelle_mdp_communaute = false ;  
+
+                    }
+
+                }
+
+                $scope.$watch('vm.selected_mdp_communaute', function()
+                {
+                    if (!vm.all_mdp_communaute) return;
+                    vm.all_mdp_communaute.forEach(function(item)
+                    {
+                        item.$selected = false;
+                    });
+                    vm.selected_mdp_communaute.$selected = true;
+
+                });
+
+                vm.get_attr_com = function () 
+                {
+
+                    var cm = vm.all_communaute.filter(function (obj) {
+                        return obj.id == vm.selected_mdp_communaute.id_communaute;
+                    })
+
+
+                    vm.selected_mdp_communaute.code_communaute = cm[0].code_communaute;
+                    vm.selected_mdp_communaute.libelle_communaute = cm[0].libelle_communaute;
+                    vm.selected_mdp_communaute.nom_commune = cm[0].nom_commune;
+                    vm.selected_mdp_communaute.nom_region = cm[0].nom_region;
+                }
+
+                vm.ajouter_mdp_communaute = function()
+                {
+                    vm.nouvelle_mdp_communaute = true ;
+                    var item = 
+                        {
+                            
+                            $edit: true,
+                            $selected: true,
+                            id:'0',
+                            id_mdp:vm.selected_mdp.id,
+                            nbr_beneficiaire:0,
+
+                            id_village:null,
+                            nom_village:'',
+
+                            id_commune:null,
+                            nom_commune:'',
+
+                            id_region:null,
+                            nom_region:'',
+
+                            id_ile:null,
+                            nom_ile:''
+
+                            
+                            
+                        } ;
+
+                    vm.all_mdp_communaute.unshift(item);
+                    vm.all_mdp_communaute.forEach(function(af)
+                    {
+                      if(af.$selected == true)
+                      {
+                        vm.selected_mdp_communaute = af;
+                        
+                      }
+                    });
+                }
+
+                vm.modifier_mdp_communaute = function()
+                {
+                    vm.nouvelle_mdp_communaute = false ;
+                    vm.selected_mdp_communaute.$edit = true;
+
+                    vm.selected_mdp_communaute.nbr_beneficiaire = Number(vm.selected_mdp_communaute.nbr_beneficiaire);
+                
+                    current_selected_mdp_communaute = angular.copy(vm.selected_mdp_communaute);
+                }
+
+                vm.supprimer_mdp_communaute = function()
+                {
+
+                    
+                    var confirm = $mdDialog.confirm()
+                      .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                      .textContent('Cliquer sur OK pour confirmer')
+                      .ariaLabel('Lucky day')
+                      .clickOutsideToClose(true)
+                      .parent(angular.element(document.body))
+                      .ok('OK')
+                      .cancel('Annuler');
+                    $mdDialog.show(confirm).then(function() {
+
+                    vm.enregistrer_mdp_communaute(1);
+                    }, function() {
+                    //alert('rien');
+                    });
+                }
+
+                vm.annuler_mdp_communaute = function()
+                {
+                    if (vm.nouvelle_mdp_communaute) 
+                    {
+                        
+                        vm.all_mdp_communaute.shift();
+                        vm.selected_mdp_communaute = {} ;
+                        vm.nouvelle_mdp_communaute = false ;
+                    }
+                    else
+                    {
+                        
+
+                        if (!vm.selected_mdp_communaute.$edit) //annuler selection
+                        {
+                            vm.selected_mdp_communaute.$selected = false;
+                            vm.selected_mdp_communaute = {};
+                        }
+                        else
+                        {
+                            vm.selected_mdp_communaute.$selected = false;
+                            vm.selected_mdp_communaute.$edit = false;
+                        
+                            vm.selected_mdp_communaute.id_village = current_selected_mdp_communaute.id_village;
+                            vm.selected_mdp_communaute.id_commune = current_selected_mdp_communaute.id_commune;
+                            vm.selected_mdp_communaute.id_region = current_selected_mdp_communaute.id_region;
+                            vm.selected_mdp_communaute.id_ile = current_selected_mdp_communaute.id_ile;
+
+                            vm.selected_mdp_communaute.nbr_beneficiaire = Number(current_selected_mdp_communaute.nbr_beneficiaire);
+                                                
+                            vm.selected_mdp_communaute = {};
+                        }
+
+                        
+
+                    }
+                }
+
+                vm.enregistrer_mdp_communaute = function(etat_suppression)
+                {
+                    vm.affiche_load = true ;
+                    var config = {
+                        headers : {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                        }
+                    };
+
+
+                    var datas = $.param(
+                    {
+                        
+                        supprimer:etat_suppression,
+                        id:vm.selected_mdp_communaute.id,
+                        id_mdp:vm.selected_mdp.id,
+
+                        id_village : vm.selected_mdp_communaute.id_village ,
+
+                        nbr_beneficiaire : vm.selected_mdp_communaute.nbr_beneficiaire 
+                        
+                        
+                        
+                    });
+
+                    apiFactory.add("mdp_communaute/index",datas, config).success(function (data)
+                    {
+
+
+                        var ile = vm.all_ile.filter(function (obj) 
+                        {
+                            return obj.id == vm.selected_mdp_communaute.id_ile;
+                        });
+
+                        var reg = vm.all_region.filter(function (obj) 
+                        {
+                            return obj.id == vm.selected_mdp_communaute.id_region;
+                        });
+
+                        var com = vm.all_commune.filter(function (obj) 
+                        {
+                            return obj.id == vm.selected_mdp_communaute.id_commune;
+                        });
+
+                        var vil = vm.all_village.filter(function (obj) 
+                        {
+                            return obj.id == vm.selected_mdp_communaute.id_village;
+                        });
+
+
+
+                        vm.affiche_load = false ;
+                        if (!vm.nouvelle_mdp_communaute) 
+                        {
+                            if (etat_suppression == 0) 
+                            {
+                                vm.selected_mdp_communaute.$edit = false ;
+                                vm.selected_mdp_communaute.$selected = false ;
+
+                                vm.selected_mdp_communaute.nom_ile = ile[0].Ile ;
+                                vm.selected_mdp_communaute.nom_region = reg[0].Region ;
+                                vm.selected_mdp_communaute.nom_commune = com[0].Commune ;
+                                vm.selected_mdp_communaute.nom_village = vil[0].Village ;
+
+                                vm.selected_mdp_communaute = {} ;
+                            }
+                            else
+                            {
+                                vm.all_mdp_communaute = vm.all_mdp_communaute.filter(function(obj)
+                                {
+                                    return obj.id !== vm.selected_mdp_communaute.id;
+                                });
+
+                                vm.selected_mdp_communaute = {} ;
+                            }
+
+                        }
+                        else
+                        {
+                            vm.selected_mdp_communaute.$edit = false ;
+                            vm.selected_mdp_communaute.$selected = false ;
+                            vm.selected_mdp_communaute.id = String(data.response) ;
+
+                            vm.selected_mdp_communaute.nom_ile = ile[0].Ile ;
+                            vm.selected_mdp_communaute.nom_region = reg[0].Region ;
+                            vm.selected_mdp_communaute.nom_commune = com[0].Commune ;
+                            vm.selected_mdp_communaute.nom_village = vil[0].Village ;
+
+                            
 
                             vm.nouvelle_mdp_communaute = false ;
                             vm.selected_mdp_communaute = {};
@@ -1830,10 +2196,7 @@
                 {titre:"Désignation"},
                 {titre:"Unité"},
                 {titre:"Quantité"},
-                {titre:"Dziani"},
-                {titre:"Kiyo"},
-                {titre:"Komoni"},
-                {titre:"Trindrini"},
+                {titre:"Localité"},
                 {titre:"Prix unitaire"},
                 {titre:"Total"}
             ];
@@ -1896,10 +2259,7 @@
                             designation:'',
                             unite:'',
                             quantite:0,
-                            dziani:'',
-                            kiyo:'',
-                            komoni:'',
-                            trindrini:'',
+                            localite:'',
                             prix_unitaire:0,
                             total:0,
                             
@@ -1915,6 +2275,24 @@
                       }
                     });
                 }
+
+                $scope.$watch('vm.selected_mdp_estimation_depense.quantite', function()
+                {
+                    if (!vm.selected_mdp_estimation_depense.quantite || !vm.selected_mdp_estimation_depense.prix_unitaire) return;
+
+                    vm.selected_mdp_estimation_depense.total = Number(vm.selected_mdp_estimation_depense.quantite) * Number(vm.selected_mdp_estimation_depense.prix_unitaire) ;
+                    
+
+                });
+
+                $scope.$watch('vm.selected_mdp_estimation_depense.prix_unitaire', function()
+                {
+                    if (!vm.selected_mdp_estimation_depense.quantite || !vm.selected_mdp_estimation_depense.prix_unitaire) return;
+
+                    vm.selected_mdp_estimation_depense.total = Number(vm.selected_mdp_estimation_depense.quantite) * Number(vm.selected_mdp_estimation_depense.prix_unitaire) ;
+                    
+
+                });
 
                 vm.modifier_mdp_estimation_depense = function()
                 {
@@ -1972,10 +2350,7 @@
                             vm.selected_mdp_estimation_depense.designation = current_selected_mdp_estimation_depense.designation;
                             vm.selected_mdp_estimation_depense.unite = current_selected_mdp_estimation_depense.unite;                    
                             vm.selected_mdp_estimation_depense.quantite = current_selected_mdp_estimation_depense.quantite;                    
-                            vm.selected_mdp_estimation_depense.dziani = current_selected_mdp_estimation_depense.dziani;
-                            vm.selected_mdp_estimation_depense.kiyo = current_selected_mdp_estimation_depense.kiyo;
-                            vm.selected_mdp_estimation_depense.komoni = current_selected_mdp_estimation_depense.komoni;
-                            vm.selected_mdp_estimation_depense.trindrini = current_selected_mdp_estimation_depense.trindrini;
+                            vm.selected_mdp_estimation_depense.localite = current_selected_mdp_estimation_depense.localite;
                             vm.selected_mdp_estimation_depense.prix_unitaire = current_selected_mdp_estimation_depense.prix_unitaire;
                             vm.selected_mdp_estimation_depense.total = current_selected_mdp_estimation_depense.total;
                             vm.selected_mdp_estimation_depense = {};
@@ -2006,10 +2381,7 @@
                         designation : vm.selected_mdp_estimation_depense.designation ,
                         unite : vm.selected_mdp_estimation_depense.unite ,
                         quantite : vm.selected_mdp_estimation_depense.quantite ,
-                        dziani : vm.selected_mdp_estimation_depense.dziani ,
-                        kiyo : vm.selected_mdp_estimation_depense.kiyo ,
-                        komoni : vm.selected_mdp_estimation_depense.komoni ,
-                        trindrini : vm.selected_mdp_estimation_depense.trindrini ,
+                        localite : vm.selected_mdp_estimation_depense.localite ,
                         prix_unitaire : vm.selected_mdp_estimation_depense.prix_unitaire ,
                         total : vm.selected_mdp_estimation_depense.total 
                         
@@ -2279,6 +2651,216 @@
             //fin mdp_rentabilite_financiere_agr..
         //FIN mdp_rentabilite_financiere_agr
 
+        //mdp_duree_planning_mere 
+
+            vm.all_mdp_duree_planning_mere = [] ;
+
+            vm.duree_planning_mere_column =
+            [
+                {titre:"Libellé"}
+            ];
+
+            vm.affiche_load = false ;
+
+            vm.get_all_mdp_duree_planning_mere = function () 
+            {
+                vm.affiche_load = true ;
+                apiFactory.getAPIgeneraliserREST("mdp_duree_planning_mere/index","id_mdp",vm.selected_mdp.id).then(function(result){
+                    vm.all_mdp_duree_planning_mere = result.data.response;
+                    
+                    vm.affiche_load = false ;
+
+                });  
+            }
+
+          
+
+            //mdp_duree_planning_mere..
+                
+                vm.selected_mdp_duree_planning_mere = {} ;
+                var current_selected_mdp_duree_planning_mere = {} ;
+                 vm.nouvelle_mdp_duree_planning_mere = false ;
+
+            
+                vm.selection_mdp_duree_planning_mere = function(item)
+                {
+                    vm.selected_mdp_duree_planning_mere = item ;
+
+                    vm.get_all_mdp_duree_planning();
+
+                    if (!vm.selected_mdp_duree_planning_mere.$edit) //si simple selection
+                    {
+                        vm.nouvelle_mdp_duree_planning_mere = false ;  
+
+                    }
+
+                }
+
+                $scope.$watch('vm.selected_mdp_duree_planning_mere', function()
+                {
+                    if (!vm.all_mdp_duree_planning_mere) return;
+                    vm.all_mdp_duree_planning_mere.forEach(function(item)
+                    {
+                        item.$selected = false;
+                    });
+                    vm.selected_mdp_duree_planning_mere.$selected = true;
+
+                });
+
+               
+
+                vm.ajouter_mdp_duree_planning_mere = function()
+                {
+                    vm.nouvelle_mdp_duree_planning_mere = true ;
+                    var item = 
+                        {
+                            
+                            $edit: true,
+                            $selected: true,
+                            id:'0',
+                            id_mdp:vm.selected_mdp.id,
+                            libelle:''
+                            
+                        } ;
+
+                    vm.all_mdp_duree_planning_mere.unshift(item);
+                    vm.all_mdp_duree_planning_mere.forEach(function(af)
+                    {
+                      if(af.$selected == true)
+                      {
+                        vm.selected_mdp_duree_planning_mere = af;
+                        
+                      }
+                    });
+                }
+
+                vm.modifier_mdp_duree_planning_mere = function()
+                {
+                    vm.nouvelle_mdp_duree_planning_mere = false ;
+                    vm.selected_mdp_duree_planning_mere.$edit = true;
+                    
+                    current_selected_mdp_duree_planning_mere = angular.copy(vm.selected_mdp_duree_planning_mere);
+                }
+
+                vm.supprimer_mdp_duree_planning_mere = function()
+                {
+
+                    
+                    var confirm = $mdDialog.confirm()
+                      .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                      .textContent('Cliquer sur OK pour confirmer')
+                      .ariaLabel('Lucky day')
+                      .clickOutsideToClose(true)
+                      .parent(angular.element(document.body))
+                      .ok('OK')
+                      .cancel('Annuler');
+                    $mdDialog.show(confirm).then(function() {
+
+                    vm.enregistrer_mdp_duree_planning_mere(1);
+                    }, function() {
+                    //alert('rien');
+                    });
+                }
+
+                vm.annuler_mdp_duree_planning_mere = function()
+                {
+                    if (vm.nouvelle_mdp_duree_planning_mere) 
+                    {
+                        
+                        vm.all_mdp_duree_planning_mere.shift();
+                        vm.selected_mdp_duree_planning_mere = {} ;
+                        vm.nouvelle_mdp_duree_planning_mere = false ;
+                    }
+                    else
+                    {
+                        
+
+                        if (!vm.selected_mdp_duree_planning_mere.$edit) //annuler selection
+                        {
+                            vm.selected_mdp_duree_planning_mere.$selected = false;
+                            vm.selected_mdp_duree_planning_mere = {};
+                        }
+                        else
+                        {
+                            vm.selected_mdp_duree_planning_mere.$selected = false;
+                            vm.selected_mdp_duree_planning_mere.$edit = false;
+                        
+                            vm.selected_mdp_duree_planning_mere.libelle = current_selected_mdp_duree_planning_mere.libelle;
+                           
+                           
+                            vm.selected_mdp_duree_planning_mere = {};
+                        }
+
+                        
+
+                    }
+                }
+
+                vm.enregistrer_mdp_duree_planning_mere = function(etat_suppression)
+                {
+                    vm.affiche_load = true ;
+                    var config = {
+                        headers : {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                        }
+                    };
+
+
+                    var datas = $.param(
+                    {
+                        
+                        supprimer:etat_suppression,
+                        id:vm.selected_mdp_duree_planning_mere.id,
+                        id_mdp:vm.selected_mdp.id,
+
+                        libelle : vm.selected_mdp_duree_planning_mere.libelle
+                       
+                        
+                        
+                        
+                    });
+
+                    apiFactory.add("mdp_duree_planning_mere/index",datas, config).success(function (data)
+                    {
+                        vm.affiche_load = false ;
+                        if (!vm.nouvelle_mdp_duree_planning_mere) 
+                        {
+                            if (etat_suppression == 0) 
+                            {
+                                vm.selected_mdp_duree_planning_mere.$edit = false ;
+                                vm.selected_mdp_duree_planning_mere.$selected = false ;
+                                vm.selected_mdp_duree_planning_mere = {} ;
+                            }
+                            else
+                            {
+                                vm.all_mdp_duree_planning_mere = vm.all_mdp_duree_planning_mere.filter(function(obj)
+                                {
+                                    return obj.id !== vm.selected_mdp_duree_planning_mere.id;
+                                });
+
+                                vm.selected_mdp_duree_planning_mere = {} ;
+                            }
+
+                        }
+                        else
+                        {
+                            vm.selected_mdp_duree_planning_mere.$edit = false ;
+                            vm.selected_mdp_duree_planning_mere.$selected = false ;
+                            vm.selected_mdp_duree_planning_mere.id = String(data.response) ;
+
+                            vm.nouvelle_mdp_duree_planning_mere = false ;
+                            vm.selected_mdp_duree_planning_mere = {};
+
+                        }
+                    })
+                    .error(function (data) {alert("Une erreur s'est produit");});
+                }
+
+            
+
+            //fin mdp_duree_planning_mere..
+        //FIN mdp_duree_planning_mere
+
         //mdp_duree_planning 
 
             vm.all_mdp_duree_planning = [] ;
@@ -2297,7 +2879,7 @@
             vm.get_all_mdp_duree_planning = function () 
             {
                 vm.affiche_load = true ;
-                apiFactory.getAPIgeneraliserREST("mdp_duree_planning/index","id_mdp",vm.selected_mdp.id).then(function(result){
+                apiFactory.getAPIgeneraliserREST("mdp_duree_planning/index","id_mere",vm.selected_mdp_duree_planning_mere.id).then(function(result){
                     vm.all_mdp_duree_planning = result.data.response;
                     
                     vm.affiche_load = false ;
@@ -2368,7 +2950,7 @@
                             $edit: true,
                             $selected: true,
                             id:'0',
-                            id_mdp:vm.selected_mdp.id,
+                            id_mere:vm.selected_mdp_duree_planning_mere.id,
                             designation_activite:'',
                             numero_semaine_deb:'',
                             numero_jour_deb:'',
@@ -2468,7 +3050,7 @@
                         
                         supprimer:etat_suppression,
                         id:vm.selected_mdp_duree_planning.id,
-                        id_mdp:vm.selected_mdp.id,
+                        id_mere:vm.selected_mdp_duree_planning_mere.id,
 
                         designation_activite : vm.selected_mdp_duree_planning.designation_activite ,
                         numero_semaine_deb : vm.selected_mdp_duree_planning.numero_semaine_deb ,
