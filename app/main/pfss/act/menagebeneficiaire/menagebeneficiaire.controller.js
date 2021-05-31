@@ -43,7 +43,7 @@
         .controller('MenagebeneficiaireController', MenagebeneficiaireController);
 
     /** @ngInject */
-    function MenagebeneficiaireController(apiFactory, $state, $mdDialog, $scope,$cookieStore,$http,$location,apiUrl,apiUrlExcel ,apiUrlbase) {
+    function MenagebeneficiaireController(apiFactory, $state, $mdDialog, $scope,$rootScope,$cookieStore,$http,$location,apiUrl,apiUrlExcel ,apiUrlbase) {
 		var vm = this;
 	   vm.dtOptions =
       {
@@ -53,7 +53,7 @@
         responsive: true
       };
       vm.menage_column = [{titre:"Identifiant"},{titre:"N° d'enreg"},{titre:"Chef Ménage"},{titre:"Age"},{titre:"Sexe"},{titre:"Conjoint"},
-      {titre:"Adresse"},{titre:"Statut"},{titre:"Inscr"},{titre:"Presél"},{titre:"Bénéf"},{titre:"Etat envoie"}];
+      {titre:"Adresse"},{titre:"Inscr"},{titre:"Presél"},{titre:"Bénéf"},{titre:"Etat envoie"}];
       // vm.menage_column = [{titre:"Numero d'enregistrement"},{titre:"Chef Ménage"},
       // {titre:"Age chef de ménage"},{titre:"Sexe"},{titre:"Addresse"},{titre:"Personne inscrire"},{titre:"Etat envoie"}];
       vm.individu_column = [{titre:"Nom et prénom"},{titre:"Date de naissance"},{titre:"Sexe"},{titre:"Lien de parenté"},{titre:"Scolarisé"},{titre:"Activite"},{titre:"Aptitude"},{titre:"Travailleur"}];
@@ -83,16 +83,22 @@
 		if(vm.url=='/act/menage-beneficiaire-act') {
 			vm.filtre.id_sous_projet=1;
 			vm.titre =" ACT";
-			vm.filtre.sous_projet="ACT";			
+			vm.filtre.sous_projet="ACT";
+			vm.placeholder_nom_travailleur="Nom travailleur.";
+			vm.placeholder_nom_suppleant="Nom travailleur suppléant.";			
 		} else if(vm.url=='/arse/menage-beneficiaire-arse') {
 			vm.filtre.id_sous_projet=2;
 			vm.titre =" ARSE"
 			vm.filtre.sous_projet="ARSE";
+			vm.placeholder_nom_travailleur="Nom recepteur.";
+			vm.placeholder_nom_suppleant="Nom recepteur suppléant.";
 		} else if(vm.url=='/covid/menage-beneficiaire-covid-19') {
 			vm.filtre.id_sous_projet=4;
 			vm.titre =" COVID-19";
 			vm.filtre.sous_projet="COVID-19";
-		}		
+			vm.placeholder_nom_travailleur="Nom recepteur.";
+			vm.placeholder_nom_suppleant="Nom recepteur suppléant.";
+		}
       //initialisation variable
 
 		// Upload fichier excel bénéficiaire
@@ -123,7 +129,6 @@
 					vm.repertoire=data["repertoire"];
 					if(qui=="chef_menage") {
 						vm.filtre.photo=  vm.repertoire + vm.fichier;
-						console.log(vm.filtre.photo);
 					} else if(qui=="travailleur"){
 						vm.filtre.phototravailleur=   vm.repertoire + vm.fichier;
 					} else {
@@ -244,6 +249,7 @@
       }
 		apiFactory.getAll("liste_variable/index").then(function(result){
 			vm.allRecordsListevariable = result.data.response;
+			console.log(vm.allRecordsListevariable);
 		});    
 		
 		vm.get_max_id_generer_ref = function() {
@@ -657,7 +663,7 @@
 		}
 		vm.filtrer = function()	{
 			vm.affiche_load = true ;
-			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"statut","BENEFICIAIRE","id_sous_projet",vm.filtre.id_sous_projet,"beneficiaire",1).then(function(result) { 
+			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"etat_statut","beneficiaire","id_sous_projet",vm.filtre.id_sous_projet,"beneficiaire",1).then(function(result) { 
 				vm.all_menages = result.data.response; 
 				var msg ="Aucun ménage bénéficiaire dans le village de " +vm.filtre.village + " pour le sous-projet/Activité : " + vm.filtre.sous_projet + ". Merci !";				
 				if(result.data.response.length==0) {
@@ -843,8 +849,8 @@
 			if ((!vm.affiche_load)&&(!vm.affichage_masque))  {
 				vm.selectedItem_individu = {} ;//raz individu_selected
 				vm.selectedItem = item;
-				vm.get_individus_by_menage(item.id_menage);
-				vm.charger_detail_reponse_menage(item.id_menage);
+				vm.get_individus_by_menage(item.id);
+				vm.charger_detail_reponse_menage(item.id);
 			}       
 		}
 		$scope.$watch('vm.selectedItem', function() {
@@ -1383,7 +1389,7 @@
                     {    
                       supprimer:0,
                       id: id_idv ,
-                      menage_id: vm.selectedItem.id_menage,
+                      menage_id: vm.selectedItem.id,
                       date_naissance: formatDateBDD(individu.date_naissance),
                       activite: individu.activite,
                       travailleur: individu.travailleur,
@@ -1767,7 +1773,7 @@
 				var intitule_intervention = vm.selectedItem.intitule;
 				var txtTmp="";
 				// Début réponse table menage
-				txtTmp += "id_menage" +":\"" + vm.selectedItem.id_menage + "\",";
+				txtTmp += "id_menage" +":\"" + vm.selectedItem.id + "\",";
 				txtTmp += "nombre_personne_plus_soixantedixans" +":\"" + vm.filtre.nombre_personne_plus_soixantedixans + "\",";
 				txtTmp += "taille_menage" +":\"" + vm.filtre.taille_menage + "\",";
 				txtTmp += "nombre_enfant_moins_quinze_ans" +":\"" + vm.filtre.nombre_enfant_moins_quinze_ans + "\",";
@@ -2166,14 +2172,16 @@
 		}	
 		// FIN DIFFRENTES FONCTIONS UTILES POUR LA SAUVEGARDE VARIABLE INTERVENTION
 		// Début Fonction concernant la fenetre modal
-		$scope.showTabDialog = function() {
+		vm.showTabDialog = function(menage_id) {
+			$rootScope.id_menage=menage_id;
+			$rootScope.id_sous_projet=vm.filtre.id_sous_projet;
 			$mdDialog.show({
 			  controller: DialogController,
 			  templateUrl: 'app/main/pfss/act/menagebeneficiaire/ShowTabDialog.html',
 			  parent: angular.element(document.body),
 			  // targetEvent: ev,
 			  clickOutsideToClose:false
-			}).then(function(date_sortie) {
+			}).then(function(date_sortie,motif_sortie,menage_id) {
 			}, function() {
 				$scope.status = 'You cancelled the dialog.';
 			});
@@ -2186,8 +2194,9 @@
 				autoWidth: false,
 				responsive: true 
 			};
-			$scope.dtOptions = DTOptionsBuilder.newOptions().withDisplayLength(25).withOption('bLengthChange', false);
+			$scope.dtOptions = DTOptionsBuilder.newOptions().withDisplayLength(550).withOption('bLengthChange', true);
 			$scope.date_max=vm.date_now;
+			$scope.id_menage=vm.selectedItem.id;
 			// Initialisation valeur date et valeur cours de change par devise
 			$scope.hide = function() {
 				$mdDialog.hide();
@@ -2195,14 +2204,46 @@
 			$scope.cancel = function() {
 				$mdDialog.cancel();
 			};
-			$scope.answer = function(date_sortie) {
-				$rootScope.reponse=reponse;
-				$rootScope.date_sortie=date_sortie;
-				console.log($rootScope.reponse);
-				console.log($rootScope.date_sortie);
+			$scope.answer = function(date_sortie,motif_sortie) {
+				vm.filtre.date_sortie=date_sortie;
+				vm.filtre.motif_sortie=motif_sortie;
+				$rootScope.date_sortie=vm.filtre.date_sortie;
+				$rootScope.motif_sortie=vm.filtre.motif_sortie;
+				$rootScope.Sortie_de_programme($rootScope.date_sortie,$rootScope.motif_sortie,$rootScope.id_menage,$rootScope.id_sous_projet);
 				$mdDialog.hide();
 			};
 		}
+		$rootScope.Sortie_de_programme=function(date_sortie,motif_sortie,id_menage,id_sous_projet) {
+			date_sortie=new Date(date_sortie);			
+			vm.date_sortie=formatDateBDD(date_sortie);
+			$mdDialog.hide();
+			var config = {
+				headers : {
+					'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+				}
+			};
+			var datas = $.param(
+                    {    
+                      supprimer:0,
+                      id: id_menage,
+                      id_menage: id_menage,
+                      id_sous_projet: id_sous_projet,
+                      date_sortie: vm.date_sortie,
+                      motif_sortie: motif_sortie,
+                      sortie_programme: 1,
+                    });
+			apiFactory.add("menage_beneficiaire/index",datas, config).success(function (data) {
+				vm.all_menages = vm.all_menages.filter(function(obj) {
+					return obj.id !== id_menage;
+				});         
+				vm.showAlert("Information",'Enregistrement réussi!');
+				$mdDialog.hide();
+			}).error(function (data) {
+				vm.disable_button = false ;
+				console.log('erreur '+data);
+				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
+			});
+		}			
 
 	}
   })();

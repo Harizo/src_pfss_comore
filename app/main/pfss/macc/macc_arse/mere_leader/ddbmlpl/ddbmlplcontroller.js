@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pfss.mereleaderpereleader.ddbmlpl')
+        .module('app.pfss.macc.macc_arse.mere_leader.ddbmlpl')
         .controller('DdbmlplController', DdbmlplController);
     /** @ngInject */
     function DdbmlplController($mdDialog, $scope, apiFactory, $state,$cookieStore)  {
@@ -18,6 +18,7 @@
 		vm.selectedItemProjetdugroupe = {} ;
 		vm.selectedItemProblemerencontre = {} ;     
 		vm.selectedItemResolutionprobleme = {} ;     
+		vm.selectedItemEsapcebienetre = {} ;     
 		
 		vm.allRecordsRaisonvisitedomicile = [] ;     
 		vm.allRecordsResolutionvisitedomicile = [] ;     
@@ -25,6 +26,7 @@
 		vm.allRecordsProjetdugroupe = [] ;     
 		vm.allRecordsProblemerencontre = [] ;     
 		vm.allRecordsResolutionprobleme = [] ;     
+		vm.allRecordsEspacebienetre = [] ;     
 
 		vm.nom_table="raison_visite_domicile";
 		vm.cas=1;
@@ -37,20 +39,25 @@
 		autoWidth: false,
 		responsive: true
 		};
+		vm.affiche_load=true;
 		//col table
 		vm.ddb_column = [{titre:"Description"},{titre:"Actions"}];
-		apiFactory.getTable("ddb_mlpl/index","resolution_visite_domicile").then(function(result){
-			vm.allRecordsResolutionprobleme = result.data.response;
-			apiFactory.getTable("ddb_mlpl/index","probleme_rencontres").then(function(result){
-				vm.allRecordsProblemerencontre = result.data.response;
-				apiFactory.getTable("ddb_mlpl/index","projet_groupe").then(function(result){
-					vm.allRecordsProjetdugroupe = result.data.response;
-					apiFactory.getTable("ddb_mlpl/index","theme_sensibilisation").then(function(result){
-						vm.allRecordsThemesensibilisation = result.data.response;
-						apiFactory.getTable("ddb_mlpl/index","resolution_ml_pl").then(function(result){
-							vm.allRecordsResolutionvisitedomicile = result.data.response;
-							apiFactory.getTable("ddb_mlpl/index","raison_visite_domicile").then(function(result){
-								vm.allRecordsRaisonvisitedomicile = result.data.response;
+		apiFactory.getTable("ddb_mlpl/index","espace_bien_etre").then(function(result){
+			vm.allRecordsEspacebienetre = result.data.response;
+			apiFactory.getTable("ddb_mlpl/index","resolution_visite_domicile").then(function(result){
+				vm.allRecordsResolutionprobleme = result.data.response;
+				apiFactory.getTable("ddb_mlpl/index","probleme_rencontres").then(function(result){
+					vm.allRecordsProblemerencontre = result.data.response;
+					apiFactory.getTable("ddb_mlpl/index","projet_groupe").then(function(result){
+						vm.allRecordsProjetdugroupe = result.data.response;
+						apiFactory.getTable("ddb_mlpl/index","theme_sensibilisation").then(function(result){
+							vm.allRecordsThemesensibilisation = result.data.response;
+							apiFactory.getTable("ddb_mlpl/index","resolution_ml_pl").then(function(result){
+								vm.allRecordsResolutionvisitedomicile = result.data.response;
+								apiFactory.getTable("ddb_mlpl/index","raison_visite_domicile").then(function(result){
+									vm.allRecordsRaisonvisitedomicile = result.data.response;
+									vm.affiche_load=false;
+								});    
 							});    
 						});    
 					});    
@@ -102,6 +109,11 @@
 					case 6:  {
 						vm.nom_table="resolution_visite_domicile";
 						vm.cas=6;
+						break;
+					}
+					case 7:  {
+						vm.nom_table="espace_bien_etre";
+						vm.cas=7;
 						break;
 					}
 					default: {
@@ -196,6 +208,15 @@
 								vm.action="Modification d'un enregistrement de DDB ML/PL : Résolution problème" + " ("+ possession.description + ")";
 								break;
 							}
+							case 7:  {
+								vm.selectedItemEsapcebienetre.code = possession.code;
+								vm.selectedItemEsapcebienetre.description = possession.description;
+								vm.selectedItemEsapcebienetre.$selected = false;
+								vm.selectedItemEsapcebienetre.$edit = false;
+								vm.selectedItemEsapcebienetre ={};
+								vm.action="Modification d'un enregistrement de DDB ML/PL : Espace bien être" + " ("+ possession.description + ")";
+								break;
+							}
 							default: {
 								break;
 							}
@@ -244,6 +265,13 @@
 								vm.action="Suppression d'un enregistrement de DDB ML/PL : Résolution problème" + " ("+ possession.description + ")";
 								break;
 							}
+							case 7:  {
+								vm.allRecordsEspacebienetre = vm.allRecordsEspacebienetre.filter(function(obj) {
+									return obj.id !== vm.selectedItemEspacebienetre.id;
+								});
+								vm.action="Suppression d'un enregistrement de DDB ML/PL : Espace bien être" + " ("+ possession.description + ")";
+								break;
+							}
 							default: {
 								break;
 							}
@@ -281,6 +309,11 @@
 						case 6:  {
 							vm.selectedItemResolutionprobleme ={};
 							vm.action="Ajout d'un enregistrement de DDB ML/PL : Résolution problème" + " ("+ possession.description + ")";
+							break;
+						}
+						case 7:  {
+							vm.selectedItemEspacebienetre ={};
+							vm.action="Ajout d'un enregistrement de DDB ML/PL : Espace bien être" + " ("+ possession.description + ")";
 							break;
 						}
 						default: {
@@ -325,6 +358,79 @@
 				.targetEvent()
 			);
 		} 
+		// Espace bien etre
+        vm.selectionEspacebienetre= function (item) {     
+            vm.selectedItemEsapcebienetre = item;
+        };
+        $scope.$watch('vm.selectedItemEsapcebienetre', function() {
+			if (!vm.allRecordsEspacebienetre) return;
+			vm.allRecordsEspacebienetre.forEach(function(item) {
+				item.$selected = false;
+			});
+			vm.selectedItemEsapcebienetre.$selected = true;
+        });
+        vm.ajouterEspacebienetre = function () {
+			if(NouvelItem == true) {
+				vm.showAlert("ERREUR LORS DE L'INSERTION","Veuillez annuler ou sauvegarder la dernière insertion que vous avez fait.Merci !");
+			} else {	
+				vm.selectedItemEsapcebienetre.$selected = false;
+				NouvelItem = true ;
+				var items = {
+					$edit: true,
+					$selected: true,
+					supprimer:0,
+					code: '',
+					description: '',
+				};
+				vm.allRecordsEspacebienetre.push(items);
+				vm.allRecordsEspacebienetre.forEach(function(it) {
+					if(it.$selected==true) {
+						vm.selectedItemEsapcebienetre = it;
+					}
+				});			
+			};
+        };
+        vm.annulerEspacebienetre = function(item) {
+			if (!item.id) {
+				vm.allRecordsEspacebienetre.pop();
+				NouvelItem = false;
+				return;
+			}          
+			item.$selected=false;
+			item.$edit=false;
+			NouvelItem = false;
+			 item.code = currentItem.code;
+			 item.description = currentItem.description;
+			vm.selectedItemEsapcebienetre = {} ;
+			vm.selectedItemEsapcebienetre.$selected = false;
+       };
+        vm.modifierEspacebienetre = function(item) {
+			NouvelItem = false ;
+			vm.selectedItemEsapcebienetre = item;
+			currentItem = angular.copy(vm.selectedItemEsapcebienetre);
+			$scope.vm.allRecordsEspacebienetre.forEach(function(it) {
+				it.$edit = false;
+			});        
+			item.$edit = true;	
+			item.$selected = true;	
+			vm.selectedItemEsapcebienetre.description = vm.selectedItemEsapcebienetre.description;
+			vm.selectedItemEsapcebienetre.$edit = true;	
+        };
+        vm.supprimerEspacebienetre = function() {
+			var confirm = $mdDialog.confirm()
+                .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                .textContent('')
+                .ariaLabel('Lucky day')
+                .clickOutsideToClose(true)
+                .parent(angular.element(document.body))
+                .ok('supprimer')
+                .cancel('annuler');
+			$mdDialog.show(confirm).then(function() {          
+				ajout(vm.selectedItemEsapcebienetre,1);
+			}, function() {
+			});
+        }
+		// Espace bien etre
 		// Raison visite domicile
         vm.selectionRaisonvisitedomicile= function (item) {     
             vm.selectedItemRaisonvisitedomicile = item;

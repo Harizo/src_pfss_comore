@@ -34,7 +34,7 @@
             title: "consultant",
             icon  : 'icon-view-quilt',
             state: 'app.pfss_ddb_consultant_ong',
-            weight: 7
+            weight: 9,
             // hidden: function()
             // {
                     // return vs;

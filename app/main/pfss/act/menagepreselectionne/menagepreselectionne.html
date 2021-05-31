@@ -208,7 +208,7 @@
 									  </div>
 									</md-input-container>								  
 									<md-input-container flex="100" flex-gt-xs="10"ng-show="vm.affichage_masque">
-									  <label>SexeChefMenage</label>
+									  <label>Sexe Chef Menage</label>
 										<md-select ng-model="vm.filtre.SexeChefMenage" name="SexeChefMenage"  >
 										  <md-option  value="">&nbsp;</md-option>
 										  <md-option  value="M">Homme</md-option>
@@ -217,7 +217,7 @@
 										<div ng-messages="filtrepardateform.SexeChefMenage.$error"
 										  role="alert">
 										  <div ng-message="required">
-											<span>SexeChefMenage obligatoire</span>
+											<span>Sexe Chef Menage obligatoire</span>
 										  </div>
 										</div>
 									</md-input-container>
@@ -320,11 +320,11 @@
 								<div layout="column" layout-gt-xs="row" flex>
 									<md-input-container flex-gt-xs="20" ng-show="vm.affichage_masque">
 										<input type="text"  name="NomTravailleur" ng-model="vm.filtre.NomTravailleur"
-										placeholder="Nom travailleur" required>
+										placeholder="{{vm.placeholder_nom_travailleur}}" required>
 										<div ng-messages="filtrepardateform.NomTravailleur.$error"
 											role="alert">
 											<div ng-message="required">
-												<span>Nom travailleur obligatoire.</span>
+												<span>{{vm.placeholder_nom_travailleur}} obligatoire</span>
 											</div>
 										</div>
 									</md-input-container>
@@ -362,11 +362,11 @@
 									</md-input-container>
 									<md-input-container flex-gt-xs="20" ng-show="vm.affichage_masque">
 										<input type="text"  name="NomTravailleurSuppliant" ng-model="vm.filtre.NomTravailleurSuppliant"
-										placeholder="Nom travailleur suppléant" required>
+										placeholder="{{vm.placeholder_nom_suppleant}}" required>
 										<div ng-messages="filtrepardateform.NomTravailleurSuppliant.$error"
 											role="alert">
 											<div ng-message="required">
-												<span>Nom travailleur suppléant obligatoire.</span>
+												<span>{{vm.placeholder_nom_suppleant}} obligatoire.</span>
 											</div>
 										</div>
 									</md-input-container>
@@ -634,7 +634,7 @@
                         </form>
                         <div ng-if="!vm.affichage_masque">
 							<table id='Table_menage' class="dataTable row-border hover cell-border text-center" datatable="ng"
-							  dt-options="vm.dtOptions" ng-if="!vm.affichage_masque">
+							  dt-options="vm.dtOptions" ng-if="!vm.affichage_masque" ms-responsive-table>
 							  <thead>
 								<tr>
 								  <th class="secondary-text" ng-repeat="re in ::vm.menage_column">
@@ -653,7 +653,6 @@
 								  <td>{{menage.SexeChefMenage}}</td>
 								  <td>{{menage.nom_conjoint}}</td>
 								  <td>{{menage.Addresse}}</td>
-								  <td>{{menage.statut}}</td>                
 								  <td>{{vm.affichage_etat_statut(menage.inscrit)}}</td>                
 								  <td>{{vm.affichage_etat_statut(menage.preselectionne)}}</td>                
 								  <td>{{vm.affichage_etat_statut(menage.beneficiaire)}}</td>                

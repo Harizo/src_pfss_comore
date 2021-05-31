@@ -34,6 +34,7 @@
             title: "Type / Résultat Plainte",
             icon  : 'icon-swap-horizontal',
             state: 'app.pfss_ddb_typeplainte',
+			weight: 4,
             // hidden: function()
             // {
                     // return vs;

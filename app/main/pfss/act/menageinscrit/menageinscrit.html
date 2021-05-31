@@ -55,8 +55,7 @@
                                 <md-datepicker ng-model="vm.filtre.DateInscription"   md-placeholder="Enter date d'inscription" >                       
                                 </md-datepicker>
                             </div>
-                             <div layout="column" layout-gt-xs="row" flex>
-
+                            <div layout="column" layout-gt-xs="row" flex>
                                 <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Île</label>
                                     <md-select ng-model="vm.filtre.id_ile" name="ile" ng-change="vm.filtre_region()" required>
@@ -208,7 +207,7 @@
 									  </div>
 									</md-input-container>								  
 									<md-input-container flex="100" flex-gt-xs="10"ng-show="vm.affichage_masque">
-									  <label>SexeChefMenage</label>
+									  <label>Sexe Chef Menage</label>
 										<md-select ng-model="vm.filtre.SexeChefMenage" name="SexeChefMenage"  >
 										  <md-option  value="">&nbsp;</md-option>
 										  <md-option  value="M">Homme</md-option>
@@ -217,7 +216,7 @@
 										<div ng-messages="filtrepardateform.SexeChefMenage.$error"
 										  role="alert">
 										  <div ng-message="required">
-											<span>SexeChefMenage obligatoire</span>
+											<span>Sexe Chef Menage obligatoire</span>
 										  </div>
 										</div>
 									</md-input-container>
@@ -320,11 +319,11 @@
 								<div layout="column" layout-gt-xs="row" flex>
 									<md-input-container flex-gt-xs="20" ng-show="vm.affichage_masque">
 										<input type="text"  name="NomTravailleur" ng-model="vm.filtre.NomTravailleur"
-										placeholder="Nom travailleur" required>
+										placeholder="{{vm.placeholder_nom_travailleur}}">
 										<div ng-messages="filtrepardateform.NomTravailleur.$error"
 											role="alert">
 											<div ng-message="required">
-												<span>Nom travailleur obligatoire.</span>
+												<span>{{vm.placeholder_nom_travailleur}} obligatoire</span>
 											</div>
 										</div>
 									</md-input-container>
@@ -346,7 +345,7 @@
 										  </div>
 									  </div>
 									</md-input-container>								  
-									<md-input-container flex="100" flex-gt-xs="10"ng-show="vm.affichage_masque">
+									<md-input-container flex="100" flex-gt-xs="5"ng-show="vm.affichage_masque">
 									  <label>Sexe</label>
 										<md-select ng-model="vm.filtre.SexeTravailleur" name="SexeTravailleur"  >
 										  <md-option  value="">&nbsp;</md-option>
@@ -360,13 +359,27 @@
 										  </div>
 										</div>
 									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="15" ng-show="vm.affichage_masque">
+									  <label>Lien parental</label>
+										<md-select ng-model="vm.filtre.lien_travailleur" name="lien_travailleur" ng-change="vm.modifier_lienparentalTravailleuretSuppleant(vm.filtre,1)">										 
+										  <md-option ng-repeat="lien in vm.all_lienparental" value="{{lien.id}}" >
+											{{lien.description}}
+										  </md-option>
+										</md-select>
+										<div ng-messages="individu_form.lien.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Lien parental obligatoire</span>
+										  </div>
+										</div>
+									</md-input-container>
 									<md-input-container flex-gt-xs="20" ng-show="vm.affichage_masque">
 										<input type="text"  name="NomTravailleurSuppliant" ng-model="vm.filtre.NomTravailleurSuppliant"
-										placeholder="Nom travailleur suppléant" required>
+										placeholder="{{vm.placeholder_nom_suppleant}}">
 										<div ng-messages="filtrepardateform.NomTravailleurSuppliant.$error"
 											role="alert">
 											<div ng-message="required">
-												<span>Nom travailleur suppléant obligatoire.</span>
+												<span>{{vm.placeholder_nom_suppleant}} obligatoire.</span>
 											</div>
 										</div>
 									</md-input-container>
@@ -388,7 +401,7 @@
 										  </div>
 									  </div>
 									</md-input-container>								  
-									<md-input-container flex="100" flex-gt-xs="10"ng-show="vm.affichage_masque">
+									<md-input-container flex="100" flex-gt-xs="5"ng-show="vm.affichage_masque">
 									  <label>Sexe</label>
 										<md-select ng-model="vm.filtre.SexeTravailleurSuppliant" name="SexeTravailleurSuppliant"  >
 										  <md-option  value="">&nbsp;</md-option>
@@ -402,14 +415,28 @@
 										  </div>
 										</div>
 									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="15" ng-show="vm.affichage_masque">
+									  <label>Lien parental</label>
+										<md-select ng-model="vm.filtre.lien_suppleant" name="lien_suppleant" ng-change="vm.modifier_lienparentalTravailleuretSuppleant(vm.filtre,2)">										 
+										  <md-option ng-repeat="lien in vm.all_lienparental" value="{{lien.id}}" >
+											{{lien.description}}
+										  </md-option>
+										</md-select>
+										<div ng-messages="individu_form.lien.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Lien parental obligatoire</span>
+										  </div>
+										</div>
+									</md-input-container>
 								</div>
 								<div layout="column" layout-gt-xs="row" flex>
 									<md-input-container flex="100" flex-gt-xs="10"ng-show="vm.affichage_masque">
 									  <label>Milieu</label>
 										<md-select ng-model="vm.filtre.milieu" name="milieu"  >
 										  <md-option  value="">&nbsp;</md-option>
-										  <md-option  value="1">Urbain</md-option>
-										  <md-option  value="2">Rural</md-option>                                      
+										  <md-option  value="1">1- Urbain</md-option>
+										  <md-option  value="2">2- Rural</md-option>                                      
 										</md-select>
 										<div ng-messages="filtrepardateform.milieu.$error"
 										  role="alert">
@@ -489,6 +516,19 @@
 										  <div ng-message="required">
 											<span>Ménage Apte/Inapte obligatoire</span>
 										  </div>
+										</div>
+									</md-input-container>
+								</div>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex-gt-xs="20" ng-show="vm.affichage_masque">
+										<input type="text"  name="motif_non_selection" ng-model="vm.filtre.motif_non_selection"
+										placeholder="Motif de non seléction" ng-disabled="vm.filtre.preselectionne!=0 || vm.filtre.beneficiaire!=0"
+										ng-required="vm.filtre.preselectionne==0 && vm.filtre.beneficiaire==0">
+										<div ng-messages="filtrepardateform.motif_non_selection.$error"
+											role="alert">
+											<div ng-message="required">
+												<span>Motif de non seléction obligatoire.</span>
+											</div>
 										</div>
 									</md-input-container>
 								</div>
@@ -621,7 +661,7 @@
 								<div>                            
 									<section layout="row" layout-sm="column" layout-align="left" layout-wrap>
 									  <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
-										  ng-if="vm.affichage_masque" ng-disabled="(filtrepardateform.$invalid)||(vm.disable_button)" ng-click="vm.save_menage(vm.filtre,0)">
+										  ng-if="vm.affichage_masque" ng-disabled="(filtrepardateform.$invalid)" ng-click="vm.save_menage(vm.filtre,0)">
 										  Enregistrer
 									  </md-button>
 									  <md-button type="submit" class="md-raised md-primary" aria-label="Enregistrer"
@@ -634,7 +674,7 @@
                         </form>
                         <div ng-if="!vm.affichage_masque">
 							<table id='Table_menage' class="dataTable row-border hover cell-border text-center" datatable="ng"
-							  dt-options="vm.dtOptions" ng-if="!vm.affichage_masque">
+							  dt-options="vm.dtOptions" ng-if="!vm.affichage_masque" ms-responsive-table>
 							  <thead>
 								<tr>
 								  <th class="secondary-text" ng-repeat="re in ::vm.menage_column">
@@ -653,7 +693,6 @@
 								  <td>{{menage.SexeChefMenage}}</td>
 								  <td>{{menage.nom_conjoint}}</td>
 								  <td>{{menage.Addresse}}</td>
-								  <td>{{menage.statut}}</td>                
 								  <td>{{vm.affichage_etat_statut(menage.inscrit)}}</td>                
 								  <td>{{vm.affichage_etat_statut(menage.preselectionne)}}</td>                
 								  <td>{{vm.affichage_etat_statut(menage.beneficiaire)}}</td>                
@@ -669,7 +708,7 @@
 								<md-input-container flex-gt-xs="15">
 									<input type="number"  name="taille_menage" ng-model="vm.filtre.taille_menage"
 									placeholder="Taille du ménage" readonly >
-									<div ng-messages="filtrepardateform.taille_menage.$error"
+									<div ng-messages="taille_menage.$error"
 										role="alert">
 										<div ng-message="required">
 											<span>Taille du ménage</span>
@@ -679,7 +718,7 @@
 								<md-input-container flex-gt-xs="15">
 									<input type="number"  name="nombre_personne_plus_soixantedixans" ng-model="vm.filtre.nombre_personne_plus_soixantedixans"
 									placeholder="Personnes +70 ans" >
-									<div ng-messages="filtrepardateform.nombre_personne_plus_soixantedixans.$error"
+									<div ng-messages="nombre_personne_plus_soixantedixans.$error"
 										role="alert">
 										<div ng-message="required">
 											<span>Personnes +70 ans </span>
@@ -689,7 +728,7 @@
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_enfant_moins_six_ans" ng-model="vm.filtre.nombre_enfant_moins_six_ans"
 									placeholder="Enfants moins de 6 ans" ng-change="vm.Sommer_Membre_Menages(vm.filtre)">
-									<div ng-messages="filtrepardateform.nombre_enfant_moins_six_ans.$error"
+									<div ng-messages="nombre_enfant_moins_six_ans.$error"
 										role="alert">
 										<div ng-message="required">
 											<span>Enfants moins de 6 ans </span>
@@ -699,7 +738,7 @@
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_enfant_moins_quinze_ans" ng-model="vm.filtre.nombre_enfant_moins_quinze_ans"
 									placeholder="Enf moins de 15 ans"  ng-change="vm.Sommer_Membre_Menages(vm.filtre)">
-									<div ng-messages="filtrepardateform.nombre_enfant_moins_quinze_ans.$error"
+									<div ng-messages="nombre_enfant_moins_quinze_ans.$error"
 										role="alert">
 										<div ng-message="required">
 											<span>Enf moins de 15 ans </span>
@@ -709,7 +748,7 @@
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_enfant_non_scolarise" ng-model="vm.filtre.nombre_enfant_non_scolarise"
 									placeholder="6-14 ans non scolarisé " >
-									<div ng-messages="filtrepardateform.nombre_enfant_non_scolarise.$error"
+									<div ng-messages="nombre_enfant_non_scolarise.$error"
 										role="alert">
 										<div ng-message="required">
 											<span>6-14 ans non scolarisé </span>
@@ -719,7 +758,7 @@
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_enfant_scolarise" ng-model="vm.filtre.nombre_enfant_scolarise"
 									placeholder="Enf 6-14 ans scolarisé " >
-									<div ng-messages="filtrepardateform.nombre_enfant_scolarise.$error"
+									<div ng-messages="nombre_enfant_scolarise.$error"
 										role="alert">
 										<div ng-message="required">
 											<span>Enf 6-14 ans scolarisé </span>
@@ -729,7 +768,7 @@
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_personne_handicape" ng-model="vm.filtre.nombre_personne_handicape"
 									placeholder="Personnes handicapées"  ng-change="vm.Sommer_Membre_Menages(vm.filtre)">
-									<div ng-messages="filtrepardateform.nombre_personne_handicape.$error"
+									<div ng-messages="nombre_personne_handicape.$error"
 										role="alert">
 										<div ng-message="required">
 											<span>Personnes handicapées</span>
@@ -739,7 +778,7 @@
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_adulte_travail" ng-model="vm.filtre.nombre_adulte_travail"
 									placeholder="Adultes qui travaillent"  ng-change="vm.Sommer_Membre_Menages(vm.filtre)">
-									<div ng-messages="filtrepardateform.nombre_adulte_travail.$error"
+									<div ng-messages="nombre_adulte_travail.$error"
 										role="alert">
 										<div ng-message="required">
 											<span>Adultes qui travaillent</span>
@@ -749,7 +788,7 @@
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_membre_a_etranger" ng-model="vm.filtre.nombre_membre_a_etranger"
 									placeholder="Membres à l’étranger"  ng-change="vm.Sommer_Membre_Menages(vm.filtre)">
-									<div ng-messages="filtrepardateform.nombre_membre_a_etranger.$error"
+									<div ng-messages="nombre_membre_a_etranger.$error"
 										role="alert">
 										<div ng-message="required">
 											<span>Membres à l’étranger</span>

@@ -16,7 +16,7 @@
         responsive: true
       };
       vm.menage_column = [{titre:"Identifiant"},{titre:"N° d'enreg"},{titre:"Chef Ménage"},{titre:"Age"},{titre:"Sexe"},{titre:"Conjoint"},
-      {titre:"Adresse"},{titre:"Statut"},{titre:"Inscr"},{titre:"Presél"},{titre:"Bénéf"},{titre:"Etat envoie"}];
+      {titre:"Adresse"},{titre:"Inscr"},{titre:"Presél"},{titre:"Bénéf"},{titre:"Etat envoie"}];
       // vm.menage_column = [{titre:"Numero d'enregistrement"},{titre:"Chef Ménage"},
       // {titre:"Age chef de ménage"},{titre:"Sexe"},{titre:"Addresse"},{titre:"Personne inscrire"},{titre:"Etat envoie"}];
       vm.individu_column = [{titre:"Nom et prénom"},{titre:"Date de naissance"},{titre:"Sexe"},{titre:"Lien de parenté"},{titre:"Scolarisé"},{titre:"Activite"},{titre:"Aptitude"},{titre:"Travailleur"}];
@@ -47,14 +47,20 @@
 			vm.filtre.id_sous_projet=1;
 			vm.titre =" ACT";
 			vm.filtre.sous_projet="ACT";			
+			vm.placeholder_nom_travailleur="Nom travailleur.";
+			vm.placeholder_nom_suppleant="Nom travailleur suppléant.";
 		} else if(vm.url=='/arse/menage-preselectionne-arse') {
 			vm.filtre.id_sous_projet=2;
 			vm.titre =" ARSE"
 			vm.filtre.sous_projet="ARSE";
+			vm.placeholder_nom_travailleur="Nom recepteur.";
+			vm.placeholder_nom_suppleant="Nom recepteur suppléant.";
 		} else if(vm.url=='/covid/menage-preselectionne-covid-19') {
 			vm.filtre.id_sous_projet=4;
 			vm.titre =" COVID-19";
 			vm.filtre.sous_projet="COVID-19";
+			vm.placeholder_nom_travailleur="Nom recepteur.";
+			vm.placeholder_nom_suppleant="Nom recepteur suppléant.";
 		}
       //initialisation variable
 
@@ -541,7 +547,7 @@
 		}
 		vm.filtrer = function()	{
 			vm.affiche_load = true ;
-			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"statut","PRESELECTIONNE","id_sous_projet",vm.filtre.id_sous_projet).then(function(result) { 
+			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"etat_statut","preselectionne","id_sous_projet",vm.filtre.id_sous_projet).then(function(result) { 
 				vm.all_menages = result.data.response;   
 				var msg ="Aucun ménage présélectionné dans le village de " +vm.filtre.village + " pour le sous-projet/Activité : " + vm.filtre.sous_projet + ". Merci !";				
 				if(result.data.response.length==0) {

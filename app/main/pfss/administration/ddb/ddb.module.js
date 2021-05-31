@@ -20,6 +20,8 @@
             'app.pfss.ddb_adm.phaseexecution',
             'app.pfss.ddb_adm.gerer_pac',
             'app.pfss.ddb_adm.consultant_ong',
+            'app.pfss.ddb_adm.liendeparente',
+            'app.pfss.ddb_adm.variableindividu',
             //'app.pfss.ddb_adm.communaute.inscription',
             ] ;
 

@@ -33,6 +33,7 @@
             title: "Découpage administratif",
             icon  : 'icon-map-marker-circle',
             state: 'app.pfss_ddb_region_district_commune',
+			height :1,
             // hidden: function()
             // {
                     // return vs;

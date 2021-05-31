@@ -34,7 +34,7 @@
             title: "Milieu/Vague/ZIP",
             icon  : 'icon-view-quilt',
             state: 'app.pfss_ddb_zip',
-            weight: 7
+            weight: 10,
             // hidden: function()
             // {
                     // return vs;

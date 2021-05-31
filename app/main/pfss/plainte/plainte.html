@@ -18,17 +18,20 @@
 					Chargement,veuillez patienter s'il vous plait ...
 				</div>
 				<div style="widht:100%;">    
-					  <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+					  <!--md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
 						  ng-if="!vm.affichage_masque" ng-disabled="filtrepardateform.$invalid||vm.affiche_load" ng-click="vm.filtrer(vm.filtre)">
 						  Actualiser
-					  </md-button>
-					<md-button type="submit" ng-if="!vm.affichage_masque" ng-show="(vm.filtre.id_ile)&&(vm.filtre.id_region)&&(vm.filtre.id_commune)&&(vm.filtre.village_id)" class="md-raised md-green-800-bg" aria-label="Nouveau" ng-click="vm.ajouterPlainte()" style="width:10%;">
+					  </md-button-->
+					<md-button type="submit" ng-if="!vm.affichage_masque" ng-show="(vm.filtre.id_ile)&&(vm.filtre.id_region)&&(vm.filtre.id_commune)&&(vm.filtre.village_id)" class="md-raised custum_button_new" aria-label="Nouveau" ng-click="vm.ajouterPlainte()" style="width:10%;">
+					<md-icon md-font-icon="icon-plus" class="s16 center" style="color: white;"></md-icon>
 					  Nouveau
 					</md-button>
-					<md-button type="submit" ng-if="!vm.affichage_masque" ng-show="(vm.selectedPlainteItem.id)" class="md-raised md-blue-800-bg" aria-label="Modifier" ng-click="vm.modifierPlainte()" style="width:10%;">
+					<md-button type="submit" ng-if="!vm.affichage_masque" ng-show="(vm.selectedPlainteItem.id)" class="md-raised custum_button" aria-label="Modifier" ng-click="vm.modifierPlainte()" style="width:10%;">
+					<md-icon md-font-icon="icon-table-edit" class="s16" style="color: white;"></md-icon>
 					  Modifier
 					</md-button>
-					<md-button type="submit"  ng-if="!vm.affichage_masque" ng-show="(vm.selectedPlainteItem.id)" class="md-raised md-blue-800-bg" aria-label="Modifier" ng-click="vm.sauverPlainte(vm.saisie,1)" style="width:10%;">
+					<md-button type="submit"  ng-if="!vm.affichage_masque" ng-show="(vm.selectedPlainteItem.id)" class="md-raised custum_button_del" aria-label="Modifier" ng-click="vm.supprimerPlainte(vm.saisie,1)" style="width:10%;">
+					<md-icon md-font-icon="icon-close-circle-outline" class="s16" style="color: white;"></md-icon>
 					  Supprimer
 					</md-button>
 					<md-button class="md-fab md-mini " ng-if="!vm.serveur_central" ng-show="(vm.selectedPlainteItem.id)" aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.envoie_menage()">
@@ -38,8 +41,7 @@
 				</div>
 				<form name="filtrepardateform" class="md-inline-form" novalidate >
 					<div layout="column" layout-gt-xs="row" flex>
-
-						<md-input-container flex="100" flex-gt-xs="90">
+						<md-input-container flex="100" flex-gt-xs="15">
 						  <label>Île</label>
 							<md-select ng-model="vm.filtre.id_ile" name="ile" ng-change="vm.filtre_region()" ng-disabled="vm.affichage_masque" required>
 							 
@@ -55,8 +57,7 @@
 							  </div>
 							</div>
 						</md-input-container>
-
-						<md-input-container flex="100" flex-gt-xs="90">
+						<md-input-container flex="100" flex-gt-xs="15">
 						  <label>Préfecture </label>
 							<md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_ile || vm.affichage_masque" required>
 							  
@@ -72,8 +73,7 @@
 							  </div>
 							</div>
 						</md-input-container>
-
-						<md-input-container flex="100" flex-gt-xs="90">
+						<md-input-container flex="100" flex-gt-xs="15">
 						  <label>Commune</label>
 							<md-select ng-model="vm.filtre.id_commune" name="commune" ng-change="vm.filtre_village()" ng-disabled="!vm.filtre.id_region || vm.affichage_masque"  required>
 							  <md-option ng-repeat="commune in vm.all_commune" value="{{commune.id}}" >
@@ -88,8 +88,7 @@
 							  </div>
 							</div>
 						</md-input-container>
-
-						<md-input-container flex="100" flex-gt-xs="90">
+						<md-input-container flex="100" flex-gt-xs="15">
 						  <label>Village</label>
 							<md-select ng-model="vm.filtre.village_id" name="village" ng-disabled="!vm.filtre.id_commune || vm.affichage_masque"  required ng-change="vm.Get_menage_by_village(vm.filtre.village_id)">
 							  <md-option ng-repeat="village in vm.all_village" value="{{village.id}}" >
@@ -104,7 +103,20 @@
 							  </div>
 							</div>
 						</md-input-container>
-					   
+						<md-input-container flex="100" flex-gt-xs="5">
+						  <label>Vague</label>
+								<input type="text"  name="vague" ng-model="vm.filtre.vague" readonly>
+						</md-input-container>
+						<md-input-container flex="100" flex-gt-xs="5">
+						  <label>ZIP</label>
+								<input type="text"  name="zip" ng-model="vm.filtre.zip" readonly>
+						</md-input-container>
+						<div layout="column" layout-gt-xs="col" flex flex-gt-xs="10">
+							<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+								  ng-if="!vm.affichage_masque" ng-disabled="filtrepardateform.$invalid||vm.affiche_load || vm.selectedItem.id" ng-click="vm.filtrer(vm.filtre)"  style="height:40% !important;">
+								  Actualiser
+							</md-button>
+						</div>						   
 					</div>
 				</form>
 				<div ng-show="vm.affichage_masque">
@@ -124,29 +136,10 @@
 								<md-select name="menage_id" ng-model="vm.saisie.menage_id" ng-change="vm.modifierMenage(vm.saisie)" style="display: inline-block;" style="width:90px;overflow: hidden;text-overflow: ellipsis;">
 								  <md-option value=''>&nbsp;</md-option>
 								  <md-option ng-repeat="men in vm.allMenages" value="{{men.id}}">
-									{{men.NumeroEnregistrement}}-{{men.nomchefmenage}}
+									{{men.identifiant_menage}} - {{men.nomchefmenage}}
 								  </md-option>
 								</md-select>
 							</md-input-container>   
-							<md-input-container>
-							<span>Date dépot</span>
-							</md-input-container>
-							<md-datepicker ng-model="vm.saisie.datedepot"   md-placeholder="Entrer date dépot" required style="width:15%">                       
-							</md-datepicker>
-							<md-input-container flex-gt-xs="10">
-							  <label>TYpe plainte</label>
-								<md-select name="typeplainte_id" ng-model="vm.saisie.typeplainte_id" ng-change="vm.modifierTP(vm.saisie)" required style="display: inline-block;" style="width:90px;overflow: hidden;text-overflow: ellipsis;">
-								  <md-option value=''>&nbsp;</md-option>
-								  <md-option ng-repeat="tp in vm.all_type_plainte" value="{{tp.id}}">
-									{{tp.Code}}-{{tp.TypePlainte}}
-								  </md-option>
-								</md-select>
-							</md-input-container>   
-							<md-input-container flex-gt-sm ng-show="vm.affichage_masque" flex-gt-xs="15">
-								<input type="text"  name="reference" ng-model="vm.saisie.reference"	placeholder="Plainte N°" readonly>
-							</md-input-container>
-						</div>
-						<div layout="column" layout-gt-xs="row" flex>
 							<md-input-container  flex="100" flex-gt-xs="15"  ng-show="vm.affichage_masque">
 								<input type="text"  name="nomplaignant" ng-model="vm.saisie.nomplaignant"
 								placeholder="Nom plaignant N°" required>
@@ -167,7 +160,19 @@
 									</div>
 								</div>
 							</md-input-container>
-							<md-input-container>
+							<md-input-container  flex="100" flex-gt-xs="15"  ng-show="vm.affichage_masque">
+								<input type="text"  name="telephone" ng-model="vm.saisie.telephone"
+								placeholder="Téléphone">
+								<div ng-messages="saisieplainteform.telephone.$error"
+									role="alert">
+									<div ng-message="required">
+										<span>Téléphone obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex>
+							<!--md-input-container>
 							  <label>CPS</label>
 								<md-select name="cellulederecours_id" ng-model="vm.saisie.cellulederecours_id" ng-change="vm.modifierCPS(vm.saisie)"  style="display: inline-block;" style="width:90px;overflow: hidden;text-overflow: ellipsis;">
 								  <md-option value=''>&nbsp;</md-option>
@@ -175,7 +180,7 @@
 									{{cp.Code}}-{{cp.Nom}}
 								  </md-option>
 								</md-select>
-							</md-input-container>   
+							</md-input-container-->   
 							<md-input-container  flex="100" flex-gt-xs="35" ng-show="vm.affichage_masque">
 								<input type="text"  name="Objet" ng-model="vm.saisie.Objet"
 								placeholder="Objet"  required>
@@ -186,18 +191,39 @@
 									</div>
 								</div>
 							</md-input-container>
+							<md-input-container flex-gt-xs="10">
+							  <label>TYpe plainte</label>
+								<md-select name="typeplainte_id" ng-model="vm.saisie.typeplainte_id" ng-change="vm.modifierTP(vm.saisie)" required style="display: inline-block;" style="width:90px;overflow: hidden;text-overflow: ellipsis;">
+								  <md-option value=''>&nbsp;</md-option>
+								  <md-option ng-repeat="tp in vm.all_type_plainte" value="{{tp.id}}">
+									{{tp.Code}}-{{tp.TypePlainte}}
+								  </md-option>
+								</md-select>
+							</md-input-container>   
+							<md-input-container flex-gt-sm ng-show="vm.affichage_masque" flex-gt-xs="15">
+								<input type="text"  name="reference" ng-model="vm.saisie.reference"	placeholder="Plainte N°" readonly>
+							</md-input-container>
+							<md-input-container>
+							<span>Date dépot</span>
+							</md-input-container>
+							<md-datepicker ng-model="vm.saisie.datedepot"   md-placeholder="Entrer date dépot" required style="width:15%">                       
+							</md-datepicker>
 						</div>
 						<div layout="column" layout-gt-xs="row" flex>
-							<md-input-container flex-gt-sm ng-show="vm.affichage_masque">
-								<input type="text"  name="responsableenregistrement" ng-model="vm.saisie.responsableenregistrement"
-								placeholder="Responsable enregistrement" required>
+							<md-input-container>
+							  <label>Responsable enregistrement</label>
+								<md-select name="responsableenregistrement" ng-model="vm.saisie.responsableenregistrement"  style="display: inline-block;" style="width:90px;overflow: hidden;text-overflow: ellipsis;">
+								  <md-option value=''>&nbsp;</md-option>
+								  <md-option value='UGP'>UGP</md-option>
+								  <md-option value='CPS'>CPS</md-option>
+								</md-select>
 								<div ng-messages="saisieplainteform.responsableenregistrement.$error"
 									role="alert">
 									<div ng-message="required">
 										<span>Responsable enregistrement obligatoire</span>
 									</div>
 								</div>
-							</md-input-container>
+							</md-input-container>   
 							<md-input-container flex-gt-sm ng-show="vm.affichage_masque">
 								<input type="text"  name="mesureprise" ng-model="vm.saisie.mesureprise"
 								placeholder="Mesure prise"  required>
@@ -249,7 +275,7 @@
 								Plaintes
 							</legend>
 							<div style="clear:both;"></div>
-							<table ng-table="tablePlainte" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+							<table ng-table="tablePlainte" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
 								<thead>
 									<tr>
 										<th class="secondary-text" ng-repeat="c in :: vm.col_plainte">
@@ -262,14 +288,13 @@
 								<tbody>
 									<tr  ng-repeat="pl in vm.allPlainte"  ng-class="{selected: pl.$selected}" ng-click="vm.selectionPlainte(pl)">
 										<td>{{pl.reference}}</td>
-										<!--td>{{pl.village}}</td>
-										<td>{{pl.code}}</td-->
-										<td>{{pl.type_plainte}}</td>
 										<td>{{pl.Objet}}</td>
-										<td>{{pl.code_sous_projet}}</td>
+										<td>{{pl.responsableenregistrement}}</td>
 										<td>{{pl.datedepot}}</td>
 										<td>{{pl.nomplaignant}}</td>
 										<td>{{pl.adresseplaignant}}</td>
+										<td>{{pl.telephone}}</td>
+										<td>{{pl.mesureprise}}</td>
 										<td>{{pl.resultat_plainte}}</td>
 										<td>{{pl.dateresolution}}</td>
 									</tr>

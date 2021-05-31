@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pfss.ddb_adm.phaseexecution', [])
+        .module('app.pfss.ddb_adm.liendeparente', [])
         .run(testPermission)
         .config(config);
         var vs ;
@@ -13,28 +13,28 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.pfss_ddb_phaseexecution', {
-            url      : '/donnees-de-base/type-phaseexecution',
+        $stateProvider.state('app.pfss_ddb_liendeparente', {
+            url      : '/donnees-de-base/lien-de-parente',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/pfss/administration/ddb/phaseexecution/phaseexecution.html',
-                    controller : 'PhaseexecutionController as vm'
+                    templateUrl: 'app/main/pfss/administration/ddb/liendeparente/liendeparente.html',
+                    controller : 'LiendeparenteController as vm'
                 }
             },
-            bodyClass: 'phaseexecution',
+            bodyClass: 'liendeparente',
             data : {
               authorizer : true,
               permitted : ["USER","PERSONNEL","ADMIN"],
-              page: "Phase execution"
+              page: "Lien de parenté"
             }
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.phaseexecution', {
-            title: "Phase execution et année",
-            icon  : 'icon-square-inc',
-            state: 'app.pfss_ddb_phaseexecution',
-            weight: 12,
+        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.liendeparente', {
+            title: "Lien de parenté",
+            icon  : 'icon-swap-horizontal',
+            state: 'app.pfss_ddb_liendeparente',
+            weight: 15,
             // hidden: function()
             // {
                     // return vs;
