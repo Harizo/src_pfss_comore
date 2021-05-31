@@ -850,6 +850,10 @@
         vm.modifierIle = function(item)
         {
           item.id_region = null;
+          item.id_commune = null;
+          item.id_village = null;
+          item.id_zip = null;
+          item.vague = null;
           apiFactory.getAPIgeneraliserREST("region/index","ile_id",item.id_ile).then(function(result){
             vm.allRegion = result.data.response;
           });
@@ -858,6 +862,9 @@
         vm.modifierRegion = function(item)
         {
           item.id_commune = null;
+          item.id_village = null;
+          item.id_zip = null;
+          item.vague = null;
           apiFactory.getAPIgeneraliserREST("commune/index","region_id",item.id_region).then(function(result){
             vm.allCommune = result.data.response;
             console.log(vm.allCommune);
@@ -867,6 +874,8 @@
         {
           //item.id_communaute = null;
           item.id_village = null;
+          item.id_zip = null;
+          item.vague = null;
           /*apiFactory.getAPIgeneraliserREST("communaute/index","menu","getcommunautebycommune","id_commune",item.id_commune).then(function(result){
             vm.allCommunaute = result.data.response;
           });*/
@@ -888,10 +897,10 @@
             return obj.id == item.id_village;
           });
           console.log(vil);
-          item.vague = vil[0].vague;
+          /*item.vague = vil[0].vague;
           apiFactory.getAPIgeneraliserREST("zip/index",'id',vil[0].zip.id).then(function(result){
             vm.allZip.push(result.data.response);
-            console.log(vm.allZip);
+           
             if (result.data.response)
             {
               item.id_zip = result.data.response.id;
@@ -901,15 +910,84 @@
               item.id_zip = null;
             }
             
-          });
+          });*/
+          if (vil.length!=0)
+            {
+              if (vil[0].vague)
+              {
+              item.vague = vil[0].vague;
+              }
+              else
+              {
+              item.vague = null ; 
+              }
+              if (vil[0].zip)
+              {
+              apiFactory.getAPIgeneraliserREST("zip/index",'id',vil[0].zip.id).then(function(result){
+                vm.allZip.push(result.data.response);
+                
+                if (result.data.response)
+                {
+                  item.id_zip = result.data.response.id;
+                }
+                else
+                {
+                  item.id_zip = null;
+                }
+                
+                });
+              }
+              else
+              {
+              item.id_zip = null ; 
+              }
+
+            }
+            else
+            {
+            item.id_zip = null;
+            item.vague = null ; 
+            }
         }
         vm.modifierNbr_menage_participant = function(item)
         {
-          item.nbr_menage_beneficiaire = parseInt(item.nbr_menage_participant) + parseInt(item.nbr_menage_nonparticipant)
+          item.nbr_menage_beneficiaire = parseInt(item.nbr_menage_participant) + parseInt(item.nbr_menage_nonparticipant);
+          if (parseInt(item.nbr_menage_beneficiaire)>50)
+          {
+              var confirm = $mdDialog.confirm()
+                      .title('Nombre participants incorrect !!')
+                      .textContent('Le nombre total du ménage bénéficiaires ne doit pas dépasser de 50')
+                      .ariaLabel('Lucky day')
+                      .clickOutsideToClose(true)
+                      .parent(angular.element(document.body))
+                      .ok('Fermer')
+                      //.cancel('annuler');
+              $mdDialog.show(confirm).then(function() { 
+                item.nbr_menage_participant = 0;
+                item.nbr_menage_beneficiaire = parseInt(item.nbr_menage_nonparticipant);     
+              }, function() {
+              });
+          }
         }
         vm.modifierNbr_menage_nonparticipant = function(item)
         {
-          item.nbr_menage_beneficiaire = parseInt(item.nbr_menage_participant) + parseInt(item.nbr_menage_nonparticipant)
+          item.nbr_menage_beneficiaire = parseInt(item.nbr_menage_participant) + parseInt(item.nbr_menage_nonparticipant);
+          if (parseInt(item.nbr_menage_beneficiaire)>50)
+          {
+              var confirm = $mdDialog.confirm()
+                      .title('Nombre non participants incorrect !!')
+                      .textContent('Le nombre total du ménage bénéficiaires ne doit pas dépasser de 50')
+                      .ariaLabel('Lucky day')
+                      .clickOutsideToClose(true)
+                      .parent(angular.element(document.body))
+                      .ok('Fermer')
+                      //.cancel('annuler');
+              $mdDialog.show(confirm).then(function() { 
+                item.nbr_menage_nonparticipant = 0;
+                item.nbr_menage_beneficiaire = parseInt(item.nbr_menage_participant);     
+              }, function() {
+              });
+          }
         }
     // Fin sous projet localisation
 

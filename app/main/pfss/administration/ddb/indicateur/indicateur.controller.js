@@ -159,7 +159,7 @@
           
           // height: 550,
           toolbar: [{               
-               template: '<label id="table_titre">Type indicateur</label>'
+               template: '<label id="table_titre">Unité de mesure</label>'
 			   				+'<a class="k-button k-button-icontext k-grid-add addindicateur" href="\\#" ng-if="vm.serveur_central">' 
 			   				+'<md-icon md-font-icon="icon-playlist-plus"></md-icon>'
 							+'<md-tooltip><span>Ajout</span></md-tooltip>'

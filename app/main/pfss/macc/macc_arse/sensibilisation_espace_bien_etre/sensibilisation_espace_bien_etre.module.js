@@ -2,7 +2,8 @@
 {
     'use strict';
     angular
-        .module('app.pfss.macc.macc_arse.sensibilisation_espace_bien_etre', [			
+        .module('app.pfss.macc.macc_arse.sensibilisation_espace_bien_etre', [	
+            'app.pfss.macc.macc_arse.sensibilisation_espace_bien_etre.realisation_ebe_arse'		
             ])
         // .run(testPermission)
         .config(config);

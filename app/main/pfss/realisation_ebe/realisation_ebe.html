@@ -1,0 +1,480 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Réalisation espace de bien être |&nbsp {{vm.type_sous_projet}}</span>
+                    <span class="parent"> </span>
+                    <!--md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;">Groupe ML/PL</span-->
+                </div>
+    
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>
+                <md-tabs md-dynamic-height>
+                    <md-tab label="Sensibilisation EBE">
+                      <form name="filtreform" class="md-inline-form" novalidate >
+                        <div layout="column" layout-gt-xs="row" flex>
+                           <md-input-container flex="100" flex-gt-xs="90">
+                             <label>Île</label>
+                               <md-select ng-model="vm.filtre.id_ile" name="ile" ng-change="vm.filtre_region()" required>
+                                
+                                 <md-option ng-repeat="ile in vm.all_ile" value="{{ile.id}}" >
+                                   {{ile.Ile}}
+                                 </md-option>
+
+                               </md-select>
+                               <div ng-messages="filtreform.ile.$error"
+                                 role="alert">
+                                 <div ng-message="required">
+                                   <span>Île obligatoire</span>
+                                 </div>
+                               </div>
+                           </md-input-container>
+
+                           <md-input-container flex="100" flex-gt-xs="90">
+                             <label>Préfecture</label>
+                               <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_ile" required>
+                                 
+                                 <md-option ng-repeat="region in vm.all_region" value="{{region.id}}" >
+                                   {{region.Region}}
+                                 </md-option>
+
+                               </md-select>
+                               <div ng-messages="filtreform.region.$error"
+                                 role="alert">
+                                 <div ng-message="required">
+                                   <span>Région obligatoire</span>
+                                 </div>
+                               </div>
+                           </md-input-container>
+
+                           <md-input-container flex="100" flex-gt-xs="90">
+                             <label>Commune</label>
+                               <md-select ng-model="vm.filtre.id_commune" name="commune" ng-disabled="!vm.filtre.id_region" ng-change="vm.filtre_village()" required>
+                                
+                                 <md-option ng-repeat="commune in vm.all_commune" value="{{commune.id}}" >
+                                   {{commune.Commune}}
+                                 </md-option>
+
+                               </md-select>
+                               <div ng-messages="filtreform.commune.$error"
+                                 role="alert">
+                                 <div ng-message="required">
+                                   <span>Commune obligatoire</span>
+                                 </div>
+                               </div>
+                           </md-input-container>
+
+                           <md-input-container flex="100" flex-gt-xs="90">
+                             <label>Village</label>
+                               <md-select ng-model="vm.filtre.id_village" name="village" ng-disabled="!vm.filtre.id_commune" ng-change="vm.filtre_zip_groupe()" required>
+                                
+                                 <md-option ng-repeat="village in vm.all_village" value="{{village.id}}" >
+                                   {{village.Village}}
+                                 </md-option>
+
+                               </md-select>
+                               <div ng-messages="filtreform.village.$error"
+                                 role="alert">
+                                 <div ng-message="required">
+                                   <span>village obligatoire</span>
+                                 </div>
+                               </div>
+                           </md-input-container>
+                                                    
+                           <md-input-container flex="80" flex-gt-xs="50">
+                            <label>Zip</label>
+                              <md-select ng-model="vm.filtre.id_zip" name="zip" ng-disabled="!vm.filtre.id_village">
+                               
+                                <md-option ng-repeat="zip in vm.allZip" value="{{zip.id}}" >
+                                  {{zip.libelle}}
+                                </md-option>
+
+                              </md-select>
+                              <div ng-messages="filtreform.zip.$error"
+                                role="alert">
+                                <div ng-message="required">
+                                  <span>Zip obligatoire</span>
+                                </div>
+                              </div>
+                          </md-input-container>
+                          <md-input-container flex="80" flex-gt-xs="50">
+                            <label>Vague</label>
+                              <input ng-model="vm.filtre.vague" type="text" name="vague" disabled/>
+                               
+                              <div ng-messages="filtreform.vague.$error"
+                                role="alert">
+                                <div ng-message="required">
+                                  <span>Vague obligatoire</span>
+                                </div>
+                              </div>
+                          </md-input-container>                           
+                          <md-input-container flex="100" flex-gt-xs="90">
+                           <label>Groupe ML/PL</label>
+                             <md-select ng-model="vm.filtre.id_groupe_ml_pl" name="groupe_ml_pl" ng-disabled="!vm.filtre.id_village" ng-change="vm.filtre_menage()" required>
+                              
+                               <md-option ng-repeat="groupe_ml_pl in vm.allGroupe_ml_pl" value="{{groupe_ml_pl.id}}" >
+                                 {{groupe_ml_pl.nom_groupe}}
+                               </md-option>
+
+                             </md-select>
+                             <div ng-messages="filtreform.groupe_ml_pl.$error"
+                               role="alert">
+                               <div ng-message="required">
+                                 <span>Groupe ML/P obligatoire</span>
+                               </div>
+                             </div>
+                         </md-input-container>                           
+                         <!--md-input-container flex="100" flex-gt-xs="90">
+                          <label>Menage ML/PL</label>
+                            <md-select ng-model="vm.filtre.id_ml_pl" name="id_ml_pl" ng-disabled="!vm.filtre.id_groupe_ml_pl" required>
+                             
+                              <md-option ng-repeat="menage_ml_pl in vm.allMenage_ml_pl" value="{{menage_ml_pl.id}}" >
+                                {{menage_ml_pl.nom_prenom}}
+                              </md-option>
+
+                            </md-select>
+                            <div ng-messages="filtreform.menage_ml_pl.$error"
+                              role="alert">
+                              <div ng-message="required">
+                                <span>Menage ML/P obligatoire</span>
+                              </div>
+                            </div>
+                        </md-input-container-->
+                          
+                       </div>	
+                      <div>                            
+                        <section layout="row" layout-sm="column" layout-align="left" layout-wrap>
+                      
+                          <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                             ng-disabled="filtreform.$invalid||vm.affiche_load" ng-click="vm.get_realisation_ebe(vm.filtre)">
+                            Actualiser
+                          </md-button>                              
+                        </section>                         
+                       </div>
+                   </form>
+                        <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                          <div layout="row" layout-align="start center">
+                          <div class="border-right">
+                              
+                            <span class="md-headline">Réalisation EBE &nbsp</span>
+                          </div>
+                            <div class="border-right" ng-if="vm.filtre.id_commune && !vm.selectedItemRealisation_ebe.id">
+                              <md-button class="md-icon-button" style=" font-size:11px " aria-label="Ajout" ng-click="vm.ajouterRealisation_ebe()">
+                                <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                <md-tooltip><span>Ajouter</span></md-tooltip>
+                              </md-button>
+                            </div> 
+                            <div class="border-right" ng-if="vm.selectedItemRealisation_ebe.id">
+                              <md-button class="md-icon-button" aria-label="Modifier" style=" font-size:11px " ng-click="vm.modifRealisation_ebe()">
+                                <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                <md-tooltip><span>Modifier</span></md-tooltip>
+                              </md-button>
+                            </div>    
+                            <div class="border-right" ng-if="vm.selectedItemRealisation_ebe.id">
+                              <md-button class="md-icon-button" aria-label="Suppression" style=" font-size:11px " ng-click="vm.supprimerRealisation_ebe()">
+                                <md-icon md-font-icon="icon-delete"></md-icon>
+                                <md-tooltip><span>Supprimer</span></md-tooltip>
+                              </md-button>
+                            </div>    
+                            <div class="border-right" ng-if="vm.selectedItemRealisation_ebe.id">
+                              <md-button class="md-icon-button" aria-label="Annuler" style=" font-size:11px " ng-click="vm.annulerRealisation_ebe()">
+                                <md-icon md-font-icon="icon-cancel"></md-icon>
+                                <md-tooltip><span>Annuler</span></md-tooltip>
+                              </md-button>
+                            </div>                  
+                          </div>
+                      </header>
+                        <!----------FORM AGEP--------------->       
+                         
+                        <form ng-show="vm.affichage_masque" name="formrealisation_ebe" class="md-inline-form" novalidate >
+
+                          <div layout="column" layout-gt-xs="row" flex> 
+                            
+                            <md-input-container flex="100" flex-gt-xs="25">
+                                <label>Contrat ONG</label>
+                                <md-select ng-model="vm.realisation_ebe.id_contrat_consultant_ong" name="id_contrat_consultant_ong">
+                                    <md-option ng-repeat="mena in vm.allContrat_consultant_ong" value="{{mena.id}}">
+                                            {{mena.reference}}
+                                    </md-option>                                                
+                                  </md-select>
+                                  <div ng-messages="formrealisation_ebe.id_contrat_consultant_ong.$error" role="alert">
+                                    <div ng-message="required">
+                                      <span>Contrat ONG Obligatoire.</span>
+                                    </div>
+                                  </div>
+                            </md-input-container> 
+                            <md-input-container flex="100" flex-gt-xs="25">
+                              <label>Numero</label>
+                              <input  type="number" name="numero" ng-model="vm.realisation_ebe.numero" required>
+                              <div ng-messages="formrealisation_ebe.numero.$error"role="alert">
+                                  <div ng-message="required">
+                                      <span>Numero obligatoire.</span>
+                                  </div>
+                              </div>
+                            </md-input-container>
+                                                              
+                            <md-input-container flex="100" flex-gt-xs="25">
+                              <label>But regroupement</label>
+                              <input  type="text" name="but_regroupement" ng-model="vm.realisation_ebe.but_regroupement" ng-init="vm.realisation_ebe.but_regroupement=''" required>
+                              <div ng-messages="formrealisation_ebe.but_regroupement.$error"role="alert">
+                                  <div ng-message="required">
+                                      <span>But regroupement obligatoire.</span>
+                                  </div>
+                              </div>
+                            </md-input-container>
+                            <div style="font-size: 13px !important;" flex="100" flex-gt-xs="25">
+                              <label>Date de debut formation:</label>
+                              <md-datepicker  ng-model="vm.realisation_ebe.date_regroupement" md-placeholder="jj/mm/aaaa" required>                       
+                              </md-datepicker>
+                            </div>
+                                      
+                            <md-input-container flex="100" flex-gt-xs="25">
+                                <label>Matériels</label>
+                                  <input name="materiel" type="text" ng-model="vm.realisation_ebe.materiel" required md-select-on-focus>
+                                    <div ng-messages="formrealisation_ebe.materiel.$error" role="alert">
+                                      <div ng-message="required">
+                                          <span>materiel obligatoire.</span>
+                                      </div>
+                                    </div>
+                              </md-input-container>
+                                      
+                            <md-input-container flex="100" flex-gt-xs="25">
+                                <label>Lieu</label>
+                                  <input name="lieu" type="text" ng-model="vm.realisation_ebe.lieu" required md-select-on-focus>
+                                    <div ng-messages="formrealisation_ebe.lieu.$error" role="alert">
+                                      <div ng-message="required">
+                                          <span>Lieu obligatoire.</span>
+                                      </div>
+                                    </div>
+                              </md-input-container>
+                   
+                          </div>
+
+                            <div>
+                                <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                        ng-disabled="formrealisation_ebe.$invalid " ng-click="vm.ajoutRealisation_ebe(vm.realisation_ebe,0)">
+                                        Enregistrer
+                                </md-button>
+                                <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerRealisation_ebe()">
+                                        Annuler
+                                </md-button>
+                            </div>
+                            </form>
+                                        
+                        <!--FORM  agep--> 
+                        <table class="dataTable row-border hover cell-border text-center" datatable="ng"
+                          dt-options="vm.dtOptions_new" ms-responsive-table>
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::vm.realisation_ebe_column">
+                                <div class="table-header">
+                                  <span class="column-title text-center">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="contr in vm.allRealisation_ebe"  ng-class="{selected: contr.$selected}" ng-click="vm.selection(contr)">
+                                
+                                <td>{{contr.contrat_consultant_ong.reference}}</td>
+                                <td>{{contr.numero}}</td>
+                                <td>{{contr.but_regroupement}}</td> 
+                                <td>{{contr.date_regroupement | date:'dd/MM/yyyy'}}</td>
+                                <td>{{contr.materiel}}</td>
+                                <td>{{contr.lieu}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </md-tab> 
+                  
+                    <md-tab label="Theme de formation EBE" ng-disabled="!vm.selectedItemRealisation_ebe.id" ng-click="vm.click_theme_formation_ebe()">
+                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                <div layout="row" layout-align="start center">
+                                <div class="border-right">
+                                    
+                                  <span class="md-headline">THEME DE FORMATION &nbsp</span>
+                                </div>
+                                  <div class="border-right" ng-if="!vm.selectedItemTheme_formation_ebe.id && !vm.nouvelleItemTheme_formation_ebe">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterTheme_formation_ebe()">
+                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                      <md-tooltip><span>Ajouter</span></md-tooltip>
+                                    </md-button>
+                                  </div> 
+                                  <div class="border-right" ng-if="vm.selectedItemTheme_formation_ebe.id && !vm.selectedItemTheme_formation_ebe.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierTheme_formation_ebe()">
+                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                      <md-tooltip><span>Modifier</span></md-tooltip>
+                                    </md-button>
+                                  </div>    
+                                  <div class="border-right" ng-if="vm.selectedItemTheme_formation_ebe.id && !vm.selectedItemTheme_formation_ebe.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerTheme_formation_ebe()">
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Supprimer</span></md-tooltip>
+                                    </md-button>
+                                  </div>  
+
+                                  <div class="border-right" ng-if="vm.selectedItemTheme_formation_ebe.id">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerTheme_formation_ebe()">
+                                      <md-icon md-font-icon="icon-cancel"></md-icon>
+                                      <md-tooltip><span>Annuler</span></md-tooltip>
+                                    </md-button>
+                                  </div>   
+
+                                  <div ng-if="vm.selectedItemTheme_formation_ebe.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerTheme_formation_ebe(0)">
+                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                    </md-button>
+                                  </div>                
+                                </div>
+                            </header>
+                        
+                            <table ng-table="agep" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                                <thead>
+                                    <tr>
+                                        <th class="secondary-text">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Theme de sensibilisation</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">
+                                                  Activité &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</span>
+                                            </div>
+                                        </th>                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="theme_forma in vm.allTheme_formation_ebe"  ng-class="{selected: theme_forma.$selected}" ng-click="vm.selectionTheme_formation_ebe(theme_forma)">                                       
+                                       
+                                        <td >
+                                            <span ng-if="theme_forma.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Theme</label>                                                                                              
+                                                  <input type="text" name="theme_sensibilisation"  ng-model="theme_forma.theme_sensibilisation"/>
+                                              </md-input-container> 
+                                            </span>
+                                            <span ng-if="!theme_forma.$edit"> {{theme_forma.theme_sensibilisation}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="theme_forma.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Activité</label>
+                                                <textarea name="activite"  ng-model="theme_forma.activite"></textarea>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!theme_forma.$edit"> {{theme_forma.activite}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </md-tab>
+                    <md-tab label="Participant formation" ng-disabled="!vm.selectedItemRealisation_ebe.id" ng-click="vm.click_groupe_participant_ebe()">
+                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                <div layout="row" layout-align="start center">
+                                <div class="border-right">
+                                    
+                                  <span class="md-headline">PARTICIPANT &nbsp</span>
+                                </div>
+                                  <div class="border-right" ng-if="!vm.selectedItemGroupe_participant_ebe.id && !vm.nouvelleItemGroupe_participant_ebe">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterGroupe_participant_ebe()">
+                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                      <md-tooltip><span>Ajouter</span></md-tooltip>
+                                    </md-button>
+                                  </div> 
+                                  <div class="border-right" ng-if="vm.selectedItemGroupe_participant_ebe.id && !vm.selectedItemGroupe_participant_ebe.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierGroupe_participant_ebe()">
+                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                      <md-tooltip><span>Modifier</span></md-tooltip>
+                                    </md-button>
+                                  </div>    
+                                  <div class="border-right" ng-if="vm.selectedItemGroupe_participant_ebe.id && !vm.selectedItemGroupe_participant_ebe.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerGroupe_participant_ebe()">
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Supprimer</span></md-tooltip>
+                                    </md-button>
+                                  </div>  
+
+                                  <div class="border-right" ng-if="vm.selectedItemGroupe_participant_ebe.id">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerGroupe_participant_ebe()">
+                                      <md-icon md-font-icon="icon-cancel"></md-icon>
+                                      <md-tooltip><span>Annuler</span></md-tooltip>
+                                    </md-button>
+                                  </div>   
+
+                                  <div ng-if="vm.selectedItemGroupe_participant_ebe.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerGroupe_participant_ebe(0)">
+                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                    </md-button>
+                                  </div>                
+                                </div>
+                            </header>
+                            
+                        
+                            <table ng-table="groupe" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                                <thead>
+                                    <tr>
+                                        <th class="secondary-text" ng-repeat="c in ::vm.groupe_participant_ebe_column">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">{{c.titre}}</span>
+                                            </div>
+                                        </th>                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="groupe_par in vm.allGroupe_participant_ebe"  ng-class="{selected: groupe_par.$selected}" ng-click="vm.selectionGroupe_participant_ebe(groupe_par)">                                       
+                                     
+                                      <td>
+                                        <span ng-if="groupe_par.$edit">
+                                          <md-input-container style="width:100%;display: flex !important;">
+                                              <label>Ménage</label>
+                                              <md-select ng-model="groupe_par.id_menage" name="id_menage" ng-change="vm.change_menage(groupe_par)">
+                                                  <md-option ng-repeat="gr in vm.allMenage" value="{{gr.id}}">
+                                                      {{gr.identifiant_menage}}-{{gr.nomchefmenage}}
+                                                  </md-option>                                                
+                                              </md-select>
+                                          </md-input-container> 
+                                        </span>
+                                        <span ng-if="!groupe_par.$edit"> {{groupe_par.menage.identifiant_menage}}-{{groupe_par.menage.nomchefmenage}}</span>
+                                    </td>
+                                    <td>
+                                          <span ng-if="groupe_par.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Addresse</label>                                                
+                                                <input type="text" name="Addresse"  ng-model="groupe_par.Addresse" disabled/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!groupe_par.$edit"> {{groupe_par.menage.Addresse}}</span>
+                                        </td>
+                                        <td>
+                                              <span ng-if="groupe_par.$edit">
+                                                  <md-input-container style="width:100%;display: flex !important;">
+                                                    <label>Téléphone</label>                                                
+                                                    <input type="text" name="telephone_chef_menage"  ng-model="groupe_par.telephone_chef_menage" disabled/>
+                                                  </md-input-container>
+                                              </span>
+                                              <span ng-if="!groupe_par.$edit"> {{groupe_par.menage.telephone_chef_menage}}</span>
+                                            </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </md-tab> 
+                    <md-tab>
+                    </md-tab>
+                </md-tabs>
+            </div>
+        </div>
+    </div>

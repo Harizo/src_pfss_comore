@@ -35,7 +35,7 @@
             title: 'Gérer AGEP IDB',
             icon  : 'icon-data',
             state: 'app.pfss_idb_contrat_agep_idb',
-			weight:8,
+			weight:2,
             badge:vs,
         });
     }

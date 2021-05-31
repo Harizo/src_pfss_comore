@@ -19,13 +19,121 @@
                 <md-tabs md-dynamic-height>                   
                   <md-tab label="PGES">
                         <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                          <form name="filtreform" class="md-inline-form" novalidate >
+                            <div layout="column" layout-gt-xs="row" flex>
+                               <md-input-container flex="100" flex-gt-xs="90">
+                                 <label>Île</label>
+                                   <md-select ng-model="vm.filtre.id_ile" name="ile" ng-change="vm.filtre_region()" required>
+                                    
+                                     <md-option ng-repeat="ile in vm.all_ile" value="{{ile.id}}" >
+                                       {{ile.Ile}}
+                                     </md-option>
+    
+                                   </md-select>
+                                   <div ng-messages="filtreform.ile.$error"
+                                     role="alert">
+                                     <div ng-message="required">
+                                       <span>Île obligatoire</span>
+                                     </div>
+                                   </div>
+                               </md-input-container>
+    
+                               <md-input-container flex="100" flex-gt-xs="90">
+                                 <label>Préfecture</label>
+                                   <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_ile" required>
+                                     
+                                     <md-option ng-repeat="region in vm.all_region" value="{{region.id}}" >
+                                       {{region.Region}}
+                                     </md-option>
+    
+                                   </md-select>
+                                   <div ng-messages="filtreform.region.$error"
+                                     role="alert">
+                                     <div ng-message="required">
+                                       <span>Région obligatoire</span>
+                                     </div>
+                                   </div>
+                               </md-input-container>
+    
+                               <md-input-container flex="100" flex-gt-xs="90">
+                                 <label>Commune</label>
+                                   <md-select ng-model="vm.filtre.id_commune" name="commune" ng-disabled="!vm.filtre.id_region" ng-change="vm.filtre_village()" required>
+                                    
+                                     <md-option ng-repeat="commune in vm.all_commune" value="{{commune.id}}" >
+                                       {{commune.Commune}}
+                                     </md-option>
+    
+                                   </md-select>
+                                   <div ng-messages="filtreform.commune.$error"
+                                     role="alert">
+                                     <div ng-message="required">
+                                       <span>Commune obligatoire</span>
+                                     </div>
+                                   </div>
+                               </md-input-container>
+    
+                               <md-input-container flex="100" flex-gt-xs="90">
+                                 <label>Village</label>
+                                   <md-select ng-model="vm.filtre.id_village" name="village" ng-disabled="!vm.filtre.id_commune" ng-change="vm.filtre_zip()" required>
+                                    
+                                     <md-option ng-repeat="village in vm.all_village" value="{{village.id}}" >
+                                       {{village.Village}}
+                                     </md-option>
+    
+                                   </md-select>
+                                   <div ng-messages="filtreform.village.$error"
+                                     role="alert">
+                                     <div ng-message="required">
+                                       <span>village obligatoire</span>
+                                     </div>
+                                   </div>
+                               </md-input-container>
+                               <md-input-container flex="100" flex-gt-xs="90">
+                                 <label>Zip</label>
+                                   <md-select ng-model="vm.filtre.id_zip" name="zip" ng-disabled="!vm.filtre.id_zip"  required>
+                                    
+                                     <md-option ng-repeat="zip in vm.allZip" value="{{zip.id}}" >
+                                       {{zip.libelle}}
+                                     </md-option>
+    
+                                   </md-select>
+                                   <div ng-messages="filtreform.zip.$error"
+                                     role="alert">
+                                     <div ng-message="required">
+                                       <span>Zip obligatoire</span>
+                                     </div>
+                                   </div>
+                               </md-input-container>
+                               <md-input-container flex="100" flex-gt-xs="90">
+                                 <label>Vague</label>
+                                   <input ng-model="vm.filtre.vague" type="text" name="vague" disabled  required/>
+                                    
+                                   <div ng-messages="filtreform.vague.$error"
+                                     role="alert">
+                                     <div ng-message="required">
+                                       <span>Vague obligatoire</span>
+                                     </div>
+                                   </div>
+                               </md-input-container>
+                              
+                           </div>	
+                          <div>                            
+                            <section layout="row" layout-sm="column" layout-align="left" layout-wrap>
+                          
+                              <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                 ng-disabled="filtreform.$invalid||vm.affiche_load" ng-click="vm.get_pges(vm.filtre)">
+                                Actualiser
+                              </md-button>                              
+                            </section>                         
+                           </div>
+                       </form>
                             <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                                 <div layout="row" layout-align="start center">
                                 <div class="border-right">
                                     
                                   <span class="md-headline">PGES &nbsp{{vm.type_sous_projet}} &nbsp</span>
                                 </div>
-                                  <div class="border-right" ng-if="!vm.selectedItemPges.id && !vm.nouvelleItemPges">
+                                  <div class="border-right" ng-if="!vm.selectedItemPges.id && !vm.nouvelleItemPges && vm.filtre.id_village">
                                     <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterPges()">
                                       <md-icon md-font-icon="icon-plus-box"></md-icon>
                                       <md-tooltip><span>Ajouter</span></md-tooltip>
@@ -92,19 +200,40 @@
                                           </span>
                                           <span ng-if="!paie.$edit"> {{paie.ref_contrat}}</span>
                                         </td>
-                                        <!--td>
+                                        <td>
                                             <span ng-if="paie.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Sous projet</label>
-                                                  <md-select ng-model="paie.id_sous_projet" name="id_sous_projet">
-                                                      <md-option ng-repeat="mena in vm.allSous_projet" value="{{mena.id}}">
-                                                          {{mena.description}}
-                                                      </md-option>                                                
+                                                  <label>Infrastructure</label>
+                                                  <md-select ng-model="paie.id_infrastructure" name="id_infrastructure" ng-change="vm.change_infrastructure(paie)">
+                                                      <md-option ng-repeat="infra in vm.allInfrastructure_choisi" value="{{infra.id}}">
+                                                        <div>                                                          
+                                                          <span><strong>Code passation</strong>:{{infra.code_passation}}</span>
+                                                          <span><strong>Libelle</strong>: {{infra.libelle}}</span>
+                                                        </div>
+                                                      </md-option><md-divider md-inset></md-divider>                                                
                                                   </md-select>
                                               </md-input-container> 
                                             </span>
-                                            <span ng-if="!paie.$edit"> {{paie.sous_projet.description}}</span>
-                                        </td-->
+                                            <span ng-if="!paie.$edit"> 
+                                              <span ><strong ng-if="paie.infrastructure.code_passation">Code passation</strong>: {{paie.infrastructure.code_passation}}</span><br>
+                                              <span ><strong ng-if="paie.infrastructure.libelle">Libelle</strong>: {{paie.infrastructure.libelle}}</span>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span> 
+                                              <span ><strong ng-if="paie.infrastructure.code_type">Code</strong>: {{paie.infrastructure.code_type}}</span><br>
+                                              <span ><strong ng-if="paie.infrastructure.libelle_type">Libelle</strong>: {{paie.infrastructure.libelle_type}}</span>
+                                            </span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="paie.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Montant total</label>                                                
+                                                <input type="number" name="montant_total"  ng-model="paie.montant_total"/>
+                                              </md-input-container>
+                                          </span>
+                                          <span ng-if="!paie.$edit"> {{paie.montant_total}}</span>
+                                        </td>
                                         <td>
                                           <span ng-if="paie.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
@@ -198,7 +327,7 @@
                             </table>
                         </div>
                     </md-tab> 
-                    <md-tab label=" phases PGES" ng-disabled="!vm.tab_pges_phase" ng-click="vm.click_tab_phases()">
+                    <md-tab label=" phases PGES" ng-disabled="!vm.selectedItemPges.id" ng-click="vm.click_tab_phases()">
                         <div class="price-table style-1 md-whiteframe-1dp" layout="column">
                             <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                                 <div layout="row" layout-align="start center">
@@ -253,62 +382,74 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="paie in vm.allPges_phases"  ng-class="{selected: paie.$selected}" ng-click="vm.selectionPges_phases(paie)">                                       
+                                    <tr ng-repeat="pges_p in vm.allPges_phases"  ng-class="{selected: pges_p.$selected}" ng-click="vm.selectionPges_phases(pges_p)">                                       
                                                                                 
                                         <td>
-                                          <span ng-if="paie.$edit">
+                                          <span ng-if="pges_p.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
                                                 <label>Description</label>                                                
-                                                <input type="text" name="description"  ng-model="paie.description"/>
+                                                <input type="text" name="description"  ng-model="pges_p.description"/>
                                               </md-input-container>
                                           </span>
-                                          <span ng-if="!paie.$edit"> {{paie.description}}</span>
+                                          <span ng-if="!pges_p.$edit"> {{pges_p.description}}</span>
                                         </td>
                                         <td>
-                                          <span ng-if="paie.$edit">
+                                          <span ng-if="pges_p.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
                                                 <label>impacts</label>                                                
-                                                <input type="text" name="impacts"  ng-model="paie.impacts"/>
+                                                <input type="text" name="impacts"  ng-model="pges_p.impacts"/>
                                               </md-input-container>
                                           </span>
-                                          <span ng-if="!paie.$edit"> {{paie.impacts}}</span>
+                                          <span ng-if="!pges_p.$edit"> {{pges_p.impacts}}</span>
                                         </td>
                                         <td>
-                                          <span ng-if="paie.$edit">
+                                          <span ng-if="pges_p.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
                                                 <label>mesures</label>                                                
-                                                <input type="text" name="mesures"  ng-model="paie.mesures"/>
+                                                <input type="text" name="mesures"  ng-model="pges_p.mesures"/>
                                               </md-input-container>
                                           </span>
-                                          <span ng-if="!paie.$edit"> {{paie.mesures}}</span>
+                                          <span ng-if="!pges_p.$edit"> {{pges_p.mesures}}</span>
                                         </td>
                                         <td>
-                                          <span ng-if="paie.$edit">
+                                          <span ng-if="pges_p.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
                                                 <label>responsable</label>                                                
-                                                <input type="text" name="responsable"  ng-model="paie.responsable"/>
+                                                <input type="text" name="responsable"  ng-model="pges_p.responsable"/>
                                               </md-input-container>
                                           </span>
-                                          <span ng-if="!paie.$edit"> {{paie.responsable}}</span>
+                                          <span ng-if="!pges_p.$edit"> {{pges_p.responsable}}</span>
                                         </td>
                                         <td>
-                                          <span ng-if="paie.$edit">
+                                          <span ng-if="pges_p.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
-                                                <label>calendrier_execution</label>                                                
-                                                <input type="text" name="calendrier_execution"  ng-model="paie.calendrier_execution" />
+                                                <label>calendrier exécution</label>                                                
+                                                <input type="text" name="calendrier_execution"  ng-model="pges_p.calendrier_execution" />
                                               </md-input-container>
                                           </span>
-                                          <span ng-if="!paie.$edit"> {{paie.calendrier_execution}}</span>
+                                          <span ng-if="!pges_p.$edit"> {{pges_p.calendrier_execution}}</span>
                                         </td>
                                         <td>
-                                          <span ng-if="paie.$edit">
+                                          <span ng-if="pges_p.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
-                                                <label>cout_estimatif</label>                                                
-                                                <input type="number" name="cout_estimatif"  ng-model="paie.cout_estimatif"/>
+                                                <label>coût estimatif</label>                                                
+                                                <input type="number" name="cout_estimatif"  ng-model="pges_p.cout_estimatif"/>
                                               </md-input-container>
                                           </span>
-                                          <span ng-if="!paie.$edit"> {{paie.cout_estimatif}}</span>
-                                        </td>                                                                           
+                                          <span ng-if="!pges_p.$edit"> {{pges_p.cout_estimatif}}</span>
+                                        </td>
+                                        <td>
+                                          <span ng-if="pges_p.$edit">
+                                            <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Phase</label>
+                                                <md-select ng-model="pges_p.phase" name="phase">
+                                                    <md-option value="REALISATION">REALISATION</md-option>
+                                                    <md-option value="EXPLOITATION">EXPLOITATION</md-option>                                               
+                                                </md-select>
+                                            </md-input-container> 
+                                          </span>
+                                          <span ng-if="!pges_p.$edit"> {{pges_p.phase}}</span>
+                                      </td>                                                                           
 
                                     </tr>
                                 </tbody>
