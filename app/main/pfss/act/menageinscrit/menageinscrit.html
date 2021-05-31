@@ -366,7 +366,7 @@
 											{{lien.description}}
 										  </md-option>
 										</md-select>
-										<div ng-messages="individu_form.lien.$error"
+										<div ng-messages="filtrepardateform.lien.$error"
 										  role="alert">
 										  <div ng-message="required">
 											<span>Lien parental obligatoire</span>
@@ -422,7 +422,7 @@
 											{{lien.description}}
 										  </md-option>
 										</md-select>
-										<div ng-messages="individu_form.lien.$error"
+										<div ng-messages="filtrepardateform.lien_suppleant.$error"
 										  role="alert">
 										  <div ng-message="required">
 											<span>Lien parental obligatoire</span>
@@ -708,7 +708,7 @@
 								<md-input-container flex-gt-xs="15">
 									<input type="number"  name="taille_menage" ng-model="vm.filtre.taille_menage"
 									placeholder="Taille du ménage" readonly >
-									<div ng-messages="taille_menage.$error"
+									<div ng-messages="filtrepardateform.taille_menage.$error"
 										role="alert">
 										<div ng-message="required">
 											<span>Taille du ménage</span>
@@ -718,7 +718,7 @@
 								<md-input-container flex-gt-xs="15">
 									<input type="number"  name="nombre_personne_plus_soixantedixans" ng-model="vm.filtre.nombre_personne_plus_soixantedixans"
 									placeholder="Personnes +70 ans" >
-									<div ng-messages="nombre_personne_plus_soixantedixans.$error"
+									<div ng-messages="filtrepardateform.nombre_personne_plus_soixantedixans.$error"
 										role="alert">
 										<div ng-message="required">
 											<span>Personnes +70 ans </span>
@@ -728,7 +728,7 @@
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_enfant_moins_six_ans" ng-model="vm.filtre.nombre_enfant_moins_six_ans"
 									placeholder="Enfants moins de 6 ans" ng-change="vm.Sommer_Membre_Menages(vm.filtre)">
-									<div ng-messages="nombre_enfant_moins_six_ans.$error"
+									<div ng-messages="filtrepardateform.nombre_enfant_moins_six_ans.$error"
 										role="alert">
 										<div ng-message="required">
 											<span>Enfants moins de 6 ans </span>
@@ -738,7 +738,7 @@
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_enfant_moins_quinze_ans" ng-model="vm.filtre.nombre_enfant_moins_quinze_ans"
 									placeholder="Enf moins de 15 ans"  ng-change="vm.Sommer_Membre_Menages(vm.filtre)">
-									<div ng-messages="nombre_enfant_moins_quinze_ans.$error"
+									<div ng-messages="filtrepardateform.nombre_enfant_moins_quinze_ans.$error"
 										role="alert">
 										<div ng-message="required">
 											<span>Enf moins de 15 ans </span>
@@ -748,7 +748,7 @@
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_enfant_non_scolarise" ng-model="vm.filtre.nombre_enfant_non_scolarise"
 									placeholder="6-14 ans non scolarisé " >
-									<div ng-messages="nombre_enfant_non_scolarise.$error"
+									<div ng-messages="filtrepardateform.nombre_enfant_non_scolarise.$error"
 										role="alert">
 										<div ng-message="required">
 											<span>6-14 ans non scolarisé </span>
@@ -758,7 +758,7 @@
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_enfant_scolarise" ng-model="vm.filtre.nombre_enfant_scolarise"
 									placeholder="Enf 6-14 ans scolarisé " >
-									<div ng-messages="nombre_enfant_scolarise.$error"
+									<div ng-messages="filtrepardateform.nombre_enfant_scolarise.$error"
 										role="alert">
 										<div ng-message="required">
 											<span>Enf 6-14 ans scolarisé </span>
@@ -768,7 +768,7 @@
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_personne_handicape" ng-model="vm.filtre.nombre_personne_handicape"
 									placeholder="Personnes handicapées"  ng-change="vm.Sommer_Membre_Menages(vm.filtre)">
-									<div ng-messages="nombre_personne_handicape.$error"
+									<div ng-messages="filtrepardateform.nombre_personne_handicape.$error"
 										role="alert">
 										<div ng-message="required">
 											<span>Personnes handicapées</span>
@@ -778,7 +778,7 @@
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_adulte_travail" ng-model="vm.filtre.nombre_adulte_travail"
 									placeholder="Adultes qui travaillent"  ng-change="vm.Sommer_Membre_Menages(vm.filtre)">
-									<div ng-messages="nombre_adulte_travail.$error"
+									<div ng-messages="filtrepardateform.nombre_adulte_travail.$error"
 										role="alert">
 										<div ng-message="required">
 											<span>Adultes qui travaillent</span>
@@ -788,7 +788,7 @@
 								<md-input-container flex-gt-xs="10">
 									<input type="number"  name="nombre_membre_a_etranger" ng-model="vm.filtre.nombre_membre_a_etranger"
 									placeholder="Membres à l’étranger"  ng-change="vm.Sommer_Membre_Menages(vm.filtre)">
-									<div ng-messages="nombre_membre_a_etranger.$error"
+									<div ng-messages="filtrepardateform.nombre_membre_a_etranger.$error"
 										role="alert">
 										<div ng-message="required">
 											<span>Membres à l’étranger</span>

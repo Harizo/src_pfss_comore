@@ -24,10 +24,11 @@
                             Chargement,veuillez patienter s'il vous plait ...
                         </div>
                         <div style="widht:100%;">    
-                            <!--md-button type="submit" ng-show="(vm.filtre.id_region)&&(vm.filtre.id_region)&&(vm.filtre.id_commune)&&(vm.filtre.village_id) &&(vm.filtre.id_sous_projet)  && !vm.affichage_masque" class="md-raised md-green-800-bg" aria-label="Nouveau" ng-click="vm.ajouter_menage()" style="width:10%;">
+                            <!--md-button type="submit" ng-show="(vm.filtre.id_region)&&(vm.filtre.id_region)&&(vm.filtre.id_commune)&&(vm.filtre.village_id) &&(vm.filtre.id_sous_projet)  && !vm.affichage_masque" class="md-raised custum_button_new" aria-label="Nouveau" ng-click="vm.ajouter_menage()" style="width:10%;">
+							<md-icon md-font-icon="icon-plus" class="s16 center" style="color: white;"></md-icon>
                               Nouveau
                             </md-button-->
-                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised custum_button" aria-label="Modifier" ng-click="vm.modifier()" style="width:10%;">
+                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised custum_button" aria-label="Modifier" ng-click="vm.modifier()">
 							<md-icon md-font-icon="icon-table-edit" class="s16" style="color: white;"></md-icon>
                               Modifier
                             </md-button>
@@ -57,8 +58,7 @@
                                 <md-datepicker ng-model="vm.filtre.DateInscription"   md-placeholder="Enter date d'inscription" >                       
                                 </md-datepicker>
                             </div>
-                             <div layout="column" layout-gt-xs="row" flex>
-
+                            <div layout="column" layout-gt-xs="row" flex>
                                 <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Île</label>
                                     <md-select ng-model="vm.filtre.id_ile" name="ile" ng-change="vm.filtre_region()" required>
@@ -428,7 +428,7 @@
 										  </div>
 									  </div>
 									</md-input-container>								  
-									<md-input-container flex="100" flex-gt-xs="10"ng-show="vm.affichage_masque">
+									<md-input-container flex="100" flex-gt-xs="5"ng-show="vm.affichage_masque">
 									  <label>Sexe</label>
 										<md-select ng-model="vm.filtre.SexeTravailleur" name="SexeTravailleur"  >
 										  <md-option  value="">&nbsp;</md-option>
@@ -439,6 +439,20 @@
 										  role="alert">
 										  <div ng-message="required">
 											<span>Sexe travailleur obligatoire</span>
+										  </div>
+										</div>
+									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="15" ng-show="vm.affichage_masque">
+									  <label>Lien parental</label>
+										<md-select ng-model="vm.filtre.lien_travailleur" name="lien_travailleur" ng-change="vm.modifier_lienparentalTravailleuretSuppleant(vm.filtre,1)">										 
+										  <md-option ng-repeat="lien in vm.all_lienparental" value="{{lien.id}}" >
+											{{lien.description}}
+										  </md-option>
+										</md-select>
+										<div ng-messages="filtrepardateform.lien.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Lien parental obligatoire</span>
 										  </div>
 										</div>
 									</md-input-container>
@@ -470,7 +484,7 @@
 										  </div>
 									  </div>
 									</md-input-container>								  
-									<md-input-container flex="100" flex-gt-xs="10"ng-show="vm.affichage_masque">
+									<md-input-container flex="100" flex-gt-xs="5"ng-show="vm.affichage_masque">
 									  <label>Sexe</label>
 										<md-select ng-model="vm.filtre.SexeTravailleurSuppliant" name="SexeTravailleurSuppliant"  >
 										  <md-option  value="">&nbsp;</md-option>
@@ -484,14 +498,28 @@
 										  </div>
 										</div>
 									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="15" ng-show="vm.affichage_masque">
+									  <label>Lien parental</label>
+										<md-select ng-model="vm.filtre.lien_suppleant" name="lien_suppleant" ng-change="vm.modifier_lienparentalTravailleuretSuppleant(vm.filtre,2)">										 
+										  <md-option ng-repeat="lien in vm.all_lienparental" value="{{lien.id}}" >
+											{{lien.description}}
+										  </md-option>
+										</md-select>
+										<div ng-messages="filtrepardateform.lien.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Lien parental obligatoire</span>
+										  </div>
+										</div>
+									</md-input-container>
 								</div>
 								<div layout="column" layout-gt-xs="row" flex>
 									<md-input-container flex="100" flex-gt-xs="10"ng-show="vm.affichage_masque">
 									  <label>Milieu</label>
 										<md-select ng-model="vm.filtre.milieu" name="milieu"  >
 										  <md-option  value="">&nbsp;</md-option>
-										  <md-option  value="1">Urbain</md-option>
-										  <md-option  value="2">Rural</md-option>                                      
+										  <md-option  value="1">1- Urbain</md-option>
+										  <md-option  value="2">2- Rural</md-option>                                      
 										</md-select>
 										<div ng-messages="filtrepardateform.milieu.$error"
 										  role="alert">
@@ -571,6 +599,19 @@
 										  <div ng-message="required">
 											<span>Ménage Apte/Inapte obligatoire</span>
 										  </div>
+										</div>
+									</md-input-container>
+								</div>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex-gt-xs="20" ng-show="vm.affichage_masque">
+										<input type="text"  name="motif_non_selection" ng-model="vm.filtre.motif_non_selection"
+										placeholder="Motif de non seléction" ng-disabled="vm.filtre.preselectionne!=0 || vm.filtre.beneficiaire!=0"
+										ng-required="vm.filtre.preselectionne==0 && vm.filtre.beneficiaire==0">
+										<div ng-messages="filtrepardateform.motif_non_selection.$error"
+											role="alert">
+											<div ng-message="required">
+												<span>Motif de non seléction obligatoire.</span>
+											</div>
 										</div>
 									</md-input-container>
 								</div>
@@ -703,7 +744,7 @@
 								<div>                            
 									<section layout="row" layout-sm="column" layout-align="left" layout-wrap>
 									  <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
-										  ng-if="vm.affichage_masque" ng-disabled="(filtrepardateform.$invalid)||(vm.disable_button)" ng-click="vm.save_menage(vm.filtre,0)">
+										  ng-if="vm.affichage_masque" ng-disabled="(filtrepardateform.$invalid)" ng-click="vm.save_menage(vm.filtre,0)">
 										  Enregistrer
 									  </md-button>
 									  <md-button type="submit" class="md-raised md-primary" aria-label="Enregistrer"

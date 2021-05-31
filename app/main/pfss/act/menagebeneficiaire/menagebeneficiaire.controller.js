@@ -84,20 +84,20 @@
 			vm.filtre.id_sous_projet=1;
 			vm.titre =" ACT";
 			vm.filtre.sous_projet="ACT";
-			vm.placeholder_nom_travailleur="Nom travailleur.";
-			vm.placeholder_nom_suppleant="Nom travailleur suppléant.";			
+			vm.placeholder_nom_travailleur="Travailleur.";
+			vm.placeholder_nom_suppleant="Travailleur suppléant.";			
 		} else if(vm.url=='/arse/menage-beneficiaire-arse') {
 			vm.filtre.id_sous_projet=2;
 			vm.titre =" ARSE"
 			vm.filtre.sous_projet="ARSE";
-			vm.placeholder_nom_travailleur="Nom recepteur.";
-			vm.placeholder_nom_suppleant="Nom recepteur suppléant.";
+			vm.placeholder_nom_travailleur="Recepteur.";
+			vm.placeholder_nom_suppleant="Recepteur suppléant.";
 		} else if(vm.url=='/covid/menage-beneficiaire-covid-19') {
 			vm.filtre.id_sous_projet=4;
 			vm.titre =" COVID-19";
 			vm.filtre.sous_projet="COVID-19";
-			vm.placeholder_nom_travailleur="Nom recepteur.";
-			vm.placeholder_nom_suppleant="Nom recepteur suppléant.";
+			vm.placeholder_nom_travailleur="Recepteur.";
+			vm.placeholder_nom_suppleant="Recepteur suppléant.";
 		}
       //initialisation variable
 
@@ -249,7 +249,6 @@
       }
 		apiFactory.getAll("liste_variable/index").then(function(result){
 			vm.allRecordsListevariable = result.data.response;
-			console.log(vm.allRecordsListevariable);
 		});    
 		
 		vm.get_max_id_generer_ref = function() {
@@ -392,13 +391,16 @@
 			vm.filtre.SexeTravailleur  = null ;
 			vm.filtre.datedenaissancetravailleur  = new Date() ;
 			vm.filtre.agetravailleur  =null  ;
+			vm.filtre.lien_travailleur  =null  ;
 			vm.filtre.NomTravailleurSuppliant  =""  ;
 			vm.filtre.SexeTravailleurSuppliant  = null ;
 			vm.filtre.datedenaissancesuppliant  = new Date() ;
 			vm.filtre.agesuppliant  = null ;
+			vm.filtre.lien_suppleant  = null ;
 			vm.filtre.quartier  = null ;
 			vm.filtre.milieu  = null ;
 			vm.filtre.zip  = null ;
+			vm.filtre.motif_non_selection  = null ;
 			vm.filtre.photo  = null ;
 			vm.filtre.phototravailleur  = null ;
 			vm.filtre.phototravailleursuppliant  = null ;
@@ -406,6 +408,7 @@
 		}
 		vm.modifier = function()  {
 			vm.nouvelle_element = false ;
+			vm.affiche_load=true;
 			// vm.filtre={};
 			vm.filtre.DateInscription = new Date(vm.selectedItem.DateInscription);
 			vm.filtre.village_id = vm.selectedItem.village_id ;
@@ -446,6 +449,7 @@
 				vm.filtre.datedenaissancetravailleur  =  new Date();
 			}
 			vm.filtre.agetravailleur  =  parseInt(vm.selectedItem.agetravailleur) ;
+			vm.filtre.lien_travailleur  =vm.selectedItem.lien_travailleur ;
 			vm.filtre.NomTravailleurSuppliant  =  vm.selectedItem.NomTravailleurSuppliant ;
 			vm.filtre.SexeTravailleurSuppliant  =  vm.selectedItem.SexeTravailleurSuppliant ;
 			if(vm.selectedItem.datedenaissancesuppliant) {
@@ -454,9 +458,11 @@
 				vm.filtre.datedenaissancesuppliant  =  new Date();
 			}
 			vm.filtre.agesuppliant  =  parseInt(vm.selectedItem.agesuppliant) ;
+			vm.filtre.lien_suppleant  =vm.selectedItem.lien_suppleant ;
 			vm.filtre.quartier  =  vm.selectedItem.quartier ;
 			vm.filtre.milieu  =  vm.selectedItem.milieu ;
 			vm.filtre.zip  =  vm.selectedItem.zip ;
+			vm.filtre.motif_non_selection  =  vm.selectedItem.motif_non_selection ;
 			if(vm.selectedItem.nombre_personne_plus_soixantedixans)
 			vm.filtre.nombre_personne_plus_soixantedixans =  parseInt(vm.selectedItem.nombre_personne_plus_soixantedixans) ;
 			if(vm.selectedItem.taille_menage)
@@ -546,6 +552,7 @@
 			vm.filtre.phototravailleur  =vm.selectedItem.phototravailleur ;
 			vm.filtre.phototravailleursuppliant  =vm.selectedItem.phototravailleursuppliant ;
 			vm.affichage_masque = true ;
+			vm.affiche_load=false;
 			// vm.get_max_id_generer_ref();
 		}
 		vm.modifier_statut = function (etat_statut) {
@@ -777,8 +784,36 @@
 				}
 			});
 			if(vm.nontrouvee==true) {				
-					vm.acteur.lienparental = null; 
-					vm.acteur.lien_de_parente=null;
+					item.lienparental = null; 
+					item.lien_de_parente=null;
+			}
+		}
+        vm.modifier_lienparentalTravailleuretSuppleant = function (item,qui) { 
+			vm.nontrouvee=true;
+			vm.all_lienparental.forEach(function(umes) {
+				if(parseInt(qui)==1) { // Travailleur principal
+					if(parseInt(umes.id)==parseInt(item.lien_travailleur)) {
+						vm.filtre.lien_travailleur = umes.id; 
+						vm.filtre.lien_parente_travailleur=umes.description;
+						vm.nontrouvee=false;
+					}	
+				} else {
+					if(parseInt(umes.id)==parseInt(item.lien_suppleant)) {
+						// Suppeleant
+						vm.filtre.lien_suppleant = umes.id; 
+						vm.filtre.lien_parente_suppleant=umes.description;
+						vm.nontrouvee=false;
+					}	
+				}					
+			});
+			if(vm.nontrouvee==true) {	
+				if(parseInt(qui)==1) { // Travailleur principal
+					vm.filtre.lien_travailleur = null; 
+					vm.filtre.lien_parente_travailleur=null;
+				} else {
+					vm.filtre.lien_suppleant = null; 
+					vm.filtre.lien_parente_suppleant=null;
+				}		
 			}
 		}
 		vm.modifierSousProjet = function(filtre) {
@@ -1169,13 +1204,16 @@
                       SexeTravailleur: menage.SexeTravailleur,
                       datedenaissancetravailleur: formatDateBDD(menage.datedenaissancetravailleur),
                       agetravailleur: menage.agetravailleur,
+                      lien_travailleur: menage.lien_travailleur,
                       NomTravailleurSuppliant: menage.NomTravailleurSuppliant,
                       SexeTravailleurSuppliant: menage.SexeTravailleurSuppliant,
                       datedenaissancesuppliant: formatDateBDD(menage.datedenaissancesuppliant),
                       agesuppliant: menage.agesuppliant,
+                      lien_suppleant: menage.lien_suppleant,
                       quartier: menage.quartier,
                       milieu: menage.milieu,
                       zip: menage.zip,
+                      motif_non_selection: menage.motif_non_selection,
                       statut: menage.statut,
                       inapte: menage.inapte,
                       inscrit: menage.inscrit,
@@ -1268,13 +1306,16 @@
 						SexeTravailleur: menage.SexeTravailleur,
 						datedenaissancetravailleur: menage.datedenaissancetravailleur,
 						agetravailleur: menage.agetravailleur,
+						lien_travailleur: menage.lien_travailleur,
 						NomTravailleurSuppliant: menage.NomTravailleurSuppliant,
 						SexeTravailleurSuppliant: menage.SexeTravailleurSuppliant,
 						datedenaissancesuppliant: menage.datedenaissancesuppliant,
 						agesuppliant: menage.agesuppliant,
+						lien_suppleant: menage.lien_suppleant,
 						quartier: menage.quartier,
 						milieu: menage.milieu,
 						zip: menage.zip,
+						motif_non_selection: menage.motif_non_selection,
 						inapte: menage.inapte,
 						inscrit: menage.inscrit,
 						preselectionne: menage.preselectionne,
@@ -1351,13 +1392,16 @@
 						vm.selectedItem.SexeTravailleur = vm.filtre.SexeTravailleur  ;
 						vm.selectedItem.datedenaissancetravailleur = vm.filtre.datedenaissancetravailleur  ;
 						vm.selectedItem.agetravailleur = vm.filtre.agetravailleur  ;
+						vm.selectedItem.lien_travailleur = vm.filtre.lien_travailleur  ;
 						vm.selectedItem.NomTravailleurSuppliant = vm.filtre.NomTravailleurSuppliant  ;
 						vm.selectedItem.SexeTravailleurSuppliant = vm.filtre.SexeTravailleurSuppliant  ;
 						vm.selectedItem.datedenaissancesuppliant = vm.filtre.datedenaissancesuppliant  ;
 						vm.selectedItem.agesuppliant = vm.filtre.agesuppliant  ;
+						vm.selectedItem.lien_suppleant = vm.filtre.lien_suppleant  ;
 						vm.selectedItem.quartier = vm.filtre.quartier  ;
 						vm.selectedItem.milieu = vm.filtre.milieu  ;
 						vm.selectedItem.zip = vm.filtre.zip  ;
+						vm.selectedItem.motif_non_selection = vm.filtre.motif_non_selection  ;
 						vm.selectedItem.photo = vm.filtre.photo  ;
 						vm.selectedItem.phototravailleur = vm.filtre.phototravailleur  ;
 						vm.selectedItem.phototravailleursuppliant = vm.filtre.phototravailleursuppliant  ;

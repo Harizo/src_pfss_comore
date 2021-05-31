@@ -726,7 +726,7 @@
 				vm.selectedItem_individu = {} ;//raz individu_selected
 				vm.selectedItem = item;
 				vm.get_individus_by_menage(item.id);
-				vm.charger_detail_reponse_menage(item);
+				vm.charger_detail_reponse_menage(item.id);
 			}       
 		}
 		$scope.$watch('vm.selectedItem', function() {
