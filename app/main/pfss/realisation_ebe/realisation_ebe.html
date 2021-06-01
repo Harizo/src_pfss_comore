@@ -199,12 +199,12 @@
                             
                             <md-input-container flex="100" flex-gt-xs="25">
                                 <label>Contrat ONG</label>
-                                <md-select ng-model="vm.realisation_ebe.id_contrat_consultant_ong" name="id_contrat_consultant_ong">
-                                    <md-option ng-repeat="mena in vm.allContrat_consultant_ong" value="{{mena.id}}">
-                                            {{mena.reference}}
+                                <md-select ng-model="vm.realisation_ebe.id_contrat_agex" name="id_contrat_agex">
+                                    <md-option ng-repeat="mena in vm.allContrat_agex" value="{{mena.id}}">
+                                            {{mena.numero_contrat}}
                                     </md-option>                                                
                                   </md-select>
-                                  <div ng-messages="formrealisation_ebe.id_contrat_consultant_ong.$error" role="alert">
+                                  <div ng-messages="formrealisation_ebe.id_contrat_agex.$error" role="alert">
                                     <div ng-message="required">
                                       <span>Contrat ONG Obligatoire.</span>
                                     </div>
@@ -283,7 +283,7 @@
                           <tbody>
                             <tr ng-repeat="contr in vm.allRealisation_ebe"  ng-class="{selected: contr.$selected}" ng-click="vm.selection(contr)">
                                 
-                                <td>{{contr.contrat_consultant_ong.reference}}</td>
+                                <td>{{contr.contrat_agex.numero_contrat}}</td>
                                 <td>{{contr.numero}}</td>
                                 <td>{{contr.but_regroupement}}</td> 
                                 <td>{{contr.date_regroupement | date:'dd/MM/yyyy'}}</td>
