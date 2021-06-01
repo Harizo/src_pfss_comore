@@ -2,7 +2,11 @@
 {
     'use strict';
     angular
-        .module('app.pfss.macc.macc_arse.mere_leader', [			
+        .module('app.pfss.macc.macc_arse.mere_leader', [	
+			'app.pfss.macc.macc_arse.mere_leader.ddbmlpl',
+			'app.pfss.macc.macc_arse.mere_leader.groupemlpl',
+			'app.pfss.macc.macc_arse.mere_leader.rapportmensuelmlpl',
+			'app.pfss.macc.macc_arse.mere_leader.visitedomicile',
             ])
         // .run(testPermission)
         .config(config);

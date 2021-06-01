@@ -25,16 +25,16 @@
             data : {
               authorizer : true,
               permitted : ["USER","PERSONNEL","ADMIN"],
-              page: "phase_execution"
+              page: "Phase execution"
             }
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.phase_execution', {
-            title: "Phase d'exécution et Année",
-            icon  : 'icon-swap-horizontal',
-            state: 'app.pfss_ddb_phase_execution',
-            weight: 8
+        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.phaseexecution', {
+            title: "Phase execution et année",
+            icon  : 'icon-square-inc',
+            state: 'app.pfss_ddb_phaseexecution',
+            weight: 12,
             // hidden: function()
             // {
                     // return vs;

@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pfss.mereleaderpereleader.groupemlpl')
+        .module('app.pfss.macc.macc_arse.mere_leader.groupemlpl')
         .controller('GroupemlplController', GroupemlplController);
     /** @ngInject */
     function GroupemlplController($mdDialog, $scope, apiFactory, $state,$cookieStore)  {
@@ -16,10 +16,10 @@
         order: []
       };
 
-      vm.groupe_mlpl_column = [{titre:"Date création"},{titre:"Chef Village"},{titre:"Nom groupe"}];
-      vm.liste_mlpl_column = [{titre:"ML/PL"},{titre:"Nom et prénom"},{titre:"Adresse"},{titre:"Contact"},{titre:"Fonction"}];
+      vm.groupe_mlpl_column = [{titre:"Date création"},{titre:"Ménage"},{titre:"Nom ML/PL"},{titre:"Sexe"},{titre:"Age"},{titre:"Lien de parenté"},{titre:"Contact"},{titre:"Nom groupe"}];
+      vm.liste_mlpl_column = [{titre:"Nom et prénom"},{titre:"Sexe"},{titre:"Age"},{titre:"Lien de parenté"},{titre:"Ménage"},{titre:"Adresse"},{titre:"Contact"}];
       vm.listemenage_mlpl_column = [{titre:"Chef de ménage"},{titre:"Conjoint(e)"},{titre:"Adresse"},
-	  {titre:"-6 ans"},{titre:"+6 ans non scolarisé"},{titre:"+6 ans scolarisé"},{titre:"Actions"}];
+	  {titre:"-6 ans"},{titre:"+6 ans non scolarisé"},{titre:"+6 ans scolarisé"}];
       //initialisation variable
 		vm.currentItem = {};
         vm.affiche_load = false ;
@@ -31,12 +31,14 @@
         vm.all_liste_mlpl = [] ;
         vm.all_groupe_mlpl = [] ;
 		vm.all_listemenage_mlpl =[];
+		vm.all_menage_mlpl =[];
         vm.nouvelle_element = false ;
         vm.nouvelle_element_liste_mlpl = false ;
         vm.nouvelle_element_listemenage_mlpl = false ;
         vm.affichage_masque = false ;
         vm.affichage_masque_liste_mlpl = false ;
         vm.affichage_masque_listemenage_mlpl = false ;
+		
         vm.date_now = new Date() ;
 
         vm.disable_button = false ;
@@ -70,6 +72,7 @@
         var current_selectedItemPoint_controle_mlpl = {} ;
         vm.nouvelItemPoint_controle_mlpl = false ;
         vm.allPoint_controle_mlpl = [] ;
+		vm.tab_reponse_menage_ml_pl=[];
       //initialisation variable
 
       //chargement clé etrangère et données de bases
@@ -110,7 +113,17 @@
 				return "";
 			}
         };
-
+		//CHECK BOK MULTISELECT
+        vm.toggle = function (item, list) {
+          var idx = list.indexOf(item);
+          if (idx > -1) list.splice(idx, 1);
+          else list.push(item);        
+        };
+        $scope.exists = function (item, list) {
+          if (list) {
+            return list.indexOf(item) > -1;
+          }         
+        };
       	// utilitaire
      vm.filtre_region = function()
       {
@@ -145,9 +158,7 @@
         apiFactory.getAPIgeneraliserREST("village/index","cle_etrangere",vm.filtre.id_commune).then(function(result)
         { 
           vm.all_village = result.data.response;    
-          vm.filtre.village_id = null ; 
-          
-          
+          vm.filtre.village_id = null ;           
         });
       }
 		// Début Fonction Groupe ML/PL	
@@ -169,7 +180,13 @@
                       village_id: groupe_mlpl.village_id,
                       date_creation: formatDateBDD(groupe_mlpl.date_creation),
                       chef_village: groupe_mlpl.chef_village,
+                      id_menage: groupe_mlpl.id_menage,
+                      nom_prenom_ml_pl: groupe_mlpl.nom_prenom_ml_pl,
                       nom_groupe: groupe_mlpl.nom_groupe,
+                      sexe: groupe_mlpl.sexe,
+                      age: groupe_mlpl.age,
+                      lien_de_parente: groupe_mlpl.lien_de_parente,
+                      telephone: groupe_mlpl.telephone,
                     });
 			apiFactory.add("groupe_mlpl/index",datas, config).success(function (data) {
 				vm.affichage_masque = false ;
@@ -181,7 +198,16 @@
 						village_id: groupe_mlpl.village_id,
 						date_creation: formatDateBDD(groupe_mlpl.date_creation),
 						chef_village: groupe_mlpl.chef_village,
+						id_menage: groupe_mlpl.id_menage,
+						nom_prenom_ml_pl: groupe_mlpl.nom_prenom_ml_pl,
 						nom_groupe: groupe_mlpl.nom_groupe,
+						identifiant_menage: groupe_mlpl.identifiant_menage,
+						nomchefmenage: groupe_mlpl.nomchefmenage,
+						sexe: groupe_mlpl.sexe,
+						age: groupe_mlpl.age,
+						lien_de_parente: groupe_mlpl.lien_de_parente,
+						telephone: groupe_mlpl.telephone,
+						lienparental: groupe_mlpl.lienparental,
 					}
 					vm.all_groupe_mlpl.push(mng) ;
 				} else {
@@ -195,7 +221,16 @@
 						vm.selectedItem.date_creation =  vm.filtre.date_creation ;
 						vm.selectedItem.village_id = vm.filtre.village_id  ;
 						vm.selectedItem.chef_village = vm.filtre.chef_village  ;
+						vm.selectedItem.id_menage = vm.filtre.id_menage  ;
+						vm.selectedItem.nom_prenom_ml_pl = vm.filtre.nom_prenom_ml_pl  ;
 						vm.selectedItem.nom_groupe = vm.filtre.nom_groupe  ;
+						vm.selectedItem.identifiant_menage = vm.filtre.identifiant_menage  ;
+						vm.selectedItem.nomchefmenage = vm.filtre.nomchefmenage  ;
+						vm.selectedItem.sexe = vm.filtre.sexe  ;
+						vm.selectedItem.age = vm.filtre.age  ;
+						vm.selectedItem.lien_de_parente = vm.filtre.lien_de_parente  ;
+						vm.selectedItem.telephone = vm.filtre.telephone  ;
+						vm.selectedItem.lienparental = vm.filtre.lienparental  ;
 					}      
   				}      
 			}).error(function (data) {
@@ -206,7 +241,7 @@
 		}
 		vm.selection= function (item)  {
 			if ((!vm.affiche_load)&&(!vm.affichage_masque))  {
-				vm.all_liste_mlpl = [] ;
+				// vm.all_liste_mlpl = [] ;
 				vm.selectedItem_liste_mlpl = {} ;//raz individu_selected
 				vm.selectedItem = item;
 				vm.get_liste_mlpl_by_groupe(item.id);
@@ -229,6 +264,14 @@
 			vm.filtre.date_creation = new Date();
 			vm.filtre.chef_village = "" ;
 			vm.filtre.nom_groupe = "" ;
+			vm.filtre.id_menage = null ;
+			vm.filtre.nom_prenom_ml_pl = null ;
+			vm.filtre.identifiant_menage = null ;
+			vm.filtre.nomchefmenage = null ;
+			vm.filtre.sexe = null ;
+			vm.filtre.age = null ;
+			vm.filtre.lien_de_parente = null ;
+			vm.filtre.telephone = null ;
 		}
 		vm.modifier = function()  {
 			vm.nouvelle_element = false ;
@@ -237,11 +280,22 @@
 			vm.filtre.village_id = vm.selectedItem.village_id ;
 			vm.filtre.chef_village = vm.selectedItem.chef_village ;
 			vm.filtre.nom_groupe = vm.selectedItem.nom_groupe ;
+			vm.filtre.id_menage = vm.selectedItem.id_menage ;
+			vm.filtre.nom_prenom_ml_pl = vm.selectedItem.nom_prenom_ml_pl ;
+			vm.filtre.identifiant_menage = vm.selectedItem.identifiant_menage ;
+			vm.filtre.nomchefmenage = vm.selectedItem.nomchefmenage ;
+			vm.filtre.sexe = vm.selectedItem.sexe ;
+			vm.filtre.lien_de_parente = vm.selectedItem.lien_de_parente ;
+			if(vm.selectedItem.age) {
+				vm.filtre.age=parseInt(vm.selectedItem.age);
+			} else vm.filtre.age=null;
+			vm.filtre.telephone = vm.selectedItem.telephone ;
 			vm.affichage_masque = true ;
 		}
 		vm.annuler = function () {
 			vm.nouvelle_element = false ;
 			vm.affichage_masque = false ;
+			vm.selectedItem={};
 		}
 		vm.supprimer = function() {
 			vm.nouvelle_element = false ;
@@ -260,6 +314,22 @@
             //alert('rien');
 			});
         };	  
+		vm.Modifier_Menage =function() {
+			vm.all_menages.forEach(function(mng) {
+				if(parseInt(mng.id)==parseInt(vm.filtre.id_menage)) {
+					vm.filtre.identifiant_menage = mng.identifiant_menage; 
+					vm.filtre.nomchefmenage = mng.nomchefmenage; 
+				}
+			});			
+			
+		}
+		vm.modifier_lien_de_parente_groupe_mlpl =function(item) {
+			vm.all_lienparental.forEach(function(lp) {
+				if(parseInt(lp.id)==parseInt(vm.filtre.lien_de_parente)) {
+					vm.filtre.lienparental = lp.description; 
+				}
+			});			
+		}
 		// Fin Fonction Groupe ML/PL
 		
 		// Début Fonction Liste ML/PL	
@@ -285,6 +355,9 @@
                       adresse: liste_mlpl.adresse,
                       contact: liste_mlpl.contact,
                       fonction: liste_mlpl.fonction,
+                      sexe: liste_mlpl.sexe,
+                      age: liste_mlpl.age,
+                      lien_de_parente: liste_mlpl.lien_de_parente,
                     });
 			apiFactory.add("liste_mlpl/index",datas, config).success(function (data) {
 				vm.disable_button = false ;
@@ -306,6 +379,10 @@
 							nombre_enfant_non_scolarise: liste_mlpl.nombre_enfant_non_scolarise,
 							nombre_enfant_moins_six_ans: liste_mlpl.nombre_enfant_moins_six_ans,
 							nombre_enfant_scolarise: liste_mlpl.nombre_enfant_scolarise,
+							sexe: liste_mlpl.sexe,
+							age: liste_mlpl.age,
+							lien_de_parente: liste_mlpl.lien_de_parente,
+							lienparental: liste_mlpl.lienparental,
 						}
 						vm.all_liste_mlpl.push(indiv);
 				} else {
@@ -329,6 +406,10 @@
 						vm.selectedItem_liste_mlpl.nombre_enfant_non_scolarise=liste_mlpl.nombre_enfant_non_scolarise;
 						vm.selectedItem_liste_mlpl.nombre_enfant_moins_six_ans=liste_mlpl.nombre_enfant_moins_six_ans;
 						vm.selectedItem_liste_mlpl.nombre_enfant_scolarise=liste_mlpl.nombre_enfant_scolarise;
+						vm.selectedItem_liste_mlpl.sexe=liste_mlpl.sexe;
+						vm.selectedItem_liste_mlpl.age=liste_mlpl.age;
+						vm.selectedItem_liste_mlpl.lien_de_parente=liste_mlpl.lien_de_parente;
+						vm.selectedItem_liste_mlpl.lienparental=liste_mlpl.lienparental;
 					}	
 				}       
 			}).error(function (data) {
@@ -371,10 +452,17 @@
 			vm.liste_mlpl_masque.nombre_enfant_non_scolarise=vm.selectedItem_liste_mlpl.nombre_enfant_non_scolarise;
 			vm.liste_mlpl_masque.nombre_enfant_moins_six_ans=vm.selectedItem_liste_mlpl.nombre_enfant_moins_six_ans;
 			vm.liste_mlpl_masque.nombre_enfant_scolarise=vm.selectedItem_liste_mlpl.nombre_enfant_scolarise;
+			vm.liste_mlpl_masque.sexe=vm.selectedItem_liste_mlpl.sexe;
+			if(vm.selectedItem_liste_mlpl.age) {
+				vm.liste_mlpl_masque.age=parseInt(vm.selectedItem_liste_mlpl.age);
+			}	
+			vm.liste_mlpl_masque.lien_de_parente=vm.selectedItem_liste_mlpl.lien_de_parente;
+			vm.liste_mlpl_masque.lienparental=vm.selectedItem_liste_mlpl.lienparental;
 		}
 		vm.annuler_liste_mlpl = function()  {
 			vm.nouvelle_element_liste_mlpl = false ;
 			vm.affichage_masque_liste_mlpl = false ;
+			vm.selectedItem_liste_mlpl={};
 		}
 		vm.supprimer_liste_mlpl = function() {
 			vm.nouvelle_element = false ;
@@ -396,7 +484,7 @@
 		// Fin Fonction Liste ML/PL	
 		
 		// Début Fonction Liste ménage ML/PL	
-		vm.save_listemenage_mlpl = function(menage_mlpl,suppr) {
+		vm.save_listemenage_mlpl = function() {
 			vm.disable_button = true ;
 			var config =  {
                         headers : {
@@ -408,27 +496,39 @@
 			if (!vm.nouvelle_element_listemenage_mlpl) {
 				var id_idv = vm.selectedItem_listemenage_mlpl.id ;
 			}
-			var datas = $.param(
-                    {    
-                      supprimer:suppr,
-                      id: id_idv ,
-                      id_groupe_ml_pl: vm.selectedItem.id,
-                      menage_id: menage_mlpl.menage_id,
-                    });
-			apiFactory.add("liste_menage_mlpl/index",datas, config).success(function (data) {
+			// Stocker dans une variable texte temporaire : txtTmp les valeurs à poster ultérieurement
+			// Tableau détail  : vm.tab_reponse_menage_ml_pl et  à stocker dans des variables indexées id_variable_(index)
+			// Puis on utilise la fonction eval afin que l'on puisse poster normalement txtTmp
+			// C'est une façon de contourner la récupération impossible de variable tableau dans le serveur PHP	
+			vm.nombre_menage_membre = vm.tab_reponse_menage_ml_pl.length; // nombre ménage membre groupe ML/PL
+			var txtTmp="";
+			// Début colonne id_groupe_ml_pl dans la table liste_menage_mlpl
+			txtTmp += "supprimer" +":\"" + "0" + "\",";
+			txtTmp += "id_groupe_ml_pl" +":\"" + vm.selectedItem.id + "\",";
+			// Fin  colonne id_groupe_ml_pl dans la table liste_menage_mlpl
+			// Début réponse menage membre groupe ML/PL : choix multiple
+			txtTmp += "nombre_menage_membre" +":\"" + vm.nombre_menage_membre + "\",";	
+			for(var i=0;i < vm.nombre_menage_membre;i++) {
+				txtTmp += "id_menage_" + (i+1) + ":\"" + vm.tab_reponse_menage_ml_pl[i] + "\",";	
+			}
+			// Fin réponse menage membre groupe ML/PL
+			txtTmp = txtTmp.replace(new RegExp('\'', 'g'),'\\\'');
+			txtTmp = txtTmp.replace(new RegExp('(\r\n|\r|\n)', 'g'),'');
+			var donnees = $.param(eval('({' + txtTmp + '})'));										
+			apiFactory.add("liste_menage_mlpl/index",donnees, config).success(function (data) {
 				vm.disable_button = false ;
 				vm.affichage_masque_listemenage_mlpl = false ;
 				vm.showAlert("Information",'Enregistrement réussi!');
-				if (vm.nouvelle_element_listemenage_mlpl) {
-					vm.selectedItem_listemenage_mlpl.id_groupe_ml_pl =vm.selectedItem.id;
-					vm.selectedItem_listemenage_mlpl.menage_id = menage_mlpl.menage_id;
-					vm.selectedItem_listemenage_mlpl.$selected = false;
-					vm.selectedItem_listemenage_mlpl.$edit = false;
-					vm.selectedItem_listemenage_mlpl ={};
-				} else {
-					menage_mlpl.id=data.response;	
-					vm.selectedItem_listemenage_mlpl= {}  ;
-				}       
+				// if (vm.nouvelle_element_listemenage_mlpl) {
+					// vm.selectedItem_listemenage_mlpl.id_groupe_ml_pl =vm.selectedItem.id;
+					// vm.selectedItem_listemenage_mlpl.menage_id = menage_mlpl.menage_id;
+					// vm.selectedItem_listemenage_mlpl.$selected = false;
+					// vm.selectedItem_listemenage_mlpl.$edit = false;
+					// vm.selectedItem_listemenage_mlpl ={};
+				// } else {
+					// menage_mlpl.id=data.response;	
+					// vm.selectedItem_listemenage_mlpl= {}  ;
+				// }       
 			}).error(function (data) {
 				vm.disable_button = false ;
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
@@ -441,8 +541,8 @@
 			}       
 		}
 		$scope.$watch('vm.selectedItem_listemenage_mlpl', function() {
-			if (!vm.all_listemenage_mlpl) return;
-			vm.all_listemenage_mlpl.forEach(function(item) {
+			if (!vm.all_menage_mlpl) return;
+			vm.all_menage_mlpl.forEach(function(item) {
 				item.$selected = false;
 			});
 			vm.selectedItem_listemenage_mlpl.$selected = true;
@@ -517,13 +617,17 @@
 			vm.affiche_load = true ;
 			apiFactory.getAPIgeneraliserREST("groupe_mlpl/index","cle_etrangere",vm.filtre.village_id).then(function(result) { 				
 				vm.all_groupe_mlpl = result.data.response;    
+				var msg ="Aucun groupe ML/PL dans le village de " +vm.filtre.village  + ". Merci !";	
+				if(result.data.response.length==0) {
+					vm.showAlert("INFORMATION",msg);
+				}	
 				vm.affiche_load = false ;
 			});
 		}
 		vm.get_liste_mlpl_by_groupe = function(id_groupe_ml_pl) {
 			vm.affiche_load = true ;
 			apiFactory.getAPIgeneraliserREST("liste_mlpl/index","cle_etrangere",id_groupe_ml_pl).then(function(result) 	{ 
-				vm.all_liste_mlpl =[];
+				// vm.all_liste_mlpl =[];
 				vm.all_liste_mlpl = result.data.response; 
 				vm.affiche_load = false ;
 			});
@@ -531,24 +635,29 @@
 		vm.get_listemenage_mlpl_by_groupe = function(id_groupe_ml_pl) {
 			vm.affiche_load = true ;
 			// Liste ménage par village et liste ménage par groupe ML/PL
-			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"statut","BENEFICIAIRE").then(function(result) { 
-				//vm.all_menages =[];
-				vm.all_menages = result.data.response;   
+			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"id_groupe_ml_pl",id_groupe_ml_pl).then(function(result) { 
+				// vm.all_menages = result.data.response.menage;   
+				vm.all_menage_mlpl = result.data.response.menage; 
+				vm.tab_reponse_menage_ml_pl = result.data.response.tab_reponse_menage_ml_pl; 
+				console.log(vm.all_menage_mlpl);
 				apiFactory.getAPIgeneraliserREST("liste_menage_mlpl/index","cle_etrangere",id_groupe_ml_pl).then(function(result) 	{ 
-					vm.all_listemenage_mlpl =[];
 					vm.all_listemenage_mlpl = result.data.response; 
 					vm.affiche_load = false;
 				});
 			});
 		}
 		vm.modifier_membre_menage =function(item,rang) {
+			console.log(vm.all_menages[0]);
 			vm.all_menages.forEach(function(mng) {
 				if(parseInt(mng.id)==parseInt(item.menage_id)) {
 					item.menage_id = mng.id; 
 					item.NumeroEnregistrement=mng.NumeroEnregistrement;
+					item.identifiant_menage=mng.identifiant_menage;
 					item.nomchefmenage=mng.nomchefmenage;
 					item.nom_conjoint=mng.nom_conjoint;
-					item.Addresse=mng.Addresse;
+					item.adresse=mng.Addresse;
+					vm.liste_mlpl_masque.identifiant_menage=mng.identifiant_menage;
+					vm.liste_mlpl_masque.adresse=mng.Addresse;
 					item.nombre_enfant_non_scolarise=mng.nombre_enfant_non_scolarise;
 					item.nombre_enfant_moins_six_ans=mng.nombre_enfant_moins_six_ans;
 					item.nombre_enfant_scolarise=mng.nombre_enfant_scolarise;
@@ -556,6 +665,7 @@
 						// Saisie en ligne (menage ML/PL) l'autre c'est dans une forme(ML/PL)
 						vm.selectedItem_listemenage_mlpl.menage_id = mng.id; 
 						vm.selectedItem_listemenage_mlpl.NumeroEnregistrement=mng.NumeroEnregistrement;
+						vm.selectedItem_listemenage_mlpl.identifiant_menage=mng.identifiant_menage;
 						vm.selectedItem_listemenage_mlpl.nomchefmenage=mng.nomchefmenage;
 						vm.selectedItem_listemenage_mlpl.nom_conjoint=mng.nom_conjoint;
 						vm.selectedItem_listemenage_mlpl.Addresse=mng.Addresse;
@@ -564,6 +674,13 @@
 						vm.selectedItem_listemenage_mlpl.nombre_enfant_scolarise=mng.nombre_enfant_scolarise;
 					}	
 					vm.nontrouvee=false;
+				}
+			});			
+		}
+		vm.modifier_lien_de_parente =function(item) {
+			vm.all_lienparental.forEach(function(lp) {
+				if(parseInt(lp.id)==parseInt(vm.liste_mlpl_masque.lien_de_parente)) {
+					vm.liste_mlpl_masque.lienparental = lp.description; 
 				}
 			});			
 		}
@@ -846,7 +963,8 @@
 					date_supervision: null,
 					date_prevue_debut: null,
 					date_prevue_fin: null,
-					nom_representant_mlpl: '' 
+					nom_representant_mlpl: '',
+					id_groupemlpl: vm.selectedItem.id,
 					
 				} ;
 
@@ -878,6 +996,7 @@
 			vm.selectedItemFiche_supervision_mlpl.date_prevue_debut 	= new Date(vm.selectedItemFiche_supervision_mlpl.date_prevue_debut);
 			vm.selectedItemFiche_supervision_mlpl.date_prevue_fin 		= new Date(vm.selectedItemFiche_supervision_mlpl.date_prevue_fin);
 			vm.selectedItemFiche_supervision_mlpl.nom_representant_mlpl = vm.selectedItemFiche_supervision_mlpl.nom_representant_mlpl;
+			vm.selectedItemFiche_supervision_mlpl.id_groupemlpl = vm.selectedItemFiche_supervision_mlpl.id_groupemlpl;
 		}
 
 		vm.supprimerFiche_supervision_mlpl = function()
@@ -933,6 +1052,7 @@
 					vm.selectedItemFiche_supervision_mlpl.date_prevue_debut 	= current_selectedItemFiche_supervision_mlpl.date_prevue_debut;
 					vm.selectedItemFiche_supervision_mlpl.date_prevue_fin 		= current_selectedItemFiche_supervision_mlpl.date_prevue_fin;
 					vm.selectedItemFiche_supervision_mlpl.nom_representant_mlpl = current_selectedItemFiche_supervision_mlpl.nom_representant_mlpl;
+					vm.selectedItemFiche_supervision_mlpl.id_groupemlpl = current_selectedItemFiche_supervision_mlpl.id_groupemlpl;
 					
 					vm.selectedItemFiche_supervision_mlpl = {};
 				}
@@ -1826,6 +1946,28 @@
 		//FIN PROBLEME ET SOLUTION
 
 		// DEBUT FONCTION UTILITAIRE
+		vm.modifierVillage = function(filtre) {
+			vm.affiche_load = true ;
+			vm.filtre.vague=null;
+			vm.filtre.zip=null;
+			vm.all_village.forEach(function(vil) {
+				if(parseInt(vil.id)==parseInt(vm.filtre.village_id)) {
+					vm.filtre.village = vil.Village; 
+					vm.filtre.vague=vil.vague;
+					vm.filtre.zip=vil.id_zip;
+					vm.nontrouvee=false;
+				}
+			});	
+			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"etat_statut","beneficiaire","id_sous_projet",vm.filtre.id_sous_projet,"beneficiaire",1).then(function(result) { 
+				vm.all_menages = result.data.response; 
+				var msg ="Aucun ménage bénéficiaire dans le village de " +vm.filtre.village + ". Merci !";				
+				if(result.data.response.length==0) {
+					vm.showAlert("INFORMATION",msg);
+				}	
+				vm.affiche_load = false ;
+			});
+			
+		}
 		vm.showAlert = function(titre,textcontent) {         
           $mdDialog.show(
             $mdDialog.alert()

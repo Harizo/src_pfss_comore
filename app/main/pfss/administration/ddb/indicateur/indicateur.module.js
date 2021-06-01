@@ -34,7 +34,7 @@
             title: "Indicateur",
             icon  : 'icon-square-inc',
             state: 'app.pfss_ddb_indicateur',
-            weight: 6
+            weight: 8,
             // hidden: function()
             // {
                     // return vs;

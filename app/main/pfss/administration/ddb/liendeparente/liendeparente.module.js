@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pfss.ddb_adm.typeplainte', [])
+        .module('app.pfss.ddb_adm.liendeparente', [])
         .run(testPermission)
         .config(config);
         var vs ;
@@ -13,28 +13,28 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.pfss_ddb_typeplainte', {
-            url      : '/donnees-de-base/type-plainte',
+        $stateProvider.state('app.pfss_ddb_liendeparente', {
+            url      : '/donnees-de-base/lien-de-parente',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/pfss/administration/ddb/typeplainte/typeplainte.html',
-                    controller : 'TypeplainteController as vm'
+                    templateUrl: 'app/main/pfss/administration/ddb/liendeparente/liendeparente.html',
+                    controller : 'LiendeparenteController as vm'
                 }
             },
-            bodyClass: 'typeplainte',
+            bodyClass: 'liendeparente',
             data : {
               authorizer : true,
               permitted : ["USER","PERSONNEL","ADMIN"],
-              page: "Type plainte"
+              page: "Lien de parenté"
             }
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.typeplainte', {
-            title: "Type / Résultat Plainte",
+        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.liendeparente', {
+            title: "Lien de parenté",
             icon  : 'icon-swap-horizontal',
-            state: 'app.pfss_ddb_typeplainte',
-			weight: 4,
+            state: 'app.pfss_ddb_liendeparente',
+            weight: 15,
             // hidden: function()
             // {
                     // return vs;

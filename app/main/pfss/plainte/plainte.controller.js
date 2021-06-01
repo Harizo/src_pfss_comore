@@ -91,7 +91,7 @@
         responsive: true
         };
         // vm.activite_col = [{"titre":"Type de document"}];
-        vm.col_plainte = [{"titre":"N°"},{"titre":"Type"},{"titre":"Objet"},{"titre":"Sous-prj"},{"titre":"Date dépot"},{"titre":"Nom"},{"titre":"Adresse"},{"titre":"Résultat"},{"titre":"Date résolution"}];           
+        vm.col_plainte = [{"titre":"N°"},{"titre":"Objet"},{"titre":"Responsable"},{"titre":"Date dépot"},{"titre":"Nom"},{"titre":"Adresse"},{"titre":"Tél"},{"titre":"Mésure prise"},{"titre":"Résultat"},{"titre":"Date résolution"}];           
         var id_user = $cookieStore.get('id');
 		vm.utilisateur_id = id_user;
 		// Début Récupération données référentielles
@@ -180,10 +180,14 @@
 				str1=vm.nom_commune;
 				vm.nom_commune=str1.substring(0, 3);	
 				vm.nom_commune=vm.nom_commune.toUpperCase();
+				vm.filtre.vague=null;
+				vm.filtre.zip=null;
 				vm.all_village.forEach(function(ax) {
-					if(parseInt(ax.id)==parseInt(vm.filtre.id_commune)) {
+					if(parseInt(ax.id)==parseInt(vm.filtre.village_id)) {
 						vm.nom_village = ax.Village; 
 						vm.saisie.village=ax.Village; 
+						vm.filtre.vague=ax.vague;
+						vm.filtre.zip=ax.id_zip;
 					}
 				});
 				str1=vm.nom_village;
@@ -265,6 +269,7 @@
                 mesureprise:vm.saisie.mesureprise,
                 dateresolution:vm.saisie.dateresolution,
                 statut:vm.saisie.statut,
+                telephone:vm.saisie.telephone,
                 a_ete_modifie:vm.saisie.a_ete_modifie,
                 supprime:vm.saisie.supprime,
                 userid:vm.utilisateur_id,
@@ -298,6 +303,7 @@
 						mesureprise:vm.saisie.mesureprise,
 						dateresolution:vm.saisie.dateresolution,
 						statut:vm.saisie.statut,
+						telephone:vm.saisie.telephone,
 						a_ete_modifie:vm.saisie.a_ete_modifie,
 						supprime:vm.saisie.supprime,
 						userid:vm.saisie.userid,
@@ -352,8 +358,9 @@
 				vm.saisie.adresseplaignant=null;		
 				vm.saisie.responsableenregistrement=null;		
 				vm.saisie.mesureprise=null;	
-				vm.saisie.dateresolution=new Date();	
+				vm.saisie.dateresolution=null;	
 				vm.saisie.statut=null;		
+				vm.saisie.telephone=null;		
 				vm.saisie.a_ete_modifie=0;		
 				vm.saisie.supprime=0;		
 				vm.saisie.userid=null;		
@@ -371,7 +378,7 @@
 			vm.affichage_masque=false;
         };
 		// Suppression d'un item plainte
-		vm.supprimerPlainte = function(item) {
+		vm.supprimerPlainte = function(item,suppression) {
             vm.selectedptaItem=item;
             var confirm = $mdDialog.confirm()
                 .title('Etes-vous sûr de supprimer cet enregistrement ?')
@@ -382,7 +389,7 @@
                 .ok('ok')
                 .cancel('annuler');
             $mdDialog.show(confirm).then(function() {
-				vm.sauverPlainte(vm.selectedPlainteItem,1);
+				vm.sauverPlainte(vm.selectedPlainteItem,suppression);
             }, function() {
              //alert('rien');
             });
@@ -436,6 +443,7 @@
 				}	
 				vm.saisie.sous_projet=vm.selectedPlainteItem.sous_projet;	
 				vm.saisie.code_sous_projet=vm.selectedPlainteItem.code_sous_projet;	
+				vm.saisie.telephone=vm.selectedPlainteItem.telephone;	
             NouvelPlainteItem = false ;
 			vm.affichage_masque=true;
 			console.log(vm.saisie);
@@ -454,7 +462,10 @@
                getId = vm.selectedPlainteItem.id; 
 			   modifie=1;
             } 
-			
+			vm.dateresolution=null;
+			if(vm.saisie.dateresolution) {
+				vm.dateresolution=formatDateBDD(vm.saisie.dateresolution);
+			}
 			// var rep = apiUrlbase + apiUrlrecommandation + vm.site.toLowerCase()  ;
 			var rep = apiUrlbase + apiUrlrecommandation ;
 			vm.directoryName=rep;
@@ -477,8 +488,9 @@
                 adresseplaignant: vm.saisie.adresseplaignant,            
                 responsableenregistrement: vm.saisie.responsableenregistrement,            
                 mesureprise: vm.saisie.mesureprise,            
-                dateresolution: formatDateBDD(vm.saisie.dateresolution),            
+                dateresolution: vm.dateresolution,            
                 statut: vm.saisie.statut,            
+                telephone: vm.saisie.telephone,            
                 a_ete_modifie: modifie,            
                 supprime: 0,            
                 userid: vm.utilisateur_id,            
@@ -511,6 +523,7 @@
 						vm.selectedPlainteItem.mesureprise= vm.saisie.mesureprise;           
 						vm.selectedPlainteItem.dateresolution= vm.formatDateListe(vm.saisie.dateresolution);            
 						vm.selectedPlainteItem.statut= vm.saisie.statut;            
+						vm.selectedPlainteItem.telephone= vm.saisie.telephone;            
 						vm.selectedPlainteItem.a_ete_modifie= modifie;            
 						vm.selectedPlainteItem.supprime= 0;           
 						vm.selectedPlainteItem.userid= vm.utilisateur_id;           
@@ -553,6 +566,7 @@
 						mesureprise:vm.saisie.mesureprise,
 						dateresolution:vm.formatDateListe(vm.saisie.dateresolution),
 						statut:vm.saisie.statut,
+						telephone:vm.saisie.telephone,
 						a_ete_modifie:0,
 						supprime:0,
 						userid:vm.utilisateur_id,
@@ -643,6 +657,7 @@
 					vm.saisie.menage_id = ax.id; 
 					vm.saisie.NumeroEnregistrement=ax.NumeroEnregistrement;
 					vm.saisie.nomchefmenage=ax.nomchefmenage;
+					vm.saisie.adresseplaignant=ax.Addresse;
 					vm.nontrouvee=false;
 				}
 			});

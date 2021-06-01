@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pfss.mereleaderpereleader.rapportmensuelmlpl', [])
+        .module('app.pfss.macc.macc_arse.mere_leader.rapportmensuelmlpl', [])
         .config(config);
 
     /** @ngInject */
@@ -14,7 +14,7 @@
             url      : '/mere-leader-pere-leader/rapport-mensuel',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/pfss/mereleaderpereleader/rapportmensuelmlpl/rapportmensuelmlpl.html',
+                    templateUrl: 'app/main/pfss/macc/macc_arse/mere_leader/rapportmensuelmlpl/rapportmensuelmlpl.html',
                     controller : 'RapportmensuelmlplController as vm'
                 }
             },
@@ -27,7 +27,7 @@
         });
 
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.mereleaderpereleader.rapportmensuelmlpl', {
+        msNavigationServiceProvider.saveItem('pfss.macc.macc_arse.mere_leader.rapportmensuelmlpl', {
             title: 'Rapport mensuel',
             icon  : 'icon-tile-four',
             state: 'app.pfss_rapportmensuelmlpl',

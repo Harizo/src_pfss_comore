@@ -33,6 +33,7 @@
             title: "Réponse/Ménage",
             icon  : 'icon-map-marker-circle',
             state: 'app.pfss_ddb_ddbvariable',
+			weight: 5,
             // hidden: function()
             // {
                     // return vs;

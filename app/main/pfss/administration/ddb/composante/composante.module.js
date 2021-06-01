@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pfss.ddb_adm.typeplainte', [])
+        .module('app.pfss.ddb_adm.composante', [])
         .run(testPermission)
         .config(config);
         var vs ;
@@ -13,28 +13,27 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.pfss_ddb_typeplainte', {
-            url      : '/donnees-de-base/type-plainte',
+        $stateProvider.state('app.pfss_ddb_composante', {
+            url      : '/donnees-de-base/composante',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/pfss/administration/ddb/typeplainte/typeplainte.html',
-                    controller : 'TypeplainteController as vm'
+                    templateUrl: 'app/main/pfss/administration/ddb/composante/composante.html',
+                    controller : 'ComposanteController as vm'
                 }
             },
-            bodyClass: 'typeplainte',
+            bodyClass: 'composante',
             data : {
               authorizer : true,
               permitted : ["USER","PERSONNEL","ADMIN"],
-              page: "Type plainte"
+              page: "composante"
             }
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.typeplainte', {
-            title: "Type / Résultat Plainte",
+        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.composante', {
+            title: "composante",
             icon  : 'icon-swap-horizontal',
-            state: 'app.pfss_ddb_typeplainte',
-			weight: 4,
+            state: 'app.pfss_ddb_composante',
             // hidden: function()
             // {
                     // return vs;

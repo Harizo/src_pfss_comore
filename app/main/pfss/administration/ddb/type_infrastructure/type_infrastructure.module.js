@@ -34,7 +34,7 @@
             title: "Type d'activité,ARSE et ACT",
             icon  : 'icon-yelp',
             state: 'app.pfss_ddb_type_infrastructure',
-            weight: 5
+            weight: 7,
             // hidden: function()
             // {
                     //return vs;

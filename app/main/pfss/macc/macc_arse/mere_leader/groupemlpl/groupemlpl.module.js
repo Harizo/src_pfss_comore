@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pfss.mereleaderpereleader.groupemlpl', [])
+        .module('app.pfss.macc.macc_arse.mere_leader.groupemlpl', [])
         .config(config);
 
     /** @ngInject */
@@ -14,7 +14,7 @@
             url      : '/mere-leader-pere-leader/groupe-ml-pl',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/pfss/mereleaderpereleader/groupemlpl/groupemlpl.html',
+                    templateUrl: 'app/main/pfss/macc/macc_arse/mere_leader/groupemlpl/groupemlpl.html',
                     controller : 'GroupemlplController as vm'
                 }
             },
@@ -27,7 +27,7 @@
         });
 
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.mereleaderpereleader.groupemlpl', {
+        msNavigationServiceProvider.saveItem('pfss.macc.macc_arse.mere_leader.groupemlpl', {
             title: 'Groupe ML/PL',
             icon  : 'icon-tile-four',
             state: 'app.pfss_groupe_mlpl',

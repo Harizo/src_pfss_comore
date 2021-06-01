@@ -33,6 +33,7 @@
             title: "Plan action réinstallation",
             icon  : 'icon-map-marker-circle',
             state: 'app.pfss_ddb_ddbplanactionreinstallation',
+			weight: 11,
             // hidden: function()
             // {
                     // return vs;

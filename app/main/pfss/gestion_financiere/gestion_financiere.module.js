@@ -31,7 +31,7 @@
             title: 'Suivi budgétaire',//gestion financiere ntable
             icon  : 'icon-nfc-variant',
             state: 'app.pfss_gestion_financiere',
-			weight:8
+			weight:18
         });
     }
 

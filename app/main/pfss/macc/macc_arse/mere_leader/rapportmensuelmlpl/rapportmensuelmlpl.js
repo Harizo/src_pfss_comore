@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pfss.mereleaderpereleader.rapportmensuelmlpl')
+        .module('app.pfss.macc.macc_arse.mere_leader.rapportmensuelmlpl')
         .controller('RapportmensuelmlplController', RapportmensuelmlplController);
     /** @ngInject */
     function RapportmensuelmlplController($mdDialog, $scope, apiFactory, $state,$cookieStore)  {

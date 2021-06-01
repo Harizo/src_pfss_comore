@@ -310,13 +310,13 @@
 
                                             <span ng-if="cm.$edit">
                                                 <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Communauté</label>
+                                                  <label>Ile</label>
                                                   
                                                   <!-- <input type="text" name="nom_signataire"  ng-model="cm.nom_signataire"/> -->
-                                                  <md-select ng-model="cm.id_communaute" name="id_communaute" ng-change="vm.get_attr_com()">
+                                                  <md-select ng-model="cm.id_ile" name="id_ile" >
                                                     
-                                                        <md-option ng-repeat="sp in vm.all_communaute" value="{{sp.id}}">
-                                                            ({{sp.code_communaute}}) {{sp.libelle_communaute}}
+                                                        <md-option ng-repeat="sp in vm.all_ile" value="{{sp.id}}">
+                                                            {{sp.Ile}}
                                                         </md-option>
                                                         
                                                     </md-select>
@@ -324,36 +324,103 @@
                                                 
                                             </span>
                                             <span ng-if="!cm.$edit">
-                                                ({{cm.code_communaute}}) {{cm.libelle_communaute}}
+                                              {{cm.nom_ile}}
                                             </span>
                                         </td>
+
                                         <td>
 
-                                            <!-- <span ng-if="cm.$edit">
+                                            <span ng-if="cm.$edit">
                                                 <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Titre</label>
-                                                  <input type="text" name="titre_signatire"  ng-model="cm.titre_signatire"/>
+                                                  <label>Préfecture</label>
+                                                  
+                                                  <!-- <input type="text" name="nom_signataire"  ng-model="cm.nom_signataire"/> -->
+                                                  <md-select ng-model="cm.id_region" name="id_region" >
+                                                    
+                                                        <md-option ng-repeat="sp in vm.all_region" value="{{sp.id}}">
+                                                            {{sp.Region}}
+                                                        </md-option>
+                                                        
+                                                    </md-select>
                                                 </md-input-container>   
                                                 
-                                            </span> -->
-                                            <span >
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.nom_region}}
+                                            </span>
+                                        </td>
+
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Commune</label>
+                                                  
+                                                  <!-- <input type="text" name="nom_signataire"  ng-model="cm.nom_signataire"/> -->
+                                                  <md-select ng-model="cm.id_commune" name="id_commune" >
+                                                    
+                                                        <md-option ng-repeat="sp in vm.all_commune" value="{{sp.id}}">
+                                                            {{sp.Commune}}
+                                                        </md-option>
+                                                        
+                                                    </md-select>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
                                                 {{cm.nom_commune}}
                                             </span>
                                         </td>
 
                                         <td>
 
-                                            <!-- <span ng-if="cm.$edit">
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Village</label>
+                                                  
+                                                  <!-- <input type="text" name="nom_signataire"  ng-model="cm.nom_signataire"/> -->
+                                                  <md-select ng-model="cm.id_village" name="id_village" >
+                                                    
+                                                        <md-option ng-repeat="sp in vm.all_village" value="{{sp.id}}">
+                                                            {{sp.Village}}
+                                                        </md-option>
+                                                        
+                                                    </md-select>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.nom_village}}
+                                            </span>
+                                        </td>
+
+                                        <!-- <td>
+
+                                            <span ng-if="cm.$edit">
                                                 <md-input-container style="width:100%;display: flex !important;">
                                                   <label>Titre</label>
                                                   <input type="text" name="titre_signatire"  ng-model="cm.titre_signatire"/>
                                                 </md-input-container>   
                                                 
-                                            </span> -->
+                                            </span>
+                                            <span >
+                                                {{cm.nom_commune}}
+                                            </span>
+                                        </td> -->
+
+                                        <!-- <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Titre</label>
+                                                  <input type="text" name="titre_signatire"  ng-model="cm.titre_signatire"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
                                             <span >
                                                 {{cm.nom_region}}
                                             </span>
-                                        </td>
+                                        </td> -->
 
                                         <td>
 
@@ -1063,13 +1130,94 @@
                         </div>
                     </md-tab>
 
-                    <md-tab label="Cycle du sous projet et planning d’exécution" ng-disabled="!vm.selected_mdp.id" ng-click="               vm.get_all_mdp_duree_planning()">
+                    <md-tab label="Cycle du sous projet et planning d’exécution" ng-disabled="!vm.selected_mdp.id" ng-click="               vm.get_all_mdp_duree_planning_mere()">
+
                         <div class="price-table style-1 md-whiteframe-1dp" layout="column">
                             <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                                 <div layout="row" layout-align="start center">
                                 <div class="border-right">
                                     
-                                  <span class="md-headline">Liste Durée et planning d’exécution</span>
+                                  <span class="md-headline">Désignation des activités</span>
+                                </div>
+                                  <div class="border-right" ng-if="!vm.selected_mdp_duree_planning_mere.id&&!vm.nouvelle_mdp_duree_planning_mere">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_mdp_duree_planning_mere()">
+                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                      <md-tooltip><span>Ajouter</span></md-tooltip>
+                                    </md-button>
+                                  </div> 
+                                  <div class="border-right" ng-if="vm.selected_mdp_duree_planning_mere.id&&!vm.selected_mdp_duree_planning_mere.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_mdp_duree_planning_mere()">
+                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                      <md-tooltip><span>Modifier</span></md-tooltip>
+                                    </md-button>
+                                  </div>    
+                                  <div class="border-right" ng-if="vm.selected_mdp_duree_planning_mere.id&&!vm.selected_mdp_duree_planning_mere.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_mdp_duree_planning_mere()">
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Supprimer</span></md-tooltip>
+                                    </md-button>
+                                  </div>  
+
+                                  <div class="border-right" ng-if="vm.selected_mdp_duree_planning_mere.id">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_mdp_duree_planning_mere()">
+                                      <md-icon md-font-icon="icon-cancel"></md-icon>
+                                      <md-tooltip><span>Annuler</span></md-tooltip>
+                                    </md-button>
+                                  </div>   
+
+                                  <div ng-if="vm.selected_mdp_duree_planning_mere.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_mdp_duree_planning_mere(0)">
+                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                    </md-button>
+                                  </div>                
+                                </div>
+                            </header>
+                            
+                        
+                            <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                                <thead>
+                                    <tr>
+                                        <th class="secondary-text" ng-repeat="c in ::vm.duree_planning_mere_column">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">{{c.titre}}</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="cm in vm.all_mdp_duree_planning_mere"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_mdp_duree_planning_mere(cm)">                                       
+                                        
+                                        
+                                     
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Libellé</label>
+                                                  <input type="text" name="libelle"  ng-model="cm.libelle"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.libelle}}
+                                            </span>
+                                        </td>
+
+                                        
+
+
+                                      
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                <div layout="row" layout-align="start center">
+                                <div class="border-right">
+                                    
+                                  <span class="md-headline">Tâches</span>
                                 </div>
                                   <div class="border-right" ng-if="!vm.selected_mdp_duree_planning.id&&!vm.nouvelle_mdp_duree_planning">
                                     <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_mdp_duree_planning()">
@@ -1272,7 +1420,9 @@
                           </header>         
                           <div layout="row">
                             <div flex="40" class="tableau text-center">
-                             Désignation des activités/tâches
+                           <!--   Désignation des activités/tâches <br> -->
+                             <span class="md-subhead">{{vm.selected_mdp_duree_planning_mere.libelle}}</span>
+                            
                             </div>
 
                         
@@ -1922,7 +2072,19 @@
                                 <tbody>
                                     <tr ng-repeat="cm in vm.all_mdp_estimation_depense"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_mdp_estimation_depense(cm)">                                       
                                         
-                                        
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>LOcalité</label>
+                                                  <input type="text" name="localite"  ng-model="cm.localite"/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.localite}}
+                                            </span>
+                                        </td>
                                      
                                         <td>
 
@@ -1968,60 +2130,9 @@
                                             </span>
                                         </td>
 
-                                        <td>
+                                        
 
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Dziani</label>
-                                                  <input type="text" name="dziani"  ng-model="cm.dziani"/>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.dziani}}
-                                            </span>
-                                        </td>
-
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Kiyo</label>
-                                                  <input type="text" name="kiyo"  ng-model="cm.kiyo"/>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.kiyo}}
-                                            </span>
-                                        </td>
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Komoni</label>
-                                                  <input type="text" name="komoni"  ng-model="cm.komoni"/>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.komoni}}
-                                            </span>
-                                        </td>
-                                        <td>
-
-                                            <span ng-if="cm.$edit">
-                                                <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Trindrini</label>
-                                                  <input type="text" name="trindrini"  ng-model="cm.trindrini"/>
-                                                </md-input-container>   
-                                                
-                                            </span>
-                                            <span ng-if="!cm.$edit">
-                                                {{cm.trindrini}}
-                                            </span>
-                                        </td>
-
+                                        
                                         <td>
 
                                             <span ng-if="cm.$edit">

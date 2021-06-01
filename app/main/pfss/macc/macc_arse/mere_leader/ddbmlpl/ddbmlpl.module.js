@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pfss.mereleaderpereleader.ddbmlpl', [])
+        .module('app.pfss.macc.macc_arse.mere_leader.ddbmlpl', [])
         .config(config);
 
     /** @ngInject */
@@ -11,10 +11,10 @@
     {
         // State
         $stateProvider.state('app.pfss_ddb_mlpl', {
-            url      : '/mere-leader-pere-leader/donnees-referentielles',
+            url      : '/macc/arse/mere-leader-pere-leader/donnees-referentielles',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/pfss/mereleaderpereleader/ddbmlpl/ddbmlpl.html',
+                    templateUrl: 'app/main/pfss/macc/macc_arse/mere_leader/ddbmlpl/ddbmlpl.html',
                     controller : 'DdbmlplController as vm'
                 }
             },
@@ -27,7 +27,7 @@
         });
 
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.mereleaderpereleader.ddbmlpl', {
+        msNavigationServiceProvider.saveItem('pfss.macc.macc_arse.mere_leader.ddbmlpl', {
             title: 'Données référentielles',
             icon  : 'icon-tile-four',
             state: 'app.pfss_ddb_mlpl',
