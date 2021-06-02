@@ -41,11 +41,14 @@
             order:[] 
         };
 
- 
-        apiFactory.getAPIgeneraliserREST("contrat_consultant_ong/index","menu","getcontratbysousprojet",'id_sous_projet',id_sous_projet_state).then(function(result)
+        apiFactory.getAPIgeneraliserREST("contrat_ugp_agex/index",'id_sous_projet',id_sous_projet_state).then(function(result)
         {
-            vm.allContrat_consultant_ong = result.data.response;
+            vm.allContrat_agex = result.data.response;
         });
+       /* apiFactory.getAPIgeneraliserREST("contrat_agex/index","menu","getcontratbysousprojet",'id_sous_projet',id_sous_projet_state).then(function(result)
+        {
+            vm.allContrat_agex = result.data.response;
+        });*/
 
         apiFactory.getAll("Ile/index").then(function(result)
         {
@@ -208,7 +211,7 @@
                 vm.realisation_ebe.date_regroupement=null;
                 vm.realisation_ebe.materiel=null;
                 vm.realisation_ebe.lieu=null;
-                vm.realisation_ebe.id_contrat_consultant_ong=null;
+                vm.realisation_ebe.id_contrat_agex=null;
                 vm.realisation_ebe.id_groupe_ml_pl= vm.filtre.id_groupe_ml_pl;
                 //vm.formation_ml.id_commune=null;		
                 vm.affichage_masque=true;
@@ -239,13 +242,13 @@
                 vm.realisation_ebe.lieu = vm.selectedItemRealisation_ebe.lieu ;
                 vm.realisation_ebe.id_groupe_ml_pl  = vm.selectedItemRealisation_ebe.id_groupe_ml_pl ;
 
-                var contrat = vm.allContrat_consultant_ong.filter(function(obj)
+                var contrat = vm.allContrat_agex.filter(function(obj)
                 {
-                    return obj.id == vm.selectedItemRealisation_ebe.contrat_consultant_ong.id ;
+                    return obj.id == vm.selectedItemRealisation_ebe.contrat_agex.id ;
                  });
                  if (contrat.length!=0)
                  {
-                    vm.realisation_ebe.id_contrat_consultant_ong  = contrat[0].id ;                     
+                    vm.realisation_ebe.id_contrat_agex  = contrat[0].id ;                     
                  }
                 vm.affichage_masque=true;
             }
@@ -294,7 +297,7 @@
                         date_regroupement:  convert_date(realisation_ebe.date_regroupement),
                         materiel:           realisation_ebe.materiel,
                         lieu:               realisation_ebe.lieu,
-                        id_contrat_consultant_ong:  realisation_ebe.id_contrat_consultant_ong,
+                        id_contrat_agex:  realisation_ebe.id_contrat_agex,
                         id_groupe_ml_pl:           vm.filtre.id_groupe_ml_pl            
                         
                     });
@@ -305,13 +308,13 @@
                         {
                             if (etat_suppression == 0) 
                             {  
-                                var contrat = vm.allContrat_consultant_ong.filter(function(obj)
+                                var contrat = vm.allContrat_agex.filter(function(obj)
                                 {
-                                    return obj.id == realisation_ebe.id_contrat_consultant_ong  ;
+                                    return obj.id == realisation_ebe.id_contrat_agex  ;
                                 });
                                 if (contrat.length!=0)
                                 {                                  
-                                    vm.selectedItemRealisation_ebe.contrat_consultant_ong = contrat[0] ;  
+                                    vm.selectedItemRealisation_ebe.contrat_agex = contrat[0] ;  
                                 }
                                 vm.selectedItemRealisation_ebe.id_groupe_ml_pl         = realisation_ebe.id_groupe_ml_pl ;
                                 vm.selectedItemRealisation_ebe.numero           = realisation_ebe.numero ;
@@ -331,9 +334,9 @@
                         }
                         else
                         {   var cont = [];
-                            var contrat = vm.allContrat_consultant_ong.filter(function(obj)
+                            var contrat = vm.allContrat_agex.filter(function(obj)
                             {
-                                return obj.id == realisation_ebe.id_contrat_consultant_ong  ;
+                                return obj.id == realisation_ebe.id_contrat_agex  ;
                             });
                             if (contrat.length!=0)
                             {                                  
@@ -342,7 +345,7 @@
                             var item =
                             {
                             id :                        String(data.response) ,
-                            contrat_consultant_ong :    cont ,
+                            contrat_agex :    cont ,
                             id_commune :                realisation_ebe.id_commune ,
                             numero :                    realisation_ebe.numero ,
                             but_regroupement :          realisation_ebe.but_regroupement ,
@@ -371,7 +374,7 @@
                         ||(currentItemRealisation_ebe.date_regroupement   != convert_date(item.date_regroupement) )
                         ||(currentItemRealisation_ebe.materiel            != item.materiel )
                         ||(currentItemRealisation_ebe.lieu                != item.lieu )
-                        ||(currentItemRealisation_ebe.contrat_consultant_ong.id   != item.id_contrat_consultant_ong ) 
+                        ||(currentItemRealisation_ebe.contrat_agex.id   != item.id_contrat_agex ) 
                         )                    
                     { 
                             insert_in_baseRealisation_ebe(item,suppression);                      
