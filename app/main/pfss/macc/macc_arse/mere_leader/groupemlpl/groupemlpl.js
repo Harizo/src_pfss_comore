@@ -38,6 +38,7 @@
         vm.affichage_masque = false ;
         vm.affichage_masque_liste_mlpl = false ;
         vm.affichage_masque_listemenage_mlpl = false ;
+        vm.affichage_masque_fiche_presence = false ;
 		
         vm.date_now = new Date() ;
 
@@ -71,8 +72,14 @@
 		vm.selectedItemPoint_controle_mlpl = {} ;
         var current_selectedItemPoint_controle_mlpl = {} ;
         vm.nouvelItemPoint_controle_mlpl = false ;
+		
+		vm.selectedItemPresence_menage ={};
+		
         vm.allPoint_controle_mlpl = [] ;
 		vm.tab_reponse_menage_ml_pl=[];
+		vm.tab_reponse_presence_bienetre=[];
+		vm.fiche_presence={};
+		vm.max_date = new Date();
       //initialisation variable
 
       //chargement clé etrangère et données de bases
@@ -103,6 +110,9 @@
           vm.allContrat_consultant = result.data.response;    
           
         });
+		apiFactory.getTable("ddb_mlpl/index","espace_bien_etre").then(function(result){
+			vm.allRecordsEspacebienetre = result.data.response;
+		});    
 		// utilitaire
 		vm.affiche_sexe = function(parametre) {
 			if(parametre==0) {
@@ -246,6 +256,7 @@
 				vm.selectedItem = item;
 				vm.get_liste_mlpl_by_groupe(item.id);
 				vm.get_listemenage_mlpl_by_groupe(item.id);
+				vm.click_tab_livrable_mlpl();
 			} 
 			vm.selectedItemFiche_supervision_mlpl = {}; 
 			vm.selectedItemLivrable_mlpl = {};     
@@ -319,6 +330,14 @@
 				if(parseInt(mng.id)==parseInt(vm.filtre.id_menage)) {
 					vm.filtre.identifiant_menage = mng.identifiant_menage; 
 					vm.filtre.nomchefmenage = mng.nomchefmenage; 
+				}
+			});			
+			
+		}
+		vm.Modifier_Espace_bienetre =function() {
+			vm.allRecordsEspacebienetre.forEach(function(mng) {
+				if(parseInt(mng.id)==parseInt(vm.fiche_presence.id_espace_bienetre)) {
+					vm.fiche_presence.espace_bien_etre = mng.description; 
 				}
 			});			
 			
@@ -640,8 +659,8 @@
 				vm.all_menage_mlpl = result.data.response.menage; 
 				vm.tab_reponse_menage_ml_pl = result.data.response.tab_reponse_menage_ml_pl; 
 				console.log(vm.all_menage_mlpl);
-				apiFactory.getAPIgeneraliserREST("liste_menage_mlpl/index","cle_etrangere",id_groupe_ml_pl).then(function(result) 	{ 
-					vm.all_listemenage_mlpl = result.data.response; 
+				apiFactory.getAPIgeneraliserREST("liste_menage_mlpl/index","cle_etrangere",id_groupe_ml_pl).then(function(resultat) 	{ 
+					vm.all_listemenage_mlpl = resultat.data.response; 
 					vm.affiche_load = false;
 				});
 			});
@@ -691,76 +710,48 @@
 		vm.fichepresencebienetre_column = 
 		[
 			{titre:"Numero ligne"},
-			{titre:"Menage"},
-			{titre:"Nombre enfant moins six ans"},
-			{titre:"Date présence"}
+			{titre:"Date présence"},
+			{titre:"Espace bien-être"},
+			{titre:"Nombre ménage présent"},
 		]; 
 
-		vm.selectionFichepresencebienetre = function(item)
-		{
-			vm.selectedItemFichepresencebienetre = item ;
-
-			if (!vm.selectedItemFichepresencebienetre.$edit) 
-			{
+		vm.selectionFichepresencebienetre = function(item) {
+			vm.affiche_load=true;
+			apiFactory.getAPIgeneraliserREST("fichepresence_bienetre_menage/index","cle_etrangere",item.id,"id_seulement",100).then(function(result)	{ 
+				vm.selectedItemFichepresencebienetre = item ;
 				vm.nouvelItemFichepresencebienetre = false ;
-			}
-
+				vm.tab_reponse_presence_bienetre = result.data.response.tab_reponse_presence_bienetre; 
+				vm.affiche_load=false;
+			});						
 		}
-
-		$scope.$watch('vm.selectedItemFichepresencebienetre', function()
-		{
+		$scope.$watch('vm.selectedItemFichepresencebienetre', function() {
 			if (!vm.allFichepresencebienetre) return;
-			vm.allFichepresencebienetre.forEach(function(item)
-			{
+			vm.allFichepresencebienetre.forEach(function(item)	{
 				item.$selected = false;
 			});
 			vm.selectedItemFichepresencebienetre.$selected = true;
-
 		});
-
-		vm.ajouterFichepresencebienetre = function()
-		{
-			vm.nouvelItemFichepresencebienetre = true ;
-			var item = 
-				{                            
-					$edit: true,
-					$selected: true,
-					id:'0',
-					numero_ligne: '',
-					menage_id: null,
-					enfant_moins_six_ans: '',
-					date_presence: '' 
-					
-				} ;
-
-			vm.allFichepresencebienetre.unshift(item);
-			vm.allFichepresencebienetre.forEach(function(af)
-			{
-			  if(af.$selected == true)
-			  {
-				vm.selectedItemFichepresencebienetre = af;
-				
-			  }
-			});
+		vm.ajouterFichepresencebienetre = function() {
+			apiFactory.getAPIgeneraliserREST("fichepresence_bienetre/index","cle_etrangere",vm.selectedItem.id,"numeroligne",100).then(function(result)	{ 
+				vm.fiche_presence.numero_ligne= parseInt(result.data.response[0].nombre);
+				vm.affichage_masque_fiche_presence=true;
+				vm.nouvelItemFichepresencebienetre = true ;
+				vm.fiche_presence.id=0;
+				vm.fiche_presence.date_presence=new Date();
+				vm.tab_reponse_presence_bienetre=[];
+			});			
 		}
-
-		vm.modifierFichepresencebienetre = function()
-		{
+		vm.modifierFichepresencebienetre = function()	{
+			vm.affichage_masque_fiche_presence=true;
 			vm.nouvelItemFichepresencebienetre = false ;
-			vm.selectedItemFichepresencebienetre.$edit = true;
-		
-			current_selectedItemFichepresencebienetre = angular.copy(vm.selectedItemFichepresencebienetre);
-			
-			vm.selectedItemFichepresencebienetre.numero_ligne      = vm.selectedItemFichepresencebienetre.numero_ligne;
-			vm.selectedItemFichepresencebienetre.menage_id      = vm.selectedItemFichepresencebienetre.menage.id;
-			vm.selectedItemFichepresencebienetre.enfant_moins_six_ans  = vm.selectedItemFichepresencebienetre.enfant_moins_six_ans;      
-			vm.selectedItemFichepresencebienetre.date_presence    = new Date(vm.selectedItemFichepresencebienetre.date_presence);  
+			vm.fiche_presence.id      = parseInt(vm.selectedItemFichepresencebienetre.id);
+			vm.fiche_presence.numero_ligne      = parseInt(vm.selectedItemFichepresencebienetre.numero_ligne);
+			vm.fiche_presence.id_espace_bienetre      = parseInt(vm.selectedItemFichepresencebienetre.id_espace_bienetre);
+			vm.fiche_presence.espace_bien_etre      = vm.selectedItemFichepresencebienetre.espace_bien_etre;
+			vm.fiche_presence.nombre_menage_present  = vm.selectedItemFichepresencebienetre.nombre_menage_present;      
+			vm.fiche_presence.date_presence    = new Date(vm.selectedItemFichepresencebienetre.date_presence);  
 		}
-
-		vm.supprimerFichepresencebienetre = function()
-		{
-
-			
+		vm.supprimerFichepresencebienetre = function()	{			
 			var confirm = $mdDialog.confirm()
 			  .title('Etes-vous sûr de supprimer cet enregistrement ?')
 			  .textContent('Cliquer sur OK pour confirmer')
@@ -776,112 +767,95 @@
 			//alert('rien');
 			});
 		}
-
-		vm.annulerFichepresencebienetre = function()
-		{
-			if (vm.nouvelItemFichepresencebienetre) 
-			{
-				
-				vm.allFichepresencebienetre.shift();
+		vm.annulerFichepresencebienetre = function() {
 				vm.selectedItemFichepresencebienetre = {} ;
 				vm.nouvelItemFichepresencebienetre = false ;
-			}
-			else
-			{
-				
-
-				if (!vm.selectedItemFichepresencebienetre.$edit) //annuler selection
-				{
-					vm.selectedItemFichepresencebienetre.$selected = false;
-					vm.selectedItemFichepresencebienetre = {};
-				}
-				else
-				{
-					vm.selectedItemFichepresencebienetre.$selected = false;
-					vm.selectedItemFichepresencebienetre.$edit = false;
-
-					vm.selectedItemFichepresencebienetre.numero_ligne      = current_selectedItemFichepresencebienetre.numero_ligne;
-					vm.selectedItemFichepresencebienetre.menage_id      = current_selectedItemFichepresencebienetre.menage.id;
-					vm.selectedItemFichepresencebienetre.enfant_moins_six_ans  = current_selectedItemFichepresencebienetre.enfant_moins_six_ans;      
-					vm.selectedItemFichepresencebienetre.date_presence    = current_selectedItemFichepresencebienetre.date_presence; 
-					
-					vm.selectedItemFichepresencebienetre = {};
-				}
-
-				
-
-			}
+				vm.affichage_masque_fiche_presence=false;
 		}
-
-		vm.enregistrerFichepresencebienetre = function(etat_suppression)
-		{
+		vm.enregistrerFichepresencebienetre = function(etat_suppression) {
 			vm.affiche_load = true ;
 			var config = {
 				headers : {
 					'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
 				}
 			};
-
+			var id_enreg=0;
+			if(!vm.nouvelItemFichepresencebienetre) {
+				id_enreg=vm.selectedItemFichepresencebienetre.id;
+			}
 
 			var datas = $.param(
 			{                        
 				supprimer        :etat_suppression,
-				id               : vm.selectedItemFichepresencebienetre.id,
-				numero_ligne     : vm.selectedItemFichepresencebienetre.numero_ligne,      
-				menage_id        : vm.selectedItemFichepresencebienetre.menage_id,
-				enfant_moins_six_ans    : vm.selectedItemFichepresencebienetre.enfant_moins_six_ans, 
-				date_presence    : formatDateBDD(vm.selectedItemFichepresencebienetre.date_presence),       
+				id               : vm.fiche_presence.id,
+				numero_ligne     : vm.fiche_presence.numero_ligne,      
+				id_espace_bienetre        : vm.fiche_presence.id_espace_bienetre,
+				nombre_menage_present    : vm.fiche_presence.nombre_menage_present, 
+				date_presence    : formatDateBDD(vm.fiche_presence.date_presence),       
 				id_groupe_ml_pl  : vm.selectedItem.id
-
-
 			});
+			// Stocker dans une variable texte temporaire : txtTmp les valeurs à poster ultérieurement
+			// Tableau détail  : vm.tab_reponse_menage_ml_pl et  à stocker dans des variables indexées id_variable_(index)
+			// Puis on utilise la fonction eval afin que l'on puisse poster normalement txtTmp
+			// C'est une façon de contourner la récupération impossible de variable tableau dans le serveur PHP	
+			vm.nombre_menage_present = vm.tab_reponse_presence_bienetre.length; // nombre ménage membre groupe ML/PL
+			var txtTmp="";
+			// Début colonne id_groupe_ml_pl dans la table liste_menage_mlpl
+			txtTmp += "supprimer" +":\"" + etat_suppression + "\",";
+			txtTmp += "id" +":\"" + id_enreg + "\",";
+			txtTmp += "id_groupe_ml_pl" +":\"" + vm.selectedItem.id + "\",";
+			txtTmp += "numero_ligne" +":\"" + vm.fiche_presence.numero_ligne + "\",";
+			txtTmp += "id_espace_bienetre" +":\"" + vm.fiche_presence.id_espace_bienetre + "\",";
+			txtTmp += "date_presence" +":\"" + formatDateBDD(vm.fiche_presence.date_presence) + "\",";
+			// Fin  colonne id_groupe_ml_pl dans la table liste_menage_mlpl
+			// Début réponse menage membre groupe ML/PL : choix multiple
+			txtTmp += "nombre_menage_present" +":\"" + vm.nombre_menage_present + "\",";	
+			for(var i=0;i < vm.nombre_menage_present;i++) {
+				txtTmp += "id_menage_" + (i+1) + ":\"" + vm.tab_reponse_presence_bienetre[i] + "\",";	
+			}
+			// Fin réponse menage membre groupe ML/PL
+			txtTmp = txtTmp.replace(new RegExp('\'', 'g'),'\\\'');
+			txtTmp = txtTmp.replace(new RegExp('(\r\n|\r|\n)', 'g'),'');
+			var donnees = $.param(eval('({' + txtTmp + '})'));										
 
-			apiFactory.add("fichepresence_bienetre/index",datas, config).success(function (data)
+			apiFactory.add("fichepresence_bienetre/index",donnees, config).success(function (data)
 			{
 				vm.affiche_load = false ;
-				if (!vm.nouvelItemFichepresencebienetre) 
-				{
-					if (etat_suppression == 0) 
-					{    var men = vm.all_menages.filter(function(obj)
-						{
-							return obj.id == vm.selectedItemFichepresencebienetre.menage_id;
-						});                             
-						vm.selectedItemFichepresencebienetre.menage = men[0] ;                             
-						vm.selectedItemFichepresencebienetre.$edit = false ;
-						vm.selectedItemFichepresencebienetre.$selected = false ;
-						vm.selectedItemFichepresencebienetre = {} ;
+				if (vm.nouvelItemFichepresencebienetre) {
+					var mng={
+						id : data.response ,
+						id_groupe_ml_pl: vm.selectedItem.id,
+						numero_ligne: vm.fiche_presence.numero_ligne,
+						id_espace_bienetre: vm.fiche_presence.id_espace_bienetre,
+						espace_bien_etre: vm.fiche_presence.espace_bien_etre,
+						date_presence: vm.formatDateListe(vm.fiche_presence.date_presence),
+						nombre_menage_present: vm.nombre_menage_present,
 					}
-					else
-					{
-						vm.allFichepresencebienetre = vm.allFichepresencebienetre.filter(function(obj)
-						{
+					vm.allFichepresencebienetre.push(mng) ;
+				} else {
+					if(etat_suppression==1) {
+						vm.allFichepresencebienetre = vm.allFichepresencebienetre.filter(function(obj) {
 							return obj.id !== vm.selectedItemFichepresencebienetre.id;
-						});
-
-						vm.selectedItemFichepresencebienetre = {} ;
-					}
-
-				}
-				else
-				{   
-					var men = vm.all_menages.filter(function(obj)
-					{
-						return obj.id == vm.selectedItemFichepresencebienetre.menage_id;
-					});                             
-					
-					vm.selectedItemFichepresencebienetre.menage = men[0] ;
-					vm.selectedItemFichepresencebienetre.$edit = false ;
-					vm.selectedItemFichepresencebienetre.$selected = false ;
-					vm.selectedItemFichepresencebienetre.id = String(data.response) ;
-
-					vm.nouvelItemFichepresencebienetre = false ;
-					vm.selectedItemFichepresencebienetre = {};
-
-				}
-			})
-			.error(function (data) {alert("Une erreur s'est produit");});
+						});	
+						vm.selectedItemFichepresencebienetre	={};
+					} else {
+						vm.affichage_masque_liste_mlpl = false ;
+						vm.selectedItemFichepresencebienetre.id =  vm.fiche_presence.id ;
+						vm.selectedItemFichepresencebienetre.id_groupe_ml_pl = vm.fiche_presence.id_groupe_ml_pl  ;
+						vm.selectedItemFichepresencebienetre.numero_ligne = vm.fiche_presence.numero_ligne  ;
+						vm.selectedItemFichepresencebienetre.id_espace_bienetre = vm.fiche_presence.id_espace_bienetre  ;
+						vm.selectedItemFichepresencebienetre.espace_bien_etre = vm.fiche_presence.espace_bien_etre  ;
+						vm.selectedItemFichepresencebienetre.date_presence = vm.formatDateListe(vm.fiche_presence.date_presence);
+						vm.selectedItemFichepresencebienetre.nombre_menage_present = vm.nombre_menage_present ;
+					}      
+  				}      				
+				vm.affichage_masque_fiche_presence=false
+				vm.nouvelItemFichepresencebienetre = false ;
+				vm.selectedItemFichepresencebienetre = {};
+			}).error(function (data) {
+				alert("Une erreur s'est produit");
+			});
 		}
-
 		vm.click_tab_fichepresencebienetre = function()
 		{
 			vm.affiche_load = true ;
@@ -923,7 +897,20 @@
 			{titre:"Date prevue fin"},
 			{titre:"Nom representant"}
 		]; 
+		// DEBUT PRESENCE BIEN ETRE MENAGE DETAIL
+		vm.selection_presence_menage_bienetre = function(item) {
+			vm.selectedItemPresence_menage = item ;
+		}
+		$scope.$watch('vm.selectedItemPresence_menage', function() {
+			if (!vm.all_listemenage_mlpl) return;
+			vm.all_listemenage_mlpl.forEach(function(item)
+			{
+				item.$selected = false;
+			});
+			vm.selectedItemPresence_menage.$selected = true;
 
+		});
+		// FIN PRESENCE BIEN ETRE MENAGE DETAIL
 		vm.selectionFiche_supervision_mlpl = function(item)
 		{
 			vm.selectedItemFiche_supervision_mlpl = item ;
