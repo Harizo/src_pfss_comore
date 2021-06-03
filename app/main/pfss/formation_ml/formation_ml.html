@@ -502,22 +502,22 @@
                                               <label>Groupe ML/PL</label>
                                               <md-select ng-model="groupe_par.id_groupe_ml_pl" name="id_groupe_ml_pl" ng-change="vm.change_groupe_ml(groupe_par)" ng-disabled="!groupe_par.id_village">
                                                   <md-option ng-repeat="gr in vm.allGroupe_ml_pl" value="{{gr.id}}">
-                                                      {{gr.nom_groupe}}
+                                                      {{gr.nom_prenom_ml_pl}}
                                                   </md-option>                                                
                                               </md-select>
                                           </md-input-container> 
                                         </span>
-                                        <span ng-if="!groupe_par.$edit"> {{groupe_par.groupe_ml_pl.nom_groupe}}</span>
+                                        <span ng-if="!groupe_par.$edit"> {{groupe_par.groupe_ml_pl.nom_prenom_ml_pl}}</span>
                                     </td>
-                                    <td>
-                                          <span ng-if="groupe_par.$edit">
-                                              <md-input-container style="width:100%;display: flex !important;">
-                                                <label>Nom chef de village</label>                                                
-                                                <input type="text" name="numero"  ng-model="groupe_par.chef_village" disabled/>
-                                              </md-input-container>
-                                          </span>
-                                          <span ng-if="!groupe_par.$edit"> {{groupe_par.groupe_ml_pl.chef_village}}</span>
-                                        </td>
+                                        <td>
+                                              <span ng-if="groupe_par.$edit">
+                                                  <md-input-container style="width:100%;display: flex !important;">
+                                                    <label>Téléphone</label>                                                
+                                                    <input type="text" name="telephone"  ng-model="groupe_par.telephone" disabled/>
+                                                  </md-input-container>
+                                              </span>
+                                              <span ng-if="!groupe_par.$edit"> {{groupe_par.groupe_ml_pl.telephone}}</span>
+                                            </td>
                                     </tr>
                                 </tbody>
                             </table>

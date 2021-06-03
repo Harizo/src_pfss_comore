@@ -120,7 +120,7 @@
                              <md-select ng-model="vm.filtre.id_groupe_ml_pl" name="groupe_ml_pl" ng-disabled="!vm.filtre.id_village" ng-change="vm.filtre_menage()" required>
                               
                                <md-option ng-repeat="groupe_ml_pl in vm.allGroupe_ml_pl" value="{{groupe_ml_pl.id}}" >
-                                 {{groupe_ml_pl.nom_groupe}}
+                                 {{groupe_ml_pl.nom_prenom_ml_pl}}
                                </md-option>
 
                              </md-select>
@@ -209,16 +209,20 @@
                                       <span>Contrat ONG Obligatoire.</span>
                                     </div>
                                   </div>
-                            </md-input-container> 
-                            <md-input-container flex="100" flex-gt-xs="25">
-                              <label>Numero</label>
-                              <input  type="number" name="numero" ng-model="vm.realisation_ebe.numero" required>
-                              <div ng-messages="formrealisation_ebe.numero.$error"role="alert">
-                                  <div ng-message="required">
-                                      <span>Numero obligatoire.</span>
-                                  </div>
-                              </div>
                             </md-input-container>
+                            <md-input-container flex="100" flex-gt-xs="25">
+                                <label>Espace bien être</label>
+                                <md-select ng-model="vm.realisation_ebe.id_espace_bien_etre" name="id_espace_bien_etre">
+                                    <md-option ng-repeat="mena in vm.allEspace_bien_etre" value="{{mena.id}}">
+                                            {{mena.description}}
+                                    </md-option>                                                
+                                  </md-select>
+                                  <div ng-messages="formrealisation_ebe.id_espace_bien_etre.$error" role="alert">
+                                    <div ng-message="required">
+                                      <span>Espace bien être Obligatoire.</span>
+                                    </div>
+                                  </div>
+                            </md-input-container> 
                                                               
                             <md-input-container flex="100" flex-gt-xs="25">
                               <label>But regroupement</label>
@@ -284,7 +288,7 @@
                             <tr ng-repeat="contr in vm.allRealisation_ebe"  ng-class="{selected: contr.$selected}" ng-click="vm.selection(contr)">
                                 
                                 <td>{{contr.contrat_agex.numero_contrat}}</td>
-                                <td>{{contr.numero}}</td>
+                                <td>{{contr.espace_bien_etre.description}}</td>
                                 <td>{{contr.but_regroupement}}</td> 
                                 <td>{{contr.date_regroupement | date:'dd/MM/yyyy'}}</td>
                                 <td>{{contr.materiel}}</td>
@@ -348,7 +352,7 @@
                                         <th class="secondary-text">
                                             <div class="table-header">
                                                 <span class="column-title text-center">
-                                                  Activité &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</span>
+                                                  Activité &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</span>
                                             </div>
                                         </th>                                        
                                     </tr>
@@ -359,11 +363,18 @@
                                         <td >
                                             <span ng-if="theme_forma.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
-                                                  <label>Theme</label>                                                                                              
-                                                  <input type="text" name="theme_sensibilisation"  ng-model="theme_forma.theme_sensibilisation"/>
-                                              </md-input-container> 
+                                                  <label>Theme &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</label>    
+                                                  <md-select ng-model="theme_forma.id_theme_sensibilisation" name="id_theme_sensibilisation" required>
+                                                    
+                                                    <md-option ng-repeat="tem in vm.allTheme_sensibilisation" value="{{tem.id}}" >
+                                                      {{tem.description}}
+                                                    </md-option>
+
+                                                  </md-select>
+                                              
+                                                </md-input-container> 
                                             </span>
-                                            <span ng-if="!theme_forma.$edit"> {{theme_forma.theme_sensibilisation}}</span>
+                                            <span ng-if="!theme_forma.$edit"> {{theme_forma.theme_sensibilisation.description}}</span>
                                         </td>
                                         <td>
                                           <span ng-if="theme_forma.$edit">

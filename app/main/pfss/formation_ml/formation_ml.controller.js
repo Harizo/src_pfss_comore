@@ -934,12 +934,12 @@
                 {
                     return obj.id == item.id_groupe_ml_pl;
                 });
-                item.chef_village = gr[0].chef_village;
+                item.telephone = gr[0].telephone;
             }
             vm.groupe_participant_ml_column =[  
                                         {titre:"Village"},
                                         {titre:"Groupe ML/PL"},
-                                        {titre:"Nom chef de village"}
+                                        {titre:"Téléphone"}
                                     ];
 
                 vm.selectionGroupe_participant_ml = function(item)

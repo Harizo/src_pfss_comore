@@ -1,0 +1,51 @@
+<md-dialog ng-cloak aria-label="dialog_type_effort">
+  <md-subheader style="background-color: rgb(245,245,245)">
+      <h2 mat-dialog-title  style="margin:0px">Liste contrat AGEP </h2>
+  </md-subheader>
+
+  <md-dialog-content layout="row" style="padding:0px" flex>      
+      <div style=" margin:auto;">
+        <table ng-table="agep" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="dtOptions" ms-responsive-table>
+          <thead>
+              <tr>
+                  <th class="secondary-text" ng-repeat="c in ::pges_column">
+                      <div class="table-header">
+                          <span class="column-title text-center">{{c.titre}}</span>
+                      </div>
+                  </th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr ng-repeat="paie in pges_liste"  ng-class="{selected: paie.$selected}">                                       
+                                                          
+                  <td><span> {{paie.nom_ile}}</span></td> 
+                  <td><span> {{paie.nom_region}}</span></td> 
+                  <td><span> {{paie.nom_commune}}</span></td> 
+                  <td><span> {{paie.nom_village}}</span></td> 
+                  <td><span> {{paie.type_sous_projet}}</span></td>
+                  <td><span> {{paie.bureau_etude}}</span></td>
+                  <td>
+                    <span> {{paie.ref_contrat}}</span>
+                  </td>
+                  <td>
+                      <span> 
+                        <span ><strong ng-if="paie.code_infrastructure">Code passation</strong>: {{paie.code_infrastructure}}</span><br>
+                        <span ><strong ng-if="paie.libelle_infrastructure">Libelle</strong>: {{paie.libelle_infrastructure}}</span>
+                      </span>
+                  </td>
+                  <td><span> {{paie.montant_total}}</span></td>                                   
+
+              </tr>
+          </tbody>
+        </table>
+        
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row" style="background-color: rgb(245,245,245)">
+        <span>              
+          <md-button type="submit" class="md-raised md-primary" ng-click="cancel()">Annuler</md-button>
+        </span>    
+    </md-dialog-actions>
+ 
+</md-dialog>
