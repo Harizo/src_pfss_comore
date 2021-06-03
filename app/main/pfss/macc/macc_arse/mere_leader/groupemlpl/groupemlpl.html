@@ -122,7 +122,7 @@
 							<md-input-container>
 							<span>Date création</span>
 							</md-input-container>
-							<md-datepicker ng-model="vm.filtre.date_creation"   md-placeholder="Enter date d'inscription" >                       
+							<md-datepicker ng-model="vm.filtre.date_creation"   md-placeholder="Enter date d'inscription"  md-max-date="vm.max_date">                       
 							</md-datepicker>
 							<!--md-input-container flex-gt-xs="15" ng-show="vm.affichage_masque">
 								<input type="text"  name="chef_village" ng-model="vm.filtre.chef_village"
@@ -184,6 +184,8 @@
 									</md-option>
 								</md-select>
 							</md-input-container>
+						</div>
+						<div layout="column" layout-gt-xs="row" flex>
 							<md-input-container flex-gt-xs="10" ng-show="vm.affichage_masque">
 								<input type="text"  name="telephone" ng-model="vm.filtre.telephone"
 								placeholder="Contact" >
@@ -194,7 +196,7 @@
 									</div>
 								</div>
 							</md-input-container>
-							<!--md-input-container flex-gt-xs="25" ng-show="vm.affichage_masque">
+							<md-input-container flex-gt-xs="25" ng-show="vm.affichage_masque">
 								<input type="text"  name="nom_groupe" ng-model="vm.filtre.nom_groupe"
 								placeholder="Nom du Groupe " required>
 								<div ng-messages="filtrepardateform.nom_groupe.$error"
@@ -203,7 +205,7 @@
 										<span>Nom du Groupe obligatoire.</span>
 									</div>
 								</div>
-							</md-input-container-->
+							</md-input-container>
 						</div>
 					</fieldset>	
 						<div>                            
@@ -218,7 +220,7 @@
 							  </md-button>
 							  
 							</section>                         
-					</div>
+						</div>
 				</form>
                 <div style="clear:both;"></div>
                 <md-tabs md-dynamic-height  ng-if="!vm.affichage_masque && !vm.affichage_masque_liste_mlpl">
@@ -427,11 +429,11 @@
 							  <tbody>
 								<tr ng-repeat="mngpl in vm.all_menage_mlpl  track by $index"  ng-class="{selected: mngpl.$selected}" ng-click="vm.selection_listemenage_mlpl(mngpl)">
 									<td class="text-left">
-										<div layout="column" >	
-											<md-checkbox ng-checked="exists(mngpl.id, vm.tab_reponse_menage_ml_pl)" ng-click="vm.toggle(mngpl.id, vm.tab_reponse_menage_ml_pl)">
+										<!--div layout="column" -->	
+											<md-checkbox ng-checked="exists(mngpl.id, vm.tab_reponse_menage_ml_pl)" ng-click="vm.toggle(mngpl.id, vm.tab_reponse_menage_ml_pl)" style="margin: 2px 0 2px !important;">
 												{{mngpl.identifiant_menage}} - {{mngpl.nomchefmenage}}
 											</md-checkbox>
-										</div>
+										<!--/div-->
 									</td>
 									<td class="text-left">{{mngpl.nom_conjoint}}</td>
 									<td>{{mngpl.Addresse}}</td>
@@ -445,50 +447,102 @@
                     </md-tab>
 					 
                     <md-tab label=" Fiche presence bien être" ng-disabled="!vm.selectedItem.id" ng-click="vm.click_tab_fichepresencebienetre()">
-                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+						<fieldset  layout="column" layout-gt-xs="row" ng-if="vm.affichage_masque_fiche_presence">
+							<legend><b>Fiche présence bien-être du village : {{vm.village}} | ML/PL : {{vm.selectedItem.nom_prenom_ml_pl}} / {{vm.selectedItem.nom_groupe}}</b></legend>
+							<div style="clear:both;"></div>
+							<form name="fichepresenceform" class="md-inline-form" novalidate >
+								<div style="clear:both;"></div>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex="100" flex-gt-xs="5">
+									  <input type="number"  name="numero_ligne" ng-model="vm.fiche_presence.numero_ligne"
+										placeholder="Numéro ligne" readonly>
+									</md-input-container>
+									<md-input-container>
+									<span>Date présence</span>
+									</md-input-container>
+									<md-datepicker ng-model="vm.fiche_presence.date_presence"   md-placeholder="Entrer date présence" md-max-date="vm.max_date">                       
+									</md-datepicker>
+									<md-input-container flex-gt-xs="25" ng-show="vm.affichage_masque_fiche_presence">
+										<label>Espace bien-être</label>
+										<md-select ng-model="vm.fiche_presence.id_espace_bienetre" name="id_espace_bienetre" ng-change="vm.Modifier_Espace_bienetre()" required>							 
+											<md-option ng-repeat="mng in vm.allRecordsEspacebienetre" value="{{mng.id}}" >
+												{{mng.description}}
+											</md-option>
+										</md-select>
+									</md-input-container>
+								</div>
+								<div style="clear:both;"></div>
+								<table id="Table_fiche_presence_bienetre" class="dataTable row-border hover cell-border text-center" datatable="ng"
+								  dt-options="vm.dtOptions" ng-show="vm.affichage_masque_fiche_presence" ms-responsive-table>
+								  <thead>
+									<tr>
+									  <th class="secondary-text" ng-repeat="re in ::vm.listemenage_mlpl_column">
+										<div class="table-header">
+										  <span class="column-title text-center">{{re.titre}}</span>
+										</div>
+									  </th>
+									</tr>
+								  </thead>
+								  <tbody>
+									<tr ng-repeat="mngpl in vm.all_listemenage_mlpl  track by $index"  ng-class="{selected: mngpl.$selected}" ng-click="vm.selection_presence_menage_bienetre(mngpl)">
+										<td class="text-left">
+											<!--div layout="column" -->	
+												<md-checkbox ng-checked="exists(mngpl.id, vm.tab_reponse_presence_bienetre)" ng-click="vm.toggle(mngpl.id, vm.tab_reponse_presence_bienetre)" style="margin: 2px 0 2px !important;">
+													{{mngpl.identifiant_menage}} - {{mngpl.nomchefmenage}}
+												</md-checkbox>
+											<!--/div-->
+										</td>
+										<td class="text-left">{{mngpl.nom_conjoint}}</td>
+										<td>{{mngpl.Addresse}}</td>
+										<td>{{mngpl.nombre_enfant_moins_six_ans}}</td>
+										<td>{{mngpl.nombre_enfant_non_scolarise}}</td>
+										<td>{{mngpl.nombre_enfant_scolarise}}</td>
+									</tr>
+								  </tbody>
+								</table>
+								<div>                            
+									<section layout="row" layout-sm="column" layout-align="left" layout-wrap>
+									  <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+										  ng-if="vm.affichage_masque_fiche_presence" ng-disabled="(fichepresenceform.$invalid)" ng-click="vm.enregistrerFichepresencebienetre(0)">
+										  Enregistrer
+									  </md-button>
+									  <md-button type="submit" class="md-raised md-primary" aria-label="Enregistrer"
+										  ng-if="vm.affichage_masque_fiche_presence"  ng-click="vm.annulerFichepresencebienetre()">
+										  Annuler
+									  </md-button>
+									  
+									</section>                         
+								</div>
+							
+							</form>
+						</fieldset>	
+                        <div class="price-table style-1 md-whiteframe-1dp" layout="column" ng-if="!vm.affichage_masque_fiche_presence">
                             <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                                 <div layout="row" layout-align="start center">
-                                <div class="border-right">
-                                    
-                                  <span class="md-headline">Fiche presence bien être &nbsp</span>
+									<div class="border-right">
+										<span class="md-headline">Fiche presence bien être &nbsp</span>                              
+										<md-button type="submit" ng-show="(vm.filtre.id_ile)&&(vm.filtre.id_region)&&(vm.filtre.id_commune)&&(vm.filtre.village_id)  && !vm.affichage_masque" class="md-raised custum_button_new" aria-label="Nouveau" ng-click="vm.ajouterFichepresencebienetre()" style="width:10%;">
+										<md-icon md-font-icon="icon-plus" class="s16 center" style="color: white;"></md-icon>
+										  Nouveau
+										</md-button>
+										<md-button type="submit"  ng-show="vm.selectedItemFichepresencebienetre.id && !vm.affichage_masque_fiche_presence" class="md-raised custum_button" aria-label="Modifier" ng-click="vm.modifierFichepresencebienetre()" style="width:10%;">
+										<md-icon md-font-icon="icon-table-edit" class="s16" style="color: white;"></md-icon>
+										  Modifier
+										</md-button>
+										<md-button type="submit" ng-show="vm.selectedItemFichepresencebienetre.id && !vm.affichage_masque_fiche_presence" class="md-raised custum_button_del" aria-label="Supprimer" ng-click="vm.supprimerFichepresencebienetre()" style="width:10%;">
+										<md-icon md-font-icon="icon-close-circle-outline" class="s16" style="color: white;"></md-icon>
+										  Supprimer
+										</md-button>
+									</div>
+									<div class="border-right" ng-if="!vm.selectedItemFichepresencebienetre.id && !vm.nouvelItemFichepresencebienetre">
+										<md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterFichepresencebienetre()">
+										  <md-icon md-font-icon="icon-plus-box"></md-icon>
+										  <md-tooltip><span>Ajouter</span></md-tooltip>
+										</md-button>
+									</div> 
                                 </div>
-                                  <div class="border-right" ng-if="!vm.selectedItemFichepresencebienetre.id && !vm.nouvelItemFichepresencebienetre">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterFichepresencebienetre()">
-                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
-                                      <md-tooltip><span>Ajouter</span></md-tooltip>
-                                    </md-button>
-                                  </div> 
-                                  <div class="border-right" ng-if="vm.selectedItemFichepresencebienetre.id && !vm.selectedItemFichepresencebienetre.$edit">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierFichepresencebienetre()">
-                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
-                                      <md-tooltip><span>Modifier</span></md-tooltip>
-                                    </md-button>
-                                  </div>    
-                                  <div class="border-right" ng-if="vm.selectedItemFichepresencebienetre.id && !vm.selectedItemFichepresencebienetre.$edit">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerFichepresencebienetre()">
-                                      <md-icon md-font-icon="icon-delete"></md-icon>
-                                      <md-tooltip><span>Supprimer</span></md-tooltip>
-                                    </md-button>
-                                  </div>  
-
-                                  <div class="border-right" ng-if="vm.selectedItemFichepresencebienetre.id">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerFichepresencebienetre()">
-                                      <md-icon md-font-icon="icon-cancel"></md-icon>
-                                      <md-tooltip><span>Annuler</span></md-tooltip>
-                                    </md-button>
-                                  </div>   
-
-                                  <div ng-if="vm.selectedItemFichepresencebienetre.$edit">
-                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerFichepresencebienetre(0)">
-                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
-                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
-                                    </md-button>
-                                  </div>                
-                                </div>
-                            </header>
-                            
-                        
-                            <table ng-table="agep" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                            </header>                                  
+                            <table ng-table="agep" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table ng-show="!vm.affichage_masque_fiche_presence">
                                 <thead>
                                     <tr>
                                         <th class="secondary-text" ng-repeat="c in ::vm.fichepresencebienetre_column">
@@ -500,40 +554,10 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="fichepresence in vm.allFichepresencebienetre"  ng-class="{selected: fichepresence.$selected}" ng-click="vm.selectionFichepresencebienetre(fichepresence)">                                       
-                                        
-                                        <td>
-                                          <span ng-if="fichepresence.$edit">
-                                              <md-input-container style="width:100%;display: flex !important;">
-                                                <label>Numero ligne</label>                                                
-                                                <input type="text" name="numero_ligne"  ng-model="fichepresence.numero_ligne"/>
-                                              </md-input-container>
-                                          </span>
-                                          <span ng-if="!fichepresence.$edit"> {{fichepresence.numero_ligne}}</span>
-                                        </td>
-                                        <td>
-                                          <span ng-if="fichepresence.$edit">
-                                              <md-input-container style="width:100%;display: flex !important;">
-                                                <label>Menage</label> 
-                                                  <md-select ng-model="fichepresence.menage_id" ng-change="vm.modifier_menage(fichepresence)" required>										 
-                                                    <md-option ng-repeat="men in vm.all_menages" value="{{men.id}}" >
-                                                      {{men.identifiant_menage}} - {{men.nomchefmenage}}
-                                                    </md-option>
-                                                  </md-select>
-                                              </md-input-container>
-                                          </span>
-                                          <span ng-if="!fichepresence.$edit"> {{fichepresence.menage.identifiant_menage}} - {{fichepresence.menage.nomchefmenage}}</span>
-                                        </td>
-                                        <td>
-                                           {{fichepresence.enfant_moins_six_ans}}
-                                        </td>
-                                        <td>
-                                          <span ng-if="fichepresence.$edit">
-											                      <md-datepicker ng-model="fichepresence.date_presence" md-placeholder="Date de presence" md-max-date="vm.datenow" required>                       
-                                            </md-datepicker>
-                                          </span>
-                                          <span ng-if="!fichepresence.$edit"> {{vm.formatDateListe(fichepresence.date_presence)}}</span>
-                                        </td>                                                                           
-
+                                        <td>{{fichepresence.numero_ligne}}</td>
+                                        <td>{{vm.formatDateListe(fichepresence.date_presence)}}</td>                                                                           
+                                        <td>{{fichepresence.espace_bien_etre}}</td>
+                                        <td>{{fichepresence.nombre_menage_present}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -658,21 +682,21 @@
                                               </td>
                                               <td>
                                                 <span ng-if="fiche_supervision.$edit">
-                                                  <md-datepicker ng-model="fiche_supervision.date_supervision" md-placeholder="Date supervision" md-max-date="vm.datenow" required>                       
+                                                  <md-datepicker ng-model="fiche_supervision.date_supervision" md-placeholder="Date supervision"  md-max-date="vm.max_date" md-max-date="vm.max_date" required>                       
                                                   </md-datepicker>
                                                 </span>
                                                 <span ng-if="!fiche_supervision.$edit"> {{vm.formatDateListe(fiche_supervision.date_supervision)}}</span>
                                               </td>
                                               <td>
                                                 <span ng-if="fiche_supervision.$edit">
-                                                  <md-datepicker ng-model="fiche_supervision.date_prevue_debut" md-placeholder="Date date prevuedebut" md-max-date="vm.datenow" required>                       
+                                                  <md-datepicker ng-model="fiche_supervision.date_prevue_debut" md-placeholder="Date date prevuedebut"  md-max-date="vm.max_date" required>                       
                                                   </md-datepicker>
                                                 </span>
                                                 <span ng-if="!fiche_supervision.$edit"> {{vm.formatDateListe(fiche_supervision.date_prevue_debut)}}</span>
                                               </td> 
                                               <td>
                                                 <span ng-if="fiche_supervision.$edit">
-                                                  <md-datepicker ng-model="fiche_supervision.date_prevue_fin" md-placeholder="Date date prevue fin" md-max-date="vm.datenow" required>                       
+                                                  <md-datepicker ng-model="fiche_supervision.date_prevue_fin" md-placeholder="Date date prevue fin" md-max-date="vm.max_date" required>                       
                                                   </md-datepicker>
                                                 </span>
                                                 <span ng-if="!fiche_supervision.$edit"> {{vm.formatDateListe(fiche_supervision.date_prevue_fin)}}</span>
@@ -876,7 +900,7 @@
                             </table>
                         </div>
                     </md-tab>
-                    <md-tab label=" Livrable MLPL" ng-disabled="!vm.selectedItem.id" ng-click="vm.click_tab_livrable_mlpl()">
+                    <md-tab label=" Livrable MLPL" ng-disabled="!vm.selectedItem.id">
                       <div class="price-table style-1 md-whiteframe-1dp" layout="column">
                           <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                               <div layout="row" layout-align="start center">
@@ -920,7 +944,7 @@
                           </header>
                           
                       
-                          <table ng-table="agep" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                          <table ng-table="agep" id="DatatableLivrable" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
                               <thead>
                                   <tr>
                                       <th class="secondary-text" ng-repeat="c in ::vm.livrable_mlpl_column">
@@ -967,14 +991,14 @@
                                         </td>
                                         <td>
                                           <span ng-if="livrable.$edit">
-                                            <md-datepicker ng-model="livrable.date_prevue_remise" md-placeholder="Date prevue remise" md-max-date="vm.datenow" required>                       
+                                            <md-datepicker ng-model="livrable.date_prevue_remise" md-placeholder="Date prevue remise"  md-max-date="vm.max_date" required>                       
                                             </md-datepicker>
                                           </span>
                                           <span ng-if="!livrable.$edit"> {{vm.formatDateListe(livrable.date_prevue_remise)}}</span>
                                         </td>
                                         <td>
                                           <span ng-if="livrable.$edit">
-                                            <md-datepicker ng-model="livrable.date_effective_reception" md-placeholder="Date effective reception" md-max-date="vm.datenow" required>                       
+                                            <md-datepicker ng-model="livrable.date_effective_reception" md-placeholder="Date effective reception"  md-max-date="vm.max_date" required>                       
                                             </md-datepicker>
                                           </span>
                                           <span ng-if="!livrable.$edit"> {{vm.formatDateListe(livrable.date_effective_reception)}}</span>
