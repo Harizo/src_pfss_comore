@@ -30,10 +30,10 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.phaseexecution', {
+        msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.phase_execution', {
             title: "Phase execution et année",
             icon  : 'icon-square-inc',
-            state: 'app.pfss_ddb_phaseexecution',
+            state: 'app.pfss_ddb_phase_execution',
             weight: 12,
             // hidden: function()
             // {

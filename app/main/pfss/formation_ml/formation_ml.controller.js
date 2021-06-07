@@ -45,10 +45,9 @@
             order:[] 
         };
 
- 
-        apiFactory.getAPIgeneraliserREST("contrat_consultant_ong/index","menu","getcontratbysousprojet",'id_sous_projet',id_sous_projet_state).then(function(result)
+        apiFactory.getAPIgeneraliserREST("contrat_ugp_agex/index",'id_sous_projet',id_sous_projet_state).then(function(result)
         {
-            vm.allContrat_consultant_ong = result.data.response;
+            vm.allContrat_agex = result.data.response;
         });
 
         apiFactory.getAll("Ile/index").then(function(result)
@@ -146,7 +145,7 @@
                 vm.formation_ml.id=0;
                 vm.formation_ml.numero=null;
                 vm.formation_ml.date_debut=null;
-                vm.formation_ml.id_contrat_consultant_ong=null;
+                vm.formation_ml.id_contrat_agex=null;
                 vm.formation_ml.id_commune= vm.filtre.id_commune;
                 vm.formation_ml.date_fin=null;
                 vm.formation_ml.lieu=null;
@@ -179,13 +178,13 @@
                 vm.formation_ml.date_debut  = new Date(vm.selectedItemFormation_ml.date_debut) ;
                 vm.formation_ml.date_fin  = new Date(vm.selectedItemFormation_ml.date_fin) ;
 
-                var contrat = vm.allContrat_consultant_ong.filter(function(obj)
+                var contrat = vm.allContrat_agex.filter(function(obj)
                 {
-                    return obj.id == vm.selectedItemFormation_ml.contrat_consultant_ong.id ;
+                    return obj.id == vm.selectedItemFormation_ml.contrat_agex.id ;
                  });
                  if (contrat.length!=0)
                  {
-                    vm.formation_ml.id_contrat_consultant_ong  = contrat[0].id ;                     
+                    vm.formation_ml.id_contrat_agex  = contrat[0].id ;                     
                  }
                 vm.affichage_masque=true;
             }
@@ -231,7 +230,7 @@
                         supprimer:etat_suppression,
                         numero:formation_ml.numero,
                         description:formation_ml.description,
-                        id_contrat_consultant_ong:formation_ml.id_contrat_consultant_ong,
+                        id_contrat_agex:formation_ml.id_contrat_agex,
                         id_commune:formation_ml.id_commune,
                         lieu:formation_ml.lieu,
                         date_debut:convert_date(formation_ml.date_debut),
@@ -245,13 +244,13 @@
                         {
                             if (etat_suppression == 0) 
                             {  
-                                var contrat = vm.allContrat_consultant_ong.filter(function(obj)
+                                var contrat = vm.allContrat_agex.filter(function(obj)
                                 {
-                                    return obj.id == formation_ml.id_contrat_consultant_ong  ;
+                                    return obj.id == formation_ml.id_contrat_agex  ;
                                 });
                                 if (contrat.length!=0)
                                 {                                  
-                                    vm.selectedItemFormation_ml.contrat_consultant_ong = contrat[0] ;  
+                                    vm.selectedItemFormation_ml.contrat_agex = contrat[0] ;  
                                 }
                                 vm.selectedItemFormation_ml.id_commune = formation_ml.id_commune ;
                                 vm.selectedItemFormation_ml.numero = formation_ml.numero ;
@@ -271,9 +270,9 @@
                         }
                         else
                         {   var cont = [];
-                            var contrat = vm.allContrat_consultant_ong.filter(function(obj)
+                            var contrat = vm.allContrat_agex.filter(function(obj)
                             {
-                                return obj.id == formation_ml.id_contrat_consultant_ong  ;
+                                return obj.id == formation_ml.id_contrat_agex  ;
                             });
                             if (contrat.length!=0)
                             {                                  
@@ -282,7 +281,7 @@
                             var item =
                             {
                             id : String(data.response) ,
-                            contrat_consultant_ong : cont ,
+                            contrat_agex : cont ,
                             id_commune : formation_ml.id_commune ,
                             numero : formation_ml.numero ,
                             description : formation_ml.description ,
@@ -312,7 +311,7 @@
                         ||(currentItemFormation_ml.lieu != item.lieu )
                         ||(currentItemFormation_ml.date_debut   != convert_date(item.date_debut) )
                         ||(currentItemFormation_ml.date_fin   != convert_date(item.date_fin))
-                        ||(currentItemFormation_ml.contrat_consultant_ong.id   != item.id_contrat_consultant_ong )
+                        ||(currentItemFormation_ml.contrat_agex.id   != item.id_contrat_agex )
                         )                    
                     { 
                             insert_in_baseFormation_ml(item,suppression);                      
@@ -935,12 +934,12 @@
                 {
                     return obj.id == item.id_groupe_ml_pl;
                 });
-                item.chef_village = gr[0].chef_village;
+                item.telephone = gr[0].telephone;
             }
             vm.groupe_participant_ml_column =[  
                                         {titre:"Village"},
                                         {titre:"Groupe ML/PL"},
-                                        {titre:"Nom chef de village"}
+                                        {titre:"Téléphone"}
                                     ];
 
                 vm.selectionGroupe_participant_ml = function(item)
