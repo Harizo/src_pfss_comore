@@ -25,7 +25,7 @@
                         </div>
                         <form name="filtrepardateform" class="md-inline-form" novalidate >
                              <div layout="column" layout-gt-xs="row" flex>
-                                <md-input-container flex="100" flex-gt-xs="90">
+                                <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Île</label>
                                     <md-select ng-model="vm.filtre.id_ile" name="ile" ng-change="vm.filtre_region()" required>
                                      
@@ -42,7 +42,7 @@
                                     </div>
                                 </md-input-container>
 
-                                <md-input-container flex="100" flex-gt-xs="90">
+                                <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Préfecture</label>
                                     <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_ile" required>
                                       
@@ -59,7 +59,7 @@
                                     </div>
                                 </md-input-container>
 
-                                <md-input-container flex="100" flex-gt-xs="90">
+                                <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Commune</label>
                                     <md-select ng-model="vm.filtre.id_commune" name="commune" ng-change="vm.filtre_village()" ng-disabled="!vm.filtre.id_region"  required>
                                      
@@ -75,7 +75,7 @@
                                       </div>
                                     </div>
                                 </md-input-container>
-                                <md-input-container flex="100" flex-gt-xs="90">
+                                <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Village</label>
                                     <md-select ng-model="vm.filtre.village_id" name="village" ng-disabled="!vm.filtre.id_commune"  required>
                                       <md-option ng-repeat="village in vm.all_village" value="{{village.id}}" >
@@ -90,21 +90,12 @@
                                       </div>
                                     </div>
                                 </md-input-container>
-                                <md-input-container flex="100" flex-gt-xs="20">
-                                  <label>Agence de paiement</label>
-                                    <md-select ng-model="vm.filtre.agep_id" name="agence_paie" ng-disabled="!vm.filtre.village_id" required>
-                                      <md-option value=''>&nbsp;</md-option>
-                                      <md-option ng-repeat="gep in vm.all_agep" value="{{gep.id}}" >
-                                        {{gep.identifiant}} - {{gep.raison_social}}
-                                      </md-option>
-                                    </md-select>
-                                    <div ng-messages="filtrepardateform.agence_paie.$error"
-                                      role="alert">
-                                      <div ng-message="required">
-                                        <span>AGEP obligatoire</span>
-                                      </div>
-                                    </div>
-                                </md-input-container>
+								<div layout="column" layout-gt-xs="col" flex flex-gt-xs="10" style="display:none;">
+									<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+										  ng-if="!vm.affichage_masque" ng-disabled="filtrepardateform.$invalid||vm.affiche_load" ng-click="vm.filtrer(vm.filtre)"  style="height:50% !important;">
+										  Actualiser
+									</md-button>
+								</div>	
                                 <md-input-container flex="100" flex-gt-xs="90" style="display:none;">
                                   <label>Sous-projet</label>
                                     <md-select ng-model="vm.filtre.id_sous_projet" name="sous_projet" disabled>
@@ -179,40 +170,71 @@
                                     </div>
                                 </md-input-container>
                             </div>
-                            <div layout="column" layout-gt-xs="row" flex>
+                            <div layout="column" layout-gt-xs="row" flex ng-if="vm.affiche_resultat">
+									<p style="margin-top:20px;margin-right:10px;"><b>{{vm.filtre.tranche}}</b></p>
+									<md-input-container flex="100" flex-gt-xs="30">
+									  <label>Agence de paiement</label>
+										<md-select ng-model="vm.filtre.agep_id" name="agence_paie" disabled>
+										  <md-option value=''>&nbsp;</md-option>
+										  <md-option ng-repeat="gep in vm.all_agep" value="{{gep.id}}" >
+											{{gep.identifiant}} - {{gep.raison_social}}
+										  </md-option>
+										</md-select>
+										<div ng-messages="filtrepardateform.agence_paie.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>AGEP obligatoire</span>
+										  </div>
+										</div>
+									</md-input-container>
 									<md-input-container flex-gt-xs="15" ng-disabled="!vm.filtre.village_id">
 										<input type="number"  name="pourcentage" ng-model="vm.filtre.pourcentage"
-										placeholder="Pourcentage à payer"  required>
-										<div ng-messages="filtrepardateform.pourcentage.$error"
-											role="alert">
-											<div ng-message="required">
-												<span>Pourcentage à payer obligatoire.</span>
-											</div>
-										</div>
+										placeholder="Pourcentage à payer"  readonly>
 									</md-input-container>								
 									<md-input-container flex-gt-xs="15" ng-disabled="!vm.filtre.pourcentage">
 										<input type="number"  name="montant_a_payer" ng-model="vm.filtre.montant_a_payer"
-										placeholder="Montant à payer"  required>
-										<div ng-messages="filtrepardateform.montant_a_payer.$error"
-											role="alert">
-											<div ng-message="required">
-												<span>Montant à payer obligatoire.</span>
-											</div>
-										</div>
+										placeholder="Montant à payer"  readonly>
 									</md-input-container>								
                             </div>
+                        </form>
 								<div>                            
 									<section layout="row" layout-sm="column" layout-align="left" layout-wrap>							 
-										<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+										<!--md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
 										  ng-if="!vm.affiche_load" ng-disabled="filtrepardateform.$invalid||vm.affiche_load" ng-click="vm.filtrer(vm.filtre)">
 											Actualiser
-										</md-button>
-										<md-button ng-if="!vm.affiche_load" ng-disabled="filtrepardateform.$invalid||vm.affiche_load || !vm.filtre.montant_a_payer" type="submit" class="md-raised md-primary" aria-label="Enregistrer" ng-disabled="formEffAgeSexe.$invalid" ng-click="vm.export_excel(vm.filtre)"> 
+										</md-button-->
+										<!--md-button ng-if="!vm.affiche_load" ng-disabled="filtrepardateform.$invalid||vm.affiche_load || !vm.filtre.montant_a_payer" type="submit" class="md-raised md-primary" aria-label="Enregistrer" ng-disabled="formEffAgeSexe.$invalid" ng-click="vm.export_excel(vm.filtre)"> 
 											Exporter en Excel											 
-										</md-button>
+										</md-button-->
 									</section>                         
                             </div>
-                        </form>
+							<div>                            
+								<section layout="row" layout-sm="column" layout-align="left" layout-wrap>	
+									<div style="clear:both;"></div>
+									<div class="file-upload" style="display:block;width:100%;">
+										<input file-uploader style="color:#772e03 !important;" id="fichier_chef_menage" name="fichier" type="file" custom-on-change="uploadFile"  ng-multiple="false" />
+										<button ng-click="vm.uploadFile(vm.filtre)" ng-disabled="!vm.monfichier" 
+											style="background: #ff843d; /* Old browsers */
+												background: -moz-linear-gradient(top,  #ff843d 0%, #fc8a49 17%, #ef7d3b 33%, #db6520 67%, #ce5712 83%, #ba4603 100%); /* FF3.6+ */
+												background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ff843d), color-stop(17%,#fc8a49), color-stop(33%,#ef7d3b), color-stop(67%,#db6520), color-stop(83%,#ce5712), color-stop(100%,#ba4603)); /* Chrome,Safari4+ */
+												background: -webkit-linear-gradient(top,  #ff843d 0%,#fc8a49 17%,#ef7d3b 33%,#db6520 67%,#ce5712 83%,#ba4603 100%); /* Chrome10+,Safari5.1+ */
+												background: -o-linear-gradient(top,  #ff843d 0%,#fc8a49 17%,#ef7d3b 33%,#db6520 67%,#ce5712 83%,#ba4603 100%); /* Opera 11.10+ */
+												background: -ms-linear-gradient(top,  #ff843d 0%,#fc8a49 17%,#ef7d3b 33%,#db6520 67%,#ce5712 83%,#ba4603 100%); /* IE10+ */
+												background: linear-gradient(to bottom,  #ff843d 0%,#fc8a49 17%,#ef7d3b 33%,#db6520 67%,#ce5712 83%,#ba4603 100%); /* W3C */
+												filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff843d', endColorstr='#ba4603',GradientType=0 ); /* IE6-9 */
+												color:#772e03;
+												font-weight:bold;
+												height:auto;">
+											<md-icon md-font-icon="icon-cloud-upload" class="s16" style="padding-left: 2px !important;padding-right:  2px !important;padding-bottom: 20px"> 
+											</md-icon> Importer
+										</button>
+									</div>
+									<div style="clear:both;"></div>
+									<!--md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer" ng-click="vm.Controler_vague_zip()">
+										  Import vague
+									</md-button-->
+								</section>                         
+                            </div>
                         
                         <table class="dataTable row-border hover cell-border text-center" datatable="ng"
                           dt-options="vm.dtOptions" ng-if="!vm.affichage_masque">

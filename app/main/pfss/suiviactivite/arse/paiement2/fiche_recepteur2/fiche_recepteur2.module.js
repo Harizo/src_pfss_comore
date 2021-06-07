@@ -9,13 +9,13 @@
     /** @ngInject */
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
-        // State
+        // State  
         $stateProvider.state('app.pfss_suivi_arse_paiement2_fiche_recepteur2', {
-            url      : '/suivi-activite/arse/deuxieme-fiche-recepteur/fiche-recepteur',
+            url      : '/suivi-activite/arse/deuxieme-fiche-recepteur/fiche-recepteur-2',
             views    : {
-                'content@app': {
-                    templateUrl: 'app/main/pfss/suiviactivite/arse/paiement2/fiche_recepteur2/fiche_recepteur2.html',
-                    controller : 'Ficherecepteur2Controller as vm'
+                'content@app': { 
+                    templateUrl: 'app/main/pfss/suiviactivite/arse/paiement1/fiche_recepteur/fiche_recepteur.html',
+                    controller : 'FicherecepteurController as vm'
                 }
             },
             bodyClass: 'suivi_arse_paiement2_fiche_recepteur2',
