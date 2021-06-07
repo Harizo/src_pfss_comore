@@ -54,13 +54,11 @@
                 vs.color = '#F44336' ;
                 console.log(x);
             });*/
-            apiFactory.getAPIgeneraliserREST("count_contrat_agep/index","menu","andrana","id_sous_p",Number(2)).then(function(result) 
+            apiFactory.getAPIgeneraliserREST("count_contrat_agep/index","menu","count_by_sp","id_sous_p",Number(2)).then(function(result) 
             {
                 var x = result.data.response;
                 vs.content = x.length;
                 vs.color = '#F44336' ;
-                console.log(x );
-                console.log(vs.content );
             });
 
                 //**************************************************
@@ -78,15 +76,14 @@
                     
 
                     });},15000) ;*/
-                    $interval(function(){apiFactory.getAPIgeneraliserREST("count_contrat_agep/index","menu","andrana","id_sous_p",Number(2)).then(function(result) 
+                    $interval(function(){apiFactory.getAPIgeneraliserREST("count_contrat_agep/index","menu","count_by_sp","id_sous_p",Number(2)).then(function(result) 
                     {
                         var resultat = result.data.response;
 
                         if (vs.content != Number(resultat.length)) 
                         {
                             vs.content = Number(resultat.length) ;
-                        };
-                        console.log(resultat);                    
+                        };                   
 
                     });},15000) ;
                 }

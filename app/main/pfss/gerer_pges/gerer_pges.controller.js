@@ -504,8 +504,24 @@
                     vm.selectedItemPges_phases.calendrier_execution    = vm.selectedItemPges_phases.calendrier_execution;*/      
                     vm.selectedItemPges_phases.cout_estimatif  = parseFloat(vm.selectedItemPges_phases.cout_estimatif);  
                 }
-
+                
                 vm.supprimerPges_phases = function()
+                {
+                    var confirm = $mdDialog.confirm()
+                    .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                    .textContent('Cliquer sur OK pour confirmer')
+                    .ariaLabel('Lucky day')
+                    .clickOutsideToClose(true)
+                    .parent(angular.element(document.body))
+                    .ok('OK')
+                    .cancel('Annuler');
+                    $mdDialog.show(confirm).then(function()
+                    {
+                        vm.enregistrerPges_phases(1);
+                    }, function() {
+                    });
+                }
+               /* vm.supprimerPges_phases = function()
                 {
 
                     
@@ -554,7 +570,7 @@
                     }, function() {
                     //alert('rien');
                     });
-                }
+                }*/
 
                 vm.annulerPges_phases = function()
                 {
@@ -594,8 +610,68 @@
 
                     }
                 }
-
                 vm.enregistrerPges_phases = function(etat_suppression)
+                {
+                    vm.affiche_load = true ;
+                    var config = {
+                        headers : {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                        }
+                    };
+
+
+                    var datas = $.param(
+                    {                        
+                        supprimer               :etat_suppression,
+                        id                      : vm.selectedItemPges_phases.id,
+                        description             : vm.selectedItemPges_phases.description,
+                        impacts                 : vm.selectedItemPges_phases.impacts,      
+                        mesures                 : vm.selectedItemPges_phases.mesures,      
+                        responsable             : vm.selectedItemPges_phases.responsable,
+                        calendrier_execution    : vm.selectedItemPges_phases.calendrier_execution,      
+                        cout_estimatif          : vm.selectedItemPges_phases.cout_estimatif,      
+                        phase                   : vm.selectedItemPges_phases.phase,       
+                        id_pges                 : vm.selectedItemPges.id
+
+
+                    });
+                    apiFactory.add("pges_phases/index",datas, config).success(function (data)
+                    {
+                        vm.affiche_load = false ;
+                        if (!vm.nouvelItemPges_phases) 
+                        {   
+
+                            if (etat_suppression == 0) 
+                            {   
+                                                           
+                                vm.selectedItemPges_phases.$edit = false ;
+                                vm.selectedItemPges_phases.$selected = false ;
+                                vm.selectedItemPges_phases = {} ;
+                            }
+                            else
+                            {
+                                vm.allPges_phases = vm.allPges_phases.filter(function(obj)
+                                {
+                                    return obj.id !== vm.selectedItemPges_phases.id;
+                                });
+
+                                vm.selectedItemPges_phases = {} ;
+                            }
+
+                        }
+                        else
+                        {   
+                            vm.selectedItemPges_phases.$edit = false ;
+                            vm.selectedItemPges_phases.$selected = false ;
+                            vm.selectedItemPges_phases.id = String(data.response) ;
+
+                            vm.nouvelItemPges_phases = false ;
+                            vm.selectedItemPges_phases = {};
+
+                        }
+                    }).error(function (data) {alert("Une erreur s'est produit");});
+                }
+               /* vm.enregistrerPges_phases = function(etat_suppression)
                 {
                     vm.affiche_load = true ;
                     var config = {
@@ -708,7 +784,7 @@
                     }
                                         
                     
-                }
+                }*/
 
                 vm.click_tab_phases = function()
                 {

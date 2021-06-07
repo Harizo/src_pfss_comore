@@ -4,6 +4,7 @@
     var my_toast_agep=null;
     angular
         .module('app.toolbar')
+        .controller('Liste_pgesController', Liste_pgesController)
         .controller('Liste_contrat_agepController', Liste_contrat_agepController)
         .controller('ToolbarController', ToolbarController);
 
@@ -160,12 +161,35 @@
                                         tapToDismiss: false,
                                         extendedTimeOut:0,
                                         timeOut: 0,
-                                        fadeOut:0,                    
-                                        preventDuplicates: true,
-                                        preventOpenDuplicates: true,
+                                        fadeOut:0, 
                                         onclick: function()
                                         {
                                             affiche_liste_contrat(resultat); 
+                                        }
+                                    }
+                                );              
+                }   
+
+            });
+            apiFactory.getAPIgeneraliserREST("pges/index",'menu','get_pges_montant_differant').then(function(result) 
+            {
+                var resultat = result.data.response;
+                console.log(resultat);
+                if (parseInt(resultat.length)!=0)
+                { console.log('tost2');
+                    var tost=toastr.error(
+                                    "Cliquer ici pour plus de détails",
+                                    'Notification PGES',
+                                    {  
+                                        allowHtml: true,
+                                        closeButton: true,
+                                        tapToDismiss: false,
+                                        extendedTimeOut:0,
+                                        timeOut: 0,
+                                        fadeOut:0, 
+                                        onclick: function()
+                                        {
+                                            affiche_liste_pges(resultat); 
                                         }
                                     }
                                 );              
@@ -182,6 +206,17 @@
                 locals:{contrat: param},
                 clickOutsideToClose:true
                 });
+        }
+        function affiche_liste_pges(param) 
+        {
+            $mdDialog.show({
+                controller: Liste_pgesController,
+                templateUrl: 'app/main/pfss/gerer_pges/liste_pges_alert.html',
+                //parent: angular.element('#toast_contrat'),
+                locals:{pges: param},
+                clickOutsideToClose:true
+                });
+                console.log(param);
         }
           
     }    
@@ -216,6 +251,43 @@
             {titre:"Montant du contrat"},
             {titre:"Montant paiement à effectué prévu"},
             {titre:"Date prévu fin contrat"}
+        ];
+
+    }
+    
+    function Liste_pgesController($scope, $mdDialog,pges) 
+    {
+       
+        $scope.pges_liste = pges; 
+        $scope.dtOptions =
+        {
+            dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
+            pagingType: 'simple',
+            autoWidth: false,
+            order: [] 
+        };
+        
+        $scope.hide = function()
+        {
+            $mdDialog.hide();
+        };
+
+        $scope.cancel = function()
+        {
+            $mdDialog.cancel();
+        };
+
+        $scope.pges_column = 
+        [   
+            {titre:"Ile"},            
+            {titre:"Préfecture"},
+            {titre:"Commune"},
+            {titre:"Village"},
+            {titre:"Sous projet"},
+            {titre:"Bureau d\'étude"},
+            {titre:"Référence contrat"},
+            {titre:"Infrastructure"},
+            {titre:"Montant total"}
         ];
 
     }

@@ -312,7 +312,7 @@
           vm.nouvelle_agr = false ;
           vm.selected_agr.$edit = true;
           vm.selected_agr.code = vm.selected_agr.code;
-          vm.selected_agr.libelle = vm.selected_agr.ibelle;
+          vm.selected_agr.libelle = vm.selected_agr.libelle;
           
         
           current_selected_agr = angular.copy(vm.selected_agr);
@@ -363,8 +363,8 @@
             {
               vm.selected_agr.$selected = false;
               vm.selected_agr.$edit = false;
-              vm.selected_agr.code_agr = current_selected_agr.code ;
-              vm.selected_agr.libelle_agr = current_selected_agr.libelle ;
+              vm.selected_agr.code = current_selected_agr.code ;
+              vm.selected_agr.libelle = current_selected_agr.libelle ;
               
               
               vm.selected_agr = {};
@@ -563,8 +563,8 @@
             {
               vm.selected_type_activite_act.$selected = false;
               vm.selected_type_activite_act.$edit = false;
-              vm.selected_type_activite_act.Code_agr = current_selected_type_activite_act.Code_type_activite_act ;
-              vm.selected_agr.Libelle_type_activite_act = current_selected_type_activite_act.Libelle_type_activite_act ;
+              vm.selected_type_activite_act.code = current_selected_type_activite_act.code ;
+              vm.selected_type_activite_act.libelle = current_selected_type_activite_act.libelle ;
               
               
               vm.selected_type_activite_act = {};

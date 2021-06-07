@@ -3,7 +3,7 @@
     'use strict';
     angular
         .module('app.pfss.suiviactivite.suivi_arse.plan_relevement', [
-				'app.pfss.suiviactivite.suivi_arse.plan_relevement.activite_formation',		
+				'app.pfss.suiviactivite.suivi_arse.plan_relevement.fiche_plan_relevement',		
             ])
         // .run(testPermission)
         .config(config);

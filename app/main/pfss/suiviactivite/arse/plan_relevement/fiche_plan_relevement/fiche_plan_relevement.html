@@ -1,0 +1,116 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Fiche plan de relèvement</span>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>
+                <md-tabs md-dynamic-height>
+                    <md-tab label="Identification">
+                        <form  name="form_identification" class="md-inline-form" novalidate >
+
+                                
+
+                            <div layout="column" layout-gt-xs="row" flex>
+                   
+                            
+
+
+                              <md-input-container flex="100" flex-gt-xs="25" >
+                                  <label>Île</label>
+                                  <md-select ng-model="vm.identification.id_ile" name="id_ile" ng-change="vm.get_region_by_ile()" required>
+                                      
+                                      <md-option ng-repeat="sp in vm.all_ile" value="{{sp.id}}">{{sp.Ile}}</md-option>
+                                      
+                                  </md-select>
+                                  <div ng-messages="form_identification.id_ile.$error"
+                                        role="alert">
+                                    <div ng-message="required">
+                                      <span>Île Obligatoire.</span>
+                                    </div>
+                                  </div>
+
+                              </md-input-container>
+
+                              <md-input-container flex="100" flex-gt-xs="25" >
+                                  <label>Préfécture</label>
+                                  <md-select ng-model="vm.identification.id_region" name="id_region" ng-disabled="!vm.identification.id_ile" required>
+                                      
+                                      <md-option ng-repeat="sp in vm.all_region" value="{{sp.id}}">{{sp.Region}}</md-option>
+                                      
+                                  </md-select>
+                                  <div ng-messages="form_identification.id_region.$error"
+                                        role="alert">
+                                    <div ng-message="required">
+                                      <span>Préfécture Obligatoire.</span>
+                                    </div>
+                                  </div>
+
+                              </md-input-container>
+
+                              <md-input-container flex="100" flex-gt-xs="25" >
+                                  <label>Commune</label>
+                                  <md-select ng-model="vm.identification.id_commune" name="id_commune" ng-disabled="!vm.identification.id_region" required>
+                                      
+                                      <md-option ng-repeat="sp in vm.all_commune" value="{{sp.id}}">{{sp.Commune}}</md-option>
+                                      
+                                  </md-select>
+                                  <div ng-messages="form_identification.id_commune.$error"
+                                        role="alert">
+                                    <div ng-message="required">
+                                      <span>Commune Obligatoire.</span>
+                                    </div>
+                                  </div>
+
+                              </md-input-container>
+
+                              <md-input-container flex="100" flex-gt-xs="25" >
+                                  <label>Village</label>
+                                  <md-select ng-model="vm.identification.id_village" name="id_village" ng-disabled="!vm.identification.id_commune" required>
+                                      
+                                      <md-option ng-repeat="sp in vm.all_village" value="{{sp.id}}">{{sp.Village}}</md-option>
+                                      
+                                  </md-select>
+                                  <div ng-messages="form_identification.id_village.$error"
+                                        role="alert">
+                                    <div ng-message="required">
+                                      <span>Village Obligatoire.</span>
+                                    </div>
+                                  </div>
+
+                              </md-input-container>
+
+                            </div>
+
+                            
+                            <div>
+                                <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                    ng-disabled="form_identification.$invalid||vm.affiche_load " ng-click="vm.save_in_bdd(vm.identification,0)">
+                                    Afficher les données
+                                </md-button>
+                               
+                            </div>
+                        </form>
+                        
+                    </md-tab>   
+                    <md-tab label="OBJECTIF ET DESCRIPTION DE ARSE">
+                        
+                    </md-tab>
+
+                    <md-tab label="PLAN DE PRODUCTION">
+                        
+                    </md-tab>
+
+                </md-tabs>
+            </div>
+        </div>
+    </div>
+    

@@ -45,15 +45,10 @@
         {
             vm.all_ile = result.data.response;
         });
-        apiFactory.getAPIgeneraliserREST("theme_formation_ml/index","menu","theme_sensibilisation").then(function(result)
+        apiFactory.getAll("theme_sensibilisation/index").then(function(result)
         {
             vm.allTheme_sensibilisation = result.data.response;
         });
-        
-        /*apiFactory.getAll("theme_sensibilisation/index").then(function(result)
-        {
-            vm.allTheme_sensibilisation = result.data.response;
-        });*/
       
         apiFactory.getAPIgeneraliserREST("formation_thematique_agex/index","menu","getformation_thematique_agexBysousprojet",'id_sous_projet',id_sous_projet_state).then(function(result) { 
             vm.allFormation_thematique_agex = result.data.response;
@@ -468,7 +463,7 @@
               {
                   return obj.id == item.id_groupe_ml_pl;
               });
-              item.chef_village = gr[0].chef_village;
+              item.telephone = gr[0].telephone;
             }
             
             vm.click_groupe_beneficiaire = function () 
@@ -492,7 +487,7 @@
             vm.groupe_beneficiaire_column =[  
                 {titre:"Village"},
                 {titre:"Groupe ML/PL"},
-                {titre:"Nom chef de village"}
+                {titre:"Téléphone"}
             ];
                 vm.selectionGroupe_beneficiaire = function(item)
                 {

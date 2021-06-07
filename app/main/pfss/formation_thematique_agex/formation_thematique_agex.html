@@ -346,21 +346,21 @@
                                               <label>Groupe ML/PL</label>
                                               <md-select ng-model="groupe_par.id_groupe_ml_pl" name="id_groupe_ml_pl" ng-change="vm.change_groupe_ml(groupe_par)" ng-disabled="!groupe_par.id_village">
                                                   <md-option ng-repeat="gr in vm.allGroupe_ml_pl" value="{{gr.id}}">
-                                                      {{gr.nom_groupe}}
+                                                      {{gr.nom_prenom_ml_pl}}
                                                   </md-option>                                                
                                               </md-select>
                                           </md-input-container> 
                                         </span>
-                                        <span ng-if="!groupe_par.$edit"> {{groupe_par.groupe_ml_pl.nom_groupe}}</span>
+                                        <span ng-if="!groupe_par.$edit"> {{groupe_par.groupe_ml_pl.nom_prenom_ml_pl}}</span>
                                     </td>
                                     <td>
                                           <span ng-if="groupe_par.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
-                                                <label>Nom chef de village</label>                                                
-                                                <input type="text" name="numero"  ng-model="groupe_par.chef_village" disabled/>
+                                                <label>Téléphone</label>                                                
+                                                <input type="text" name="telephone"  ng-model="groupe_par.telephone" disabled/>
                                               </md-input-container>
                                           </span>
-                                          <span ng-if="!groupe_par.$edit"> {{groupe_par.groupe_ml_pl.chef_village}}</span>
+                                          <span ng-if="!groupe_par.$edit"> {{groupe_par.groupe_ml_pl.telephone}}</span>
                                         </td>
                                   
                                   </tr>
@@ -368,10 +368,8 @@
                             </table>
                         </div>
                     </md-tab>
-                    <md-tab label="ML/PL bénéficiaire" ng-click="vm.click_ml_pl_beneficiaire()" ng-disabled="!vm.selectedItemGroupe_beneficiaire.id"> 
-                      <!----------FORM AGEP---------------> 
-                                      
-                      <!--FORM  agep--> 
+                    <!--md-tab label="ML/PL bénéficiaire" ng-click="vm.click_ml_pl_beneficiaire()" ng-disabled="!vm.selectedItemGroupe_beneficiaire.id"> 
+                                           
                       <table class="dataTable row-border hover cell-border text-center" datatable="ng"
                         dt-options="vm.dtOptions_new" ms-responsive-table>
                         <thead>
@@ -394,7 +392,7 @@
                           </tr>
                         </tbody>
                       </table>
-                  </md-tab>  
+                  </md-tab-->  
                     <md-tab>
                     </md-tab>
                 </md-tabs>

@@ -54,6 +54,15 @@
         {
             vm.all_ile = result.data.response;
         });
+        apiFactory.getAll("espace_bien_etre/index").then(function(result)
+        {
+            vm.allEspace_bien_etre = result.data.response;
+        });
+        
+        apiFactory.getAll("theme_sensibilisation/index").then(function(result)
+        {
+            vm.allTheme_sensibilisation = result.data.response;
+        });
 
         vm.filtre_region = function()
       {
@@ -152,7 +161,8 @@
             apiFactory.getAPIgeneraliserREST("menage/index","id_groupe_ml_pl",vm.filtre.id_groupe_ml_pl).then(function(result)
             { 
                 vm.allMenage = result.data.response; 
-                console.log(vm.allMenage);           
+                console.log(vm.allMenage); 
+                console.log(vm.filtre.id_groupe_ml_pl);          
             });
         }
       
@@ -168,7 +178,7 @@
             vm.realisation_ebe_column = 
             [   
                 {titre:"Contrat ONG N°"},
-                {titre:"Rencontre N°:"},
+                {titre:"Espace bien être"},
                 {titre:"But regroupement"},
                 {titre:"Date regroupement"},
                 {titre:"Matériels"},
@@ -206,7 +216,8 @@
                 NouvelItemRealisation_ebe = true ;
                 vm.realisation_ebe.supprimer=0;
                 vm.realisation_ebe.id=0;
-                vm.realisation_ebe.numero=null;
+                //vm.realisation_ebe.numero=null;
+                vm.realisation_ebe.id_espace_bien_etre=null;
                 vm.realisation_ebe.but_regroupement=null;
                 vm.realisation_ebe.date_regroupement=null;
                 vm.realisation_ebe.materiel=null;
@@ -249,6 +260,14 @@
                  if (contrat.length!=0)
                  {
                     vm.realisation_ebe.id_contrat_agex  = contrat[0].id ;                     
+                 }
+                 var espace = vm.allEspace_bien_etre.filter(function(obj)
+                {
+                    return obj.id == vm.selectedItemRealisation_ebe.espace_bien_etre.id ;
+                 });
+                 if (espace.length!=0)
+                 {
+                    vm.realisation_ebe.id_espace_bien_etre  = espace[0].id ;                     
                  }
                 vm.affichage_masque=true;
             }
@@ -297,6 +316,7 @@
                         date_regroupement:  convert_date(realisation_ebe.date_regroupement),
                         materiel:           realisation_ebe.materiel,
                         lieu:               realisation_ebe.lieu,
+                        id_espace_bien_etre:  realisation_ebe.id_espace_bien_etre,
                         id_contrat_agex:  realisation_ebe.id_contrat_agex,
                         id_groupe_ml_pl:           vm.filtre.id_groupe_ml_pl            
                         
@@ -316,6 +336,15 @@
                                 {                                  
                                     vm.selectedItemRealisation_ebe.contrat_agex = contrat[0] ;  
                                 }
+                                
+                                var espace = vm.allEspace_bien_etre.filter(function(obj)
+                                {
+                                    return obj.id == realisation_ebe.id_espace_bien_etre  ;
+                                });
+                                if (espace.length!=0)
+                                {                                  
+                                    vm.selectedItemRealisation_ebe.espace_bien_etre = espace[0] ;  
+                                }
                                 vm.selectedItemRealisation_ebe.id_groupe_ml_pl         = realisation_ebe.id_groupe_ml_pl ;
                                 vm.selectedItemRealisation_ebe.numero           = realisation_ebe.numero ;
                                 vm.selectedItemRealisation_ebe.but_regroupement = realisation_ebe.but_regroupement ;
@@ -334,6 +363,7 @@
                         }
                         else
                         {   var cont = [];
+                            var espa = [];
                             var contrat = vm.allContrat_agex.filter(function(obj)
                             {
                                 return obj.id == realisation_ebe.id_contrat_agex  ;
@@ -342,10 +372,20 @@
                             {                                  
                                 cont = contrat[0] ;  
                             }
+                            
+                            var espace = vm.allEspace_bien_etre.filter(function(obj)
+                            {
+                                return obj.id == realisation_ebe.id_espace_bien_etre  ;
+                            });
+                            if (espace.length!=0)
+                            {                                  
+                                espa = espace[0] ;  
+                            }
                             var item =
                             {
                             id :                        String(data.response) ,
                             contrat_agex :    cont ,
+                            espace_bien_etre :    espa ,
                             id_commune :                realisation_ebe.id_commune ,
                             numero :                    realisation_ebe.numero ,
                             but_regroupement :          realisation_ebe.but_regroupement ,
@@ -375,6 +415,7 @@
                         ||(currentItemRealisation_ebe.materiel            != item.materiel )
                         ||(currentItemRealisation_ebe.lieu                != item.lieu )
                         ||(currentItemRealisation_ebe.contrat_agex.id   != item.id_contrat_agex ) 
+                        ||(currentItemRealisation_ebe.espace_bien_etre.id   != item.id_espace_bien_etre )
                         )                    
                     { 
                             insert_in_baseRealisation_ebe(item,suppression);                      
@@ -440,7 +481,7 @@
                             $edit: true,
                             $selected: true,
                             id:'0',
-                            theme_sensibilisation : null,
+                            id_theme_sensibilisation : null,
                             activite : null
                         } ;
 
@@ -464,7 +505,7 @@
                 
                     current_selectedItemTheme_formation_ebe = angular.copy(vm.selectedItemTheme_formation_ebe);
                     vm.selectedItemTheme_formation_ebe.activite = vm.selectedItemTheme_formation_ebe.activite ;
-                    vm.selectedItemTheme_formation_ebe.theme_sensibilisation = vm.selectedItemTheme_formation_ebe.theme_sensibilisation  ;                   
+                    vm.selectedItemTheme_formation_ebe.id_theme_sensibilisation = vm.selectedItemTheme_formation_ebe.theme_sensibilisation.id  ;                   
                 }
 
                 vm.supprimerTheme_formation_ebe = function()
@@ -539,7 +580,7 @@
                         supprimer:etat_suppression,
                         id: vm.selectedItemTheme_formation_ebe.id,
                         activite: vm.selectedItemTheme_formation_ebe.activite,  
-                        theme_sensibilisation: vm.selectedItemTheme_formation_ebe.theme_sensibilisation,
+                        id_theme_sensibilisation: vm.selectedItemTheme_formation_ebe.id_theme_sensibilisation,
                         id_realisation_ebe : id_formation 
                     });
                     console.log(datas);
@@ -551,6 +592,12 @@
                         {
                             if (etat_suppression == 0) 
                             {   
+                                var theme = vm.allTheme_sensibilisation.filter(function(obj)
+                                {
+                                    return obj.id == vm.selectedItemTheme_formation_ebe.id_theme_sensibilisation;
+                                });
+                                
+                                vm.selectedItemTheme_formation_ebe.theme_sensibilisation = theme[0] ;
                                 vm.selectedItemTheme_formation_ebe.$edit = false ;
                                 vm.selectedItemTheme_formation_ebe.$selected = false ;
                                 vm.selectedItemTheme_formation_ebe = {} ;
@@ -568,6 +615,13 @@
                         }
                         else
                         {   
+                            
+                            var theme = vm.allTheme_sensibilisation.filter(function(obj)
+                            {
+                                return obj.id == vm.selectedItemTheme_formation_ebe.id_theme_sensibilisation;
+                            });
+                            
+                            vm.selectedItemTheme_formation_ebe.theme_sensibilisation = theme[0] ;
                             vm.selectedItemTheme_formation_ebe.$edit = false ;
                             vm.selectedItemTheme_formation_ebe.$selected = false ;
                             vm.selectedItemTheme_formation_ebe.id = String(data.response) ;
