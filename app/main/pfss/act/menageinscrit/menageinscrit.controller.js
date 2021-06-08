@@ -2047,6 +2047,5 @@
 			vm.filtre.taille_menage_enquete=vm.total;
 		}	
 		// FIN DIFFRENTES FONCTIONS UTILES POUR LA SAUVEGARDE VARIABLE INTERVENTION
-
 	}
   })();

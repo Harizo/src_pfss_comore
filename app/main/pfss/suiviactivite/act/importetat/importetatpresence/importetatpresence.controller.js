@@ -397,6 +397,18 @@
             .targetEvent()
           );
         } 
+		vm.modifierVillage = function() {
+			vm.filtre.vague=null;
+			vm.filtre.zip=null;
+			vm.all_village.forEach(function(vil) {
+				if(parseInt(vil.id)==parseInt(vm.filtre.village_id)) {
+					vm.filtre.village = vil.Village; 
+					vm.filtre.vague=vil.vague;
+					vm.filtre.zip=vil.id_zip;
+					vm.nontrouvee=false;
+				}
+			});			
+		}
 		function formatDateBDD(dat) {
 			if (dat) {
 				var date = new Date(dat);

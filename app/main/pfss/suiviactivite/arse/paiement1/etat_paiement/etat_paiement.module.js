@@ -11,7 +11,7 @@
     {
         // State
         $stateProvider.state('app.pfss_suivi_arse_paiement1_etat_paiement', {
-            url      : '/suivi-activite/arse/premier-paiement/etat-paiement',
+            url      : '/suivi-activite/arse/premier-paiement/etat-paiement-1',
             views    : {
                 'content@app': {
                     templateUrl: 'app/main/pfss/suiviactivite/arse/paiement1/etat_paiement/etat_paiement.html',

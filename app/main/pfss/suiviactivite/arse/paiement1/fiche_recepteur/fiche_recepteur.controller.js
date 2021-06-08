@@ -6,7 +6,7 @@
         .controller('FicherecepteurController', FicherecepteurController);
 
     /** @ngInject */
-    function FicherecepteurController(apiFactory, $state, $mdDialog, $scope,$cookieStore,apiUrlExcel,apiUrlExcelimport) {
+    function FicherecepteurController(apiFactory, $state, $mdDialog, $scope,$cookieStore,apiUrlExcel,apiUrlExcelimport,$location) {
 		var vm = this;
 	   vm.dtOptions =
       {
@@ -30,6 +30,7 @@
         vm.all_annee = [] ;
         vm.all_etape = [] ;
         vm.all_agex = [] ;
+		vm.all_agep=[];
 
         vm.nouvelle_element = false ;
         vm.nouvelle_element_individu = false ;
@@ -39,12 +40,40 @@
 		vm.filtre={};
 		vm.filtre.id_sous_projet=2; //ARSE
         vm.disable_button = false ;
-      //initialisation variable
-
-      //test check radio button
-
-      //fin test check radio button
-      //chargement clé etrangère et données de bases
+		
+		vm.loc = $location ;
+		vm.url=vm.loc.path();
+		if(vm.url=='/suivi-activite/arse/premier-fiche-recepteur/fiche-recepteur-1') {
+			vm.filtre.titre =" Premier Tranche";
+			vm.filtre.numero_tranche =1;
+			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",1).then(function(result) {
+				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
+				vm.filtre.tranche= result.data.response.Phase;
+			});
+		} else if(vm.url=='/suivi-activite/arse/deuxieme-fiche-recepteur/fiche-recepteur-2') {
+			vm.filtre.titre =" Deuxième Tranche";
+			vm.filtre.numero_tranche =2;
+			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",2).then(function(result) {
+				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
+				vm.filtre.tranche= result.data.response.Phase;
+				console.log(vm.filtre.montant_a_payer);
+				console.log(vm.filtre.pourcentage);
+				console.log(vm.filtre.tranche);
+			});
+		} else if(vm.url=='/suivi-activite/arse/troisieme-fiche-recepteur/fiche-recepteur-3') {
+			vm.filtre.titre =" Troisième Tranche";
+			vm.filtre.numero_tranche =3;
+			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",3).then(function(result) {
+				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
+				vm.filtre.tranche= result.data.response.Phase;
+				console.log(vm.filtre.montant_a_payer);
+				console.log(vm.filtre.pourcentage);
+				console.log(vm.filtre.tranche);
+			});
+		}
         vm.id_user_cookies = $cookieStore.get('id');
 		apiFactory.getOne("utilisateurs/index",vm.id_user_cookies).then(function(result) { 
 			vm.user = result.data.response;
@@ -62,6 +91,9 @@
 			});
 			apiFactory.getAll("phaseexecution/index").then(function(result) { 
 				vm.all_etape = result.data.response;    
+			});
+			apiFactory.getAll("agence_p/index").then(function(result) { 
+				vm.all_agep= result.data.response;    
 			});
 	  
 		});
@@ -137,6 +169,8 @@
 		}
 		vm.export_excel = function() {
 			vm.affiche_load = true ;
+			vm.erreur=false;
+			vm.erreur2=false;
 			var repertoire = "tableau_de_bord/" ;
 			apiFactory.getAPIgeneraliserREST("requete_export/index",
                                                 "id_ile",vm.filtre.id_ile,
@@ -144,22 +178,70 @@
                                                 "id_commune",vm.filtre.id_commune,
                                                 "village_id",vm.filtre.village_id,
                                                 "id_sous_projet",vm.filtre.id_sous_projet,
-                                                "fiche_recepteur",1,
+                                                "fiche_recepteur",1,												
+												"titre",vm.filtre.titre,
+												"numero_tranche",vm.filtre.numero_tranche,
+												"pourcentage",vm.filtre.pourcentage,
+                                                "agep_id",vm.filtre.agep_id,
+                                                "montant_a_payer",vm.filtre.montant_a_payer,
                                                 "export",1
                                                 ).then(function(result) {               
-					vm.status =  result.data.status ;
-					if(vm.status)  {
-						var date_edition=result.data.date_edition;
-						var chemin=result.data.chemin;
-						var name_file=result.data.name_file;
-						// Ménage Apte
-						window.location = apiUrlExcel + chemin + name_file;  
-						vm.affiche_load =false; 
-					} else {
-						vm.affiche_load =false;
-						var message=result.data.message;
-						vm.showAlert('Export Fiche recepteru en excel',message);
-					}                      
+						vm.status =  result.data.status ;
+						if(vm.status)  {
+							var date_edition=result.data.date_edition;
+							var chemin=result.data.chemin;
+							var name_file=result.data.name_file;
+							// Ménage Apte
+							window.location = apiUrlExcel + chemin + name_file;  
+							vm.affiche_load =false; 
+						} else {
+							vm.erreur=true;
+							vm.affiche_load =false;
+							var message=result.data.message;
+							vm.showAlert('Export Fiche recepteru en excel',message);
+						}                      
+						apiFactory.getAPIgeneraliserREST("requete_export/index",
+															"id_ile",vm.filtre.id_ile,
+															"id_region",vm.filtre.id_region,                                               
+															"id_commune",vm.filtre.id_commune,
+															"village_id",vm.filtre.village_id,
+															"id_sous_projet",vm.filtre.id_sous_projet,
+															"titre",vm.filtre.titre,
+															"numero_tranche",vm.filtre.numero_tranche,
+															"pourcentage",vm.filtre.pourcentage,
+															"agep_id",vm.filtre.agep_id,
+															"fiche_paiement_arse",1,
+															"montant_a_payer",vm.filtre.montant_a_payer,
+															"export",1
+															).then(function(result) {               
+								vm.status =  result.data.status ;
+								if(vm.status)  {
+									// console.log(result.data.response);
+									var ile =	result.data.ile;
+									var region =result.data.region;
+									var commune =result.data.commune;
+									var village =result.data.village;
+									var nom_ile =result.data.nom_ile;
+									var microprojet =result.data.microprojet;
+									var nom_agex =result.data.nom_agex;
+									var date_edition=result.data.date_edition;
+									var chemin=result.data.chemin;
+									var name_file1=result.data.name_file1;
+									var name_file2=result.data.name_file2;
+									/*Ménage Apte*/
+									if(result.data.fichier=="OK") {
+										var name_file=result.data.name_file;
+										window.location = apiUrlExcel + chemin + name_file; 
+									}	
+									vm.affiche_load =false; 
+								} else {
+									vm.affiche_load =false;
+									console.log(result.data);
+									var message=result.data.message;
+									var message=result.data.nom_file;
+									vm.showAlert('Export en excel',message);
+								}                      
+						});
 			});
 		}
 		vm.selection= function (item)  {
@@ -216,6 +298,18 @@
 					return "Non identifier"
 					break;
 			}
+		}
+		vm.modifierVillage = function(filtre) {
+			vm.filtre.vague=null;
+			vm.filtre.zip=null;
+			vm.all_village.forEach(function(vil) {
+				if(parseInt(vil.id)==parseInt(vm.filtre.village_id)) {
+					vm.filtre.village = vil.Village; 
+					vm.filtre.vague=vil.vague;
+					vm.filtre.zip=vil.id_zip;
+					vm.nontrouvee=false;
+				}
+			});			
 		}
 	}
   })();

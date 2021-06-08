@@ -18,7 +18,7 @@
             <div class="form-wrapper">
                 <div style="clear:both;"></div>
                 <md-tabs md-dynamic-height>
-                    <md-tab label="Importation Etat de présence">
+                    <md-tab label="Importation Etat de présence ACT">
                         <md-progress-circular ng-if="vm.affiche_load" class="md-accent" aria-label="Rating" md-mode="indeterminate" md-diameter="64"></md-progress-circular> 
                         <div ng-if="vm.affiche_load" style="position:relative;top: -30px;  left: 60px;color: #039be5">
                             Chargement,veuillez patienter s'il vous plait ...
@@ -26,7 +26,7 @@
                         <form name="filtreimportform" class="md-inline-form" novalidate >
                              <div layout="column" layout-gt-xs="row" flex>
 
-                                <md-input-container flex="100" flex-gt-xs="90">
+                                <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Île</label>
                                     <md-select ng-model="vm.filtre.id_ile" name="ile" ng-change="vm.filtre_region()" required>
                                      
@@ -43,7 +43,7 @@
                                     </div>
                                 </md-input-container>
 
-                                <md-input-container flex="100" flex-gt-xs="90">
+                                <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Préfecture</label>
                                     <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_ile" required>
                                       
@@ -60,7 +60,7 @@
                                     </div>
                                 </md-input-container>
 
-                                <md-input-container flex="100" flex-gt-xs="90">
+                                <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Commune</label>
                                     <md-select ng-model="vm.filtre.id_commune" name="commune" ng-change="vm.filtre_village()" ng-disabled="!vm.filtre.id_region"  required>
                                      
@@ -76,9 +76,9 @@
                                       </div>
                                     </div>
                                 </md-input-container>
-                                <md-input-container flex="100" flex-gt-xs="90">
+                                <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Village</label>
-                                    <md-select ng-model="vm.filtre.village_id" name="village" ng-disabled="!vm.filtre.id_commune"  required>
+                                    <md-select ng-model="vm.filtre.village_id" name="village" ng-disabled="!vm.filtre.id_commune" ng-change="vm.modifierVillage()" required>
                                       <md-option ng-repeat="village in vm.all_village" value="{{village.id}}" >
                                         {{village.Village}}
                                       </md-option>
@@ -90,6 +90,14 @@
                                         <span>Village obligatoire</span>
                                       </div>
                                     </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="5">
+                                  <label>Vague</label>
+										<input type="text"  name="vague" ng-model="vm.filtre.vague" readonly>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="5">
+                                  <label>ZIP</label>
+										<input type="text"  name="zip" ng-model="vm.filtre.zip" readonly>
                                 </md-input-container>
                             </div>
 							<div>                            
@@ -149,7 +157,7 @@
                           </tbody>
                         </table>
                     </md-tab>   
-                    <md-tab label="Liste Etat de présence déjà importé">
+                    <md-tab label="Liste Etat de présence ACT déjà importé">
                         <md-progress-circular ng-if="vm.affiche_load" class="md-accent" aria-label="Rating" md-mode="indeterminate" md-diameter="64"></md-progress-circular> 
                         <div ng-if="vm.affiche_load" style="position:relative;top: -30px;  left: 60px;color: #039be5">
                             Chargement,veuillez patienter s'il vous plait ...

@@ -11,7 +11,7 @@
     {
         // State
         $stateProvider.state('app.pfss_suivi_arse_paiement3_etat_paiement3', {
-            url      : '/suivi-activite/arse/troisieme-paiement/etat-paiement',
+            url      : '/suivi-activite/arse/troisieme-paiement/etat-paiement-3',
             views    : {
                 'content@app': {
                     templateUrl: 'app/main/pfss/suiviactivite/arse/paiement1/etat_paiement/etat_paiement.html',
