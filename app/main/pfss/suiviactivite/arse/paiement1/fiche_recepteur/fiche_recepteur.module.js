@@ -11,7 +11,7 @@
     {
         // State
         $stateProvider.state('app.pfss_suivi_arse_paiement1_fiche_recepteur', {
-            url      : '/suivi-activite/arse/premier-fiche-recepteur/fiche-recepteur',
+            url      : '/suivi-activite/arse/premier-fiche-recepteur/fiche-recepteur-1',
             views    : {
                 'content@app': {
                     templateUrl: 'app/main/pfss/suiviactivite/arse/paiement1/fiche_recepteur/fiche_recepteur.html',
