@@ -384,7 +384,20 @@
                                 <tbody>
                                     <tr ng-repeat="pges_p in vm.allPges_phases"  ng-class="{selected: pges_p.$selected}" ng-click="vm.selectionPges_phases(pges_p)">                                       
                                                                                 
-                                        <td>
+                                        
+                                      <td>
+                                        <span ng-if="pges_p.$edit">
+                                          <md-input-container style="width:100%;display: flex !important;">
+                                              <label>Phase</label>
+                                              <md-select ng-model="pges_p.phase" name="phase">
+                                                  <md-option value="REALISATION">REALISATION</md-option>
+                                                  <md-option value="EXPLOITATION">EXPLOITATION</md-option>                                               
+                                              </md-select>
+                                          </md-input-container> 
+                                        </span>
+                                        <span ng-if="!pges_p.$edit"> {{pges_p.phase}}</span>
+                                    </td>
+                                    <!--td>
                                           <span ng-if="pges_p.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
                                                 <label>Description</label>                                                
@@ -392,7 +405,7 @@
                                               </md-input-container>
                                           </span>
                                           <span ng-if="!pges_p.$edit"> {{pges_p.description}}</span>
-                                        </td>
+                                        </td-->
                                         <td>
                                           <span ng-if="pges_p.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
@@ -437,19 +450,7 @@
                                               </md-input-container>
                                           </span>
                                           <span ng-if="!pges_p.$edit"> {{pges_p.cout_estimatif}}</span>
-                                        </td>
-                                        <td>
-                                          <span ng-if="pges_p.$edit">
-                                            <md-input-container style="width:100%;display: flex !important;">
-                                                <label>Phase</label>
-                                                <md-select ng-model="pges_p.phase" name="phase">
-                                                    <md-option value="REALISATION">REALISATION</md-option>
-                                                    <md-option value="EXPLOITATION">EXPLOITATION</md-option>                                               
-                                                </md-select>
-                                            </md-input-container> 
-                                          </span>
-                                          <span ng-if="!pges_p.$edit"> {{pges_p.phase}}</span>
-                                      </td>                                                                           
+                                        </td>                                                                           
 
                                     </tr>
                                 </tbody>
