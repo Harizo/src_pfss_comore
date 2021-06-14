@@ -2,7 +2,8 @@
 {
     'use strict';
     angular
-        .module('app.pfss.suiviactivite.suivi_arse.profilage_orientation', [			
+        .module('app.pfss.suiviactivite.suivi_arse.profilage_orientation', [
+            'app.pfss.suiviactivite.suivi_arse.profilage_orientation.fiche_profilage_orientation'			
             ])
         // .run(testPermission)
         .config(config);
