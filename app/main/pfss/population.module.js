@@ -17,7 +17,6 @@
             // 'app.pfss.traitement',
             // 'app.pfss.validationdonnees',
             // 'app.pfss.importationdonnees',
-            // 'app.pfss.reporting',
             //'app.pfss.importdecoupage',
             'app.pfss.registre_beneficiaire',
             // 'app.pfss.annuaire',
