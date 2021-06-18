@@ -5,8 +5,8 @@
     angular
         .module('app.pfss.reporting', [			
          //  'app.pfss.reporting.nombrebeneficiaire',
-            'app.pfss.reporting.environment_et_systeme',
-            'app.pfss.reporting.carte'
+            'app.pfss.reporting.reporting',
+            //'app.pfss.reporting.carte'
             //'app.pfss.reporting.systeme_protection_social',
             ])
          .run(testPermission)
@@ -17,9 +17,9 @@
     function config(msNavigationServiceProvider)
     {
         msNavigationServiceProvider.saveItem('pfss.reporting', {
-            title : 'Suivi Stratégique',
+            title : 'Reporting',
             icon  : 'icon-chart-bar',
-            weight: 7,
+            weight: 19,
             hidden: function()
             {
                     return vs;

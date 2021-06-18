@@ -12,7 +12,7 @@
         </div>
         <div class="content" layout="column">
             
-        <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+            <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
                 <md-progress-circular ng-if="vm.affiche_load" class=" md-primary"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
                 
                 <span style="color: #5c935c">Chargement,veuillez patienter s'il vous plait ...</span>
@@ -345,7 +345,7 @@
                                      <span class="text-truncate">- <b>Identifiant:</b> {{cua.identifiant_menage}} </span> <br>
                                      <span class="text-truncate">- <b>Nom chef ménage:</b> {{cua.nom_chef_menage}} </span> <br>
                                      <span class="text-truncate">- <b>Age chef ménage:</b> {{cua.agechefdemenage}} ans</span> <br>
-                                     <span class="text-truncate">- <b>N° Enfant -15 ans:</b> {{cua.nombre_enfant_moins_quinze_ans}}  </span><br>
+                                     <span class="text-truncate">- <b>Nbr Enfant -15 ans:</b> {{cua.nombre_enfant_moins_quinze_ans}}  </span><br>
                                      <span class="text-truncate">- <b>Composition:</b> {{cua.composition_menage}} </span> <br>
                                 </td>
 

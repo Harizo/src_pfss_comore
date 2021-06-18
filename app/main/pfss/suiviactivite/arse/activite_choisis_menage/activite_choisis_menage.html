@@ -1,0 +1,270 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Suivi activité</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;">ARSE</span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;">Activités choisis par les ménages bénéficiaires</span>
+                </div>
+    
+                <div class="title">Thème formation</div>
+            </div>
+        </div>
+        <div class="content" layout="column"  >
+            <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                <md-progress-circular ng-if="vm.affiche_load" class=" md-primary"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                
+                <span style="color: #5c935c">Chargement,veuillez patienter s'il vous plait ...</span>
+            </div>
+            <div class="form-wrapper md-whiteframe-1dp" >
+                <div style="clear:both;"></div>
+                
+                <form   name="form_filtreidentification" class="md-inline-form" novalidate >
+
+                                
+
+                    <div layout="column" layout-gt-xs="row" flex>
+           
+                    
+
+
+                      <md-input-container flex="100" flex-gt-xs="20" >
+                          <label>Île</label>
+                          <md-select ng-model="vm.identification.id_ile" name="id_ile" ng-change="vm.get_region_by_ile()" required>
+                              
+                              <md-option ng-repeat="sp in vm.all_ile" value="{{sp.id}}">{{sp.Ile}}</md-option>
+                              
+                          </md-select>
+                          <div ng-messages="form_filtreidentification.id_ile.$error"
+                                role="alert">
+                            <div ng-message="required">
+                              <span>Île Obligatoire.</span>
+                            </div>
+                          </div>
+
+                      </md-input-container>
+
+                      <md-input-container flex="100" flex-gt-xs="20" >
+                          <label>Préfécture</label>
+                          <md-select ng-model="vm.identification.id_region" name="id_region" ng-disabled="!vm.identification.id_ile" required>
+                              
+                              <md-option ng-repeat="sp in vm.all_region" value="{{sp.id}}">{{sp.Region}}</md-option>
+                              
+                          </md-select>
+                          <div ng-messages="form_filtreidentification.id_region.$error"
+                                role="alert">
+                            <div ng-message="required">
+                              <span>Préfécture Obligatoire.</span>
+                            </div>
+                          </div>
+
+                      </md-input-container>
+
+                      <md-input-container flex="100" flex-gt-xs="20" >
+                          <label>Commune</label>
+                          <md-select ng-model="vm.identification.id_commune" name="id_commune" ng-disabled="!vm.identification.id_region" required>
+                              
+                              <md-option ng-repeat="sp in vm.all_commune" value="{{sp.id}}">{{sp.Commune}}</md-option>
+                              
+                          </md-select>
+                          <div ng-messages="form_filtreidentification.id_commune.$error"
+                                role="alert">
+                            <div ng-message="required">
+                              <span>Commune Obligatoire.</span>
+                            </div>
+                          </div>
+
+                      </md-input-container>
+
+                      <md-input-container flex="100" flex-gt-xs="20" >
+                          <label>Village</label>
+                          <md-select ng-model="vm.identification.id_village" name="id_village" ng-disabled="!vm.identification.id_commune" required>
+                              
+                              <md-option ng-repeat="sp in vm.all_village" value="{{sp.id}}">{{sp.Village}}</md-option>
+                              
+                          </md-select>
+                          <div ng-messages="form_filtreidentification.id_village.$error"
+                                role="alert">
+                            <div ng-message="required">
+                              <span>Village Obligatoire.</span>
+                            </div>
+                          </div>
+
+                      </md-input-container>
+
+                        <md-input-container flex="100" flex-gt-xs="10">
+                          <input  type="text" name="zip" ng-model="vm.identification.zip"
+                            placeholder="ZIP" readonly   ng-init="vm.identification.zip=''">
+                        
+                        </md-input-container>
+
+                        <md-input-container flex="100" flex-gt-xs="10">
+                          <input  type="text" name="vague" ng-model="vm.identification.vague"
+                            placeholder="Vague"  readonly  ng-init="vm.identification.vague=''">
+                        
+                        </md-input-container>
+
+                    </div>
+                    <div layout="column" layout-gt-xs="row" flex>
+                        <md-input-container flex="100" flex-gt-xs="20" >
+                          <label>Activités</label>
+                          <md-select ng-model="vm.identification.activite" name="activite" ng-change="vm.get_region_by_ile()" required>
+                              
+                              <md-option ng-repeat="sp in vm.all_theme_formation" value="{{sp.id}}">{{sp.description}}</md-option>
+                              
+                          </md-select>
+                          <div ng-messages="form_filtreidentification.activite.$error"
+                                role="alert">
+                            <div ng-message="required">
+                              <span>Activités Obligatoire.</span>
+                            </div>
+                          </div>
+
+                      </md-input-container>
+                    </div>
+                </form>
+
+                <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                    ng-disabled="form_filtreidentification.$invalid||vm.affiche_load " ng-click="vm.export_excel()">
+                    Exporter en excel
+                </md-button>
+
+                <md-tabs md-dynamic-height>
+                    <md-tab label="Sous-activités">
+                        <table class="dataTable row-border hover cell-border text-center" datatable="ng"
+                          dt-options="vm.dtOptions_new" ms-responsive-table>
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::vm.entete_identification">
+                                <div class="table-header">
+                                  <span class="column-title text-center">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="cua in vm.all_theme_formation_detail"  ng-class="{selected: cua.$selected}" ng-click="vm.selection(cua)">
+      
+                                <td>{{cua.description}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </md-tab>
+
+                    <md-tab label="Ménages du sous-activité {{vm.selected_identification.description}}" ng-disabled="!vm.selected_identification || !vm.identification.id_village">
+
+                        
+
+                        <!-- PERSONNE RENCONTRE -->
+                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                <div layout="row" layout-align="start center">
+                            
+
+                                    <div class="border-right">
+                                      <span class="md-subhead">Ménages qui ont choisis {{vm.selected_identification.description}}</span>
+                                    </div>
+                              
+                                  <div class="border-right" ng-if="!vm.selected_activite_choisis_menage.id&&!vm.nouvelle_activite_choisis_menage">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.show_dialog()">
+                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                      <md-tooltip><span>Ajouter</span></md-tooltip>
+                                    </md-button>
+                                  </div> 
+                                  <div class="border-right" ng-if="vm.selected_activite_choisis_menage.id&&!vm.selected_activite_choisis_menage.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_activite_choisis_menage()">
+                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                      <md-tooltip><span>Modifier</span></md-tooltip>
+                                    </md-button>
+                                  </div>    
+                                  <div class="border-right" ng-if="vm.selected_activite_choisis_menage.id&&!vm.selected_activite_choisis_menage.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_activite_choisis_menage()">
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Supprimer</span></md-tooltip>
+                                    </md-button>
+                                  </div>  
+
+                                  <div class="border-right" ng-if="vm.selected_activite_choisis_menage.id">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_activite_choisis_menage()">
+                                      <md-icon md-font-icon="icon-cancel"></md-icon>
+                                      <md-tooltip><span>Annuler</span></md-tooltip>
+                                    </md-button>
+                                  </div>   
+
+                                  <div ng-if="vm.selected_activite_choisis_menage.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_activite_choisis_menage(0)">
+                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                    </md-button>
+                                  </div>                
+                                </div>
+                            </header>
+                            
+                        
+                            <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                                <thead>
+                                    <tr>
+                                        <th class="secondary-text" ng-repeat="c in ::vm.entete_activite_choisis_menage">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">{{c.titre}}</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="cm in vm.all_activite_choisis_menage"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_activite_choisis_menage(cm)">                                       
+                                        
+                                        
+                                     
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Ménage</label>
+
+                                                    <md-select ng-model="cm.id_menage" name="id_menage"  required>
+                                  
+                                                        <md-option ng-repeat="sp in vm.all_menage" value="{{sp.id}}"> ({{sp.identifiant_menage}}) {{sp.nomchefmenage}}</md-option>
+
+                                                    </md-select>   
+                                                </md-input-container>
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                Identifiant: {{cm.identifiant_menage}} <br>
+                                                Nom et prénom: {{cm.nomchefmenage}} <br>
+                                                Groupe: {{cm.groupe}} 
+
+                                            </span>
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <!--FIN PERSONNE RENCONTRE -->
+
+                    </md-tab>
+
+                </md-tabs>
+
+                    
+                    <!-- <div>
+                        <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                            ng-disabled="form_filtreidentification.$invalid||vm.affiche_load " ng-click="vm.get_identification(vm.identification,0)">
+                            Afficher les données
+                        </md-button>
+
+                        <md-button type="submit" ng-disabled="form_filtreidentification.$invalid||vm.affiche_load " class="md-raised md-primary" aria-label="Fermer" ng-click="vm.fermer_masque_filtre()">
+                            Ajouter des ménages aux sous-activités
+                        </md-button>
+                       
+                    </div> -->
+                
+            </div>
+        </div>
+    </div>
