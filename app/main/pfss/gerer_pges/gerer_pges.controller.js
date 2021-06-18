@@ -428,13 +428,13 @@
 
                 vm.pges_phases_column = 
                 [
-                    {titre:"Description"},
+                    {titre:"Phase"},
+                    //{titre:"Description"},
                     {titre:"Impacts"},
                     {titre:"Mesures"},
                     {titre:"Responsable"},
                     {titre:"Calendrier d\'exécution"},
-                    {titre:"Coût estimatif"},
-                    {titre:"Phase"}
+                    {titre:"Coût estimatif"}
                 ]; 
 
                 vm.selectionPges_phases = function(item)
@@ -469,7 +469,7 @@
                             $edit: true,
                             $selected: true,
                             id:'0',
-                            description: '',
+                           // description: '',
                             impacts: '',
                             mesures: '',
                             responsable: '',
@@ -595,7 +595,7 @@
                             vm.selectedItemPges_phases.$selected = false;
                             vm.selectedItemPges_phases.$edit = false;
 
-                            vm.selectedItemPges_phases.description  = current_selectedItemPges_phases.description;
+                           // vm.selectedItemPges_phases.description  = current_selectedItemPges_phases.description;
                             vm.selectedItemPges_phases.impacts      = current_selectedItemPges_phases.impacts;
                             vm.selectedItemPges_phases.mesures      = current_selectedItemPges_phases.mesures;
                             vm.selectedItemPges_phases.responsable  = current_selectedItemPges_phases.responsable;      
@@ -624,7 +624,7 @@
                     {                        
                         supprimer               :etat_suppression,
                         id                      : vm.selectedItemPges_phases.id,
-                        description             : vm.selectedItemPges_phases.description,
+                       // description             : vm.selectedItemPges_phases.description,
                         impacts                 : vm.selectedItemPges_phases.impacts,      
                         mesures                 : vm.selectedItemPges_phases.mesures,      
                         responsable             : vm.selectedItemPges_phases.responsable,

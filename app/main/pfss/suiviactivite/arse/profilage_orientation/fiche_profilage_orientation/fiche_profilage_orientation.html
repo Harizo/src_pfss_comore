@@ -1,0 +1,934 @@
+<div id="forms_fiche_profilage" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Suivi activité</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;">Fiche profilage et orientation</span>
+                </div>
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>
+                <md-tabs md-dynamic-height>
+                  <md-tab label="Fiche profilage et orientation entête">
+                    <form name="filtreform" class="md-inline-form" novalidate >
+                      <div layout="column" layout-gt-xs="row" flex>
+                         <md-input-container flex="100" flex-gt-xs="90">
+                           <label>Île</label>
+                             <md-select ng-model="vm.filtre.id_ile" name="ile" ng-change="vm.filtre_region()" required>
+                              
+                               <md-option ng-repeat="ile in vm.all_ile" value="{{ile.id}}" >
+                                 {{ile.Ile}}
+                               </md-option>
+
+                             </md-select>
+                             <div ng-messages="filtreform.ile.$error"
+                               role="alert">
+                               <div ng-message="required">
+                                 <span>Île obligatoire</span>
+                               </div>
+                             </div>
+                         </md-input-container>
+
+                         <md-input-container flex="100" flex-gt-xs="90">
+                           <label>Préfecture</label>
+                             <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_ile" required>
+                               
+                               <md-option ng-repeat="region in vm.all_region" value="{{region.id}}" >
+                                 {{region.Region}}
+                               </md-option>
+
+                             </md-select>
+                             <div ng-messages="filtreform.region.$error"
+                               role="alert">
+                               <div ng-message="required">
+                                 <span>Région obligatoire</span>
+                               </div>
+                             </div>
+                         </md-input-container>
+
+                         <md-input-container flex="100" flex-gt-xs="90">
+                           <label>Commune</label>
+                             <md-select ng-model="vm.filtre.id_commune" name="commune" ng-disabled="!vm.filtre.id_region" ng-change="vm.filtre_village()" required>
+                              
+                               <md-option ng-repeat="commune in vm.all_commune" value="{{commune.id}}" >
+                                 {{commune.Commune}}
+                               </md-option>
+
+                             </md-select>
+                             <div ng-messages="filtreform.commune.$error"
+                               role="alert">
+                               <div ng-message="required">
+                                 <span>Commune obligatoire</span>
+                               </div>
+                             </div>
+                         </md-input-container>
+
+                         <md-input-container flex="100" flex-gt-xs="90">
+                           <label>Village</label>
+                             <md-select ng-model="vm.filtre.id_village" name="village" ng-disabled="!vm.filtre.id_commune" ng-change="vm.filtre_zip_groupe()" required>
+                              
+                               <md-option ng-repeat="village in vm.all_village" value="{{village.id}}" >
+                                 {{village.Village}}
+                               </md-option>
+
+                             </md-select>
+                             <div ng-messages="filtreform.village.$error"
+                               role="alert">
+                               <div ng-message="required">
+                                 <span>village obligatoire</span>
+                               </div>
+                             </div>
+                         </md-input-container>
+                                                  
+                         <md-input-container flex="80" flex-gt-xs="50">
+                          <label>Zip</label>
+                            <md-select ng-model="vm.filtre.id_zip" name="zip" ng-disabled="!vm.filtre.id_village">
+                             
+                              <md-option ng-repeat="zip in vm.allZip" value="{{zip.id}}" >
+                                {{zip.libelle}}
+                              </md-option>
+
+                            </md-select>
+                            <div ng-messages="filtreform.zip.$error"
+                              role="alert">
+                              <div ng-message="required">
+                                <span>Zip obligatoire</span>
+                              </div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container flex="80" flex-gt-xs="50">
+                          <label>Vague</label>
+                            <input ng-model="vm.filtre.vague" type="text" name="vague" disabled/>
+                             
+                            <div ng-messages="filtreform.vague.$error"
+                              role="alert">
+                              <div ng-message="required">
+                                <span>Vague obligatoire</span>
+                              </div>
+                            </div>
+                        </md-input-container>  
+                        
+                     </div>	
+                    <div>                            
+                      <section layout="row" layout-sm="column" layout-align="left" layout-wrap>
+                    
+                        <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                           ng-disabled="filtreform.$invalid||vm.affiche_load" ng-click="vm.get_fiche_profilage_orientation_entete(vm.filtre)">
+                          Actualiser
+                        </md-button>                              
+                      </section>                         
+                     </div>
+                 </form>
+                      <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                        <div layout="row" layout-align="start center">
+                        <div class="border-right">
+                            
+                          <span class="md-headline">Fiche entête</span>
+                        </div>
+                          <div class="border-right" ng-if="vm.filtre.id_commune && !vm.selectedItemFiche_profilage_orientation_entete.id">
+                            <md-button class="md-icon-button" style=" font-size:11px " aria-label="Ajout" ng-click="vm.ajouterFiche_profilage_orientation_entete()">
+                              <md-icon md-font-icon="icon-plus-box"></md-icon>
+                              <md-tooltip><span>Ajouter</span></md-tooltip>
+                            </md-button>
+                          </div> 
+                          <div class="border-right" ng-if="vm.selectedItemFiche_profilage_orientation_entete.id">
+                            <md-button class="md-icon-button" aria-label="Modifier" style=" font-size:11px " ng-click="vm.modifFiche_profilage_orientation_entete()">
+                              <md-icon md-font-icon="icon-table-edit"></md-icon>
+                              <md-tooltip><span>Modifier</span></md-tooltip>
+                            </md-button>
+                          </div>    
+                          <div class="border-right" ng-if="vm.selectedItemFiche_profilage_orientation_entete.id">
+                            <md-button class="md-icon-button" aria-label="Suppression" style=" font-size:11px " ng-click="vm.supprimerFiche_profilage_orientation_entete()">
+                              <md-icon md-font-icon="icon-delete"></md-icon>
+                              <md-tooltip><span>Supprimer</span></md-tooltip>
+                            </md-button>
+                          </div>    
+                          <div class="border-right" ng-if="vm.selectedItemFiche_profilage_orientation_entete.id">
+                            <md-button class="md-icon-button" aria-label="Annuler" style=" font-size:11px " ng-click="vm.annulerFiche_profilage_orientation_entete()">
+                              <md-icon md-font-icon="icon-cancel"></md-icon>
+                              <md-tooltip><span>Annuler</span></md-tooltip>
+                            </md-button>
+                          </div>                  
+                        </div>
+                    </header>
+                      <!----------FORM AGEP--------------->       
+                       
+                      <form ng-show="vm.affichage_masque" name="formfiche_profilage_orientation_entete" class="md-inline-form" novalidate >
+
+                        <div layout="column" layout-gt-xs="row" flex> 
+                          
+                                                 
+                          <div style="font-size: 13px !important;" flex="100" flex-gt-xs="20">
+                            <label>Date du remplissage:</label>
+                            <md-datepicker  ng-model="vm.fiche_profilage_orientation_entete.date_remplissage" md-placeholder="jj/mm/aaaa" required>                       
+                            </md-datepicker>
+                          </div>
+                          <md-input-container flex="100" flex-gt-xs="40">
+                              <label>Agex</label>
+                              <md-select ng-model="vm.fiche_profilage_orientation_entete.id_agex" name="id_agex">
+                                  <md-option ng-repeat="mena in vm.allAgex" value="{{mena.id}}">
+                                          {{mena.Nom}}
+                                  </md-option>                                                
+                                </md-select>
+                                <div ng-messages="formfiche_profilage_orientation_entete.id_agex.$error" role="alert">
+                                  <div ng-message="required">
+                                    <span>AGEX Obligatoire.</span>
+                                  </div>
+                                </div>
+                          </md-input-container>
+                          <md-input-container flex="100" flex-gt-xs="40">
+                              <label>Ménage</label>
+                              <md-select ng-model="vm.fiche_profilage_orientation_entete.id_menage" name="id_menage">
+                                  <md-option ng-repeat="mena in vm.allMenage" value="{{mena.id}}">
+                                    {{mena.identifiant_menage}}--{{mena.nomchefmenage}}
+                                  </md-option>                                                
+                                </md-select>
+                                <div ng-messages="formfiche_profilage_orientation_entete.id_agex.$error" role="alert">
+                                  <div ng-message="required">
+                                    <span>Ménage Obligatoire.</span>
+                                  </div>
+                                </div>
+                          </md-input-container> 
+                                    
+                 
+                        </div>
+
+                          <div>
+                              <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                      ng-disabled="formfiche_profilage_orientation_entete.$invalid " ng-click="vm.ajoutFiche_profilage_orientation_entete(vm.fiche_profilage_orientation_entete,0)">
+                                      Enregistrer
+                              </md-button>
+                              <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerFiche_profilage_orientation_entete()">
+                                      Annuler
+                              </md-button>
+                          </div>
+                          </form>
+                                      
+                      <!--FORM  agep--> 
+                      <table class="dataTable row-border hover cell-border text-center" datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                        <thead>
+                          <tr>
+                            <th class="secondary-text" ng-repeat="re in ::vm.fiche_profilage_orientation_entete_column">
+                              <div class="table-header">
+                                <span class="column-title text-center">{{re.titre}}</span>
+                              </div>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr ng-repeat="contr in vm.allFiche_profilage_orientation_entete"  ng-class="{selected: contr.$selected}" ng-click="vm.selection(contr)">
+                             
+                            <td>{{contr.date_remplissage | date:'dd/MM/yyyy'}}</td>
+                            <td>
+                              <span ><strong ng-if="contr.agex.Nom">Nom AGEX</strong>: {{contr.agex.Nom}}</span><br>
+                              <span ><strong ng-if="contr.agex.nom_contact_agex">Nom de l'ADC</strong>: {{contr.agex.nom_contact_agex}}</span><br>
+                              <span ><strong ng-if="contr.agex.numero_phone_contact">Contact</strong>: {{contr.agex.numero_phone_contact}}</span>
+                            </td>
+                            <td>
+                              <span ><strong ng-if="contr.menage.nomchefmenage">Nom et prénom du chef de ménage</strong>: {{contr.menage.nomchefmenage}}</span><br>
+                              <span ><strong ng-if="contr.menage.agechefdemenage">Age</strong>: {{contr.menage.agechefdemenage}}</span><br>
+                              <span ><strong ng-if="contr.menage.inapte">Catégorie du ménage</strong>: {{vm.affichage_inapte(contr.menage.inapte)}}</span><br>
+                              <span ><strong ng-if="contr.menage.situation_matrimoniale">Situation matrimoniale</strong>: {{vm.affichage_situation_matrimoniale(contr.menage.situation_matrimoniale)}}</span><br>
+                              <span ><strong>Composition du ménage</strong>: 
+                                <span>Féminin:{{contr.menage.nbr_feminin}} </span>
+                                <span> Masculin:{{contr.menage.nbr_masculin}}</span>
+                            </span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                  </md-tab> 
+                
+                  <md-tab label="CONNAISSANCE ET D'EXPERIENCE DU MENAGE" ng-disabled="!vm.selectedItemFiche_profilage_orientation_entete.id" ng-click="vm.click_connaissance_experiance_menage_entete()">
+                      <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                          <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 20px;" class="border-top border-bottom">
+                              <div layout="row" layout-align="start center">
+                              <div class="border-right" style="">
+                                  
+                                <span class="md-headline" style="font-size: 16px !important; font-weight: 300;">NIVEAU DE FORMATION DU MENAGE &nbsp</span>
+                              </div>
+
+                                <!--div class="border-right" ng-if="!vm.selectedItemTheme_formation_ebe.id && !vm.nouvelleItemTheme_formation_ebe">
+                                  <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterTheme_formation_ebe()">
+                                    <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                    <md-tooltip><span>Ajouter</span></md-tooltip>
+                                  </md-button>
+                                </div--> 
+                                <div class="border-right">
+                                  <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierConnaissance_experiance_menage_entete()">
+                                    <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                    <md-tooltip><span>Modifier</span></md-tooltip>
+                                  </md-button>
+                                </div>    
+                                <!--div class="border-right" ng-if="vm.selectedItemTheme_formation_ebe.id && !vm.selectedItemTheme_formation_ebe.$edit">
+                                  <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerTheme_formation_ebe()">
+                                    <md-icon md-font-icon="icon-delete"></md-icon>
+                                    <md-tooltip><span>Supprimer</span></md-tooltip>
+                                  </md-button>
+                                </div>  
+
+                                <div class="border-right" ng-if="vm.selectedItemTheme_formation_ebe.id">
+                                  <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerTheme_formation_ebe()">
+                                    <md-icon md-font-icon="icon-cancel"></md-icon>
+                                    <md-tooltip><span>Annuler</span></md-tooltip>
+                                  </md-button>
+                                </div>   
+
+                                <div ng-if="vm.selectedItemTheme_formation_ebe.$edit">
+                                  <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerTheme_formation_ebe(0)">
+                                    <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                    <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                  </md-button>
+                                </div-->                
+                              </div>
+                          </header>
+                          <div>                             
+                            <form ng-show="vm.affichage_masque_connaissance_entete" name="formconnaissance_experiance_menage_entete" class="md-inline-form" novalidate >
+
+                              <div layout="column" layout-gt-xs="row" flex> 
+                                
+                                                      
+                                <span style="margin-top: 20px;">
+                                  <md-radio-group ng-model="vm.connaissance_experiance_menage_entete.niveau_formation" required ng-change="vm.change_radio_entete()">
+                                    <md-radio-button value="1" style="margin-right: 20px !important; display:inline-block;" class="md-primary">Primaire</md-radio-button>
+                                    <md-radio-button value="2" style="margin-right: 20px !important; display:inline-block;" class="md-primary"> Secondaire </md-radio-button>
+                                    <md-radio-button value="3" style="margin-right: 20px !important; display:inline-block;" class="md-primary">Universitaire</md-radio-button>
+                                    <md-radio-button value="4" style="margin-right: 20px !important; display:inline-block;" class="md-primary">Autre</md-radio-button>
+                                  </md-radio-group>
+                                </span>
+                                <md-input-container ng-if="vm.connaissance_experiance_menage_entete.niveau_formation==4">
+                                    <label>Si Autres, Préciser</label>
+                                    <input  type="text" name="autre_niveau_formation" ng-model="vm.connaissance_experiance_menage_entete.autre_niveau_formation">
+                              
+                                      <div ng-messages="formconnaissance_experiance_menage_entete.autre_niveau_formation.$error" role="alert">
+                                        <div ng-message="required">
+                                          <span>Autres, Préciser Obligatoire.</span>
+                                        </div>
+                                      </div>
+                                </md-input-container>
+                                          
+                      
+                              </div>
+
+                                <div>
+                                    <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                            ng-disabled="formconnaissance_experiance_menage_entete.$invalid " ng-click="vm.enregistrerConnaissance_experiance_menage_entete(0)">
+                                            Enregistrer
+                                    </md-button>
+                                    <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerConnaissance_experiance_menage_entete()">
+                                            Annuler
+                                    </md-button>
+                                </div>
+                                <md-divider></md-divider>
+                                </form>
+                          </div>
+                          <div style="margin: 20px;">
+                            <div>
+                                <span>                                
+                                  <md-radio-group ng-model="vm.allConnaissance_experiance_menage_entete.niveau_formation" >
+                                    <md-radio-button value="1" style="margin-right: 20px !important; display:inline-block;" disabled class="md-primary">Primaire</md-radio-button>
+                                    <md-radio-button value="2" style="margin-right: 20px !important; display:inline-block;" disabled class="md-primary"> Secondaire </md-radio-button>
+                                    <md-radio-button value="3" style="margin-right: 20px !important; display:inline-block;" disabled class="md-primary">Universitaire</md-radio-button>
+                                    <md-radio-button value="4" style="margin-right: 20px !important; display:inline-block;" disabled class="md-primary">Autre</md-radio-button>
+                                  </md-radio-group>
+                                </span>
+                              <span ng-if="!vm.modification_connaissance_entete && vm.allConnaissance_experiance_menage_entete.niveau_formation==4
+                              "><strong>Si Autres, Préciser: </strong> {{vm.allConnaissance_experiance_menage_entete.autre_niveau_formation}}
+                              </span>
+                            </div>
+                            
+                          </div>
+                         
+                         
+                          <!--debut connaissance experiance menage detail-->
+                         
+                         
+                          <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                            <div layout="row" layout-align="start center">
+                            <div class="border-right">                                
+                              <span class="md-headline">Connaissance experiance menage détail</span>
+                            </div>
+                              <div class="border-right" ng-if="vm.selectedItemConnaissance_experiance_menage_detail.id_activite_realise_auparavant_prevu">
+                                <md-button class="md-icon-button" aria-label="Modifier" style=" font-size:11px " ng-click="vm.modifConnaissance_experiance_menage_detail()">
+                                  <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                  <md-tooltip><span>Modifier</span></md-tooltip>
+                                </md-button>
+                              </div>    
+                              <div class="border-right" ng-if="vm.selectedItemConnaissance_experiance_menage_detail.id_activite_realise_auparavant_prevu">
+                                <md-button class="md-icon-button" aria-label="Suppression" style=" font-size:11px " ng-click="vm.supprimerConnaissance_experiance_menage_detail()">
+                                  <md-icon md-font-icon="icon-delete"></md-icon>
+                                  <md-tooltip><span>Supprimer</span></md-tooltip>
+                                </md-button>
+                              </div>    
+                              <div class="border-right" ng-if="vm.selectedItemConnaissance_experiance_menage_detail.id_activite_realise_auparavant_prevu">
+                                <md-button class="md-icon-button" aria-label="Annuler" style=" font-size:11px " ng-click="vm.annulerConnaissance_experiance_menage_detail()">
+                                  <md-icon md-font-icon="icon-cancel"></md-icon>
+                                  <md-tooltip><span>Annuler</span></md-tooltip>
+                                </md-button>
+                              </div>                  
+                            </div>
+                        </header>
+                          <!----------FORM debut connaissance experiance menage detail --------------->       
+                           
+                          <form ng-show="vm.affichage_masque_connaissance_detail" name="formconnaissance_experiance_menage_detail" class="md-inline-form" novalidate >
+    
+                            <div layout="column" layout-gt-xs="row" flex> 
+                              
+                                                     
+                              <!--div style="font-size: 13px !important;" flex="100" flex-gt-xs="20">
+                                <label>Date du remplissage:</label>
+                                <md-datepicker  ng-model="vm.connaissance_experiance_menage_detail.date_remplissage" md-placeholder="jj/mm/aaaa" required>                       
+                                </md-datepicker>
+                              </div-->
+                              
+                                <md-input-container flex="100" flex-gt-xs="30">
+                                    <label>Difficultés rencontrées</label>
+                                    <input  type="text" name="difficulte_rencontre" ng-model="vm.connaissance_experiance_menage_detail.difficulte_rencontre" required>
+                                
+                                      <div ng-messages="formconnaissance_experiance_menage_detail.difficulte_rencontre.$error" role="alert">
+                                        <div ng-message="required">
+                                          <span>Difficultés rencontrées Obligatoire.</span>
+                                        </div>
+                                      </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="30">
+                                    <label>Nombre d'années d'actvités</label>
+                                    <md-select ng-model="vm.connaissance_experiance_menage_detail.nbr_annee_activite" name="nbr_annee_activite" required>
+                                        <md-option value="1">Moins 1 an</md-option>
+                                        <md-option value="2">1 an</md-option>
+                                        <md-option value="3">2 ans</md-option>
+                                        <md-option value="4">Plus 3 ans</md-option>                                                
+                                      </md-select>
+                                      <div ng-messages="formconnaissance_experiance_menage_detail.nbr_annee_activite.$error" role="alert">
+                                        <div ng-message="required">
+                                          <span>Nombre d'années d'actvités Obligatoire.</span>
+                                        </div>
+                                      </div>
+                                </md-input-container> 
+
+                              
+                              
+                                        
+                     
+                            </div>
+                            <div ng-if="vm.connaissance_experiance_menage_detail.id_activite_realise_auparavant_prevu==1">
+                              
+                              <span>Formation acquise:</span>
+                              <md-divider></md-divider>
+                              <span layout="column" layout-gt-xs="row" flex >
+                                <label flex="100" flex-gt-xs="20" class="inputcheck" >
+                                  <md-checkbox type="checkbox" class="md-primary" ng-model="vm.connaissance_experiance_menage_detail.formation_acquise_mar"/>Maraichage
+                                </label>
+                                <label flex="100" flex-gt-xs="20" >
+                                  <md-checkbox type="checkbox" class="md-primary" ng-model="vm.connaissance_experiance_menage_detail.formation_acquise_pep">Pépinière</md-checkbox>
+                                </label>                                
+                                <label flex="100" flex-gt-xs="20">
+                                  <md-checkbox type="checkbox" class="md-primary" ng-model="vm.connaissance_experiance_menage_detail.formation_acquise_cul">Culture vivrière</md-checkbox>
+                                </label>
+                                <label flex="100" flex-gt-xs="20">
+                                  <md-checkbox type="checkbox" class="md-primary" ng-model="vm.connaissance_experiance_menage_detail.formation_acquise_tra_act1">Transformation</md-checkbox>
+                                </label>
+                                <label flex="100" flex-gt-xs="20">
+                                  <md-checkbox type="checkbox" class="md-primary" ng-model="vm.connaissance_experiance_menage_detail.formation_acquise_aut_act1">Autres</md-checkbox>
+                                </label>
+                              </span>
+                              <!--span layout="column" layout-gt-xs="row" flex>
+                              </span-->
+                            </div>
+                            <div ng-if="vm.connaissance_experiance_menage_detail.id_activite_realise_auparavant_prevu==2">
+                              
+                              <span>Formation acquise:</span>
+                              <md-divider></md-divider>
+                              <div layout="column" layout-gt-xs="row" flex>
+                                <label flex="100" flex-gt-xs="25">
+                                  <md-checkbox type="checkbox" class="md-primary" ng-model="vm.connaissance_experiance_menage_detail.formation_acquise_cap">Caprin</md-checkbox>
+                                </label>
+                                <label flex="100" flex-gt-xs="25">
+                                  <md-checkbox type="checkbox" class="md-primary" ng-model="vm.connaissance_experiance_menage_detail.formation_acquise_avi">Aviculture</md-checkbox>
+                                </label>
+                                <label flex="100" flex-gt-xs="25">
+                                  <md-checkbox type="checkbox" class="md-primary" ng-model="vm.connaissance_experiance_menage_detail.formation_acquise_bov">Bovin</md-checkbox>
+                                </label>
+                                <label flex="100" flex-gt-xs="25">
+                                  <md-checkbox type="checkbox" class="md-primary" ng-model="vm.connaissance_experiance_menage_detail.formation_acquise_aut_act2">Autres</md-checkbox>
+                                </label>
+                              </div>
+                            </div>
+                            <div ng-if="vm.connaissance_experiance_menage_detail.id_activite_realise_auparavant_prevu==3">
+                              
+                              <span>Formation acquise:</span>
+                              <md-divider></md-divider>
+                              <div layout="column" layout-gt-xs="row" flex>
+                                <label flex="100" flex-gt-xs="30">
+                                  <md-checkbox type="checkbox" class="md-primary" ng-model="vm.connaissance_experiance_menage_detail.formation_acquise_tec">Technique de pêche</md-checkbox>
+                                </label>
+                                <label flex="100" flex-gt-xs="30">
+                                  <md-checkbox type="checkbox" class="md-primary" ng-model="vm.connaissance_experiance_menage_detail.formation_acquise_tra_act3">Transformation</md-checkbox>
+                                </label>
+                                <label flex="100" flex-gt-xs="30">
+                                  <md-checkbox type="checkbox" class="md-primary" ng-model="vm.connaissance_experiance_menage_detail.formation_acquise_aut_act3">Autres</md-checkbox>
+                                </label>
+                              </div>
+                            </div>
+    
+                              <div>
+                                  <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                          ng-disabled="formconnaissance_experiance_menage_detail.$invalid " ng-click="vm.ajoutConnaissance_experiance_menage_detail(vm.connaissance_experiance_menage_detail,0)">
+                                          Enregistrer
+                                  </md-button>
+                                  <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerConnaissance_experiance_menage_detail()">
+                                          Annuler
+                                  </md-button>
+                              </div>
+
+                              
+                              </form>
+                                          
+                          <!--FORM  debut connaissance experiance menage detail--> 
+                          <table class="dataTable row-border hover cell-border" datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                            <thead>
+                              <tr>
+                                <th class="secondary-text" ng-repeat="re in ::vm.connaissance_experiance_menage_detail_column">
+                                  <div class="table-header">
+                                    <span class="column-title text-center">{{re.titre}}</span>
+                                  </div>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr ng-repeat="contr in vm.allConnaissance_experiance_menage_detail"  ng-class="{selected: contr.$selected}" ng-click="vm.selectionConnaissance_experiance_menage_detail(contr)">
+                                 
+                                <!--td class="text-right" style="padding-right: 10% !important;">{{contr.activite_realise_auparavant_description}}
+                                  <md-checkbox ng-model="contr.id_activite_realise_auparavant" aria-label="Checkbox 1" disabled>
+                                  </md-checkbox>
+                                </td-->
+                                <td>
+                                  <div layout="column" layout-gt-xs="row" flex>
+                                    
+                                      <span flex="100" flex-gt-xs="40">
+                                        {{contr.activite_realise_auparavant_description}}
+                                      </span>
+                                      <span flex="100" flex-gt-xs="40">
+                                        <md-checkbox ng-model="contr.activite_realise_auparavant" aria-label="Checkbox 1" class="md-primary" disabled>
+                                        </md-checkbox>
+                                      </span>
+
+                                  </div>
+                                </td>
+                                <td>{{contr.difficulte_rencontre}}</td>
+                                <td>{{vm.affichage_nbr_annee_activite(contr.nbr_annee_activite)}} </td>
+                                <td>
+                                  <div ng-if="contr.id_activite_realise_auparavant_prevu==1">
+                                    <div layout="column" layout-gt-xs="row" flex>
+                                      <label flex="100" flex-gt-xs="40">
+                                        <input type="checkbox" class="md-primary" disabled ng-model="contr.formation_acquise_mar"/>Maraichage
+                                      </label>
+                                      <label flex="100" flex-gt-xs="40">
+                                        <input type="checkbox" class="md-primary" disabled ng-model="contr.formation_acquise_pep"/>Pépinière
+                                      </label>
+                                    </div>
+                                    <div layout="column" layout-gt-xs="row" flex>
+                                      <label flex="100" flex-gt-xs="40">
+                                        <input type="checkbox" class="md-primary" disabled ng-model="contr.formation_acquise_cul"/>Culture vivrière
+                                      </label>
+                                      <label flex="100" flex-gt-xs="40">
+                                        <input type="checkbox" class="md-primary" disabled ng-model="contr.formation_acquise_tra_act1"/>Transformation
+                                      </label>
+                                    </div>
+                                      <label flex="100" flex-gt-xs="40">
+                                        <input type="checkbox" class="md-primary" disabled ng-model="contr.formation_acquise_aut_act1"/>Autres
+                                      </label>
+                                  </div>
+                                  <div ng-if="contr.id_activite_realise_auparavant_prevu==2">
+                                    <div layout="column" layout-gt-xs="row" flex>
+                                      <label flex="100" flex-gt-xs="40">
+                                        <input type="checkbox" class="md-primary" disabled ng-model="contr.formation_acquise_cap"/>Caprin
+                                      </label>
+                                      <label flex="100" flex-gt-xs="40">
+                                        <input type="checkbox" class="md-primary" disabled ng-model="contr.formation_acquise_avi"/>Aviculture
+                                      </label>
+                                    </div>
+                                    <div layout="column" layout-gt-xs="row" flex>
+                                      <label flex="100" flex-gt-xs="40">
+                                        <input type="checkbox" class="md-primary" disabled ng-model="contr.formation_acquise_bov"/>Bovin
+                                      </label>
+                                      <label flex="100" flex-gt-xs="40">
+                                        <input type="checkbox" class="md-primary" disabled ng-model="contr.formation_acquise_aut_act2"/>Autres
+                                      </label>
+                                    </div>
+                                  </div>
+                                  <div ng-if="contr.id_activite_realise_auparavant_prevu==3">
+                                    <div layout="column" layout-gt-xs="row" flex>
+                                      <label flex="100" flex-gt-xs="40">
+                                        <input type="checkbox" class="md-primary" disabled ng-model="contr.formation_acquise_tec"/>Technique de pêche
+                                      </label>
+                                      <label flex="100" flex-gt-xs="40">
+                                        <input type="checkbox" disabled ng-model="contr.formation_acquise_tra_act3"/>Transformation
+                                      </label>
+                                    </div>
+                                      <label flex="100" flex-gt-xs="40">
+                                        <input type="checkbox" class="md-primary" disabled ng-model="contr.formation_acquise_aut_act3"/>Autres
+                                      </label>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <!--fin connaissance experiance menage detail-->
+                      </div>
+                  </md-tab>
+                  <md-tab label="Ressources disponibles" ng-disabled="!vm.selectedItemFiche_profilage_orientation_entete.id" ng-click="vm.get_fiche_profilage_ressource()">                    
+                      <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                        <div layout="row" layout-align="start center">
+                        <div class="border-right">
+                            
+                          <span class="md-headline">Ressource</span>
+                        </div>
+                          <div class="border-right">
+                            <md-button class="md-icon-button" style=" font-size:11px " aria-label="Ajout" ng-click="vm.ajouterFiche_profilage_ressource()">
+                              <md-icon md-font-icon="icon-plus-box"></md-icon>
+                              <md-tooltip><span>Ajouter</span></md-tooltip>
+                            </md-button>
+                          </div> 
+                          <div class="border-right" ng-if="vm.selectedItemFiche_profilage_ressource.id">
+                            <md-button class="md-icon-button" aria-label="Modifier" style=" font-size:11px " ng-click="vm.modifFiche_profilage_ressource()">
+                              <md-icon md-font-icon="icon-table-edit"></md-icon>
+                              <md-tooltip><span>Modifier</span></md-tooltip>
+                            </md-button>
+                          </div>    
+                          <div class="border-right" ng-if="vm.selectedItemFiche_profilage_ressource.id">
+                            <md-button class="md-icon-button" aria-label="Suppression" style=" font-size:11px " ng-click="vm.supprimerFiche_profilage_ressource()">
+                              <md-icon md-font-icon="icon-delete"></md-icon>
+                              <md-tooltip><span>Supprimer</span></md-tooltip>
+                            </md-button>
+                          </div>    
+                          <div class="border-right" ng-if="vm.selectedItemFiche_profilage_ressource.id">
+                            <md-button class="md-icon-button" aria-label="Annuler" style=" font-size:11px " ng-click="vm.annulerFiche_profilage_ressource()">
+                              <md-icon md-font-icon="icon-cancel"></md-icon>
+                              <md-tooltip><span>Annuler</span></md-tooltip>
+                            </md-button>
+                          </div>                  
+                        </div>
+                    </header>
+                      <!----------FORM AGEP--------------->       
+                       
+                      <form ng-show="vm.affichage_masque_ressource_disponible" name="formfiche_profilage_ressource" class="md-inline-form" novalidate >
+
+                        <div layout="column" layout-gt-xs="row" flex> 
+                          
+                          <md-input-container flex="100" flex-gt-xs="40">
+                              <label>Désignation</label>
+                              <input  type="text" name="designation" ng-model="vm.fiche_profilage_ressource.designation" required>
+                                
+                                <div ng-messages="formfiche_profilage_ressource.designation.$error" role="alert">
+                                  <div ng-message="required">
+                                    <span>Désignation Obligatoire.</span>
+                                  </div>
+                                </div>
+                          </md-input-container>
+                          <md-input-container flex="100" flex-gt-xs="40">
+                              <label>Quantité</label>
+                              <input  type="number" name="quantite" ng-model="vm.fiche_profilage_ressource.quantite" required>
+                                <div ng-messages="formfiche_profilage_ressource.quantite.$error" role="alert">
+                                  <div ng-message="required">
+                                    <span>Quantité Obligatoire.</span>
+                                  </div>
+                                </div>
+                          </md-input-container> 
+                          <md-input-container flex="100" flex-gt-xs="40">
+                              <label>Etat</label>
+                              <input  type="text" name="etat" ng-model="vm.fiche_profilage_ressource.etat" required>
+                                <div ng-messages="formfiche_profilage_ressource.etat.$error" role="alert">
+                                  <div ng-message="required">
+                                    <span>Etat Obligatoire.</span>
+                                  </div>
+                                </div>
+                          </md-input-container> 
+                                    
+                 
+                        </div>
+
+                          <div>
+                              <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                      ng-disabled="formfiche_profilage_ressource.$invalid " ng-click="vm.ajoutFiche_profilage_ressource(vm.fiche_profilage_ressource,0)">
+                                      Enregistrer
+                              </md-button>
+                              <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerFiche_profilage_ressource()">
+                                      Annuler
+                              </md-button>
+                          </div>
+                          </form>
+                                      
+                      <!--FORM  agep--> 
+                      <table class="dataTable row-border hover cell-border text-center" datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                        <thead>
+                          <tr>
+                            <th class="secondary-text" ng-repeat="re in ::vm.fiche_profilage_ressource_column">
+                              <div class="table-header">
+                                <span class="column-title text-center">{{re.titre}}</span>
+                              </div>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr ng-repeat="contr in vm.allFiche_profilage_ressource"  ng-class="{selected: contr.$selected}" ng-click="vm.selectionFiche_profilage_ressource(contr)">
+                             
+                            <td>{{contr.designation}}</td>
+                            <td>
+                              {{contr.quantite}}
+                            </td>
+                            <td>
+                               {{contr.etat}}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                  </md-tab> 
+                  <md-tab label="ORIENTATION (à remplir l'AGEX)" ng-disabled="!vm.selectedItemFiche_profilage_orientation_entete.id" ng-click="vm.get_fiche_profilage_orientation()">                    
+                      <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                        <div layout="row" layout-align="start center">
+                        <div class="border-right">
+                            
+                          <span class="md-headline">Orientation</span>
+                        </div>
+                          <div class="border-right">
+                            <md-button class="md-icon-button" style=" font-size:11px " aria-label="Ajout" ng-click="vm.ajouterFiche_profilage_orientation()">
+                              <md-icon md-font-icon="icon-plus-box"></md-icon>
+                              <md-tooltip><span>Ajouter</span></md-tooltip>
+                            </md-button>
+                          </div> 
+                          <div class="border-right" ng-if="vm.selectedItemFiche_profilage_orientation.id">
+                            <md-button class="md-icon-button" aria-label="Modifier" style=" font-size:11px " ng-click="vm.modifFiche_profilage_orientation()">
+                              <md-icon md-font-icon="icon-table-edit"></md-icon>
+                              <md-tooltip><span>Modifier</span></md-tooltip>
+                            </md-button>
+                          </div>    
+                          <div class="border-right" ng-if="vm.selectedItemFiche_profilage_orientation.id">
+                            <md-button class="md-icon-button" aria-label="Suppression" style=" font-size:11px " ng-click="vm.supprimerFiche_profilage_orientation()">
+                              <md-icon md-font-icon="icon-delete"></md-icon>
+                              <md-tooltip><span>Supprimer</span></md-tooltip>
+                            </md-button>
+                          </div>    
+                          <div class="border-right" ng-if="vm.selectedItemFiche_profilage_orientation.id">
+                            <md-button class="md-icon-button" aria-label="Annuler" style=" font-size:11px " ng-click="vm.annulerFiche_profilage_orientation()">
+                              <md-icon md-font-icon="icon-cancel"></md-icon>
+                              <md-tooltip><span>Annuler</span></md-tooltip>
+                            </md-button>
+                          </div>                  
+                        </div>
+                    </header>
+                      <!----------FORM AGEP--------------->       
+                       
+                      <form ng-show="vm.affichage_masque_orientation" name="formfiche_profilage_orientation" class="md-inline-form" novalidate >
+
+                        <div layout="column" layout-gt-xs="row" flex> 
+                          
+                          <md-input-container flex="100" flex-gt-xs="40">
+                              <label>Activités</label>
+                              <input  type="text" name="activite" ng-model="vm.fiche_profilage_orientation.activite" required>
+                                
+                                <div ng-messages="formfiche_profilage_orientation.activite.$error" role="alert">
+                                  <div ng-message="required">
+                                    <span>Activités Obligatoire.</span>
+                                  </div>
+                                </div>
+                          </md-input-container>
+                          <md-input-container flex="100" flex-gt-xs="40">
+                              <label>Types d'activités choisies</label>
+                              <md-select ng-model="vm.fiche_profilage_orientation.type_activite" name="type_activite" required>
+                             
+                                <md-option value="1" >Activités productives</md-option>
+                                <md-option value="2" >Formation</md-option>
+  
+                              </md-select>
+                                <div ng-messages="formfiche_profilage_orientation.type_activite.$error" role="alert">
+                                  <div ng-message="required">
+                                    <span>Types d'activités choisies Obligatoire.</span>
+                                  </div>
+                                </div>
+                          </md-input-container> 
+                          <md-input-container flex="100" flex-gt-xs="40">
+                              <label>Groupe</label>
+                              <input  type="text" name="groupe" ng-model="vm.fiche_profilage_orientation.groupe" required>
+                                <div ng-messages="formfiche_profilage_orientation.groupe.$error" role="alert">
+                                  <div ng-message="required">
+                                    <span>Groupe Obligatoire.</span>
+                                  </div>
+                                </div>
+                          </md-input-container> 
+                                    
+                 
+                        </div>
+
+                          <div>
+                              <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                      ng-disabled="formfiche_profilage_orientation.$invalid " ng-click="vm.ajoutFiche_profilage_orientation(vm.fiche_profilage_orientation,0)">
+                                      Enregistrer
+                              </md-button>
+                              <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerFiche_profilage_orientation()">
+                                      Annuler
+                              </md-button>
+                          </div>
+                          </form>
+                                      
+                      <!--FORM  agep--> 
+                      <table class="dataTable row-border hover cell-border text-center" datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                        <thead>
+                          <tr>
+                            <th class="secondary-text" ng-repeat="re in ::vm.fiche_profilage_orientation_column">
+                              <div class="table-header">
+                                <span class="column-title text-center">{{re.titre}}</span>
+                              </div>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr ng-repeat="contr in vm.allFiche_profilage_orientation"  ng-class="{selected: contr.$selected}" ng-click="vm.selectionFiche_profilage_orientation(contr)">
+                             
+                            <td>{{contr.activite}}</td>
+                            <td>
+                              {{vm.affichage_type_activite(contr.type_activite)}}
+                            </td>
+                            <td>
+                               {{contr.groupe}}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                  </md-tab>                  
+                  <md-tab label="BESOIN EN FORMATION" ng-disabled="!vm.selectedItemFiche_profilage_orientation_entete.id" ng-click="vm.get_fiche_profilage_besoin_formation()">                    
+                    <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                      <div layout="row" layout-align="start center">
+                      <div class="border-right">
+                          
+                        <span class="md-headline">BESOIN EN FORMATION</span>
+                      </div>
+                        <div class="border-right">
+                          <md-button class="md-icon-button" style=" font-size:11px " aria-label="Ajout" ng-click="vm.ajouterFiche_profilage_besoin_formation()">
+                            <md-icon md-font-icon="icon-plus-box"></md-icon>
+                            <md-tooltip><span>Ajouter</span></md-tooltip>
+                          </md-button>
+                        </div> 
+                        <div class="border-right" ng-if="vm.selectedItemFiche_profilage_besoin_formation.id">
+                          <md-button class="md-icon-button" aria-label="Modifier" style=" font-size:11px " ng-click="vm.modifFiche_profilage_besoin_formation()">
+                            <md-icon md-font-icon="icon-table-edit"></md-icon>
+                            <md-tooltip><span>Modifier</span></md-tooltip>
+                          </md-button>
+                        </div>    
+                        <div class="border-right" ng-if="vm.selectedItemFiche_profilage_besoin_formation.id">
+                          <md-button class="md-icon-button" aria-label="Suppression" style=" font-size:11px " ng-click="vm.supprimerFiche_profilage_besoin_formation()">
+                            <md-icon md-font-icon="icon-delete"></md-icon>
+                            <md-tooltip><span>Supprimer</span></md-tooltip>
+                          </md-button>
+                        </div>    
+                        <div class="border-right" ng-if="vm.selectedItemFiche_profilage_besoin_formation.id">
+                          <md-button class="md-icon-button" aria-label="Annuler" style=" font-size:11px " ng-click="vm.annulerFiche_profilage_besoin_formation()">
+                            <md-icon md-font-icon="icon-cancel"></md-icon>
+                            <md-tooltip><span>Annuler</span></md-tooltip>
+                          </md-button>
+                        </div>                  
+                      </div>
+                  </header>
+                    <!----------FORM AGEP--------------->       
+                     
+                    <form ng-show="vm.affichage_masque_ressource_disponible" name="formfiche_profilage_besoin_formation" class="md-inline-form" novalidate >
+
+                      <div layout="column" layout-gt-xs="row" flex> 
+                        
+                        <md-input-container flex="100" flex-gt-xs="40">
+                            <label>Type formation</label>
+                            <md-select ng-model="vm.fiche_profilage_besoin_formation.id_type_formation" name="id_type_formation">
+                              <md-option ng-repeat="format in vm.allType_formation" value="{{format.id}}">
+                                      {{format.description}}
+                              </md-option>                                                
+                            </md-select>  
+                              <div ng-messages="formfiche_profilage_besoin_formation.id_type_formation.$error" role="alert">
+                                <div ng-message="required">
+                                  <span>Type formation Obligatoire.</span>
+                                </div>
+                              </div>
+                        </md-input-container>
+                        <md-input-container flex="100" flex-gt-xs="40">
+                            <label>Profile du bénéficiaire</label>
+                            <input  type="text" name="profile" ng-model="vm.fiche_profilage_besoin_formation.profile" required>
+                              <div ng-messages="formfiche_profilage_besoin_formation.profile.$error" role="alert">
+                                <div ng-message="required">
+                                  <span>Profile du bénéficiaire Obligatoire.</span>
+                                </div>
+                              </div>
+                        </md-input-container> 
+                        <md-input-container flex="100" flex-gt-xs="40">
+                            <label>Objectif de la formation</label>
+                            <input  type="text" name="objectif" ng-model="vm.fiche_profilage_besoin_formation.objectif" required>
+                              <div ng-messages="formfiche_profilage_besoin_formation.objectif.$error" role="alert">
+                                <div ng-message="required">
+                                  <span>Objectif de la formation Obligatoire.</span>
+                                </div>
+                              </div>
+                        </md-input-container> 
+                        <md-input-container flex="100" flex-gt-xs="40">
+                            <label>Durée de la formation</label>
+                            <input  type="text" name="duree" ng-model="vm.fiche_profilage_besoin_formation.duree" required>
+                              <div ng-messages="formfiche_profilage_besoin_formation.duree.$error" role="alert">
+                                <div ng-message="required">
+                                  <span>Durée de la formation Obligatoire.</span>
+                                </div>
+                              </div>
+                        </md-input-container> 
+                                  
+               
+                      </div>
+
+                        <div>
+                            <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                    ng-disabled="formfiche_profilage_besoin_formation.$invalid " ng-click="vm.ajoutFiche_profilage_besoin_formation(vm.fiche_profilage_besoin_formation,0)">
+                                    Enregistrer
+                            </md-button>
+                            <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerFiche_profilage_besoin_formation()">
+                                    Annuler
+                            </md-button>
+                        </div>
+                        </form>
+                                    
+                    <!--FORM  agep--> 
+                    <table class="dataTable row-border hover cell-border text-center" datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                      <thead>
+                        <tr>
+                          <th class="secondary-text" ng-repeat="re in ::vm.fiche_profilage_besoin_formation_column">
+                            <div class="table-header">
+                              <span class="column-title text-center">{{re.titre}}</span>
+                            </div>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="contr in vm.allFiche_profilage_besoin_formation"  ng-class="{selected: contr.$selected}" ng-click="vm.selectionFiche_profilage_besoin_formation(contr)">
+                           
+                          <td>{{contr.type_formation.description}}</td>
+                          <td>
+                            {{contr.profile}}
+                          </td>
+                          <td>
+                             {{contr.objectif}}
+                          </td>
+                          <td>
+                             {{contr.duree}}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </md-tab>
+                  <md-tab>
+                  </md-tab>
+              </md-tabs>
+            </div>
+        </div>
+    </div>
+    

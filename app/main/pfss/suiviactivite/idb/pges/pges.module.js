@@ -9,11 +9,30 @@
         var vs ;
 
     /** @ngInject */
-    function config(msNavigationServiceProvider)
-    {
+    function config(msNavigationServiceProvider,$stateProvider)
+    {   
+        // State
+        $stateProvider.state('app.pfss_suiviactivite_suivi_idb_pges', {
+            url      : '/suivi_idb/gerer_pges',
+            views    : {
+                'content@app': {
+                    templateUrl: 'app/main/pfss/gerer_pges/gerer_pges.html',
+                    controller : 'Gerer_pgesController as vm'
+                }
+            },
+            bodyClass: 'pges_idb',
+            data : {
+              authorizer : true,
+              permitted : ["USER","PERSONNEL","ADMIN"],
+              page: "PGES IDB"
+            },
+            id_sous_projet: 3,
+            type_sous_projet: 'IDB'
+        });
         msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_idb.pges', {
             title : 'P.G.E.S',
             icon  : 'icon-data',
+            state: 'app.pfss_suiviactivite_suivi_idb_pges',
             weight: 3,
         });
     }

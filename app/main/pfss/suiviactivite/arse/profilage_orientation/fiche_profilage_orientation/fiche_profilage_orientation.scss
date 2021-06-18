@@ -1,0 +1,25 @@
+#forms_fiche_profilage {
+    
+        .content {
+    
+            .form-wrapper {
+                
+                .md-radio-group.md-default-theme[disabled], .md-radio-group[disabled], .md-radio-button.md-default-theme[disabled], md-radio-button[disabled] {
+                    color: black !important;
+                }
+                
+            }
+            
+            .form-data-wrapper {
+                margin-left: 16px;
+    
+                .json-data-wrapper {
+                    overflow: hidden;
+    
+                    pre {
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+    }
