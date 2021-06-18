@@ -1,0 +1,514 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="space-between">
+      <div layout="column" layout-align="space-between">
+          <div class="breadcrumb" layout="row" layout-align="start center">
+              <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+              <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+              <span class="parent">Fiche de supervision de formation ML/CPS |&nbsp {{vm.type_sous_projet}}</span>
+              <span class="parent"> </span>
+              <!--md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+              <span class="parent" href="javascript:;">Groupe ML/PL</span-->
+          </div>
+
+      </div>
+  </div>
+  <div class="content" layout="column">
+      <div class="form-wrapper">
+          <div style="clear:both;"></div>
+          <md-tabs md-dynamic-height>              
+              <md-tab label="Fiche de supervision de formation ML/CPS">
+                  <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                    <form name="filtreform" class="md-inline-form" novalidate >
+                      <div layout="column" layout-gt-xs="row" flex>
+                         <md-input-container flex="100" flex-gt-xs="90">
+                           <label>Île</label>
+                             <md-select ng-model="vm.filtre.id_ile" name="ile" ng-change="vm.filtre_region()" required>
+                              
+                               <md-option ng-repeat="ile in vm.all_ile" value="{{ile.id}}" >
+                                 {{ile.Ile}}
+                               </md-option>
+
+                             </md-select>
+                             <div ng-messages="filtreform.ile.$error"
+                               role="alert">
+                               <div ng-message="required">
+                                 <span>Île obligatoire</span>
+                               </div>
+                             </div>
+                         </md-input-container>
+
+                         <md-input-container flex="100" flex-gt-xs="90">
+                           <label>Préfecture</label>
+                             <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_ile" required>
+                               
+                               <md-option ng-repeat="region in vm.all_region" value="{{region.id}}" >
+                                 {{region.Region}}
+                               </md-option>
+
+                             </md-select>
+                             <div ng-messages="filtreform.region.$error"
+                               role="alert">
+                               <div ng-message="required">
+                                 <span>Région obligatoire</span>
+                               </div>
+                             </div>
+                         </md-input-container>
+
+                         <md-input-container flex="100" flex-gt-xs="90">
+                           <label>Commune</label>
+                             <md-select ng-model="vm.filtre.id_commune" name="commune" ng-disabled="!vm.filtre.id_region" ng-change="vm.filtre_village()" required>
+                              
+                               <md-option ng-repeat="commune in vm.all_commune" value="{{commune.id}}" >
+                                 {{commune.Commune}}
+                               </md-option>
+
+                             </md-select>
+                             <div ng-messages="filtreform.commune.$error"
+                               role="alert">
+                               <div ng-message="required">
+                                 <span>Commune obligatoire</span>
+                               </div>
+                             </div>
+                         </md-input-container>
+
+                         <md-input-container flex="100" flex-gt-xs="90">
+                           <label>Village</label>
+                             <md-select ng-model="vm.filtre.id_village" name="village" ng-disabled="!vm.filtre.id_commune" ng-change="vm.filtre_zip_groupe()" required>
+                              
+                               <md-option ng-repeat="village in vm.all_village" value="{{village.id}}" >
+                                 {{village.Village}}
+                               </md-option>
+
+                             </md-select>
+                             <div ng-messages="filtreform.village.$error"
+                               role="alert">
+                               <div ng-message="required">
+                                 <span>village obligatoire</span>
+                               </div>
+                             </div>
+                         </md-input-container>
+                                                  
+                         <md-input-container flex="80" flex-gt-xs="50">
+                          <label>Zip</label>
+                            <md-select ng-model="vm.filtre.id_zip" name="zip" ng-disabled="!vm.filtre.id_village">
+                             
+                              <md-option ng-repeat="zip in vm.allZip" value="{{zip.id}}" >
+                                {{zip.libelle}}
+                              </md-option>
+
+                            </md-select>
+                            <div ng-messages="filtreform.zip.$error"
+                              role="alert">
+                              <div ng-message="required">
+                                <span>Zip obligatoire</span>
+                              </div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container flex="80" flex-gt-xs="50">
+                          <label>Vague</label>
+                            <input ng-model="vm.filtre.vague" type="text" name="vague" disabled/>
+                             
+                            <div ng-messages="filtreform.vague.$error"
+                              role="alert">
+                              <div ng-message="required">
+                                <span>Vague obligatoire</span>
+                              </div>
+                            </div>
+                        </md-input-container>  
+                        
+                     </div>	
+                    <div>                            
+                      <section layout="row" layout-sm="column" layout-align="left" layout-wrap>
+                    
+                        <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                           ng-disabled="filtreform.$invalid||vm.affiche_load" ng-click="vm.click_fiche_supervision_formation_ml_cps()">
+                          Actualiser
+                        </md-button>                              
+                      </section>                         
+                     </div>
+                 </form>
+                      <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                          <div layout="row" layout-align="start center">
+                          <div class="border-right">
+                              
+                            <span class="md-headline">Fiche &nbsp</span>
+                          </div>
+                            <div class="border-right" ng-if="!vm.selectedItemFiche_supervision_formation_ml_cps.id && !vm.nouvelItemFiche_supervision_formation_ml_cps && vm.filtre.id_village">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterFiche_supervision_formation_ml_cps()">
+                                <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                <md-tooltip><span>Ajouter</span></md-tooltip>
+                              </md-button>
+                            </div> 
+                            <div class="border-right" ng-if="vm.selectedItemFiche_supervision_formation_ml_cps.id && !vm.selectedItemFiche_supervision_formation_ml_cps.$edit">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierFiche_supervision_formation_ml_cps()">
+                                <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                <md-tooltip><span>Modifier</span></md-tooltip>
+                              </md-button>
+                            </div>    
+                            <div class="border-right" ng-if="vm.selectedItemFiche_supervision_formation_ml_cps.id && !vm.selectedItemFiche_supervision_formation_ml_cps.$edit">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerFiche_supervision_formation_ml_cps()">
+                                <md-icon md-font-icon="icon-delete"></md-icon>
+                                <md-tooltip><span>Supprimer</span></md-tooltip>
+                              </md-button>
+                            </div>  
+
+                            <div class="border-right" ng-if="vm.selectedItemFiche_supervision_formation_ml_cps.id">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerFiche_supervision_formation_ml_cps()">
+                                <md-icon md-font-icon="icon-cancel"></md-icon>
+                                <md-tooltip><span>Annuler</span></md-tooltip>
+                              </md-button>
+                            </div>   
+
+                            <div ng-if="vm.selectedItemFiche_supervision_formation_ml_cps.$edit">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerFiche_supervision_formation_ml_cps(0)">
+                                <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                <md-tooltip><span>Enregistrer</span></md-tooltip>
+                              </md-button>
+                            </div>                
+                          </div>
+                      </header>
+                      
+                  
+                      <table ng-table="groupe" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                          <thead>
+                              <tr>
+                                  <th class="secondary-text" ng-repeat="c in ::vm.fiche_supervision_formation_ml_cps_column">
+                                      <div class="table-header">
+                                          <span class="column-title text-center">{{c.titre}}</span>
+                                      </div>
+                                  </th>                                        
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr ng-repeat="groupe_par in vm.allFiche_supervision_formation_ml_cps"  ng-class="{selected: groupe_par.$selected}" ng-click="vm.selectionFiche_supervision_formation_ml_cps(groupe_par)">                                       
+                                
+                                  
+                                <td>
+                                  <span ng-if="groupe_par.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                        <label>ONG d'encadrement</label>
+                                        <md-select ng-model="groupe_par.id_agex" name="id_agex">
+                                            <md-option ng-repeat="gr in vm.allAgex" value="{{gr.id}}">
+                                                {{gr.Nom}}
+                                            </md-option>                                                
+                                        </md-select>
+                                    </md-input-container> 
+                                  </span>
+                                  <span ng-if="!groupe_par.$edit"> {{groupe_par.agex.Nom}}</span>
+                                </td>
+                                  <td>
+                                    <span ng-if="groupe_par.$edit">
+                                          <label>Date supervision</label>
+                                          <md-datepicker  ng-model="groupe_par.date_supervision" md-placeholder="jj/mm/aaaa" required>                       
+                                          </md-datepicker>                                                
+                                          
+                                    </span>
+                                    <span ng-if="!groupe_par.$edit"> {{vm.formatDate(groupe_par.date_supervision)}}</span>
+                                  </td>
+                                  <td>
+                                        <span ng-if="groupe_par.$edit">
+                                            <md-input-container style="width:100%;display: flex !important;">
+                                              <label>Le missionaire</label>                                                
+                                              <input type="text" name="nom_missionaire"  ng-model="groupe_par.nom_missionaire" required/>
+                                            </md-input-container>
+                                        </span>
+                                        <span ng-if="!groupe_par.$edit"> {{groupe_par.nom_missionaire}}</span>
+                                  </td>
+                                  <td>
+                                        <span ng-if="groupe_par.$edit">
+                                            <md-input-container style="width:100%;display: flex !important;">
+                                              <label>Une ML/PL ou CPS</label>                                                
+                                              <input type="text" name="nom_ml_cps"  ng-model="groupe_par.nom_ml_cps" required/>
+                                            </md-input-container>
+                                        </span>
+                                        <span ng-if="!groupe_par.$edit"> {{groupe_par.nom_ml_cps}}</span>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </md-tab> <md-tab label="Organisation générale de l’ONG" ng-disabled="!vm.selectedItemFiche_supervision_formation_ml_cps.id" ng-click="vm.click_fiche_supervision_formation_ml_cps_planning()">
+                <div class="price-table style-1 md-whiteframe-1dp" layout="column">                    
+                    <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                        <div layout="row" layout-align="start center">
+                        <div class="border-right">
+                            
+                          <span class="md-headline">Organisation générale &nbsp</span>
+                        </div> 
+                            <div class="border-right" ng-if="!vm.selectedItemFiche_supervision_formation_ml_cps_planning.id && !vm.nouvelItemFiche_supervision_formation_ml_cps_planning && vm.filtre.id_village">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterFiche_supervision_formation_ml_cps_planning()">
+                                <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                <md-tooltip><span>Ajouter</span></md-tooltip>
+                              </md-button>
+                            </div> 
+                            <div class="border-right" ng-if="vm.selectedItemFiche_supervision_formation_ml_cps_planning.id && !vm.selectedItemFiche_supervision_formation_ml_cps_planning.$edit">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierFiche_supervision_formation_ml_cps_planning()">
+                                <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                <md-tooltip><span>Modifier</span></md-tooltip>
+                              </md-button>
+                            </div>    
+                            <div class="border-right" ng-if="vm.selectedItemFiche_supervision_formation_ml_cps_planning.id && !vm.selectedItemFiche_supervision_formation_ml_cps_planning.$edit">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerFiche_supervision_formation_ml_cps_planning()">
+                                <md-icon md-font-icon="icon-delete"></md-icon>
+                                <md-tooltip><span>Supprimer</span></md-tooltip>
+                              </md-button>
+                            </div>  
+
+                            <div class="border-right" ng-if="vm.selectedItemFiche_supervision_formation_ml_cps_planning.id">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerFiche_supervision_formation_ml_cps_planning()">
+                                <md-icon md-font-icon="icon-cancel"></md-icon>
+                                <md-tooltip><span>Annuler</span></md-tooltip>
+                              </md-button>
+                            </div>   
+
+                            <div ng-if="vm.selectedItemFiche_supervision_formation_ml_cps_planning.$edit">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerFiche_supervision_formation_ml_cps_planning(0)">
+                                <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                <md-tooltip><span>Enregistrer</span></md-tooltip>
+                              </md-button>
+                            </div>                
+                          </div>
+                      </header>
+                      
+                  
+                      <table ng-table="groupe" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                          <thead>
+                              <tr>
+                                  <th class="secondary-text" ng-repeat="c in ::vm.fiche_supervision_formation_ml_cps_planning_column">
+                                      <div class="table-header">
+                                          <span class="column-title text-center">{{c.titre}}</span>
+                                      </div>
+                                  </th>                                        
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr ng-repeat="groupe_par in vm.allFiche_supervision_formation_ml_cps_planning"  ng-class="{selected: groupe_par.$selected}" ng-click="vm.selectionFiche_supervision_formation_ml_cps_planning(groupe_par)">                                       
+                                
+                                  
+                                  <td>
+                                        <span ng-if="groupe_par.$edit">
+                                            <md-input-container style="width:100%;display: flex !important;">
+                                              <label>Planning</label>                                                
+                                              <textarea type="text" name="planning"  ng-model="groupe_par.planning" required></textarea>
+                                            </md-input-container>
+                                        </span>
+                                        <span ng-if="!groupe_par.$edit"> {{groupe_par.planning}}</span>
+                                  </td>
+                                  <td>
+                                    <span ng-if="groupe_par.$edit">
+                                          <label>Date de début</label>
+                                          <md-datepicker  ng-model="groupe_par.date_debut" md-placeholder="jj/mm/aaaa" required>                       
+                                          </md-datepicker>                                                
+                                          
+                                    </span>
+                                    <span ng-if="!groupe_par.$edit"> {{vm.formatDate(groupe_par.date_debut)}}</span>
+                                  </td>
+                                  <td>
+                                    <span ng-if="groupe_par.$edit">
+                                          <label>Date de fin</label>
+                                          <md-datepicker  ng-model="groupe_par.date_fin" md-placeholder="jj/mm/aaaa" required>                       
+                                          </md-datepicker>                                                
+                                          
+                                    </span>
+                                    <span ng-if="!groupe_par.$edit"> {{vm.formatDate(groupe_par.date_fin)}}</span>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </md-tab>            
+              <md-tab label="POINT A VERIFIER" ng-disabled="!vm.selectedItemFiche_supervision_formation_ml_cps.id" ng-click="vm.click_fiche_supervision_formation_ml_cps_point_verifier()">
+                  <div class="price-table style-1 md-whiteframe-1dp" layout="column">                    
+                      <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                          <div layout="row" layout-align="start center">
+                          <div class="border-right">
+                              
+                            <span class="md-headline">Point à verifier &nbsp</span>
+                          </div>
+                            <div class="border-right" ng-if="!vm.selectedItemFiche_supervision_formation_ml_cps_point_verifier.id && !vm.nouvelItemFiche_supervision_formation_ml_cps_point_verifier && vm.filtre.id_village">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterFiche_supervision_formation_ml_cps_point_verifier()">
+                                <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                <md-tooltip><span>Ajouter</span></md-tooltip>
+                              </md-button>
+                            </div> 
+                            <div class="border-right" ng-if="vm.selectedItemFiche_supervision_formation_ml_cps_point_verifier.id && !vm.selectedItemFiche_supervision_formation_ml_cps_point_verifier.$edit">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierFiche_supervision_formation_ml_cps_point_verifier()">
+                                <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                <md-tooltip><span>Modifier</span></md-tooltip>
+                              </md-button>
+                            </div>    
+                            <div class="border-right" ng-if="vm.selectedItemFiche_supervision_formation_ml_cps_point_verifier.id && !vm.selectedItemFiche_supervision_formation_ml_cps_point_verifier.$edit">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerFiche_supervision_formation_ml_cps_point_verifier()">
+                                <md-icon md-font-icon="icon-delete"></md-icon>
+                                <md-tooltip><span>Supprimer</span></md-tooltip>
+                              </md-button>
+                            </div>  
+
+                            <div class="border-right" ng-if="vm.selectedItemFiche_supervision_formation_ml_cps_point_verifier.id">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerFiche_supervision_formation_ml_cps_point_verifier()">
+                                <md-icon md-font-icon="icon-cancel"></md-icon>
+                                <md-tooltip><span>Annuler</span></md-tooltip>
+                              </md-button>
+                            </div>   
+
+                            <div ng-if="vm.selectedItemFiche_supervision_formation_ml_cps_point_verifier.$edit">
+                              <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerFiche_supervision_formation_ml_cps_point_verifier(0)">
+                                <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                <md-tooltip><span>Enregistrer</span></md-tooltip>
+                              </md-button>
+                            </div>                
+                          </div>
+                      </header>
+                      
+                  
+                      <table ng-table="groupe" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                          <thead>
+                              <tr>
+                                  <th class="secondary-text" ng-repeat="c in ::vm.fiche_supervision_formation_ml_cps_point_verifier_column">
+                                      <div class="table-header">
+                                          <span class="column-title text-center">{{c.titre}}</span>
+                                      </div>
+                                  </th>                                        
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr ng-repeat="groupe_par in vm.allFiche_supervision_formation_ml_cps_point_verifier"  ng-class="{selected: groupe_par.$selected}" ng-click="vm.selectionFiche_supervision_formation_ml_cps_point_verifier(groupe_par)">                                       
+                                
+                                  
+                                  <td>
+                                        <span ng-if="groupe_par.$edit">
+                                            <md-input-container style="width:100%;display: flex !important;">
+                                              <label>Description</label>                                                
+                                              <textarea type="text" name="description"  ng-model="groupe_par.description" required></textarea>
+                                            </md-input-container>
+                                        </span>
+                                        <span ng-if="!groupe_par.$edit"> {{groupe_par.description}}</span>
+                                  </td>
+                                  <td>
+                                    <span ng-if="groupe_par.$edit">
+                                        <md-input-container style="width:100%;display: flex !important;">
+                                          <label>Point à verifier</label>                                                
+                                          <textarea type="text" name="point_verifier"  ng-model="groupe_par.point_verifier" required></textarea>
+                                        </md-input-container>
+                                    </span>
+                                    <span ng-if="!groupe_par.$edit"> {{groupe_par.point_verifier}}</span>
+                                  </td>
+                                  <td>
+                                    <span ng-if="groupe_par.$edit">
+                                        <md-input-container style="width:100%;display: flex !important;">
+                                          <label>Prévision</label>                                                
+                                          <textarea type="text" name="prevision"  ng-model="groupe_par.prevision" required></textarea>
+                                        </md-input-container>
+                                    </span>
+                                    <span ng-if="!groupe_par.$edit"> {{groupe_par.prevision}}</span>
+                                  </td>
+                                  <td>
+                                    <span ng-if="groupe_par.$edit">
+                                        <md-input-container style="width:100%;display: flex !important;">
+                                          <label>Réelle</label>                                                
+                                          <textarea type="text" name="reelle"  ng-model="groupe_par.reelle" required></textarea>
+                                        </md-input-container>
+                                    </span>
+                                    <span ng-if="!groupe_par.$edit"> {{groupe_par.reelle}}</span>
+                                </td>
+                                <td>
+                                  <span ng-if="groupe_par.$edit">
+                                      <md-input-container style="width:100%;display: flex !important;">
+                                        <label>Observations</label>                                                
+                                        <textarea type="text" name="observation"  ng-model="groupe_par.observation" required></textarea>
+                                      </md-input-container>
+                                  </span>
+                                  <span ng-if="!groupe_par.$edit"> {{groupe_par.observation}}</span>
+                                </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </md-tab>
+                          
+              <md-tab label="Problèmes et solutions proposées" ng-disabled="!vm.selectedItemFiche_supervision_formation_ml_cps.id" ng-click="vm.click_fiche_supervision_formation_ml_cps_probleme()">
+                <div class="price-table style-1 md-whiteframe-1dp" layout="column">                    
+                    <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                        <div layout="row" layout-align="start center">
+                        <div class="border-right">
+                            
+                          <span class="md-headline">Problèmes et solutions proposées &nbsp</span>
+                        </div>
+                          <div class="border-right" ng-if="!vm.selectedItemFiche_supervision_formation_ml_cps_probleme.id && !vm.nouvelItemFiche_supervision_formation_ml_cps_probleme && vm.filtre.id_village">
+                            <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterFiche_supervision_formation_ml_cps_probleme()">
+                              <md-icon md-font-icon="icon-plus-box"></md-icon>
+                              <md-tooltip><span>Ajouter</span></md-tooltip>
+                            </md-button>
+                          </div> 
+                          <div class="border-right" ng-if="vm.selectedItemFiche_supervision_formation_ml_cps_probleme.id && !vm.selectedItemFiche_supervision_formation_ml_cps_probleme.$edit">
+                            <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierFiche_supervision_formation_ml_cps_probleme()">
+                              <md-icon md-font-icon="icon-table-edit"></md-icon>
+                              <md-tooltip><span>Modifier</span></md-tooltip>
+                            </md-button>
+                          </div>    
+                          <div class="border-right" ng-if="vm.selectedItemFiche_supervision_formation_ml_cps_probleme.id && !vm.selectedItemFiche_supervision_formation_ml_cps_probleme.$edit">
+                            <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerFiche_supervision_formation_ml_cps_probleme()">
+                              <md-icon md-font-icon="icon-delete"></md-icon>
+                              <md-tooltip><span>Supprimer</span></md-tooltip>
+                            </md-button>
+                          </div>  
+
+                          <div class="border-right" ng-if="vm.selectedItemFiche_supervision_formation_ml_cps_probleme.id">
+                            <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerFiche_supervision_formation_ml_cps_probleme()">
+                              <md-icon md-font-icon="icon-cancel"></md-icon>
+                              <md-tooltip><span>Annuler</span></md-tooltip>
+                            </md-button>
+                          </div>   
+
+                          <div ng-if="vm.selectedItemFiche_supervision_formation_ml_cps_probleme.$edit">
+                            <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerFiche_supervision_formation_ml_cps_probleme(0)">
+                              <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                              <md-tooltip><span>Enregistrer</span></md-tooltip>
+                            </md-button>
+                          </div>                
+                        </div>
+                    </header>
+                    
+                
+                    <table ng-table="groupe" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                        <thead>
+                            <tr>
+                                <th class="secondary-text" ng-repeat="c in ::vm.fiche_supervision_formation_ml_cps_probleme_column">
+                                    <div class="table-header">
+                                        <span class="column-title text-center">{{c.titre}}</span>
+                                    </div>
+                                </th>                                        
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="groupe_par in vm.allFiche_supervision_formation_ml_cps_probleme"  ng-class="{selected: groupe_par.$selected}" ng-click="vm.selectionFiche_supervision_formation_ml_cps_probleme(groupe_par)">                                       
+                               <td>
+                                  <span ng-if="groupe_par.$edit">
+                                      <md-input-container style="width:100%;display: flex !important;">
+                                        <label>Problème</label>                                                
+                                        <textarea type="text" name="probleme"  ng-model="groupe_par.probleme" required></textarea>
+                                      </md-input-container>
+                                  </span>
+                                  <span ng-if="!groupe_par.$edit"> {{groupe_par.probleme}}</span>
+                                </td>
+                                <td>
+                                  <span ng-if="groupe_par.$edit">
+                                      <md-input-container style="width:100%;display: flex !important;">
+                                        <label>Solution</label>                                                
+                                        <textarea type="text" name="solution"  ng-model="groupe_par.solution" required></textarea>
+                                      </md-input-container>
+                                  </span>
+                                  <span ng-if="!groupe_par.$edit"> {{groupe_par.solution}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </md-tab> 
+              <md-tab>
+              </md-tab>
+          </md-tabs>
+      </div>
+  </div>
+</div>

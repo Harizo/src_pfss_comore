@@ -426,7 +426,7 @@
                         </fieldset>
                       </div>
                     </md-tab>
-                    <md-tab label="Groupe participant formation" ng-disabled="!vm.selectedItemFormation_ml.id" ng-click="vm.click_groupe_participant_ml()">
+                    <!--md-tab label="Groupe participant formation" ng-disabled="!vm.selectedItemFormation_ml.id" ng-click="vm.click_groupe_participant_ml()">
                         <div class="price-table style-1 md-whiteframe-1dp" layout="column">
                             <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                                 <div layout="row" layout-align="start center">
@@ -522,7 +522,213 @@
                                 </tbody>
                             </table>
                         </div>
+                    </md-tab-->
+                    
+                    <md-tab label="REPARTITION GROUPE ML POUR FORMATION" ng-disabled="!vm.selectedItemFormation_ml.id" ng-click="vm.get_formation_ml_repartition()">
+                        <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                          <div layout="row" layout-align="start center">
+                          <div class="border-right">
+                              
+                            <span class="md-headline">REPARTITION &nbsp</span>
+                          </div>
+                            <div class="border-right" ng-if="vm.filtre.id_commune && !vm.selectedItemFormation_ml_repartition.id">
+                              <md-button class="md-icon-button" style=" font-size:11px " aria-label="Ajout" ng-click="vm.ajouterFormation_ml_repartition()">
+                                <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                <md-tooltip><span>Ajouter</span></md-tooltip>
+                              </md-button>
+                            </div> 
+                            <div class="border-right" ng-if="vm.selectedItemFormation_ml_repartition.id">
+                              <md-button class="md-icon-button" aria-label="Modifier" style=" font-size:11px " ng-click="vm.modifFormation_ml_repartition()">
+                                <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                <md-tooltip><span>Modifier</span></md-tooltip>
+                              </md-button>
+                            </div>    
+                            <div class="border-right" ng-if="vm.selectedItemFormation_ml_repartition.id">
+                              <md-button class="md-icon-button" aria-label="Suppression" style=" font-size:11px " ng-click="vm.supprimerFormation_ml_repartition()">
+                                <md-icon md-font-icon="icon-delete"></md-icon>
+                                <md-tooltip><span>Supprimer</span></md-tooltip>
+                              </md-button>
+                            </div>    
+                            <div class="border-right" ng-if="vm.selectedItemFormation_ml_repartition.id">
+                              <md-button class="md-icon-button" aria-label="Annuler" style=" font-size:11px " ng-click="vm.annulerFormation_ml_repartition()">
+                                <md-icon md-font-icon="icon-cancel"></md-icon>
+                                <md-tooltip><span>Annuler</span></md-tooltip>
+                              </md-button>
+                            </div>                  
+                          </div>
+                      </header>
+                        <!----------FORM AGEP--------------->       
+                         
+                        <form ng-show="vm.affichage_masque_formation_ml_repartition" name="formformation_ml_repartition" class="md-inline-form" novalidate >
+
+                          <div layout="column" layout-gt-xs="row" flex> 
+                             
+                            <md-input-container flex="100" flex-gt-xs="25">
+                              <label>N° de groupe à former</label>
+                              <input  type="number" name="num_groupe" ng-model="vm.formation_ml_repartition.num_groupe" required>
+                              <div ng-messages="formformation_ml_repartition.num_groupe.$error"role="alert">
+                                  <div ng-message="required">
+                                      <span>N° de groupe à former obligatoire.</span>
+                                  </div>
+                              </div>
+                            </md-input-container>
+                            <div style="font-size: 13px !important;" flex="100" flex-gt-xs="10">
+                              <label>Dates de formation</label>
+                              <md-datepicker  ng-model="vm.formation_ml_repartition.date_formation" md-placeholder="jj/mm/aaaa" md-max-date="vm.date_now" required>                       
+                              </md-datepicker>
+                          </div>                                  
+                            <md-input-container flex="100" flex-gt-xs="25">
+                              <label>Nombre de ML pour la formation</label>
+                              <input  type="text" name="nbr_ml" ng-model="vm.formation_ml_repartition.nbr_ml" required>
+                              <div ng-messages="formformation_ml_repartition.nbr_ml.$error"role="alert">
+                                  <div ng-message="required">
+                                      <span>Nombre de ML pour la formation obligatoire.</span>
+                                  </div>
+                              </div>
+                            </md-input-container>
+                                      
+                            <md-input-container flex="100" flex-gt-xs="25">
+                                <label>Lieu de la formation</label>
+                                  <input name="lieu" type="text" ng-model="vm.formation_ml_repartition.lieu_formation" required md-select-on-focus>
+                                    <div ng-messages="formformation_ml_repartition.lieu_formation.$error" role="alert">
+                                      <div ng-message="required">
+                                          <span>Lieu de la formation obligatoire.</span>
+                                      </div>
+                                    </div>
+                              </md-input-container>
+                              <md-input-container flex="100" flex-gt-xs="25">
+                                  <label>Responsable</label>
+                                    <input name="lieu" type="text" ng-model="vm.formation_ml_repartition.responsable" required md-select-on-focus>
+                                      <div ng-messages="formformation_ml_repartition.responsable.$error" role="alert">
+                                        <div ng-message="required">
+                                            <span>Responsable obligatoire.</span>
+                                        </div>
+                                      </div>
+                                </md-input-container>
+                   
+                          </div>
+
+
+                            <div>
+                                <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                        ng-disabled="formformation_ml_repartition.$invalid " ng-click="vm.ajoutFormation_ml_repartition(vm.formation_ml_repartition,0)">
+                                        Enregistrer
+                                </md-button>
+                                <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerFormation_ml_repartition()">
+                                        Annuler
+                                </md-button>
+                            </div>
+                            </form>
+                                        
+                        <!--FORM  agep--> 
+                        <table class="dataTable row-border hover cell-border text-center" datatable="ng"
+                          dt-options="vm.dtOptions_new" ms-responsive-table>
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::vm.formation_ml_repartition_column">
+                                <div class="table-header">
+                                  <span class="column-title text-center">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="contr in vm.allFormation_ml_repartition"  ng-class="{selected: contr.$selected}" ng-click="vm.selectionFormation_ml_repartition(contr)">
+                                
+                                <td>{{contr.num_groupe}}</td>
+                                <td>{{contr.date_formation | date:'dd/MM/yyyy'}}</td>
+                                <td>{{contr.nbr_ml}}</td>
+                                <td>{{contr.lieu_formation}}</td> 
+                                <td>{{contr.responsable}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
                     </md-tab> 
+                    
+                    <md-tab label="Village participant" ng-disabled="!vm.selectedItemFormation_ml_repartition.id" ng-click="vm.click_formation_ml_repartition_village()">
+                      <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                          <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                              <div layout="row" layout-align="start center">
+                              <div class="border-right">
+                                  
+                                <span class="md-headline">Village PARTICIPANT &nbsp</span>
+                              </div>
+                                <div class="border-right" ng-if="!vm.selectedItemFormation_ml_repartition_village.id && !vm.nouvelleItemFormation_ml_repartition_village">
+                                  <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterFormation_ml_repartition_village()">
+                                    <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                    <md-tooltip><span>Ajouter</span></md-tooltip>
+                                  </md-button>
+                                </div> 
+                                <div class="border-right" ng-if="vm.selectedItemFormation_ml_repartition_village.id && !vm.selectedItemFormation_ml_repartition_village.$edit">
+                                  <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierFormation_ml_repartition_village()">
+                                    <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                    <md-tooltip><span>Modifier</span></md-tooltip>
+                                  </md-button>
+                                </div>    
+                                <div class="border-right" ng-if="vm.selectedItemFormation_ml_repartition_village.id && !vm.selectedItemFormation_ml_repartition_village.$edit">
+                                  <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerFormation_ml_repartition_village()">
+                                    <md-icon md-font-icon="icon-delete"></md-icon>
+                                    <md-tooltip><span>Supprimer</span></md-tooltip>
+                                  </md-button>
+                                </div>  
+
+                                <div class="border-right" ng-if="vm.selectedItemFormation_ml_repartition_village.id">
+                                  <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerFormation_ml_repartition_village()">
+                                    <md-icon md-font-icon="icon-cancel"></md-icon>
+                                    <md-tooltip><span>Annuler</span></md-tooltip>
+                                  </md-button>
+                                </div>   
+
+                                <div ng-if="vm.selectedItemFormation_ml_repartition_village.$edit">
+                                  <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrerFormation_ml_repartition_village(0)">
+                                    <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                    <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                  </md-button>
+                                </div>                
+                              </div>
+                          </header>
+                          
+                      
+                          <table ng-table="groupe" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                              <thead>
+                                  <tr>
+                                      <th class="secondary-text" ng-repeat="c in ::vm.formation_ml_repartition_village_column">
+                                          <div class="table-header">
+                                              <span class="column-title text-center">{{c.titre}}</span>
+                                          </div>
+                                      </th>                                        
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr ng-repeat="groupe_par in vm.allFormation_ml_repartition_village"  ng-class="{selected: groupe_par.$selected}" ng-click="vm.selectionFormation_ml_repartition_village(groupe_par)">                                       
+                                     
+                                    <td>
+                                      <span ng-if="groupe_par.$edit">
+                                        <md-input-container style="width:100%;display: flex !important;">
+                                            <label>Village</label>
+                                            <md-select ng-model="groupe_par.id_village" name="id_village" ng-change="vm.change_village(groupe_par)">
+                                                <md-option ng-repeat="vil in vm.all_village" value="{{vil.id}}">
+                                                    {{vil.Village}}
+                                                </md-option>                                                
+                                            </md-select>
+                                        </md-input-container> 
+                                      </span>
+                                      <span ng-if="!groupe_par.$edit"> {{groupe_par.village.Village}}</span>
+                                  </td>
+                                      <td>
+                                            <span ng-if="groupe_par.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Nombre de Mères/Pères leaders élus</label>                                                
+                                                  <input type="text" name="nbr_ml_pl_elu"  ng-model="groupe_par.nbr_ml_pl_elu" disabled/>
+                                                </md-input-container>
+                                            </span>
+                                            <span ng-if="!groupe_par.$edit"> {{groupe_par.village.nbr_ml_pl_elu}}</span>
+                                          </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </md-tab>
                     <md-tab>
                     </md-tab>
                 </md-tabs>
