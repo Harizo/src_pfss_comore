@@ -303,8 +303,8 @@
                                 {
                                     return obj.id == planning_ebe.id_theme_sensibilisation  ;
                                 });
-                                vm.selectedItemPlanning_ebe.theme_sensibilisation = them[0] ;                   
-                                vm.selectedItemPlanning_ebe.groupe_ml_pl = group[0] ;
+                               // vm.selectedItemPlanning_ebe.theme_sensibilisation = them[0] ;                   
+                               // vm.selectedItemPlanning_ebe.groupe_ml_pl = group[0] ;
                             var item =
                             {
                             id :    String(data.response) ,

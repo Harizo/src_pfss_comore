@@ -25,7 +25,7 @@
             //'app.pfss.communaute',
             'app.pfss.suiviactivite',
             // 'app.pfss.mereleaderpereleader',
-            'app.pfss.contratconsultant',
+            //'app.pfss.contratconsultant',
             // 'app.pfss.enquete',
             'app.pfss.contrat_ugp_agex',
 

@@ -33,6 +33,13 @@
         vm.nouvelItemGroupe_participant_ebe = false ;
         vm.allGroupe_participant_ebe = [];
 
+        
+    	vm.selectedItemFiche_collection_donnee_ebe = {};
+		var NouvelItemFiche_collection_donnee_ebe=false;
+        var currentItemFiche_collection_donnee_ebe;
+        vm.fiche_collection_donnee_ebe = {};
+        vm.allFiche_collection_donnee_ebe = [];
+
         vm.dtOptions_new =
         {
             dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
@@ -62,6 +69,10 @@
         apiFactory.getAll("theme_sensibilisation/index").then(function(result)
         {
             vm.allTheme_sensibilisation = result.data.response;
+        });
+        apiFactory.getAll("outils_utilise_sensibilisation/index").then(function(result)
+        {
+            vm.allOutils_utilise = result.data.response;
         });
 
         vm.filtre_region = function()
@@ -178,6 +189,7 @@
             vm.realisation_ebe_column = 
             [   
                 {titre:"Contrat ONG N°"},
+                {titre:"Date d'édition"},
                 {titre:"Espace bien être"},
                 {titre:"But regroupement"},
                 {titre:"Date regroupement"},
@@ -220,6 +232,7 @@
                 vm.realisation_ebe.id_espace_bien_etre=null;
                 vm.realisation_ebe.but_regroupement=null;
                 vm.realisation_ebe.date_regroupement=null;
+                vm.realisation_ebe.date_edition=null;
                 vm.realisation_ebe.materiel=null;
                 vm.realisation_ebe.lieu=null;
                 vm.realisation_ebe.id_contrat_agex=null;
@@ -249,6 +262,7 @@
                 vm.realisation_ebe.numero  = parseInt(vm.selectedItemRealisation_ebe.numero) ;
                 vm.realisation_ebe.but_regroupement   = vm.selectedItemRealisation_ebe.but_regroupement ;
                 vm.realisation_ebe.date_regroupement   = new Date(vm.selectedItemRealisation_ebe.date_regroupement) ;
+                vm.realisation_ebe.date_edition   = new Date(vm.selectedItemRealisation_ebe.date_edition) ;
                 vm.realisation_ebe.materiel = vm.selectedItemRealisation_ebe.materiel ;
                 vm.realisation_ebe.lieu = vm.selectedItemRealisation_ebe.lieu ;
                 vm.realisation_ebe.id_groupe_ml_pl  = vm.selectedItemRealisation_ebe.id_groupe_ml_pl ;
@@ -314,6 +328,7 @@
                         numero:             realisation_ebe.numero,
                         but_regroupement:   realisation_ebe.but_regroupement,
                         date_regroupement:  convert_date(realisation_ebe.date_regroupement),
+                        date_edition:  convert_date(realisation_ebe.date_edition),
                         materiel:           realisation_ebe.materiel,
                         lieu:               realisation_ebe.lieu,
                         id_espace_bien_etre:  realisation_ebe.id_espace_bien_etre,
@@ -349,6 +364,7 @@
                                 vm.selectedItemRealisation_ebe.numero           = realisation_ebe.numero ;
                                 vm.selectedItemRealisation_ebe.but_regroupement = realisation_ebe.but_regroupement ;
                                 vm.selectedItemRealisation_ebe.date_regroupement = new Date(realisation_ebe.date_regroupement) ;
+                                vm.selectedItemRealisation_ebe.date_edition = new Date(realisation_ebe.date_edition) ;
                                 vm.selectedItemRealisation_ebe.materiel         = realisation_ebe.materiel ;
                                 vm.selectedItemRealisation_ebe.lieu             = realisation_ebe.lieu ;                              
                             }
@@ -390,6 +406,7 @@
                             numero :                    realisation_ebe.numero ,
                             but_regroupement :          realisation_ebe.but_regroupement ,
                             date_regroupement :         new Date(realisation_ebe.date_regroupement) ,
+                            date_edition :         new Date(realisation_ebe.date_edition) ,
                             materiel :                  realisation_ebe.materiel ,
                             lieu :                      realisation_ebe.lieu ,
                             id_groupe_ml_pl :                  realisation_ebe.id_groupe_ml_pl 
@@ -412,6 +429,7 @@
                     if((currentItemRealisation_ebe.numero                 != item.numero )
                         ||(currentItemRealisation_ebe.but_regroupement    != item.but_regroupement )
                         ||(currentItemRealisation_ebe.date_regroupement   != convert_date(item.date_regroupement) )
+                        ||(currentItemRealisation_ebe.date_edition   != convert_date(item.date_edition) )
                         ||(currentItemRealisation_ebe.materiel            != item.materiel )
                         ||(currentItemRealisation_ebe.lieu                != item.lieu )
                         ||(currentItemRealisation_ebe.contrat_agex.id   != item.id_contrat_agex ) 
@@ -689,11 +707,17 @@
             vm.click_groupe_participant_ebe = function () 
             {
                 vm.affiche_load = true ;
-               apiFactory.getAPIgeneraliserREST("participant_realisation_ebe/index","cle_etrangere",vm.selectedItemRealisation_ebe.id).then(function(result){
+                
+               apiFactory.getAPIgeneraliserREST("participant_realisation_ebe/index","menu","get_participantByrealisationgroupe","id_realisation_ebe",vm.selectedItemRealisation_ebe.id,"id_groupe_ml_pl",vm.filtre.id_groupe_ml_pl).then(function(result){
+                vm.allGroupe_participant_ebe = result.data.response;                    
+                vm.affiche_load = false ;
+                console.log(vm.allGroupe_participant_ebe);
+            });
+               /*apiFactory.getAPIgeneraliserREST("participant_realisation_ebe/index","cle_etrangere",vm.selectedItemRealisation_ebe.id).then(function(result){
                     vm.allGroupe_participant_ebe = result.data.response;                    
                     vm.affiche_load = false ;
                     console.log(vm.allGroupe_participant_ebe);
-                }); 
+                }); */
                 vm.selectedItemGroupe_participant_ebe = {}; 
                 /*apiFactory.getAPIgeneraliserREST("menage/index","id_groupe_ml_pl",vm.filtre.id_groupe_ml_pl).then(function(result)
                 { 
@@ -719,9 +743,10 @@
                 item.telephone_chef_menage = gr[0].telephone_chef_menage;
             }
             vm.groupe_participant_ebe_column =[  
+                                        {titre:"Présence"},
                                         {titre:"Ménage"},
-                                        {titre:"Adresse"},
-                                        {titre:"Téléphone"}
+                                        {titre:"Nombre enfant moins six ans"},
+                                        {titre:"Date presence"}
                                     ];
 
                 vm.selectionGroupe_participant_ebe = function(item)
@@ -755,8 +780,7 @@
                             $selected: true,
                             id:'0',
                             id_menage : null,
-                            Addresse : null,
-                            telephone_chef_menage : null
+                            date_presence : null
                         } ;
 
                     vm.nouvelItemGroupe_participant_ebe = true ;                    
@@ -773,14 +797,23 @@
                 }
 
                 vm.modifierGroupe_participant_ebe = function()
-                {
-                    vm.nouvelItemGroupe_participant_ebe = false ;
-                    vm.selectedItemGroupe_participant_ebe.$edit = true;
-                
+                {   
                     current_selectedItemGroupe_participant_ebe = angular.copy(vm.selectedItemGroupe_participant_ebe);
-                    vm.selectedItemGroupe_participant_ebe.id_menage = vm.selectedItemGroupe_participant_ebe.menage.id;
-                    vm.selectedItemGroupe_participant_ebe.Addresse = vm.selectedItemGroupe_participant_ebe.menage.Addresse;
-                    vm.selectedItemGroupe_participant_ebe.telephone_chef_menage = vm.selectedItemGroupe_participant_ebe.menage.telephone_chef_menage;
+                    if (vm.selectedItemGroupe_participant_ebe.id)
+                    {
+                        vm.nouvelItemGroupe_participant_ebe = false ;
+                        vm.selectedItemGroupe_participant_ebe.$edit = true;
+                     
+                    }
+                    else
+                    {
+                        vm.nouvelItemGroupe_participant_ebe = true ;
+                        vm.selectedItemGroupe_participant_ebe.$edit = true;
+                        vm.selectedItemGroupe_participant_ebe.id = '0';
+                        vm.selectedItemGroupe_participant_ebe.id_menage = vm.selectedItemGroupe_participant_ebe.id_menage_prevu;
+                        vm.selectedItemGroupe_participant_ebe.date_presence = null;
+                    }
+                    
                                      
                 }
 
@@ -805,12 +838,18 @@
 
                 vm.annulerGroupe_participant_ebe = function()
                 {
-                    if (vm.nouvelItemGroupe_participant_ebe) 
+                     if (vm.nouvelItemGroupe_participant_ebe) 
                     {
                         
-                        vm.allGroupe_participant_ebe.shift();
-                        vm.selectedItemGroupe_participant_ebe = {} ;
+                        //vm.allGroupe_participant_ebe.shift();
+                        //vm.selectedItemGroupe_participant_ebe = {} ;
+                        
+                        vm.selectedItemGroupe_participant_ebe.$selected = false;
+                        vm.selectedItemGroupe_participant_ebe.$edit = false;
+                        vm.selectedItemGroupe_participant_ebe = current_selectedItemGroupe_participant_ebe ;
+                        vm.selectedItemGroupe_participant_ebe.checkbox_menage =false;
                         vm.nouvelItemGroupe_participant_ebe = false ;
+                        vm.selectedItemGroupe_participant_ebe = {} ;
                     }
                     else
                     {
@@ -825,7 +864,7 @@
                         {
                             vm.selectedItemGroupe_participant_ebe.$selected = false;
                             vm.selectedItemGroupe_participant_ebe.$edit = false;
-                            vm.selectedItemGroupe_participant_ebe.menage = current_selectedItemGroupe_participant_ebe.menage ;
+                            vm.selectedItemGroupe_participant_ebe = current_selectedItemGroupe_participant_ebe ;
                             
                             vm.selectedItemGroupe_participant_ebe = {};
                         }
@@ -853,7 +892,8 @@
                     {                        
                         supprimer:etat_suppression,
                         id: vm.selectedItemGroupe_participant_ebe.id,  
-                        id_menage: vm.selectedItemGroupe_participant_ebe.id_menage,
+                        id_menage: vm.selectedItemGroupe_participant_ebe.id_menage,  
+                        date_presence:convert_date(vm.selectedItemGroupe_participant_ebe.date_presence),
                         id_realisation_ebe : id_formation 
                     });
                     console.log(datas);
@@ -865,39 +905,45 @@
                         {
                             if (etat_suppression == 0) 
                             {                                   
-                                var gr = vm.allMenage.filter(function(obj)
+                                /*var gr = vm.allMenage.filter(function(obj)
                                 {
                                     return obj.id == vm.selectedItemGroupe_participant_ebe.id_menage;
-                                });                              
+                                });*/                              
                                 
-                                vm.selectedItemGroupe_participant_ebe.menage = gr[0];
+                               // vm.selectedItemGroupe_participant_ebe.menage = gr[0];
                                 vm.selectedItemGroupe_participant_ebe.$edit = false ;
                                 vm.selectedItemGroupe_participant_ebe.$selected = false ;
                                 vm.selectedItemGroupe_participant_ebe = {} ;
                             }
                             else
                             {
-                                vm.allGroupe_participant_ebe = vm.allGroupe_participant_ebe.filter(function(obj)
+                                /*vm.allGroupe_participant_ebe = vm.allGroupe_participant_ebe.filter(function(obj)
                                 {
                                     return obj.id !== vm.selectedItemGroupe_participant_ebe.id;
-                                });
-
+                                });*/
+                                vm.selectedItemGroupe_participant_ebe.$edit = false ;
+                                vm.selectedItemGroupe_participant_ebe.$selected = false ;
+                                vm.selectedItemGroupe_participant_ebe.id = null;
+                                vm.selectedItemGroupe_participant_ebe.id_realisation_ebe = null;
+                                vm.selectedItemGroupe_participant_ebe.checkbox_menage = false;
+                                vm.selectedItemGroupe_participant_ebe.date_presence = null;
                                 vm.selectedItemGroupe_participant_ebe = {} ;
                             }
 
                         }
                         else
                         {                               
-                            var gr = vm.allMenage.filter(function(obj)
+                           /* var gr = vm.allMenage.filter(function(obj)
                             {
                                 return obj.id == vm.selectedItemGroupe_participant_ebe.id_menage;
-                            });                              
+                            }); */                             
                             
-                            vm.selectedItemGroupe_participant_ebe.menage = gr[0];
+                           // vm.selectedItemGroupe_participant_ebe.menage = gr[0];
                             vm.selectedItemGroupe_participant_ebe.$edit = false ;
                             vm.selectedItemGroupe_participant_ebe.$selected = false ;
                             vm.selectedItemGroupe_participant_ebe.id = String(data.response) ;
                             vm.selectedItemGroupe_participant_ebe.id_realisation_ebe = id_formation;
+                            vm.selectedItemGroupe_participant_ebe.checkbox_menage = true;
 
                             vm.nouvelItemGroupe_participant_ebe = false ;
                             vm.selectedItemGroupe_participant_ebe = {};
@@ -907,6 +953,255 @@
                     .error(function (data) {alert("Une erreur s'est produit");});
                 }
             //Fin liste groupe participant
+
+            //debut fiche de collection de donnée ebe
+            
+      vm.get_fiche_collection_donnee_ebe = function()
+      {
+          apiFactory.getAPIgeneraliserREST("fiche_collection_donnee_ebe/index","menu","getfiche_collection_donnee_ebeByrealisation",
+          "id_realisation_ebe",vm.selectedItemRealisation_ebe.id).then(function(result) { 
+              vm.allFiche_collection_donnee_ebe = result.data.response;
+              console.log(vm.allFiche_collection_donnee_ebe);
+          });           
+          vm.selectedItemFiche_collection_donnee_ebe ={};
+      }
+            vm.fiche_collection_donnee_ebe_column = 
+            [   
+                {titre:"Date"},
+                {titre:"Localité"},
+                {titre:"Thème abordé"},
+                {titre:"Outils utilisés"},
+                {titre:"Nombre de participants Femme"},
+                {titre:"Nombre de participants Homme"},
+                {titre:"Nombre de participants Enfant"},
+                {titre:"Animateur"},
+                {titre:"Observation"}
+            ];                       
+
+            vm.selectionFiche_collection_donnee_ebe = function (item) 
+            {
+                vm.selectedItemFiche_collection_donnee_ebe = item ;
+                console.log(vm.selectedItemFiche_collection_donnee_ebe);
+            }
+
+            $scope.$watch('vm.selectedItemFiche_collection_donnee_ebe', function() {
+                if (!vm.allFiche_collection_donnee_ebe) return;
+                vm.allFiche_collection_donnee_ebe.forEach(function(item) {
+                    item.$selected = false;
+                });
+                vm.selectedItemFiche_collection_donnee_ebe.$selected = true;
+            });
+
+            vm.ajoutFiche_collection_donnee_ebe = function(fiche_collection_donnee_ebe,suppression)
+            {
+                if (NouvelItemFiche_collection_donnee_ebe==false)
+                {
+                    test_existenceFiche_collection_donnee_ebe(fiche_collection_donnee_ebe,suppression); 
+                }
+                else
+                {
+                    insert_in_baseFiche_collection_donnee_ebe(fiche_collection_donnee_ebe,suppression);
+                }
+            }
+            vm.ajouterFiche_collection_donnee_ebe = function ()
+            {
+                vm.selectedItemFiche_collection_donnee_ebe.$selected = false;
+                NouvelItemFiche_collection_donnee_ebe = true ;
+                vm.fiche_collection_donnee_ebe.supprimer=0;
+                vm.fiche_collection_donnee_ebe.id=0;
+                vm.fiche_collection_donnee_ebe.numero=null;
+                vm.fiche_collection_donnee_ebe.date= null;
+                vm.fiche_collection_donnee_ebe.localite=null;
+                vm.fiche_collection_donnee_ebe.id_theme_sensibilisation=null;
+                vm.fiche_collection_donnee_ebe.id_outils_utilise=null;
+                vm.fiche_collection_donnee_ebe.nbr_femme=null;
+                vm.fiche_collection_donnee_ebe.nbr_homme=null;
+                vm.fiche_collection_donnee_ebe.nbr_enfant=null;	
+                vm.fiche_collection_donnee_ebe.animateur=null;
+                vm.fiche_collection_donnee_ebe.observation=null;	
+                vm.affichage_masque_fiche_collection_donnee_ebe=true;
+                vm.selectedItemFiche_collection_donnee_ebe = {};
+            }
+            vm.annulerFiche_collection_donnee_ebe = function(item)
+            {
+                vm.selectedItemFiche_collection_donnee_ebe={};
+                vm.selectedItemFiche_collection_donnee_ebe.$selected = false;
+                NouvelItemFiche_collection_donnee_ebe = false;
+                vm.affichage_masque_fiche_collection_donnee_ebe=false;
+                vm.fiche_collection_donnee_ebe = {};
+            };
+
+            vm.modifFiche_collection_donnee_ebe = function () 
+            {
+                NouvelItemFiche_collection_donnee_ebe = false;                
+                currentItemFiche_collection_donnee_ebe = JSON.parse(JSON.stringify(vm.selectedItemFiche_collection_donnee_ebe));
+                vm.fiche_collection_donnee_ebe.date   = new Date(vm.selectedItemFiche_collection_donnee_ebe.date) 
+                vm.fiche_collection_donnee_ebe.localite  = vm.selectedItemFiche_collection_donnee_ebe.localite;
+                vm.fiche_collection_donnee_ebe.id_theme_sensibilisation  = vm.selectedItemFiche_collection_donnee_ebe.theme_sensibilisation.id ;
+                vm.fiche_collection_donnee_ebe.id_outils_utilise  = vm.selectedItemFiche_collection_donnee_ebe.outils_utilise.id ;
+                vm.fiche_collection_donnee_ebe.nbr_femme = parseInt(vm.selectedItemFiche_collection_donnee_ebe.nbr_femme);
+                vm.fiche_collection_donnee_ebe.nbr_homme = parseInt(vm.selectedItemFiche_collection_donnee_ebe.nbr_homme);
+                vm.fiche_collection_donnee_ebe.nbr_enfant = parseInt(vm.selectedItemFiche_collection_donnee_ebe.nbr_enfant);
+                vm.fiche_collection_donnee_ebe.animateur = vm.selectedItemFiche_collection_donnee_ebe.animateur ;
+                vm.fiche_collection_donnee_ebe.observation  = vm.selectedItemFiche_collection_donnee_ebe.observation ;
+                vm.affichage_masque_fiche_collection_donnee_ebe=true;
+            }
+
+            vm.supprimerFiche_collection_donnee_ebe = function()
+            {
+                vm.affichage_masque = false ;
+                
+                var confirm = $mdDialog.confirm()
+                  .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                  .textContent('')
+                  .ariaLabel('Lucky day')
+                  .clickOutsideToClose(true)
+                  .parent(angular.element(document.body))
+                  .ok('ok')
+                  .cancel('annuler');
+                $mdDialog.show(confirm).then(function() {
+
+                    insert_in_baseFiche_collection_donnee_ebe(vm.selectedItemFiche_collection_donnee_ebe,1);
+                }, function() {
+                });
+            }
+
+            function insert_in_baseFiche_collection_donnee_ebe (fiche_collection_donnee_ebe, etat_suppression)
+            {
+                vm.affiche_load = true ;
+                var config = {
+                        headers : {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                        }
+                    };
+
+                    var id = 0 ;
+                    var id_reali = vm.selectedItemRealisation_ebe.id
+                    if (!NouvelItemFiche_collection_donnee_ebe) 
+                    {
+                        id = vm.selectedItemFiche_collection_donnee_ebe.id ;
+                        id_reali = vm.selectedItemFiche_collection_donnee_ebe.id_realisation_ebe;
+                    }
+
+                    var datas = $.param(
+                    {
+                        
+                        id:id,      
+                        supprimer:          etat_suppression,
+                        date:           convert_date(fiche_collection_donnee_ebe.date),
+                        localite:             fiche_collection_donnee_ebe.localite,
+                        id_theme_sensibilisation:  fiche_collection_donnee_ebe.id_theme_sensibilisation ,
+                        id_outils_utilise:    fiche_collection_donnee_ebe.id_outils_utilise,
+                        nbr_homme:              fiche_collection_donnee_ebe.nbr_homme,
+                        nbr_femme:              fiche_collection_donnee_ebe.nbr_femme,
+                        nbr_enfant:              fiche_collection_donnee_ebe.nbr_enfant,
+                        animateur:               fiche_collection_donnee_ebe.animateur,
+                        observation:               fiche_collection_donnee_ebe.observation,
+                        id_realisation_ebe:  id_reali          
+                        
+                    });
+console.log(datas);
+                    apiFactory.add("fiche_collection_donnee_ebe/index",datas, config).success(function (data)
+                    {
+                        if (!NouvelItemFiche_collection_donnee_ebe) 
+                        {
+                            if (etat_suppression == 0) 
+                            {  
+                                var outil = vm.allOutils_utilise.filter(function(obj)
+                                {
+                                    return obj.id == fiche_collection_donnee_ebe.id_outils_utilise  ;
+                                });             
+                                
+                                var them = vm.allTheme_sensibilisation.filter(function(obj)
+                                {
+                                    return obj.id == fiche_collection_donnee_ebe.id_theme_sensibilisation  ;
+                                });
+                                vm.selectedItemFiche_collection_donnee_ebe.theme_sensibilisation = them[0] ;                   
+                                vm.selectedItemFiche_collection_donnee_ebe.outils_utilise = outil[0] ;
+                                vm.selectedItemFiche_collection_donnee_ebe.date = new Date(fiche_collection_donnee_ebe.date) ;
+                                vm.selectedItemFiche_collection_donnee_ebe.localite           = fiche_collection_donnee_ebe.localite ;
+                                vm.selectedItemFiche_collection_donnee_ebe.nbr_femme = fiche_collection_donnee_ebe.nbr_femme ;
+                                vm.selectedItemFiche_collection_donnee_ebe.nbr_homme = fiche_collection_donnee_ebe.nbr_homme ;
+                                vm.selectedItemFiche_collection_donnee_ebe.nbr_enfant = fiche_collection_donnee_ebe.nbr_enfant ;
+                                vm.selectedItemFiche_collection_donnee_ebe.animateur         = fiche_collection_donnee_ebe.animateur ; 
+                                vm.selectedItemFiche_collection_donnee_ebe.observation         = fiche_collection_donnee_ebe.observation ;                            
+                            }
+                            else
+                            {
+                                vm.allFiche_collection_donnee_ebe = vm.allFiche_collection_donnee_ebe.filter(function(obj)
+                                {
+                                    return obj.id !== vm.selectedItemFiche_collection_donnee_ebe.id ;
+                                });
+                            }
+
+                        }
+                        else
+                        {   
+                            var outil = vm.allOutils_utilise.filter(function(obj)
+                                {
+                                    return obj.id == fiche_collection_donnee_ebe.id_outils_utilise  ;
+                                });             
+                                
+                                var them = vm.allTheme_sensibilisation.filter(function(obj)
+                                {
+                                    return obj.id == fiche_collection_donnee_ebe.id_theme_sensibilisation  ;
+                                });
+                               // vm.selectedItemFiche_collection_donnee_ebe.theme_sensibilisation = them[0] ;                   
+                               // vm.selectedItemFiche_collection_donnee_ebe.groupe_ml_pl = group[0] ;
+                            var item =
+                            {
+                            id :    String(data.response) ,
+                            outils_utilise :    outil[0] ,
+                            theme_sensibilisation :    them[0] ,
+                            date :      new Date(fiche_collection_donnee_ebe.date) ,
+                            localite :        fiche_collection_donnee_ebe.localite ,
+                            duree :         fiche_collection_donnee_ebe.duree ,
+                            nbr_homme :          fiche_collection_donnee_ebe.nbr_homme ,
+                            nbr_femme :          fiche_collection_donnee_ebe.nbr_femme ,
+                            nbr_enfant :          fiche_collection_donnee_ebe.nbr_enfant ,
+                            animateur :          fiche_collection_donnee_ebe.animateur ,
+                            observation :          fiche_collection_donnee_ebe.observation ,
+                            id_realisation_ebe :    id_reali 
+                            }
+                            vm.allFiche_collection_donnee_ebe.unshift(item) ;
+					        
+                        }
+                        NouvelItemFiche_collection_donnee_ebe = false ;
+                        vm.affiche_load = false ;
+                        vm.affichage_masque_fiche_collection_donnee_ebe=false;
+                        vm.fiche_collection_donnee_ebe = {};
+                        vm.selectedItemFiche_collection_donnee_ebe ={};
+                    })
+                    .error(function (data) {alert("Une erreur s'est produit");});
+            }
+            function test_existenceFiche_collection_donnee_ebe (item,suppression)
+            {
+                if (suppression!=1) 
+                {                    
+                    if((currentItemFiche_collection_donnee_ebe.localite             != item.localite )
+                        ||(currentItemFiche_collection_donnee_ebe.outils_utilise.id != item.id_outils_utilise )
+                        ||(currentItemFiche_collection_donnee_ebe.date   != convert_date(item.date) )
+                        ||(currentItemFiche_collection_donnee_ebe.nbr_homme      != item.nbr_homme )
+                        ||(currentItemFiche_collection_donnee_ebe.nbr_femme      != item.nbr_femme )
+                        ||(currentItemFiche_collection_donnee_ebe.nbr_enfant      != item.nbr_enfant )
+                        ||(currentItemFiche_collection_donnee_ebe.animateur      != item.animateur )
+                        ||(currentItemFiche_collection_donnee_ebe.observation       != item.observation )
+                        ||(currentItemFiche_collection_donnee_ebe.theme_sensibilisation.id   != item.id_theme_sensibilisation)
+                        )                    
+                    { 
+                            insert_in_baseFiche_collection_donnee_ebe(item,suppression);                      
+                    }
+                    else
+                    { 
+                        item.$selected=false;
+                        item.$edit=false;
+                    }
+                    
+                }
+                else
+                insert_in_baseFiche_collection_donnee_ebe(item,suppression);		
+            }
+            //fin fiche de collection de donnée ebe
 
         
     }

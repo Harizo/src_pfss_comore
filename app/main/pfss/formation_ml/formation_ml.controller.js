@@ -32,10 +32,15 @@
         vm.allOutils_communication = {};
 
         
-        /*vm.selectedItemGroupe_participant_ml = {} ;
+        vm.selectedItemGroupe_fiche_presence_ml = {} ;
+        var current_selectedItemGroupe_fiche_presence_ml = {} ;
+        vm.nouvelItemGroupe_fiche_presence_ml = false ;
+        vm.allGroupe_fiche_presence_ml = [];
+        
+        vm.selectedItemGroupe_participant_ml = {} ;
         var current_selectedItemGroupe_participant_ml = {} ;
         vm.nouvelItemGroupe_participant_ml = false ;
-        vm.allGroupe_participant_ml = [];*/
+        vm.allGroupe_participant_ml = [];
 
         vm.selectedItemFormation_ml_repartition = {};
 		var NouvelItemFormation_ml_repartition=false;
@@ -112,10 +117,15 @@
             [   
                 {titre:"Contrat ONG N°"},
                 {titre:"Formation N°"},
-                {titre:"Description"},
+                {titre:"Présentation du thème"},
+                {titre:"Date d'édition'"},
                 {titre:"Date de debut"},
                 {titre:"Date de fin"},
-                {titre:"Lieu"}
+                {titre:"Formateur"},
+                {titre:"Outils didactiques"},
+                {titre:"Lieu"},
+                {titre:"Problèmes rencontrés"},
+                {titre:"Solutions adoptées"},
             ];                       
 
             vm.selection = function (item) 
@@ -155,7 +165,11 @@
                 vm.formation_ml.id_commune= vm.filtre.id_commune;
                 vm.formation_ml.date_fin=null;
                 vm.formation_ml.lieu=null;
-                //vm.formation_ml.id_commune=null;		
+                vm.formation_ml.date_edition=null;
+                vm.formation_ml.formateur=null;
+                vm.formation_ml.outils_didactique=null;
+                vm.formation_ml.probleme=null;
+                vm.formation_ml.solution=null;
                 vm.affichage_masque=true;
                 vm.selectedItemFormation_ml = {};
             }
@@ -183,6 +197,11 @@
                 vm.formation_ml.lieu = vm.selectedItemFormation_ml.lieu ;
                 vm.formation_ml.date_debut  = new Date(vm.selectedItemFormation_ml.date_debut) ;
                 vm.formation_ml.date_fin  = new Date(vm.selectedItemFormation_ml.date_fin) ;
+                vm.formation_ml.date_edition  = new Date(vm.selectedItemFormation_ml.date_edition) ;
+                vm.formation_ml.outils_didactique = vm.selectedItemFormation_ml.outils_didactique ;
+                vm.formation_ml.probleme = vm.selectedItemFormation_ml.probleme ;
+                vm.formation_ml.solution = vm.selectedItemFormation_ml.solution ;
+                vm.formation_ml.formateur = vm.selectedItemFormation_ml.formateur ;
 
                 var contrat = vm.allContrat_agex.filter(function(obj)
                 {
@@ -240,7 +259,12 @@
                         id_commune:formation_ml.id_commune,
                         lieu:formation_ml.lieu,
                         date_debut:convert_date(formation_ml.date_debut),
-                        date_fin:convert_date(formation_ml.date_fin)              
+                        date_fin:convert_date(formation_ml.date_fin),
+                        date_edition:convert_date(formation_ml.date_edition),
+                        outils_didactique:formation_ml.outils_didactique ,
+                        probleme:formation_ml.probleme ,
+                        solution:formation_ml.solution ,
+                        formateur:formation_ml.formateur            
                         
                     });
 
@@ -263,7 +287,12 @@
                                 vm.selectedItemFormation_ml.description = formation_ml.description ;
                                 vm.selectedItemFormation_ml.lieu = formation_ml.lieu ;
                                 vm.selectedItemFormation_ml.date_debut = new Date(formation_ml.date_debut) ;
-                                vm.selectedItemFormation_ml.date_fin = new Date(formation_ml.date_fin) ;                               
+                                vm.selectedItemFormation_ml.date_fin = new Date(formation_ml.date_fin) ; 
+                                vm.selectedItemFormation_ml.date_edition = new Date(formation_ml.date_edition) ; 
+                                vm.selectedItemFormation_ml.formateur = formation_ml.formateur ;
+                                vm.selectedItemFormation_ml.outils_didactique = formation_ml.outils_didactique ;
+                                vm.selectedItemFormation_ml.probleme = formation_ml.probleme ;
+                                vm.selectedItemFormation_ml.solution = formation_ml.solution ;                            
                             }
                             else
                             {
@@ -293,7 +322,12 @@
                             description : formation_ml.description ,
                             lieu : formation_ml.lieu ,
                             date_debut : new Date(formation_ml.date_debut) ,
-                            date_fin : new Date(formation_ml.date_fin)
+                            date_fin : new Date(formation_ml.date_fin) ,
+                            date_edition : new Date(formation_ml.date_edition),
+                            formateur : formation_ml.formateur,
+                            outils_didactique : formation_ml.outils_didactique,
+                            probleme : formation_ml.probleme,
+                            solution : formation_ml.solution
                             }
                             vm.allFormation_ml.unshift(item) ;
 					        
@@ -318,6 +352,11 @@
                         ||(currentItemFormation_ml.date_debut   != convert_date(item.date_debut) )
                         ||(currentItemFormation_ml.date_fin   != convert_date(item.date_fin))
                         ||(currentItemFormation_ml.contrat_agex.id   != item.id_contrat_agex )
+                        ||(currentItemFormation_ml.date_edition   != convert_date(item.date_edition))
+                        ||(currentItemFormation_ml.formateur != item.formateur )
+                        ||(currentItemFormation_ml.outils_didactique != item.outils_didactique )
+                        ||(currentItemFormation_ml.probleme != item.probleme )
+                        ||(currentItemFormation_ml.solution != item.solution )
                         )                    
                     { 
                             insert_in_baseFormation_ml(item,suppression);                      
@@ -913,39 +952,21 @@
             }
             
             //FIN outils de communication
-
             //Debut liste groupe participant
             
-           /* vm.click_groupe_participant_ml = function () 
+            vm.click_groupe_participant_ml = function () 
             {
                 vm.affiche_load = true ;
-               apiFactory.getAPIgeneraliserREST("groupe_participant_formation_ml/index","cle_etrangere",vm.selectedItemFormation_ml.id).then(function(result){
+               apiFactory.getAPIgeneraliserREST("participant_formation_ml/index","cle_etrangere",vm.selectedItemFormation_ml.id).then(function(result){
                     vm.allGroupe_participant_ml = result.data.response;                    
                     vm.affiche_load = false ;
                     console.log(vm.allGroupe_participant_ml);
                 }); 
                 vm.selectedItemGroupe_participant_ml = {}; 
-            }
-            
-            vm.filtre_groupe_ml = function(village_id)
-            {
-                apiFactory.getAPIgeneraliserREST("groupe_mlpl/index","cle_etrangere",village_id).then(function(result)
-                { 
-                vm.allGroupe_ml_pl = result.data.response;            
-                });
-            }
-            vm.change_groupe_ml = function(item)
-            {
-                var gr = vm.allGroupe_ml_pl.filter(function(obj)
-                {
-                    return obj.id == item.id_groupe_ml_pl;
-                });
-                item.telephone = gr[0].telephone;
-            }
+            }            
             vm.groupe_participant_ml_column =[  
-                                        {titre:"Village"},
-                                        {titre:"Groupe ML/PL"},
-                                        {titre:"Téléphone"}
+                                        {titre:"Nom des participant"},
+                                        {titre:"Fonction"}
                                     ];
 
                 vm.selectionGroupe_participant_ml = function(item)
@@ -978,9 +999,8 @@
                             $edit: true,
                             $selected: true,
                             id:'0',
-                            id_groupe_ml_pl : null,
-                            id_village : null,
-                            nom_groupe : null
+                            nom : null,
+                            fonction : null
                         } ;
 
                     vm.nouvelItemGroupe_participant_ml = true ;                    
@@ -999,16 +1019,8 @@
                 vm.modifierGroupe_participant_ml = function()
                 {
                     vm.nouvelItemGroupe_participant_ml = false ;
-                    vm.selectedItemGroupe_participant_ml.$edit = true;
-                
-                    current_selectedItemGroupe_participant_ml = angular.copy(vm.selectedItemGroupe_participant_ml);
-                    vm.selectedItemGroupe_participant_ml.id_groupe_ml_pl = vm.selectedItemGroupe_participant_ml.groupe_ml_pl.id;
-                    vm.selectedItemGroupe_participant_ml.id_village = vm.selectedItemGroupe_participant_ml.village.id;
-                    vm.selectedItemGroupe_participant_ml.chef_village = vm.selectedItemGroupe_participant_ml.groupe_ml_pl.chef_village;
-                    apiFactory.getAPIgeneraliserREST("groupe_mlpl/index","cle_etrangere",vm.selectedItemGroupe_participant_ml.village.id).then(function(result)
-                    { 
-                        vm.allGroupe_ml_pl = result.data.response;            
-                    });                  
+                    vm.selectedItemGroupe_participant_ml.$edit = true;                
+                    current_selectedItemGroupe_participant_ml = angular.copy(vm.selectedItemGroupe_participant_ml);              
                 }
 
                 vm.supprimerGroupe_participant_ml = function()
@@ -1052,10 +1064,8 @@
                         {
                             vm.selectedItemGroupe_participant_ml.$selected = false;
                             vm.selectedItemGroupe_participant_ml.$edit = false;
-                            vm.selectedItemGroupe_participant_ml.numero = current_selectedItemGroupe_participant_ml.numero ;
-                            vm.selectedItemGroupe_participant_ml.id_village = current_selectedItemGroupe_participant_ml.village.id ;
-                            vm.selectedItemGroupe_participant_ml.id_groupe_ml_pl = current_selectedItemGroupe_participant_ml.groupe_ml_pl.id ;                            
-                            vm.selectedItemGroupe_participant_ml.chef_village = current_selectedItemGroupe_participant_ml.groupe_ml_pl.chef_village ;
+                            vm.selectedItemGroupe_participant_ml.nom = current_selectedItemGroupe_participant_ml.nom ;
+                            vm.selectedItemGroupe_participant_ml.fonction = current_selectedItemGroupe_participant_ml.fonction ;
                             
                             vm.selectedItemGroupe_participant_ml = {};
                         }
@@ -1083,31 +1093,19 @@
                     {                        
                         supprimer:etat_suppression,
                         id: vm.selectedItemGroupe_participant_ml.id,
-                        id_village: vm.selectedItemGroupe_participant_ml.id_village,  
-                        id_groupe_ml_pl: vm.selectedItemGroupe_participant_ml.id_groupe_ml_pl,
+                        nom: vm.selectedItemGroupe_participant_ml.nom,  
+                        fonction: vm.selectedItemGroupe_participant_ml.fonction,
                         id_formation_ml : id_formation 
                     });
                     console.log(datas);
-                    apiFactory.add("groupe_participant_formation_ml/index",datas, config).success(function (data)
+                    apiFactory.add("participant_formation_ml/index",datas, config).success(function (data)
                     {
                         vm.affiche_load = false ;
                       
                         if (!vm.nouvelItemGroupe_participant_ml) 
                         {
                             if (etat_suppression == 0) 
-                            {   
-                                var vil = vm.all_village.filter(function(obj)
-                                {
-                                    return obj.id == vm.selectedItemGroupe_participant_ml.id_village;
-                                });
-                                
-                                var gr = vm.allGroupe_ml_pl.filter(function(obj)
-                                {
-                                    return obj.id == vm.selectedItemGroupe_participant_ml.id_groupe_ml_pl;
-                                });                              
-                                
-                                vm.selectedItemGroupe_participant_ml.village = vil[0];
-                                vm.selectedItemGroupe_participant_ml.groupe_ml_pl = gr[0];
+                            {
                                 vm.selectedItemGroupe_participant_ml.$edit = false ;
                                 vm.selectedItemGroupe_participant_ml.$selected = false ;
                                 vm.selectedItemGroupe_participant_ml = {} ;
@@ -1124,20 +1122,7 @@
 
                         }
                         else
-                        {   
-                            
-                            var vil = vm.all_village.filter(function(obj)
-                            {
-                                return obj.id == vm.selectedItemGroupe_participant_ml.id_village;
-                            });
-                            
-                            var gr = vm.allGroupe_ml_pl.filter(function(obj)
-                            {
-                                return obj.id == vm.selectedItemGroupe_participant_ml.id_groupe_ml_pl;
-                            });                              
-                            
-                            vm.selectedItemGroupe_participant_ml.village = vil[0];
-                            vm.selectedItemGroupe_participant_ml.groupe_ml_pl = gr[0];
+                        {  
                             vm.selectedItemGroupe_participant_ml.$edit = false ;
                             vm.selectedItemGroupe_participant_ml.$selected = false ;
                             vm.selectedItemGroupe_participant_ml.id = String(data.response) ;
@@ -1149,8 +1134,249 @@
                         }
                     })
                     .error(function (data) {alert("Une erreur s'est produit");});
-                }*/
+                }
             //Fin liste groupe participant
+
+            //Debut liste groupe fiche_presence
+            
+            vm.click_groupe_fiche_presence_ml = function () 
+            {
+                vm.affiche_load = true ;
+               apiFactory.getAPIgeneraliserREST("fiche_presence_formation_ml/index","menu","getprensenceByformation","id_formation_ml",vm.selectedItemFormation_ml.id).then(function(result){
+                    vm.allGroupe_fiche_presence_ml = result.data.response;                    
+                    vm.affiche_load = false ;
+                    console.log(vm.allGroupe_fiche_presence_ml);
+                }); 
+                vm.selectedItemGroupe_fiche_presence_ml = {}; 
+            }
+            
+            vm.filtre_groupe_ml = function(village_id)
+            {
+                apiFactory.getAPIgeneraliserREST("fiche_presence_formation_ml/index","menu","getgroupe_mlplByvillage","id_village",village_id).then(function(result)
+                { 
+                vm.allGroupe_ml_pl = result.data.response;
+                console.log(vm.allGroupe_ml_pl);           
+                });
+            }
+            vm.change_groupe_ml = function(item)
+            {
+                var gr = vm.allGroupe_ml_pl.filter(function(obj)
+                {
+                    return obj.id == item.id_groupe_ml_pl;
+                });
+                item.telephone = gr[0].telephone;
+                item.Addresse = gr[0].Addresse;
+            }
+            vm.groupe_fiche_presence_ml_column =[  
+                                        {titre:"Village"},
+                                        {titre:"Nom et prénoms ML/PL"},
+                                        {titre:"Adresse"},
+                                        {titre:"Téléphone"}
+                                    ];
+
+                vm.selectionGroupe_fiche_presence_ml = function(item)
+                {
+                    vm.selectedItemGroupe_fiche_presence_ml = item ;
+
+                    if (!vm.selectedItemGroupe_fiche_presence_ml.$edit) 
+                    {
+                        vm.nouvelItemGroupe_fiche_presence_ml = false ;  
+
+                    }
+
+                }
+
+                $scope.$watch('vm.selectedItemGroupe_fiche_presence_ml', function()
+                {
+                    if (!vm.allGroupe_fiche_presence_ml) return;
+                    vm.allGroupe_fiche_presence_ml.forEach(function(item)
+                    {
+                        item.$selected = false;
+                    });
+                    vm.selectedItemGroupe_fiche_presence_ml.$selected = true;
+
+                });
+               
+                vm.ajouterGroupe_fiche_presence_ml = function()
+                {
+                    var item = 
+                        {                            
+                            $edit: true,
+                            $selected: true,
+                            id:'0',
+                            id_groupe_ml_pl : null,
+                            id_village : null,
+                            nom_groupe : null
+                        } ;
+
+                    vm.nouvelItemGroupe_fiche_presence_ml = true ;                    
+
+                    vm.allGroupe_fiche_presence_ml.unshift(item);
+                    vm.allGroupe_fiche_presence_ml.forEach(function(af)
+                    {
+                      if(af.$selected == true)
+                      {
+                        vm.selectedItemGroupe_fiche_presence_ml = af;
+                        
+                      }
+                    });
+                }
+
+                vm.modifierGroupe_fiche_presence_ml = function()
+                {
+                    vm.nouvelItemGroupe_fiche_presence_ml = false ;
+                    vm.selectedItemGroupe_fiche_presence_ml.$edit = true;
+                
+                    current_selectedItemGroupe_fiche_presence_ml = angular.copy(vm.selectedItemGroupe_fiche_presence_ml);
+                    vm.selectedItemGroupe_fiche_presence_ml.id_groupe_ml_pl = vm.selectedItemGroupe_fiche_presence_ml.groupe_ml_pl.id;
+                    vm.selectedItemGroupe_fiche_presence_ml.id_village = vm.selectedItemGroupe_fiche_presence_ml.village.id;
+                    vm.selectedItemGroupe_fiche_presence_ml.chef_village = vm.selectedItemGroupe_fiche_presence_ml.groupe_ml_pl.chef_village;
+                    apiFactory.getAPIgeneraliserREST("fiche_presence_formation_ml/index","menu","getgroupe_mlplByvillage","id_village",vm.selectedItemGroupe_fiche_presence_ml.village.id).then(function(result)
+                    { 
+                        vm.allGroupe_ml_pl = result.data.response;            
+                    });                  
+                }
+
+                vm.supprimerGroupe_fiche_presence_ml = function()
+                {
+                    
+                    var confirm = $mdDialog.confirm()
+                      .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                      .textContent('Cliquer sur OK pour confirmer')
+                      .ariaLabel('Lucky day')
+                      .clickOutsideToClose(true)
+                      .parent(angular.element(document.body))
+                      .ok('OK')
+                      .cancel('Annuler');
+                    $mdDialog.show(confirm).then(function() {
+
+                    vm.enregistrerGroupe_fiche_presence_ml(1);
+                    }, function() {
+                    //alert('rien');
+                    });
+                }
+
+                vm.annulerGroupe_fiche_presence_ml = function()
+                {
+                    if (vm.nouvelItemGroupe_fiche_presence_ml) 
+                    {
+                        
+                        vm.allGroupe_fiche_presence_ml.shift();
+                        vm.selectedItemGroupe_fiche_presence_ml = {} ;
+                        vm.nouvelItemGroupe_fiche_presence_ml = false ;
+                    }
+                    else
+                    {
+                        
+
+                        if (!vm.selectedItemGroupe_fiche_presence_ml.$edit) //annuler selection
+                        {
+                            vm.selectedItemGroupe_fiche_presence_ml.$selected = false;
+                            vm.selectedItemGroupe_fiche_presence_ml = {};
+                        }
+                        else
+                        {
+                            vm.selectedItemGroupe_fiche_presence_ml.$selected = false;
+                            vm.selectedItemGroupe_fiche_presence_ml.$edit = false;
+                            vm.selectedItemGroupe_fiche_presence_ml.numero = current_selectedItemGroupe_fiche_presence_ml.numero ;
+                            vm.selectedItemGroupe_fiche_presence_ml.id_village = current_selectedItemGroupe_fiche_presence_ml.village.id ;
+                            vm.selectedItemGroupe_fiche_presence_ml.id_groupe_ml_pl = current_selectedItemGroupe_fiche_presence_ml.groupe_ml_pl.id ;                            
+                            vm.selectedItemGroupe_fiche_presence_ml.chef_village = current_selectedItemGroupe_fiche_presence_ml.groupe_ml_pl.chef_village ;
+                            
+                            vm.selectedItemGroupe_fiche_presence_ml = {};
+                        }
+
+                        
+
+                    }
+                }
+
+                vm.enregistrerGroupe_fiche_presence_ml = function(etat_suppression)
+                {
+                    vm.affiche_load = true ;
+                    var config = {
+                        headers : {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                        }
+                    };
+                    var id_formation = vm.selectedItemFormation_ml.id;
+                    if (vm.nouvelItemGroupe_fiche_presence_ml==false)
+                    {
+                        id_formation = vm.selectedItemGroupe_fiche_presence_ml.id_formation_ml;
+                    }
+
+                    var datas = $.param(
+                    {                        
+                        supprimer:etat_suppression,
+                        id: vm.selectedItemGroupe_fiche_presence_ml.id,
+                        id_village: vm.selectedItemGroupe_fiche_presence_ml.id_village,  
+                        id_groupe_ml_pl: vm.selectedItemGroupe_fiche_presence_ml.id_groupe_ml_pl,
+                        id_formation_ml : id_formation 
+                    });
+                    console.log(datas);
+                    apiFactory.add("fiche_presence_formation_ml/index",datas, config).success(function (data)
+                    {
+                        vm.affiche_load = false ;
+                      
+                        if (!vm.nouvelItemGroupe_fiche_presence_ml) 
+                        {
+                            if (etat_suppression == 0) 
+                            {   
+                                var vil = vm.all_village.filter(function(obj)
+                                {
+                                    return obj.id == vm.selectedItemGroupe_fiche_presence_ml.id_village;
+                                });
+                                
+                                var gr = vm.allGroupe_ml_pl.filter(function(obj)
+                                {
+                                    return obj.id == vm.selectedItemGroupe_fiche_presence_ml.id_groupe_ml_pl;
+                                });                              
+                                
+                                vm.selectedItemGroupe_fiche_presence_ml.village = vil[0];
+                                vm.selectedItemGroupe_fiche_presence_ml.groupe_ml_pl = gr[0];
+                                vm.selectedItemGroupe_fiche_presence_ml.$edit = false ;
+                                vm.selectedItemGroupe_fiche_presence_ml.$selected = false ;
+                                vm.selectedItemGroupe_fiche_presence_ml = {} ;
+                            }
+                            else
+                            {
+                                vm.allGroupe_fiche_presence_ml = vm.allGroupe_fiche_presence_ml.filter(function(obj)
+                                {
+                                    return obj.id !== vm.selectedItemGroupe_fiche_presence_ml.id;
+                                });
+
+                                vm.selectedItemGroupe_fiche_presence_ml = {} ;
+                            }
+
+                        }
+                        else
+                        {   
+                            
+                            var vil = vm.all_village.filter(function(obj)
+                            {
+                                return obj.id == vm.selectedItemGroupe_fiche_presence_ml.id_village;
+                            });
+                            
+                            var gr = vm.allGroupe_ml_pl.filter(function(obj)
+                            {
+                                return obj.id == vm.selectedItemGroupe_fiche_presence_ml.id_groupe_ml_pl;
+                            });                              
+                            
+                            vm.selectedItemGroupe_fiche_presence_ml.village = vil[0];
+                            vm.selectedItemGroupe_fiche_presence_ml.groupe_ml_pl = gr[0];
+                            vm.selectedItemGroupe_fiche_presence_ml.$edit = false ;
+                            vm.selectedItemGroupe_fiche_presence_ml.$selected = false ;
+                            vm.selectedItemGroupe_fiche_presence_ml.id = String(data.response) ;
+                            vm.selectedItemGroupe_fiche_presence_ml.id_formation_ml = id_formation;
+
+                            vm.nouvelItemGroupe_fiche_presence_ml = false ;
+                            vm.selectedItemGroupe_fiche_presence_ml = {};
+
+                        }
+                    })
+                    .error(function (data) {alert("Une erreur s'est produit");});
+                }
+            //Fin liste groupe fiche_presence
 
             //debut repartition groupe ml pour la formation
             vm.get_formation_ml_repartition = function()
