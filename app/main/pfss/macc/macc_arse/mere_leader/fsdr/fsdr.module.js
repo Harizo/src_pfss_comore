@@ -28,7 +28,7 @@
 
         // Navigation
         msNavigationServiceProvider.saveItem('pfss.macc.macc_arse.mere_leader.fsdr', {
-            title: 'Fiche Supérvision DR',
+            title: 'Fiche Supérvision Dir Rég',
             icon  : 'icon-tile-four',
             state: 'app.pfss_fsdr',
 			weight:2,

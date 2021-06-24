@@ -152,7 +152,7 @@
 
                  // $location.path("/accueil");//si n'est pas packeT
                   
-                      $window.location.href = '/mis';
+                      $window.location.href = '/';
                     }
                   }
                   else
