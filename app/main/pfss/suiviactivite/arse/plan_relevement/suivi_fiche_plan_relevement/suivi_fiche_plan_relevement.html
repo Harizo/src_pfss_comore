@@ -317,7 +317,7 @@
             </tbody>
           </table>
         </md-tab>
-        <md-tab label="Présentation des intervenants et participants" ng-click="vm.get_all_fiche_suivi_plan_relevement_intervenants()">
+        <md-tab label="Présentation des intervenants et participants" ng-disabled="!vm.selected_identification.id" ng-click="vm.get_all_fiche_suivi_plan_relevement_intervenants()">
 
             <!-- INTERVENANTS -->
                 <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
@@ -459,7 +459,7 @@
                 </table>
             <!--FIN INTERVENANTS -->
         </md-tab>
-        <md-tab label="Présentation du plan de relèvement " ng-click="vm.get_all_fiche_suivi_plan_relevement_presentation()">
+        <md-tab label="Présentation du plan de relèvement " ng-disabled="!vm.selected_identification.id" ng-click="vm.get_all_fiche_suivi_plan_relevement_presentation()">
             <!-- plan relevement -->
                 <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                     <div layout="row" layout-align="start center">
@@ -598,7 +598,7 @@
                 </table>
             <!--FIN plan relevement -->
         </md-tab>
-        <md-tab label="Présentation des matériels et intrants achetés" ng-click="vm.get_all_fiche_suivi_plan_relevement_materiel()">
+        <md-tab label="Présentation des matériels et intrants achetés" ng-disabled="!vm.selected_identification.id" ng-click="vm.get_all_fiche_suivi_plan_relevement_materiel()">
             <!-- fiche_suivi_plan_relevement_materiel -->
                 <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                     <div layout="row" layout-align="start center">
@@ -727,7 +727,7 @@
                 </table>
             <!--FIN fiche_suivi_plan_relevement_materiel -->
         </md-tab>
-        <md-tab label="Problèmes rencontrés et solutions" ng-click="vm.get_all_fiche_suivi_prelevement_probleme()">
+        <md-tab label="Problèmes rencontrés et solutions" ng-disabled="!vm.selected_identification.id" ng-click="vm.get_all_fiche_suivi_prelevement_probleme()">
             <!-- fiche_suivi_prelevement_probleme -->
                 <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                     <div layout="row" layout-align="start center">
@@ -794,7 +794,7 @@
                                     <md-input-container style="width:100%;display: flex !important;">
                                       <label>Problèmes</label>
                                       <textarea name="probleme"  ng-model="cm.probleme"/>
-                                    </md-input-container>   
+    </textarea>                               </md-input-container>   
                                     
                                 </span>
                                 <span ng-if="!cm.$edit">
@@ -809,7 +809,7 @@
                                     <md-input-container style="width:100%;display: flex !important;">
                                       <label>Solution apportée</label>
                                       <textarea name="solution"  ng-model="cm.solution"/>
-                                    </md-input-container>   
+    </textarea>                               </md-input-container>   
                                     
                                 </span>
                                 <span ng-if="!cm.$edit">
@@ -824,7 +824,7 @@
                                 <span ng-if="cm.$edit">
                                     <md-input-container style="width:100%;display: flex !important;">
                                       <label>Observation</label>
-                                      <textarea name="observation"  ng-model="cm.observation"/>
+                                      <textarea name="observation"  ng-model="cm.observation"></textarea>
                                     </md-input-container>   
                                     
                                 </span>
@@ -841,7 +841,7 @@
                 </table>
             <!--FIN fiche_suivi_prelevement_probleme -->
         </md-tab>
-        <md-tab label="Payement déjà prévu" ng-click="vm.get_all_fiche_suivi_prelevement_payement()">
+        <md-tab label="Payement déjà prévu" ng-disabled="!vm.selected_identification.id" ng-click="vm.get_all_fiche_suivi_prelevement_payement()">
             <!-- fiche_suivi_prelevement_payement -->
                 <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                     <div layout="row" layout-align="start center">
@@ -971,7 +971,7 @@
                 </table>
             <!--FIN fiche_suivi_prelevement_payement -->
         </md-tab>
-        <md-tab label="Obligation de respecter les engagements">
+        <md-tab label="Obligation de respecter les engagements" ng-disabled="!vm.selected_identification.id" ng-click="vm.get_all_fiche_suivi_prelevement_obligation()">
             <!-- fiche_suivi_prelevement_obligation -->
                 <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                     <div layout="row" layout-align="start center">
@@ -1081,7 +1081,7 @@
                                 <span ng-if="cm.$edit">
                                     <md-input-container style="width:100%;display: flex !important;">
                                       <label>Observation</label>
-                                      <textarea name="observation"  ng-model="cm.observation"/>
+                                      <textarea name="observation"  ng-model="cm.observation"></textarea>
                                     </md-input-container>   
                                     
                                 </span>

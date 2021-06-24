@@ -333,7 +333,7 @@
                         </table>
                      
                     </md-tab>  
-                    <md-tab label="Personne rencontrées" ng-click="vm.get_all_fiche_supervision_direction_regional_personne_rencontrees()">
+                    <md-tab label="Personne rencontrées" ng-disabled="!vm.selected_fsdr.id" ng-click="vm.get_all_fiche_supervision_direction_regional_personne_rencontrees()">
                     	<!-- PERSONNE RENCONTRE -->
 	                        <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
 	                            <div layout="row" layout-align="start center">
@@ -431,7 +431,7 @@
 	                    <!--FIN PERSONNE RENCONTRE -->
                     </md-tab>  
 
-                    <md-tab label="Organisation générale de l’ONG" ng-click="vm.get_all_fiche_supervision_direction_regional_personne_organisation_ong()">
+                    <md-tab label="Organisation générale de l’ONG" ng-disabled="!vm.selected_fsdr.id" ng-click="vm.get_all_fiche_supervision_direction_regional_personne_organisation_ong()">
 	                    <!-- ONG -->
 	                        <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
 	                            <div layout="row" layout-align="start center">
@@ -497,7 +497,7 @@
 	                                        <span ng-if="cm.$edit">
 	                                            <md-input-container style="width:100%;display: flex !important;">
 	                                              <label>Planning</label>
-	                                              <textarea type="text" name="planning"  ng-model="cm.planning"/>
+	                                              <textarea type="text" name="planning"  ng-model="cm.planning"></textarea>
 	                                            </md-input-container>   
 	                                            
 	                                        </span>
@@ -550,7 +550,7 @@
 	                    <!--FIN ONG -->
                     </md-tab> 
 
-                    <md-tab label="Points à verifier" ng-click="vm.get_all_fiche_supervision_direction_regional_pts_averifier()">
+                    <md-tab label="Points à verifier" ng-disabled="!vm.selected_fsdr.id" ng-click="vm.get_all_fiche_supervision_direction_regional_pts_averifier()">
                     	<!-- PTS A VERIFIER -->
 	                        <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
 	                            <div layout="row" layout-align="start center">
@@ -616,7 +616,7 @@
 	                                        <span ng-if="cm.$edit">
 	                                            <md-input-container style="width:100%;display: flex !important;">
 	                                              <label>Type point à vérifier</label>
-	                                              <textarea type="text" name="type_point_averifier"  ng-model="cm.type_point_averifier"/>
+	                                              <textarea type="text" name="type_point_averifier"  ng-model="cm.type_point_averifier"></textarea>
 	                                            </md-input-container>   
 	                                            
 	                                        </span>
@@ -630,7 +630,7 @@
 	                                        <span ng-if="cm.$edit">
 	                                            <md-input-container style="width:100%;display: flex !important;">
 	                                              <label>Point à vérifier</label>
-	                                              <textarea type="text" name="point_a_verifier"  ng-model="cm.point_a_verifier"/>
+	                                              <textarea type="text" name="point_a_verifier"  ng-model="cm.point_a_verifier"></textarea>
 	                                            </md-input-container>   
 	                                            
 	                                        </span>
@@ -644,7 +644,7 @@
 	                                        <span ng-if="cm.$edit">
 	                                            <md-input-container style="width:100%;display: flex !important;">
 	                                              <label>Prévision</label>
-	                                              <textarea type="text" name="prevision"  ng-model="cm.prevision"/>
+	                                              <textarea type="text" name="prevision"  ng-model="cm.prevision"></textarea>
 	                                            </md-input-container>   
 	                                            
 	                                        </span>
@@ -659,7 +659,7 @@
 	                                        <span ng-if="cm.$edit">
 	                                            <md-input-container style="width:100%;display: flex !important;">
 	                                              <label>Réel</label>
-	                                              <textarea type="text" name="reel"  ng-model="cm.reel"/>
+	                                              <textarea type="text" name="reel"  ng-model="cm.reel"></textarea>
 	                                            </md-input-container>   
 	                                            
 	                                        </span>
@@ -673,7 +673,7 @@
 	                                        <span ng-if="cm.$edit">
 	                                            <md-input-container style="width:100%;display: flex !important;">
 	                                              <label>Observation</label>
-	                                              <textarea type="text" name="observation"  ng-model="cm.observation"/>
+	                                              <textarea type="text" name="observation"  ng-model="cm.observation"></textarea>
 	                                            </md-input-container>   
 	                                            
 	                                        </span>
@@ -692,7 +692,7 @@
                      
                     </md-tab> 
 
-                    <md-tab label="Problèmes et solutions proposées " ng-click="vm.get_all_fiche_supervision_direction_regional_probleme_solution()">
+                    <md-tab label="Problèmes et solutions proposées " ng-disabled="!vm.selected_fsdr.id" ng-click="vm.get_all_fiche_supervision_direction_regional_probleme_solution()">
                      <!--probleme -->
 	                        <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
 	                            <div layout="row" layout-align="start center">
@@ -758,7 +758,7 @@
 	                                        <span ng-if="cm.$edit">
 	                                            <md-input-container style="width:100%;display: flex !important;">
 	                                              <label>Personne rencontrée</label>
-	                                              <textarea type="text" name="probleme_constate"  ng-model="cm.probleme_constate"/>
+	                                              <textarea type="text" name="probleme_constate"  ng-model="cm.probleme_constate"></textarea>
 	                                            </md-input-container>   
 	                                            
 	                                        </span>
@@ -772,7 +772,7 @@
 	                                        <span ng-if="cm.$edit">
 	                                            <md-input-container style="width:100%;display: flex !important;">
 	                                              <label>Entité</label>
-	                                              <textarea type="text" name="solution_apporte"  ng-model="cm.solution_apporte"/>
+	                                              <textarea type="text" name="solution_apporte"  ng-model="cm.solution_apporte"></textarea>
 	                                            </md-input-container>   
 	                                            
 	                                        </span>
@@ -790,7 +790,7 @@
 	                    <!--FINprobleme -->
                     </md-tab> 
 
-                    <md-tab label="Fiche de présence" ng-click="vm.get_all_fiche_supervision_direction_regional_fiche_presence()">
+                    <md-tab label="Fiche de présence" ng-disabled="!vm.selected_fsdr.id"  ng-click="vm.get_all_fiche_supervision_direction_regional_fiche_presence()">
                      <!--FICHE DE PRESENCE -->
 		                    <div flex="100" class="text-center">
 		                      
@@ -861,7 +861,7 @@
 	                                        <span ng-if="cm.$edit">
 	                                            <md-input-container style="width:100%;display: flex !important;">
 	                                              <label>Nom et prénom</label>
-	                                              <textarea type="text" name="nom_prenom"  ng-model="cm.nom_prenom"/>
+	                                              <textarea type="text" name="nom_prenom"  ng-model="cm.nom_prenom"></textarea>
 	                                            </md-input-container>   
 	                                            
 	                                        </span>
@@ -875,7 +875,7 @@
 	                                        <span ng-if="cm.$edit">
 	                                            <md-input-container style="width:100%;display: flex !important;">
 	                                              <label>Adresse</label>
-	                                              <textarea type="text" name="adresse"  ng-model="cm.adresse"/>
+	                                              <textarea type="text" name="adresse"  ng-model="cm.adresse"></textarea>
 	                                            </md-input-container>   
 	                                            
 	                                        </span>
@@ -893,7 +893,7 @@
 	                    <!--FICHE DE PRESENCE -->
                     </md-tab> 
 
-                    <md-tab label="POINTS A CONTROLER" ng-click="vm.get_all_fiche_supervision_direction_regional_pts_a_controler()">
+                    <md-tab label="POINTS A CONTROLER" ng-disabled="!vm.selected_fsdr.id" ng-click="vm.get_all_fiche_supervision_direction_regional_pts_a_controler()">
                      <!--PTS A CONTROLER -->
                         <div flex="100" class="text-center">
                           
@@ -964,7 +964,7 @@
                                           <span ng-if="cm.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
                                                 <label>Points à controler</label>
-                                                <textarea type="text" name="pts_a_controler"  ng-model="cm.pts_a_controler"/>
+                                                <textarea type="text" name="pts_a_controler"  ng-model="cm.pts_a_controler"></textarea>
                                               </md-input-container>   
                                               
                                           </span>
