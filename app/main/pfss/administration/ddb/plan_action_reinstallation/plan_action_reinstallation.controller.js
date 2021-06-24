@@ -4840,14 +4840,14 @@ function insert_in_baseFiche_env(entite,suppression)
          }
        } else {
          entite.id=data.response;	
-         NouvelItemFiche_env=false;
+         NouvelItemFiche_env=false;         
+          entite.$selected=false;
+          entite.$edit=false;
         //entite.ile       = il[0];
         //entite.id_region    = reg[0];                 
         //entite.id_commune   = co[0];
         vm.selectedItemFiche_env ={}; 
        }
-       entite.$selected=false;
-       entite.$edit=false;
      }).error(function (data) {
        vm.showAlert('Erreur lors de la sauvegarde','Veuillez corriger le(s) erreur(s) !');
      });  
@@ -5232,7 +5232,7 @@ function insert_in_basePlan_gestion_env(entite,suppression)
           item.mesures         = vm.selectedItemPlan_gestion_env.mesures;
           item.responsable  = vm.selectedItemPlan_gestion_env.responsable;      
           item.calendrier_execution    = vm.selectedItemPlan_gestion_env.calendrier_execution;      
-          item.cout_estimatif  = vm.selectedItemPlan_gestion_env.cout_estimatif;
+          item.cout_estimatif  = parseFloat(vm.selectedItemPlan_gestion_env.cout_estimatif);
                  
          vm.selectedItemPlan_gestion_env.$edit = true;	
        };
