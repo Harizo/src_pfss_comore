@@ -11,7 +11,7 @@
     {
         // State
         $stateProvider.state('app.pfss_suivi_arse_plan_relevementfiche_plan_relevement', {
-            url      : '/suivi-activite/arse/plan-relevement/activite-formation-choisie',
+            url: '/suivi-activite/arse/plan-relevement/fiche-plan-relevement',
             views    : {
                 'content@app': {
                     templateUrl: 'app/main/pfss/suiviactivite/arse/plan_relevement/fiche_plan_relevement/fiche_plan_relevement.html',

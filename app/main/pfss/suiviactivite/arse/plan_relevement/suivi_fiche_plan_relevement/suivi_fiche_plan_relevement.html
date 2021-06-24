@@ -1,0 +1,1105 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="space-between">
+    <div layout="column" layout-align="space-between">
+      <div class="breadcrumb" layout="row" layout-align="start center">
+        <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+        <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+        <span class="parent">Suivi fiche plan de relèvement</span>
+
+      </div>
+    </div>
+  </div>
+  <div class="content" layout="column">
+    <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+      <md-progress-circular ng-if="vm.affiche_load" class=" md-primary" aria-label="Rating" md-mode="indeterminate"
+        md-diameter="30"></md-progress-circular>
+
+      <span style="color: #5c935c">Chargement,veuillez patienter s'il vous plait ...</span>
+    </div>
+
+    <div class="form-wrapper">
+      <div style="clear:both;"></div>
+      <md-tabs md-dynamic-height>
+        <md-tab label="Présentation du bénéficiaire">
+          <md-button type="submit" ng-show="vm.affichage_masque" class="md-raised custum_button_new" aria-label="Nouveau"
+            ng-click="vm.open_masque_filtre()" style="width:10%;">
+            <md-icon md-font-icon="icon-file-find" class="s16 center" style="color: white;"></md-icon>
+            Rechercher
+          </md-button>
+          <md-button type="submit"  ng-show="!vm.affichage_masque"  class="md-raised custum_button_new" aria-label="Nouveau"
+            ng-click="vm.ajout_identification()" style="width:10%;">
+            <md-icon md-font-icon="icon-plus" class="s16 center" style="color: white;"></md-icon>
+            Nouveau
+          </md-button>
+          <md-button type="submit" class="md-raised custum_button" ng-if="vm.selected_identification.id"
+            aria-label="Modifier" ng-click="vm.modif_identification()" style="width:10%;">
+            <md-icon md-font-icon="icon-table-edit" class="s16" style="color: white;"></md-icon>
+            Modifier
+          </md-button>
+          <md-button type="submit" class="md-raised custum_button_del" ng-if="vm.selected_identification.id"
+            aria-label="Supprimer" ng-click="vm.supprimer_identification()" style="width:10%;">
+            <md-icon md-font-icon="icon-close-circle-outline" class="s16" style="color: white;"></md-icon>
+            Supprimer
+          </md-button>
+
+
+          <form ng-show="!vm.affichage_masque" name="form_filtreidentification" class="md-inline-form" novalidate>
+
+
+
+            <div layout="column" layout-gt-xs="row" flex>
+
+
+
+
+              <md-input-container flex="100" flex-gt-xs="20">
+                <label>Île</label>
+                <md-select ng-model="vm.identification.id_ile" name="id_ile" ng-change="vm.get_region_by_ile()"
+                  required>
+
+                  <md-option ng-repeat="sp in vm.all_ile" value="{{sp.id}}">{{sp.Ile}}</md-option>
+
+                </md-select>
+                <div ng-messages="form_filtreidentification.id_ile.$error" role="alert">
+                  <div ng-message="required">
+                    <span>Île Obligatoire.</span>
+                  </div>
+                </div>
+
+              </md-input-container>
+
+              <md-input-container flex="100" flex-gt-xs="20">
+                <label>Préfécture</label>
+                <md-select ng-model="vm.identification.id_region" name="id_region"
+                  ng-disabled="!vm.identification.id_ile" required>
+
+                  <md-option ng-repeat="sp in vm.all_region" value="{{sp.id}}">{{sp.Region}}</md-option>
+
+                </md-select>
+                <div ng-messages="form_filtreidentification.id_region.$error" role="alert">
+                  <div ng-message="required">
+                    <span>Préfécture Obligatoire.</span>
+                  </div>
+                </div>
+
+              </md-input-container>
+
+              <md-input-container flex="100" flex-gt-xs="20">
+                <label>Commune</label>
+                <md-select ng-model="vm.identification.id_commune" name="id_commune"
+                  ng-disabled="!vm.identification.id_region" required>
+
+                  <md-option ng-repeat="sp in vm.all_commune" value="{{sp.id}}">{{sp.Commune}}</md-option>
+
+                </md-select>
+                <div ng-messages="form_filtreidentification.id_commune.$error" role="alert">
+                  <div ng-message="required">
+                    <span>Commune Obligatoire.</span>
+                  </div>
+                </div>
+
+              </md-input-container>
+
+              <md-input-container flex="100" flex-gt-xs="20">
+                <label>Village</label>
+                <md-select ng-model="vm.identification.id_village" name="id_village"
+                  ng-disabled="!vm.identification.id_commune" required>
+
+                  <md-option ng-repeat="sp in vm.all_village" value="{{sp.id}}">{{sp.Village}}</md-option>
+
+                </md-select>
+                <div ng-messages="form_filtreidentification.id_village.$error" role="alert">
+                  <div ng-message="required">
+                    <span>Village Obligatoire.</span>
+                  </div>
+                </div>
+
+              </md-input-container>
+
+              <md-input-container flex="100" flex-gt-xs="10">
+                <input type="text" name="zip" ng-model="vm.identification.zip" placeholder="ZIP" readonly
+                  ng-init="vm.identification.zip=''">
+
+              </md-input-container>
+
+              <md-input-container flex="100" flex-gt-xs="10">
+                <input type="text" name="vague" ng-model="vm.identification.vague" placeholder="Vague" readonly
+                  ng-init="vm.identification.vague=''">
+
+              </md-input-container>
+
+            </div>
+
+
+            <div>
+              <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                ng-disabled="form_filtreidentification.$invalid||vm.affiche_load "
+                ng-click="vm.get_identification(vm.identification,0)">
+                Afficher les données
+              </md-button>
+
+              <!-- <md-button type="submit" class="md-raised md-primary" aria-label="Fermer"
+                ng-click="vm.fermer_masque_filtre()">
+                Fermer
+              </md-button> -->
+
+            </div>
+          </form>
+
+          <form ng-show="vm.affichage_masque" name="form_identification" class="md-inline-form" novalidate>
+            <div layout="column" layout-gt-xs="row" flex>
+
+
+
+
+              <md-input-container flex="100" flex-gt-xs="20">
+                <label>Île</label>
+                <md-select ng-model="vm.identification.id_ile" name="id_ile" ng-change="vm.get_region_by_ile()"
+                  required>
+
+                  <md-option ng-repeat="sp in vm.all_ile" value="{{sp.id}}">{{sp.Ile}}</md-option>
+
+                </md-select>
+                <div ng-messages="form_filtreidentification.id_ile.$error" role="alert">
+                  <div ng-message="required">
+                    <span>Île Obligatoire.</span>
+                  </div>
+                </div>
+
+              </md-input-container>
+
+              <md-input-container flex="100" flex-gt-xs="20">
+                <label>Préfécture</label>
+                <md-select ng-model="vm.identification.id_region" name="id_region"
+                  ng-disabled="!vm.identification.id_ile" required>
+
+                  <md-option ng-repeat="sp in vm.all_region" value="{{sp.id}}">{{sp.Region}}</md-option>
+
+                </md-select>
+                <div ng-messages="form_filtreidentification.id_region.$error" role="alert">
+                  <div ng-message="required">
+                    <span>Préfécture Obligatoire.</span>
+                  </div>
+                </div>
+
+              </md-input-container>
+
+              <md-input-container flex="100" flex-gt-xs="20">
+                <label>Commune</label>
+                <md-select ng-model="vm.identification.id_commune" name="id_commune"
+                  ng-disabled="!vm.identification.id_region" required>
+
+                  <md-option ng-repeat="sp in vm.all_commune" value="{{sp.id}}">{{sp.Commune}}</md-option>
+
+                </md-select>
+                <div ng-messages="form_filtreidentification.id_commune.$error" role="alert">
+                  <div ng-message="required">
+                    <span>Commune Obligatoire.</span>
+                  </div>
+                </div>
+
+              </md-input-container>
+
+              <md-input-container flex="100" flex-gt-xs="20">
+                <label>Village</label>
+                <md-select ng-model="vm.identification.id_village" name="id_village"
+                  ng-disabled="!vm.identification.id_commune" required>
+
+                  <md-option ng-repeat="sp in vm.all_village" value="{{sp.id}}">{{sp.Village}}</md-option>
+
+                </md-select>
+                <div ng-messages="form_filtreidentification.id_village.$error" role="alert">
+                  <div ng-message="required">
+                    <span>Village Obligatoire.</span>
+                  </div>
+                </div>
+
+              </md-input-container>
+
+              <md-input-container flex="100" flex-gt-xs="10">
+                <input type="text" name="zip" ng-model="vm.identification.zip" placeholder="ZIP" readonly
+                  ng-init="vm.identification.zip=''">
+
+              </md-input-container>
+
+              <md-input-container flex="100" flex-gt-xs="10">
+                <input type="text" name="vague" ng-model="vm.identification.vague" placeholder="Vague" readonly
+                  ng-init="vm.identification.vague=''">
+
+              </md-input-container>
+
+            </div>
+
+
+            <div layout="column" layout-gt-xs="row" flex>
+
+
+
+              <md-input-container flex="100" flex-gt-xs="20">
+                <label>Ménage</label>
+                <md-select ng-model="vm.identification.id_menage" name="id_menage" required>
+
+                  <md-option ng-repeat="sp in vm.all_menage" value="{{sp.id}}">({{sp.identifiant_menage}})
+                    {{sp.nomchefmenage}}</md-option>
+
+                </md-select>
+                <div ng-messages="form_identification.id_menage.$error" role="alert">
+                  <div ng-message="required">
+                    <span>Ménage Obligatoire.</span>
+                  </div>
+                </div>
+              </md-input-container>
+
+
+              <md-input-container flex="100" flex-gt-xs="20">
+                <label>AGEX</label>
+                <md-select ng-model="vm.identification.id_agex" name="id_agex" required>
+
+                  <md-option ng-repeat="sp in vm.all_agex" value="{{sp.id}}"> {{sp.Nom}}</md-option>
+
+                </md-select>
+                <div ng-messages="form_identification.id_agex.$error" role="alert">
+                  <div ng-message="required">
+                    <span>AGEX Obligatoire.</span>
+                  </div>
+                </div>
+              </md-input-container>
+
+
+            </div>
+
+
+
+            <div>
+              <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                ng-disabled="form_identification.$invalid||vm.affiche_load "
+                ng-click="vm.save_in_bdd(vm.identification,0)">
+                Enregistrer
+              </md-button>
+              <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annuler()">
+                Annuler
+              </md-button>
+            </div>
+          </form>
+
+          <table class="dataTable row-border hover cell-border text-center" datatable="ng" dt-options="vm.dtOptions_new"
+            ms-responsive-table>
+            <thead>
+              <tr>
+                <th class="secondary-text" ng-repeat="re in ::vm.entete_identification">
+                  <div class="table-header">
+                    <span class="column-title text-center">{{re.titre}}</span>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="cua in vm.all_identification" ng-class="{selected: cua.$selected}"
+                ng-click="vm.selection(cua)">
+
+
+                <td>
+                  <span class="text-truncate">- <b>Identifiant:</b> {{cua.identifiant_menage}} </span> <br>
+                  <span class="text-truncate">- <b>Nom chef ménage:</b> {{cua.nom_chef_menage}} </span> <br>
+                  <span class="text-truncate">- <b>Récepteur principal:</b> {{cua.NomTravailleur}} </span> <br>
+                  <span class="text-truncate">- <b>Récepteur suppléant:</b> {{cua.NomTravailleurSuppliant}} </span> <br>
+
+                </td>
+
+                <td>
+                  <span class="text-truncate">- <b>Dénomination:</b> {{cua.nom_agex}} </span> <br>
+
+                </td>
+
+
+              </tr>
+            </tbody>
+          </table>
+        </md-tab>
+        <md-tab label="Présentation des intervenants et participants" ng-click="vm.get_all_fiche_suivi_plan_relevement_intervenants()">
+
+            <!-- INTERVENANTS -->
+                <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                    <div layout="row" layout-align="start center">
+                
+
+                        <div class="border-right">
+                          <span class="md-subhead">Présentation des intervenants et participants</span>
+                        </div>
+                  
+                      <div class="border-right" ng-if="!vm.selected_fiche_suivi_plan_relevement_intervenants.id&&!vm.nouvelle_fiche_suivi_plan_relevement_intervenants">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_fiche_suivi_plan_relevement_intervenants()">
+                          <md-icon md-font-icon="icon-plus-box"></md-icon>
+                          <md-tooltip><span>Ajouter</span></md-tooltip>
+                        </md-button>
+                      </div> 
+                      <div class="border-right" ng-if="vm.selected_fiche_suivi_plan_relevement_intervenants.id&&!vm.selected_fiche_suivi_plan_relevement_intervenants.$edit">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_fiche_suivi_plan_relevement_intervenants()">
+                          <md-icon md-font-icon="icon-table-edit"></md-icon>
+                          <md-tooltip><span>Modifier</span></md-tooltip>
+                        </md-button>
+                      </div>    
+                      <div class="border-right" ng-if="vm.selected_fiche_suivi_plan_relevement_intervenants.id&&!vm.selected_fiche_suivi_plan_relevement_intervenants.$edit">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_fiche_suivi_plan_relevement_intervenants()">
+                          <md-icon md-font-icon="icon-delete"></md-icon>
+                          <md-tooltip><span>Supprimer</span></md-tooltip>
+                        </md-button>
+                      </div>  
+
+                      <div class="border-right" ng-if="vm.selected_fiche_suivi_plan_relevement_intervenants.id">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_fiche_suivi_plan_relevement_intervenants()">
+                          <md-icon md-font-icon="icon-cancel"></md-icon>
+                          <md-tooltip><span>Annuler</span></md-tooltip>
+                        </md-button>
+                      </div>   
+
+                      <div ng-if="vm.selected_fiche_suivi_plan_relevement_intervenants.$edit">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_fiche_suivi_plan_relevement_intervenants(0)">
+                          <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                          <md-tooltip><span>Enregistrer</span></md-tooltip>
+                        </md-button>
+                      </div>                
+                    </div>
+                </header>
+                
+            
+                <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                    <thead>
+                        <tr>
+                            <th class="secondary-text" ng-repeat="c in ::vm.entete_fiche_suivi_plan_relevement_intervenants">
+                                <div class="table-header">
+                                    <span class="column-title text-center">{{c.titre}}</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="cm in vm.all_fiche_suivi_plan_relevement_intervenants"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_fiche_suivi_plan_relevement_intervenants(cm)">                                       
+                            
+                            
+                         
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>Bureau régional</label>
+                                      <input type="text" name="bureau_regional"  ng-model="cm.bureau_regional"/>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.bureau_regional}}
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>CPS</label>
+                                      <input type="text" name="cps"  ng-model="cm.cps"/>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.cps}}
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>ADC</label>
+                                      <input type="text" name="adc"  ng-model="cm.adc"/>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.adc}}
+                                </span>
+                            </td>
+
+
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>ML/PL</label>
+                                      
+                                      <md-select name="id_mere_leader"  ng-model="cm.id_mere_leader" >
+                                        <md-option ng-repeat="mlpl in vm.all_ml_pl" value="{{mlpl.id}}">{{mlpl.nom_prenom_ml_pl}}</md-option>
+                              
+                                      
+                                      </md-select>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.nom_prenom_ml_pl}}
+                                </span>
+                            </td>
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>Autres</label>
+                                      <input type="text" name="autres"  ng-model="cm.autres"/>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.autres}}
+                                </span>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            <!--FIN INTERVENANTS -->
+        </md-tab>
+        <md-tab label="Présentation du plan de relèvement " ng-click="vm.get_all_fiche_suivi_plan_relevement_presentation()">
+            <!-- plan relevement -->
+                <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                    <div layout="row" layout-align="start center">
+                
+
+                        <div class="border-right">
+                          <span class="md-subhead">Présentation du plan de relèvement </span>
+                        </div>
+                  
+                      <div class="border-right" ng-if="!vm.selected_fiche_suivi_plan_relevement_presentation.id&&!vm.nouvelle_fiche_suivi_plan_relevement_presentation">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_fiche_suivi_plan_relevement_presentation()">
+                          <md-icon md-font-icon="icon-plus-box"></md-icon>
+                          <md-tooltip><span>Ajouter</span></md-tooltip>
+                        </md-button>
+                      </div> 
+                      <div class="border-right" ng-if="vm.selected_fiche_suivi_plan_relevement_presentation.id&&!vm.selected_fiche_suivi_plan_relevement_presentation.$edit">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_fiche_suivi_plan_relevement_presentation()">
+                          <md-icon md-font-icon="icon-table-edit"></md-icon>
+                          <md-tooltip><span>Modifier</span></md-tooltip>
+                        </md-button>
+                      </div>    
+                      <div class="border-right" ng-if="vm.selected_fiche_suivi_plan_relevement_presentation.id&&!vm.selected_fiche_suivi_plan_relevement_presentation.$edit">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_fiche_suivi_plan_relevement_presentation()">
+                          <md-icon md-font-icon="icon-delete"></md-icon>
+                          <md-tooltip><span>Supprimer</span></md-tooltip>
+                        </md-button>
+                      </div>  
+
+                      <div class="border-right" ng-if="vm.selected_fiche_suivi_plan_relevement_presentation.id">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_fiche_suivi_plan_relevement_presentation()">
+                          <md-icon md-font-icon="icon-cancel"></md-icon>
+                          <md-tooltip><span>Annuler</span></md-tooltip>
+                        </md-button>
+                      </div>   
+
+                      <div ng-if="vm.selected_fiche_suivi_plan_relevement_presentation.$edit">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_fiche_suivi_plan_relevement_presentation(0)">
+                          <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                          <md-tooltip><span>Enregistrer</span></md-tooltip>
+                        </md-button>
+                      </div>                
+                    </div>
+                </header>
+                
+            
+                <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                    <thead>
+                        <tr>
+                            <th class="secondary-text" ng-repeat="c in ::vm.entete_fiche_suivi_plan_relevement_presentation">
+                                <div class="table-header">
+                                    <span class="column-title text-center">{{c.titre}}</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="cm in vm.all_fiche_suivi_plan_relevement_presentation"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_fiche_suivi_plan_relevement_presentation(cm)">                                       
+                            
+                            
+                         
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <div style="margin-top: 14px !important; font-size: 13px !important;">
+                                        <label>Date suivi:</label>
+                                        <md-datepicker  ng-model="cm.date_suivi" md-placeholder="Date" md-max-date="vm.date_now" required>                       
+                                        </md-datepicker>
+                                    </div>  
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.date_suivi | date:'dd/MM/yyyy'}}
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>Activité</label>
+                                      <input type="text" name="activite"  ng-model="cm.activite"/>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.activite}}
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <div style="margin-top: 14px !important; font-size: 13px !important;">
+                                        <label>Date démarage activité:</label>
+                                        <md-datepicker  ng-model="cm.date_demarage_activite" md-placeholder="Date" md-max-date="vm.date_now" required>                       
+                                        </md-datepicker>
+                                    </div>  
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.date_demarage_activite | date:'dd/MM/yyyy'}}
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>Objectif</label>
+                                      <input type="text" name="objectif"  ng-model="cm.objectif"/>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.objectif}}
+                                </span>
+                            </td>
+
+
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>Stade réalisation activité</label>
+                                      <input type="text" name="stade_realisation_activite"  ng-model="cm.stade_realisation_activite"/>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.stade_realisation_activite}}
+                                </span>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            <!--FIN plan relevement -->
+        </md-tab>
+        <md-tab label="Présentation des matériels et intrants achetés" ng-click="vm.get_all_fiche_suivi_plan_relevement_materiel()">
+            <!-- fiche_suivi_plan_relevement_materiel -->
+                <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                    <div layout="row" layout-align="start center">
+                
+
+                        <div class="border-right">
+                          <span class="md-subhead">Présentation des matériels et intrants achetés</span>
+                        </div>
+                  
+                      <div class="border-right" ng-if="!vm.selected_fiche_suivi_plan_relevement_materiel.id&&!vm.nouvelle_fiche_suivi_plan_relevement_materiel">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_fiche_suivi_plan_relevement_materiel()">
+                          <md-icon md-font-icon="icon-plus-box"></md-icon>
+                          <md-tooltip><span>Ajouter</span></md-tooltip>
+                        </md-button>
+                      </div> 
+                      <div class="border-right" ng-if="vm.selected_fiche_suivi_plan_relevement_materiel.id&&!vm.selected_fiche_suivi_plan_relevement_materiel.$edit">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_fiche_suivi_plan_relevement_materiel()">
+                          <md-icon md-font-icon="icon-table-edit"></md-icon>
+                          <md-tooltip><span>Modifier</span></md-tooltip>
+                        </md-button>
+                      </div>    
+                      <div class="border-right" ng-if="vm.selected_fiche_suivi_plan_relevement_materiel.id&&!vm.selected_fiche_suivi_plan_relevement_materiel.$edit">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_fiche_suivi_plan_relevement_materiel()">
+                          <md-icon md-font-icon="icon-delete"></md-icon>
+                          <md-tooltip><span>Supprimer</span></md-tooltip>
+                        </md-button>
+                      </div>  
+
+                      <div class="border-right" ng-if="vm.selected_fiche_suivi_plan_relevement_materiel.id">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_fiche_suivi_plan_relevement_materiel()">
+                          <md-icon md-font-icon="icon-cancel"></md-icon>
+                          <md-tooltip><span>Annuler</span></md-tooltip>
+                        </md-button>
+                      </div>   
+
+                      <div ng-if="vm.selected_fiche_suivi_plan_relevement_materiel.$edit">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_fiche_suivi_plan_relevement_materiel(0)">
+                          <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                          <md-tooltip><span>Enregistrer</span></md-tooltip>
+                        </md-button>
+                      </div>                
+                    </div>
+                </header>
+                
+            
+                <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                    <thead>
+                        <tr>
+                            <th class="secondary-text" ng-repeat="c in ::vm.entete_fiche_suivi_plan_relevement_materiel">
+                                <div class="table-header">
+                                    <span class="column-title text-center">{{c.titre}}</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="cm in vm.all_fiche_suivi_plan_relevement_materiel"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_fiche_suivi_plan_relevement_materiel(cm)">                                       
+                            
+                            
+                         
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>Désignation</label>
+                                      <input type="text" name="designation"  ng-model="cm.designation"/>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.designation}}
+                                </span>
+                            </td>
+
+
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>Quantité</label>
+                                      <input type="number" name="quantite"  ng-model="cm.quantite"/>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{vm.formatMillier(cm.quantite)}}
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>Prix unitaire</label>
+                                      <input type="text" name="prix_unitaire"  ng-model="cm.prix_unitaire"/>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{vm.formatMillier(cm.prix_unitaire)}} KMF
+                                </span>
+                            </td>
+
+                          
+                 
+
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>Observation</label>
+                                      <input type="text" name="observation"  ng-model="cm.observation"/>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.observation}}
+                                </span>
+                            </td>
+
+                           
+                          
+
+                        </tr>
+                    </tbody>
+                </table>
+            <!--FIN fiche_suivi_plan_relevement_materiel -->
+        </md-tab>
+        <md-tab label="Problèmes rencontrés et solutions" ng-click="vm.get_all_fiche_suivi_prelevement_probleme()">
+            <!-- fiche_suivi_prelevement_probleme -->
+                <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                    <div layout="row" layout-align="start center">
+                
+
+                        <div class="border-right">
+                          <span class="md-subhead">Problèmes rencontrés et solutions </span>
+                        </div>
+                  
+                      <div class="border-right" ng-if="!vm.selected_fiche_suivi_prelevement_probleme.id&&!vm.nouvelle_fiche_suivi_prelevement_probleme">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_fiche_suivi_prelevement_probleme()">
+                          <md-icon md-font-icon="icon-plus-box"></md-icon>
+                          <md-tooltip><span>Ajouter</span></md-tooltip>
+                        </md-button>
+                      </div> 
+                      <div class="border-right" ng-if="vm.selected_fiche_suivi_prelevement_probleme.id&&!vm.selected_fiche_suivi_prelevement_probleme.$edit">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_fiche_suivi_prelevement_probleme()">
+                          <md-icon md-font-icon="icon-table-edit"></md-icon>
+                          <md-tooltip><span>Modifier</span></md-tooltip>
+                        </md-button>
+                      </div>    
+                      <div class="border-right" ng-if="vm.selected_fiche_suivi_prelevement_probleme.id&&!vm.selected_fiche_suivi_prelevement_probleme.$edit">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_fiche_suivi_prelevement_probleme()">
+                          <md-icon md-font-icon="icon-delete"></md-icon>
+                          <md-tooltip><span>Supprimer</span></md-tooltip>
+                        </md-button>
+                      </div>  
+
+                      <div class="border-right" ng-if="vm.selected_fiche_suivi_prelevement_probleme.id">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_fiche_suivi_prelevement_probleme()">
+                          <md-icon md-font-icon="icon-cancel"></md-icon>
+                          <md-tooltip><span>Annuler</span></md-tooltip>
+                        </md-button>
+                      </div>   
+
+                      <div ng-if="vm.selected_fiche_suivi_prelevement_probleme.$edit">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_fiche_suivi_prelevement_probleme(0)">
+                          <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                          <md-tooltip><span>Enregistrer</span></md-tooltip>
+                        </md-button>
+                      </div>                
+                    </div>
+                </header>
+                
+            
+                <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                    <thead>
+                        <tr>
+                            <th class="secondary-text" ng-repeat="c in ::vm.entete_fiche_suivi_prelevement_probleme">
+                                <div class="table-header">
+                                    <span class="column-title text-center">{{c.titre}}</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="cm in vm.all_fiche_suivi_prelevement_probleme"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_fiche_suivi_prelevement_probleme(cm)">                                       
+                            
+                            
+                         
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>Problèmes</label>
+                                      <textarea name="probleme"  ng-model="cm.probleme"/>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.probleme}}
+                                </span>
+                            </td>
+
+
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>Solution apportée</label>
+                                      <textarea name="solution"  ng-model="cm.solution"/>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.solution}}
+                                </span>
+                            </td>
+                          
+                 
+
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>Observation</label>
+                                      <textarea name="observation"  ng-model="cm.observation"/>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.observation}}
+                                </span>
+                            </td>
+
+                           
+                          
+
+                        </tr>
+                    </tbody>
+                </table>
+            <!--FIN fiche_suivi_prelevement_probleme -->
+        </md-tab>
+        <md-tab label="Payement déjà prévu" ng-click="vm.get_all_fiche_suivi_prelevement_payement()">
+            <!-- fiche_suivi_prelevement_payement -->
+                <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                    <div layout="row" layout-align="start center">
+                
+
+                        <div class="border-right">
+                          <span class="md-subhead">Problèmes rencontrés et solutions </span>
+                        </div>
+                  
+                      <div class="border-right" ng-if="!vm.selected_fiche_suivi_prelevement_payement.id&&!vm.nouvelle_fiche_suivi_prelevement_payement">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_fiche_suivi_prelevement_payement()">
+                          <md-icon md-font-icon="icon-plus-box"></md-icon>
+                          <md-tooltip><span>Ajouter</span></md-tooltip>
+                        </md-button>
+                      </div> 
+                      <div class="border-right" ng-if="vm.selected_fiche_suivi_prelevement_payement.id&&!vm.selected_fiche_suivi_prelevement_payement.$edit">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_fiche_suivi_prelevement_payement()">
+                          <md-icon md-font-icon="icon-table-edit"></md-icon>
+                          <md-tooltip><span>Modifier</span></md-tooltip>
+                        </md-button>
+                      </div>    
+                      <div class="border-right" ng-if="vm.selected_fiche_suivi_prelevement_payement.id&&!vm.selected_fiche_suivi_prelevement_payement.$edit">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_fiche_suivi_prelevement_payement()">
+                          <md-icon md-font-icon="icon-delete"></md-icon>
+                          <md-tooltip><span>Supprimer</span></md-tooltip>
+                        </md-button>
+                      </div>  
+
+                      <div class="border-right" ng-if="vm.selected_fiche_suivi_prelevement_payement.id">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_fiche_suivi_prelevement_payement()">
+                          <md-icon md-font-icon="icon-cancel"></md-icon>
+                          <md-tooltip><span>Annuler</span></md-tooltip>
+                        </md-button>
+                      </div>   
+
+                      <div ng-if="vm.selected_fiche_suivi_prelevement_payement.$edit">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_fiche_suivi_prelevement_payement(0)">
+                          <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                          <md-tooltip><span>Enregistrer</span></md-tooltip>
+                        </md-button>
+                      </div>                
+                    </div>
+                </header>
+                
+            
+                <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                    <thead>
+                        <tr>
+                            <th class="secondary-text" ng-repeat="c in ::vm.entete_fiche_suivi_prelevement_payement">
+                                <div class="table-header">
+                                    <span class="column-title text-center">{{c.titre}}</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="cm in vm.all_fiche_suivi_prelevement_payement"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_fiche_suivi_prelevement_payement(cm)">                                       
+                            
+                            
+                         
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>N° tranche</label>
+                                      <md-select name="numero_tranche"  ng-model="cm.numero_tranche" >
+                                        <md-option value="1e tranche (10%)">1e tranche (10%)</md-option>
+                                        <md-option value="2e tranche (70%)">2e tranche (70%)</md-option>
+                                        <md-option value="3e tranche (20%)">3e tranche (20%)</md-option>
+                              
+                                      
+                                      </md-select>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.numero_tranche}}
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>Etat de paiement</label>
+                                      <md-select name="etat_paiement"  ng-model="cm.etat_paiement" >
+                                        <md-option value="Oui">Oui</md-option>
+                                        <md-option value="Non">Non</md-option>
+                              
+                                      
+                                      </md-select>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.etat_paiement}}
+                                </span>
+                            </td>
+
+
+                         
+                          
+                 
+
+                            <td>
+
+                            
+
+                                <span ng-if="cm.$edit">
+                                    <div style="margin-top: 14px !important; font-size: 13px !important;">
+                                        <label>Date de paiement:</label>
+                                        <md-datepicker ng-model="cm.date_paiement" md-placeholder="Date" md-max-date="vm.date_now" required>                       
+                                        </md-datepicker>
+                                    </div>  
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{vm.convert_to_date_html(cm.date_paiement)}}
+                                </span>
+                            </td>
+
+                           
+                          
+
+                        </tr>
+                    </tbody>
+                </table>
+            <!--FIN fiche_suivi_prelevement_payement -->
+        </md-tab>
+        <md-tab label="Obligation de respecter les engagements">
+            <!-- fiche_suivi_prelevement_obligation -->
+                <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                    <div layout="row" layout-align="start center">
+                
+
+                        <div class="border-right">
+                          <span class="md-subhead">Problèmes rencontrés et solutions </span>
+                        </div>
+                  
+                      <div class="border-right" ng-if="!vm.selected_fiche_suivi_prelevement_obligation.id&&!vm.nouvelle_fiche_suivi_prelevement_obligation">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_fiche_suivi_prelevement_obligation()">
+                          <md-icon md-font-icon="icon-plus-box"></md-icon>
+                          <md-tooltip><span>Ajouter</span></md-tooltip>
+                        </md-button>
+                      </div> 
+                      <div class="border-right" ng-if="vm.selected_fiche_suivi_prelevement_obligation.id&&!vm.selected_fiche_suivi_prelevement_obligation.$edit">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_fiche_suivi_prelevement_obligation()">
+                          <md-icon md-font-icon="icon-table-edit"></md-icon>
+                          <md-tooltip><span>Modifier</span></md-tooltip>
+                        </md-button>
+                      </div>    
+                      <div class="border-right" ng-if="vm.selected_fiche_suivi_prelevement_obligation.id&&!vm.selected_fiche_suivi_prelevement_obligation.$edit">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_fiche_suivi_prelevement_obligation()">
+                          <md-icon md-font-icon="icon-delete"></md-icon>
+                          <md-tooltip><span>Supprimer</span></md-tooltip>
+                        </md-button>
+                      </div>  
+
+                      <div class="border-right" ng-if="vm.selected_fiche_suivi_prelevement_obligation.id">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_fiche_suivi_prelevement_obligation()">
+                          <md-icon md-font-icon="icon-cancel"></md-icon>
+                          <md-tooltip><span>Annuler</span></md-tooltip>
+                        </md-button>
+                      </div>   
+
+                      <div ng-if="vm.selected_fiche_suivi_prelevement_obligation.$edit">
+                        <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_fiche_suivi_prelevement_obligation(0)">
+                          <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                          <md-tooltip><span>Enregistrer</span></md-tooltip>
+                        </md-button>
+                      </div>                
+                    </div>
+                </header>
+                
+            
+                <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                    <thead>
+                        <tr>
+                            <th class="secondary-text" ng-repeat="c in ::vm.entete_fiche_suivi_prelevement_obligation">
+                                <div class="table-header">
+                                    <span class="column-title text-center">{{c.titre}}</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="cm in vm.all_fiche_suivi_prelevement_obligation"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_fiche_suivi_prelevement_obligation(cm)">                                       
+                            
+
+                  
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>Désignation</label>
+                                      <md-select name="designation"  ng-model="cm.designation" >
+                                        <md-option value="Respect de plan de relèvement">Respect de plan de relèvement</md-option>
+                                        <md-option value="Contrat d’engagement moral">Contrat d’engagement moral</md-option>
+                                        <md-option value="Constat des matériels, outillages et des matériaux">Constat des matériels, outillages et des matériaux</md-option>
+                                        <md-option value="Respect du programme de formation et des MACC">Respect du programme de formation et des MACC</md-option>
+                                        <md-option value="Respect de la  fiche de suivi et des recommandations">Respect de la  fiche de suivi et des recommandations</md-option>
+                                        <md-option value="Consignes de sécurité et PGES ">Consignes de sécurité et PGES </md-option>
+                              
+                                      
+                                      </md-select>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.designation}}
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>Respect obligation</label>
+                                      <md-select name="respect_obligation"  ng-model="cm.respect_obligation" >
+                                        <md-option value="Oui">Oui</md-option>
+                                        <md-option value="Non">Non</md-option>
+                              
+                                      
+                                      </md-select>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.respect_obligation}}
+                                </span>
+                            </td>
+                          
+                 
+
+                            <td>
+
+                                <span ng-if="cm.$edit">
+                                    <md-input-container style="width:100%;display: flex !important;">
+                                      <label>Observation</label>
+                                      <textarea name="observation"  ng-model="cm.observation"/>
+                                    </md-input-container>   
+                                    
+                                </span>
+                                <span ng-if="!cm.$edit">
+                                    {{cm.observation}}
+                                </span>
+                            </td>
+
+                           
+                          
+
+                        </tr>
+                    </tbody>
+                </table>
+            <!--FIN fiche_suivi_prelevement_obligation -->
+        </md-tab>
+
+      </md-tabs>
+    </div>
+  </div>
+</div>

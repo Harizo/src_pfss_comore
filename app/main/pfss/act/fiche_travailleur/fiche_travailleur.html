@@ -1,0 +1,121 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">ACT</span>
+                <span class="parent"> </span>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent" href="javascript:;">Fiche travailleur</span>
+            </div>
+
+            <div class="title">Fiche travailleur</div>
+        </div>
+    </div>
+    <div class="content" layout="column">
+        <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+            <md-progress-circular ng-if="vm.affiche_load" class=" md-primary" aria-label="Rating" md-mode="indeterminate"
+                md-diameter="30"></md-progress-circular>
+        
+            <span style="color: #5c935c">Chargement,veuillez patienter s'il vous plait ...</span>
+        </div>
+        <div class="border-right text-center">
+            <span class="md-subhead">LISTE DES TRAVAILLEURS PRINCIPAUX ET SUPLEANTS (ACT)</span>
+        </div>
+        <div class="form-wrapper md-whiteframe-1dp">
+            <form name="form_filtreidentification" class="md-inline-form" novalidate>
+            
+            
+            
+                <div layout="column" layout-gt-xs="row" flex>
+            
+            
+            
+            
+                    <md-input-container flex="100" flex-gt-xs="20">
+                        <label>Île</label>
+                        <md-select ng-model="vm.identification.id_ile" name="id_ile" ng-change="vm.get_region_by_ile()" required>
+            
+                            <md-option ng-repeat="sp in vm.all_ile" value="{{sp.id}}">{{sp.Ile}}</md-option>
+            
+                        </md-select>
+                        <div ng-messages="form_filtreidentification.id_ile.$error" role="alert">
+                            <div ng-message="required">
+                                <span>Île Obligatoire.</span>
+                            </div>
+                        </div>
+            
+                    </md-input-container>
+            
+                    <md-input-container flex="100" flex-gt-xs="20">
+                        <label>Préfécture</label>
+                        <md-select ng-model="vm.identification.id_region" name="id_region" ng-disabled="!vm.identification.id_ile"
+                            required>
+            
+                            <md-option ng-repeat="sp in vm.all_region" value="{{sp.id}}">{{sp.Region}}</md-option>
+            
+                        </md-select>
+                        <div ng-messages="form_filtreidentification.id_region.$error" role="alert">
+                            <div ng-message="required">
+                                <span>Préfécture Obligatoire.</span>
+                            </div>
+                        </div>
+            
+                    </md-input-container>
+            
+                    <md-input-container flex="100" flex-gt-xs="20">
+                        <label>Commune</label>
+                        <md-select ng-model="vm.identification.id_commune" name="id_commune"
+                            ng-disabled="!vm.identification.id_region" required>
+            
+                            <md-option ng-repeat="sp in vm.all_commune" value="{{sp.id}}">{{sp.Commune}}</md-option>
+            
+                        </md-select>
+                        <div ng-messages="form_filtreidentification.id_commune.$error" role="alert">
+                            <div ng-message="required">
+                                <span>Commune Obligatoire.</span>
+                            </div>
+                        </div>
+            
+                    </md-input-container>
+            
+                    <md-input-container flex="100" flex-gt-xs="20">
+                        <label>Village</label>
+                        <md-select ng-model="vm.identification.id_village" name="id_village"
+                            ng-disabled="!vm.identification.id_commune" required>
+            
+                            <md-option ng-repeat="sp in vm.all_village" value="{{sp.id}}">{{sp.Village}}</md-option>
+            
+                        </md-select>
+                        <div ng-messages="form_filtreidentification.id_village.$error" role="alert">
+                            <div ng-message="required">
+                                <span>Village Obligatoire.</span>
+                            </div>
+                        </div>
+            
+                    </md-input-container>
+            
+                    <md-input-container flex="100" flex-gt-xs="10">
+                        <input type="text" name="zip" ng-model="vm.identification.zip" placeholder="ZIP" readonly
+                            ng-init="vm.identification.zip=''">
+            
+                    </md-input-container>
+            
+                    <md-input-container flex="100" flex-gt-xs="10">
+                        <input type="text" name="vague" ng-model="vm.identification.vague" placeholder="Vague" readonly
+                            ng-init="vm.identification.vague=''">
+            
+                    </md-input-container>
+            
+                </div>
+              
+            </form>
+            <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                ng-disabled="form_filtreidentification.$invalid||vm.affiche_load " ng-click="vm.export_excel()">
+                Exporter en excel
+            </md-button>
+        </div>
+    </div>
+</div>

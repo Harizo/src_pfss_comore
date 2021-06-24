@@ -13,6 +13,7 @@
            'app.pfss.act.menagebeneficiaire_act',
             'app.pfss.act.contrat_agep_act',            
             'app.pfss.act.gerer_pges_act',
+            'app.pfss.act.fiche_travailleur'
         ])
 
 
