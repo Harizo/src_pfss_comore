@@ -15,7 +15,7 @@
         msNavigationServiceProvider.saveItem('pfss.macc.macc_arse.formation_mere_leader', {
             title : "Formation mère leader",
             icon  : 'icon-data',
-            weight: 3,
+            weight: 4,
         });
     }
     function testPermission(loginService,$cookieStore,apiFactory)

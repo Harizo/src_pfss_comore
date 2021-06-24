@@ -18,7 +18,7 @@
             views    : {
                 'content@app': {
                     templateUrl: 'app/main/pfss/administration/ddb/phase_execution/phase_execution.html',
-                    controller : 'phase_executionController as vm'
+                    controller : 'Phase_executionController as vm'
                 }
             },
             bodyClass: 'phase_execution',

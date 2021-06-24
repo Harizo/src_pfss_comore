@@ -713,10 +713,10 @@
             item.nbr_menage_participant   = currentItemSous_projet_localisation.nbr_menage_participant;
             item.nbr_menage_nonparticipant = currentItemSous_projet_localisation.nbr_menage_nonparticipant;
             item.population_total          = currentItemSous_projet_localisation.population_total;
-            item.id_ile   = currentItemSous_projet_localisation.id_ile;
-            item.id_region   = currentItemSous_projet_localisation.id_region;
-            item.id_commune   = currentItemSous_projet_localisation.id_commune;
-            item.id_village   = currentItemSous_projet_localisation.id_village;
+            item.id_ile   = currentItemSous_projet_localisation.ile.id;
+            item.id_region   = currentItemSous_projet_localisation.region.id;
+            item.id_commune   = currentItemSous_projet_localisation.commune.id;
+            item.id_village   = currentItemSous_projet_localisation.village.id;
             //item.id_communaute = currentItemSous_projet_localisation.id_communaute;
           }
           else
@@ -2504,6 +2504,7 @@ function insert_in_baseActivite_par(entite,suppression)
                   }); 
                 }, function() {
                   // Aucune action = sans suppression
+                  vm.mainGridOptionstravaux.dataSource.read();
                 });               
                 },
                 //creation ile
@@ -2745,6 +2746,7 @@ function insert_in_baseActivite_par(entite,suppression)
                   }); 
                 }, function() {
                   // Aucune action = sans suppression
+                  vm.mainGridOptionsO_Materiaux.dataSource.read();
                 });               
                 },
                 //creation ile
@@ -2995,6 +2997,7 @@ function insert_in_baseActivite_par(entite,suppression)
                 }); 
               }, function() {
                 // Aucune action = sans suppression
+                vm.mainGridOptionsMain_renume.dataSource.read();
               });               
               },
               //creation ile
@@ -3250,6 +3253,7 @@ function insert_in_baseActivite_par(entite,suppression)
                 }); 
               }, function() {
                 // Aucune action = sans suppression
+                vm.mainGridOptionsPlanning.dataSource.read();
               });               
               },
               //creation ile
@@ -3468,6 +3472,7 @@ function insert_in_baseActivite_par(entite,suppression)
                   vm.showAlert('Erreur','Erreur lors de l\'insertion de donnée');
                 });      
             }, function() {
+              vm.mainGridOptionsPlanning.dataSource.read();
             });				  
                   },
                   //creation détail reponse
@@ -3674,6 +3679,7 @@ function insert_in_baseActivite_par(entite,suppression)
                   }); 
                 }, function() {
                   // Aucune action = sans suppression
+                  vm.mainGridOptionsDepenses.dataSource.read();
                 });               
                 },
                 //creation ile
@@ -3905,6 +3911,7 @@ function insert_in_baseActivite_par(entite,suppression)
             }); 
           }, function() {
             // Aucune action = sans suppression
+            vm.mainGridOptionsIndicateurs.dataSource.read();
           });               
           },
           //creation ile
@@ -4129,6 +4136,7 @@ function insert_in_baseActivite_par(entite,suppression)
             }); 
           }, function() {
             // Aucune action = sans suppression
+            vm.mainGridOptionsResultats.dataSource.read();
           });               
           },
           //creation ile

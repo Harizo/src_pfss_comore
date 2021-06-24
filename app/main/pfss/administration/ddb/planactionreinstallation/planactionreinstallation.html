@@ -584,7 +584,7 @@
 												</span>
 												<span ng-if="!ss_p_l.$edit">{{ss_p_l.presentantion_communaute}}</span>
 											</td>
-											<td>
+											<td >
 												<span ng-if="ss_p_l.$edit">
 													<md-input-container style="width:100% !important; display: flex !important;">
 														<label>Référence DGSC</label>
@@ -593,7 +593,16 @@
 												</span>
 												<span ng-if="!ss_p_l.$edit">{{ss_p_l.ref_dgsc}}</span>
 											</td>
-											<td>
+											<td ng-if="vm.type_sous_projet=='ACT'">
+												<span ng-if="ss_p_l.$edit">
+													<md-input-container style="width:100% !important; display: flex !important;">
+														<label>Nombre menage béneficiaire</label>
+														<input name="nbr_menage_beneficiaire" type="number" ng-model="ss_p_l.nbr_menage_beneficiaire" disabled/>
+													</md-input-container>   
+												</span>
+												<span ng-if="!ss_p_l.$edit">{{ss_p_l.nbr_menage_beneficiaire}}</span>
+											</td>
+											<td ng-if="vm.type_sous_projet!='ACT'">
 												<span ng-if="ss_p_l.$edit">
 													<md-input-container style="width:100% !important; display: flex !important;">
 														<label>Nombre menage béneficiaire</label>

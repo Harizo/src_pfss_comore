@@ -7,6 +7,9 @@
 			'app.pfss.macc.macc_arse.mere_leader',	
 			'app.pfss.macc.macc_arse.formation_mere_leader',	
 			'app.pfss.macc.macc_arse.sensibilisation_espace_bien_etre',	
+			'app.pfss.macc.macc_arse.fiche_supervision_formation_ml_cps',	
+			'app.pfss.macc.macc_arse.fiche_supervision_formation_ebe',	
+			'app.pfss.macc.macc_arse.livrable_ong_encadrement'
             ])
         // .run(testPermission)
         .config(config);

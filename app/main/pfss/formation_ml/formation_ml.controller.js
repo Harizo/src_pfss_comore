@@ -32,10 +32,29 @@
         vm.allOutils_communication = {};
 
         
+        vm.selectedItemGroupe_fiche_presence_ml = {} ;
+        var current_selectedItemGroupe_fiche_presence_ml = {} ;
+        vm.nouvelItemGroupe_fiche_presence_ml = false ;
+        vm.allGroupe_fiche_presence_ml = [];
+        
         vm.selectedItemGroupe_participant_ml = {} ;
         var current_selectedItemGroupe_participant_ml = {} ;
         vm.nouvelItemGroupe_participant_ml = false ;
         vm.allGroupe_participant_ml = [];
+
+        vm.selectedItemFormation_ml_repartition = {};
+		var NouvelItemFormation_ml_repartition=false;
+        var currentItemFormation_ml_repartition;
+        
+
+        vm.allFormation_ml_repartition = [];
+        vm.formation_ml_repartition = {};
+
+        
+        vm.selectedItemFormation_ml_repartition_village = {} ;
+        var current_selectedItemFormation_ml_repartition_village = {} ;
+        vm.nouvelItemFormation_ml_repartition_village = false ;
+        vm.allFormation_ml_repartition_village = [];
 
         vm.dtOptions_new =
         {
@@ -84,15 +103,7 @@
           vm.filtre.id_commune = null ;            
         });
       }
-      
-      vm.filtre_village = function()
-      {
-        apiFactory.getAPIgeneraliserREST("village/index","cle_etrangere",vm.filtre.id_commune).then(function(result)
-        { 
-          vm.all_village = result.data.response;            
-        });
-      }
-      
+            
       vm.get_formation_ml = function()
       {
           apiFactory.getAPIgeneraliserREST("formation_ml/index","menu","getformation_mlBysousprojetcommune",'id_sous_projet',id_sous_projet_state,
@@ -106,10 +117,15 @@
             [   
                 {titre:"Contrat ONG N°"},
                 {titre:"Formation N°"},
-                {titre:"Description"},
+                {titre:"Présentation du thème"},
+                {titre:"Date d'édition'"},
                 {titre:"Date de debut"},
                 {titre:"Date de fin"},
-                {titre:"Lieu"}
+                {titre:"Formateur"},
+                {titre:"Outils didactiques"},
+                {titre:"Lieu"},
+                {titre:"Problèmes rencontrés"},
+                {titre:"Solutions adoptées"},
             ];                       
 
             vm.selection = function (item) 
@@ -149,7 +165,11 @@
                 vm.formation_ml.id_commune= vm.filtre.id_commune;
                 vm.formation_ml.date_fin=null;
                 vm.formation_ml.lieu=null;
-                //vm.formation_ml.id_commune=null;		
+                vm.formation_ml.date_edition=null;
+                vm.formation_ml.formateur=null;
+                vm.formation_ml.outils_didactique=null;
+                vm.formation_ml.probleme=null;
+                vm.formation_ml.solution=null;
                 vm.affichage_masque=true;
                 vm.selectedItemFormation_ml = {};
             }
@@ -177,6 +197,11 @@
                 vm.formation_ml.lieu = vm.selectedItemFormation_ml.lieu ;
                 vm.formation_ml.date_debut  = new Date(vm.selectedItemFormation_ml.date_debut) ;
                 vm.formation_ml.date_fin  = new Date(vm.selectedItemFormation_ml.date_fin) ;
+                vm.formation_ml.date_edition  = new Date(vm.selectedItemFormation_ml.date_edition) ;
+                vm.formation_ml.outils_didactique = vm.selectedItemFormation_ml.outils_didactique ;
+                vm.formation_ml.probleme = vm.selectedItemFormation_ml.probleme ;
+                vm.formation_ml.solution = vm.selectedItemFormation_ml.solution ;
+                vm.formation_ml.formateur = vm.selectedItemFormation_ml.formateur ;
 
                 var contrat = vm.allContrat_agex.filter(function(obj)
                 {
@@ -234,7 +259,12 @@
                         id_commune:formation_ml.id_commune,
                         lieu:formation_ml.lieu,
                         date_debut:convert_date(formation_ml.date_debut),
-                        date_fin:convert_date(formation_ml.date_fin)              
+                        date_fin:convert_date(formation_ml.date_fin),
+                        date_edition:convert_date(formation_ml.date_edition),
+                        outils_didactique:formation_ml.outils_didactique ,
+                        probleme:formation_ml.probleme ,
+                        solution:formation_ml.solution ,
+                        formateur:formation_ml.formateur            
                         
                     });
 
@@ -257,7 +287,12 @@
                                 vm.selectedItemFormation_ml.description = formation_ml.description ;
                                 vm.selectedItemFormation_ml.lieu = formation_ml.lieu ;
                                 vm.selectedItemFormation_ml.date_debut = new Date(formation_ml.date_debut) ;
-                                vm.selectedItemFormation_ml.date_fin = new Date(formation_ml.date_fin) ;                               
+                                vm.selectedItemFormation_ml.date_fin = new Date(formation_ml.date_fin) ; 
+                                vm.selectedItemFormation_ml.date_edition = new Date(formation_ml.date_edition) ; 
+                                vm.selectedItemFormation_ml.formateur = formation_ml.formateur ;
+                                vm.selectedItemFormation_ml.outils_didactique = formation_ml.outils_didactique ;
+                                vm.selectedItemFormation_ml.probleme = formation_ml.probleme ;
+                                vm.selectedItemFormation_ml.solution = formation_ml.solution ;                            
                             }
                             else
                             {
@@ -287,7 +322,12 @@
                             description : formation_ml.description ,
                             lieu : formation_ml.lieu ,
                             date_debut : new Date(formation_ml.date_debut) ,
-                            date_fin : new Date(formation_ml.date_fin)
+                            date_fin : new Date(formation_ml.date_fin) ,
+                            date_edition : new Date(formation_ml.date_edition),
+                            formateur : formation_ml.formateur,
+                            outils_didactique : formation_ml.outils_didactique,
+                            probleme : formation_ml.probleme,
+                            solution : formation_ml.solution
                             }
                             vm.allFormation_ml.unshift(item) ;
 					        
@@ -312,6 +352,11 @@
                         ||(currentItemFormation_ml.date_debut   != convert_date(item.date_debut) )
                         ||(currentItemFormation_ml.date_fin   != convert_date(item.date_fin))
                         ||(currentItemFormation_ml.contrat_agex.id   != item.id_contrat_agex )
+                        ||(currentItemFormation_ml.date_edition   != convert_date(item.date_edition))
+                        ||(currentItemFormation_ml.formateur != item.formateur )
+                        ||(currentItemFormation_ml.outils_didactique != item.outils_didactique )
+                        ||(currentItemFormation_ml.probleme != item.probleme )
+                        ||(currentItemFormation_ml.solution != item.solution )
                         )                    
                     { 
                             insert_in_baseFormation_ml(item,suppression);                      
@@ -907,39 +952,21 @@
             }
             
             //FIN outils de communication
-
             //Debut liste groupe participant
             
             vm.click_groupe_participant_ml = function () 
             {
                 vm.affiche_load = true ;
-               apiFactory.getAPIgeneraliserREST("groupe_participant_formation_ml/index","cle_etrangere",vm.selectedItemFormation_ml.id).then(function(result){
+               apiFactory.getAPIgeneraliserREST("participant_formation_ml/index","cle_etrangere",vm.selectedItemFormation_ml.id).then(function(result){
                     vm.allGroupe_participant_ml = result.data.response;                    
                     vm.affiche_load = false ;
                     console.log(vm.allGroupe_participant_ml);
                 }); 
                 vm.selectedItemGroupe_participant_ml = {}; 
-            }
-            
-            vm.filtre_groupe_ml = function(village_id)
-            {
-                apiFactory.getAPIgeneraliserREST("groupe_mlpl/index","cle_etrangere",village_id).then(function(result)
-                { 
-                vm.allGroupe_ml_pl = result.data.response;            
-                });
-            }
-            vm.change_groupe_ml = function(item)
-            {
-                var gr = vm.allGroupe_ml_pl.filter(function(obj)
-                {
-                    return obj.id == item.id_groupe_ml_pl;
-                });
-                item.telephone = gr[0].telephone;
-            }
+            }            
             vm.groupe_participant_ml_column =[  
-                                        {titre:"Village"},
-                                        {titre:"Groupe ML/PL"},
-                                        {titre:"Téléphone"}
+                                        {titre:"Nom des participant"},
+                                        {titre:"Fonction"}
                                     ];
 
                 vm.selectionGroupe_participant_ml = function(item)
@@ -972,9 +999,8 @@
                             $edit: true,
                             $selected: true,
                             id:'0',
-                            id_groupe_ml_pl : null,
-                            id_village : null,
-                            nom_groupe : null
+                            nom : null,
+                            fonction : null
                         } ;
 
                     vm.nouvelItemGroupe_participant_ml = true ;                    
@@ -993,16 +1019,8 @@
                 vm.modifierGroupe_participant_ml = function()
                 {
                     vm.nouvelItemGroupe_participant_ml = false ;
-                    vm.selectedItemGroupe_participant_ml.$edit = true;
-                
-                    current_selectedItemGroupe_participant_ml = angular.copy(vm.selectedItemGroupe_participant_ml);
-                    vm.selectedItemGroupe_participant_ml.id_groupe_ml_pl = vm.selectedItemGroupe_participant_ml.groupe_ml_pl.id;
-                    vm.selectedItemGroupe_participant_ml.id_village = vm.selectedItemGroupe_participant_ml.village.id;
-                    vm.selectedItemGroupe_participant_ml.chef_village = vm.selectedItemGroupe_participant_ml.groupe_ml_pl.chef_village;
-                    apiFactory.getAPIgeneraliserREST("groupe_mlpl/index","cle_etrangere",vm.selectedItemGroupe_participant_ml.village.id).then(function(result)
-                    { 
-                        vm.allGroupe_ml_pl = result.data.response;            
-                    });                  
+                    vm.selectedItemGroupe_participant_ml.$edit = true;                
+                    current_selectedItemGroupe_participant_ml = angular.copy(vm.selectedItemGroupe_participant_ml);              
                 }
 
                 vm.supprimerGroupe_participant_ml = function()
@@ -1046,10 +1064,8 @@
                         {
                             vm.selectedItemGroupe_participant_ml.$selected = false;
                             vm.selectedItemGroupe_participant_ml.$edit = false;
-                            vm.selectedItemGroupe_participant_ml.numero = current_selectedItemGroupe_participant_ml.numero ;
-                            vm.selectedItemGroupe_participant_ml.id_village = current_selectedItemGroupe_participant_ml.village.id ;
-                            vm.selectedItemGroupe_participant_ml.id_groupe_ml_pl = current_selectedItemGroupe_participant_ml.groupe_ml_pl.id ;                            
-                            vm.selectedItemGroupe_participant_ml.chef_village = current_selectedItemGroupe_participant_ml.groupe_ml_pl.chef_village ;
+                            vm.selectedItemGroupe_participant_ml.nom = current_selectedItemGroupe_participant_ml.nom ;
+                            vm.selectedItemGroupe_participant_ml.fonction = current_selectedItemGroupe_participant_ml.fonction ;
                             
                             vm.selectedItemGroupe_participant_ml = {};
                         }
@@ -1077,31 +1093,19 @@
                     {                        
                         supprimer:etat_suppression,
                         id: vm.selectedItemGroupe_participant_ml.id,
-                        id_village: vm.selectedItemGroupe_participant_ml.id_village,  
-                        id_groupe_ml_pl: vm.selectedItemGroupe_participant_ml.id_groupe_ml_pl,
+                        nom: vm.selectedItemGroupe_participant_ml.nom,  
+                        fonction: vm.selectedItemGroupe_participant_ml.fonction,
                         id_formation_ml : id_formation 
                     });
                     console.log(datas);
-                    apiFactory.add("groupe_participant_formation_ml/index",datas, config).success(function (data)
+                    apiFactory.add("participant_formation_ml/index",datas, config).success(function (data)
                     {
                         vm.affiche_load = false ;
                       
                         if (!vm.nouvelItemGroupe_participant_ml) 
                         {
                             if (etat_suppression == 0) 
-                            {   
-                                var vil = vm.all_village.filter(function(obj)
-                                {
-                                    return obj.id == vm.selectedItemGroupe_participant_ml.id_village;
-                                });
-                                
-                                var gr = vm.allGroupe_ml_pl.filter(function(obj)
-                                {
-                                    return obj.id == vm.selectedItemGroupe_participant_ml.id_groupe_ml_pl;
-                                });                              
-                                
-                                vm.selectedItemGroupe_participant_ml.village = vil[0];
-                                vm.selectedItemGroupe_participant_ml.groupe_ml_pl = gr[0];
+                            {
                                 vm.selectedItemGroupe_participant_ml.$edit = false ;
                                 vm.selectedItemGroupe_participant_ml.$selected = false ;
                                 vm.selectedItemGroupe_participant_ml = {} ;
@@ -1118,20 +1122,7 @@
 
                         }
                         else
-                        {   
-                            
-                            var vil = vm.all_village.filter(function(obj)
-                            {
-                                return obj.id == vm.selectedItemGroupe_participant_ml.id_village;
-                            });
-                            
-                            var gr = vm.allGroupe_ml_pl.filter(function(obj)
-                            {
-                                return obj.id == vm.selectedItemGroupe_participant_ml.id_groupe_ml_pl;
-                            });                              
-                            
-                            vm.selectedItemGroupe_participant_ml.village = vil[0];
-                            vm.selectedItemGroupe_participant_ml.groupe_ml_pl = gr[0];
+                        {  
                             vm.selectedItemGroupe_participant_ml.$edit = false ;
                             vm.selectedItemGroupe_participant_ml.$selected = false ;
                             vm.selectedItemGroupe_participant_ml.id = String(data.response) ;
@@ -1145,6 +1136,670 @@
                     .error(function (data) {alert("Une erreur s'est produit");});
                 }
             //Fin liste groupe participant
+
+            //Debut liste groupe fiche_presence
+            
+            vm.click_groupe_fiche_presence_ml = function () 
+            {
+                vm.affiche_load = true ;
+               apiFactory.getAPIgeneraliserREST("fiche_presence_formation_ml/index","menu","getprensenceByformation","id_formation_ml",vm.selectedItemFormation_ml.id).then(function(result){
+                    vm.allGroupe_fiche_presence_ml = result.data.response;                    
+                    vm.affiche_load = false ;
+                    console.log(vm.allGroupe_fiche_presence_ml);
+                }); 
+                vm.selectedItemGroupe_fiche_presence_ml = {}; 
+            }
+            
+            vm.filtre_groupe_ml = function(village_id)
+            {
+                apiFactory.getAPIgeneraliserREST("fiche_presence_formation_ml/index","menu","getgroupe_mlplByvillage","id_village",village_id).then(function(result)
+                { 
+                vm.allGroupe_ml_pl = result.data.response;
+                console.log(vm.allGroupe_ml_pl);           
+                });
+            }
+            vm.change_groupe_ml = function(item)
+            {
+                var gr = vm.allGroupe_ml_pl.filter(function(obj)
+                {
+                    return obj.id == item.id_groupe_ml_pl;
+                });
+                item.telephone = gr[0].telephone;
+                item.Addresse = gr[0].Addresse;
+            }
+            vm.groupe_fiche_presence_ml_column =[  
+                                        {titre:"Village"},
+                                        {titre:"Nom et prénoms ML/PL"},
+                                        {titre:"Adresse"},
+                                        {titre:"Téléphone"}
+                                    ];
+
+                vm.selectionGroupe_fiche_presence_ml = function(item)
+                {
+                    vm.selectedItemGroupe_fiche_presence_ml = item ;
+
+                    if (!vm.selectedItemGroupe_fiche_presence_ml.$edit) 
+                    {
+                        vm.nouvelItemGroupe_fiche_presence_ml = false ;  
+
+                    }
+
+                }
+
+                $scope.$watch('vm.selectedItemGroupe_fiche_presence_ml', function()
+                {
+                    if (!vm.allGroupe_fiche_presence_ml) return;
+                    vm.allGroupe_fiche_presence_ml.forEach(function(item)
+                    {
+                        item.$selected = false;
+                    });
+                    vm.selectedItemGroupe_fiche_presence_ml.$selected = true;
+
+                });
+               
+                vm.ajouterGroupe_fiche_presence_ml = function()
+                {
+                    var item = 
+                        {                            
+                            $edit: true,
+                            $selected: true,
+                            id:'0',
+                            id_groupe_ml_pl : null,
+                            id_village : null,
+                            nom_groupe : null
+                        } ;
+
+                    vm.nouvelItemGroupe_fiche_presence_ml = true ;                    
+
+                    vm.allGroupe_fiche_presence_ml.unshift(item);
+                    vm.allGroupe_fiche_presence_ml.forEach(function(af)
+                    {
+                      if(af.$selected == true)
+                      {
+                        vm.selectedItemGroupe_fiche_presence_ml = af;
+                        
+                      }
+                    });
+                }
+
+                vm.modifierGroupe_fiche_presence_ml = function()
+                {
+                    vm.nouvelItemGroupe_fiche_presence_ml = false ;
+                    vm.selectedItemGroupe_fiche_presence_ml.$edit = true;
+                
+                    current_selectedItemGroupe_fiche_presence_ml = angular.copy(vm.selectedItemGroupe_fiche_presence_ml);
+                    vm.selectedItemGroupe_fiche_presence_ml.id_groupe_ml_pl = vm.selectedItemGroupe_fiche_presence_ml.groupe_ml_pl.id;
+                    vm.selectedItemGroupe_fiche_presence_ml.id_village = vm.selectedItemGroupe_fiche_presence_ml.village.id;
+                    vm.selectedItemGroupe_fiche_presence_ml.chef_village = vm.selectedItemGroupe_fiche_presence_ml.groupe_ml_pl.chef_village;
+                    apiFactory.getAPIgeneraliserREST("fiche_presence_formation_ml/index","menu","getgroupe_mlplByvillage","id_village",vm.selectedItemGroupe_fiche_presence_ml.village.id).then(function(result)
+                    { 
+                        vm.allGroupe_ml_pl = result.data.response;            
+                    });                  
+                }
+
+                vm.supprimerGroupe_fiche_presence_ml = function()
+                {
+                    
+                    var confirm = $mdDialog.confirm()
+                      .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                      .textContent('Cliquer sur OK pour confirmer')
+                      .ariaLabel('Lucky day')
+                      .clickOutsideToClose(true)
+                      .parent(angular.element(document.body))
+                      .ok('OK')
+                      .cancel('Annuler');
+                    $mdDialog.show(confirm).then(function() {
+
+                    vm.enregistrerGroupe_fiche_presence_ml(1);
+                    }, function() {
+                    //alert('rien');
+                    });
+                }
+
+                vm.annulerGroupe_fiche_presence_ml = function()
+                {
+                    if (vm.nouvelItemGroupe_fiche_presence_ml) 
+                    {
+                        
+                        vm.allGroupe_fiche_presence_ml.shift();
+                        vm.selectedItemGroupe_fiche_presence_ml = {} ;
+                        vm.nouvelItemGroupe_fiche_presence_ml = false ;
+                    }
+                    else
+                    {
+                        
+
+                        if (!vm.selectedItemGroupe_fiche_presence_ml.$edit) //annuler selection
+                        {
+                            vm.selectedItemGroupe_fiche_presence_ml.$selected = false;
+                            vm.selectedItemGroupe_fiche_presence_ml = {};
+                        }
+                        else
+                        {
+                            vm.selectedItemGroupe_fiche_presence_ml.$selected = false;
+                            vm.selectedItemGroupe_fiche_presence_ml.$edit = false;
+                            vm.selectedItemGroupe_fiche_presence_ml.numero = current_selectedItemGroupe_fiche_presence_ml.numero ;
+                            vm.selectedItemGroupe_fiche_presence_ml.id_village = current_selectedItemGroupe_fiche_presence_ml.village.id ;
+                            vm.selectedItemGroupe_fiche_presence_ml.id_groupe_ml_pl = current_selectedItemGroupe_fiche_presence_ml.groupe_ml_pl.id ;                            
+                            vm.selectedItemGroupe_fiche_presence_ml.chef_village = current_selectedItemGroupe_fiche_presence_ml.groupe_ml_pl.chef_village ;
+                            
+                            vm.selectedItemGroupe_fiche_presence_ml = {};
+                        }
+
+                        
+
+                    }
+                }
+
+                vm.enregistrerGroupe_fiche_presence_ml = function(etat_suppression)
+                {
+                    vm.affiche_load = true ;
+                    var config = {
+                        headers : {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                        }
+                    };
+                    var id_formation = vm.selectedItemFormation_ml.id;
+                    if (vm.nouvelItemGroupe_fiche_presence_ml==false)
+                    {
+                        id_formation = vm.selectedItemGroupe_fiche_presence_ml.id_formation_ml;
+                    }
+
+                    var datas = $.param(
+                    {                        
+                        supprimer:etat_suppression,
+                        id: vm.selectedItemGroupe_fiche_presence_ml.id,
+                        id_village: vm.selectedItemGroupe_fiche_presence_ml.id_village,  
+                        id_groupe_ml_pl: vm.selectedItemGroupe_fiche_presence_ml.id_groupe_ml_pl,
+                        id_formation_ml : id_formation 
+                    });
+                    console.log(datas);
+                    apiFactory.add("fiche_presence_formation_ml/index",datas, config).success(function (data)
+                    {
+                        vm.affiche_load = false ;
+                      
+                        if (!vm.nouvelItemGroupe_fiche_presence_ml) 
+                        {
+                            if (etat_suppression == 0) 
+                            {   
+                                var vil = vm.all_village.filter(function(obj)
+                                {
+                                    return obj.id == vm.selectedItemGroupe_fiche_presence_ml.id_village;
+                                });
+                                
+                                var gr = vm.allGroupe_ml_pl.filter(function(obj)
+                                {
+                                    return obj.id == vm.selectedItemGroupe_fiche_presence_ml.id_groupe_ml_pl;
+                                });                              
+                                
+                                vm.selectedItemGroupe_fiche_presence_ml.village = vil[0];
+                                vm.selectedItemGroupe_fiche_presence_ml.groupe_ml_pl = gr[0];
+                                vm.selectedItemGroupe_fiche_presence_ml.$edit = false ;
+                                vm.selectedItemGroupe_fiche_presence_ml.$selected = false ;
+                                vm.selectedItemGroupe_fiche_presence_ml = {} ;
+                            }
+                            else
+                            {
+                                vm.allGroupe_fiche_presence_ml = vm.allGroupe_fiche_presence_ml.filter(function(obj)
+                                {
+                                    return obj.id !== vm.selectedItemGroupe_fiche_presence_ml.id;
+                                });
+
+                                vm.selectedItemGroupe_fiche_presence_ml = {} ;
+                            }
+
+                        }
+                        else
+                        {   
+                            
+                            var vil = vm.all_village.filter(function(obj)
+                            {
+                                return obj.id == vm.selectedItemGroupe_fiche_presence_ml.id_village;
+                            });
+                            
+                            var gr = vm.allGroupe_ml_pl.filter(function(obj)
+                            {
+                                return obj.id == vm.selectedItemGroupe_fiche_presence_ml.id_groupe_ml_pl;
+                            });                              
+                            
+                            vm.selectedItemGroupe_fiche_presence_ml.village = vil[0];
+                            vm.selectedItemGroupe_fiche_presence_ml.groupe_ml_pl = gr[0];
+                            vm.selectedItemGroupe_fiche_presence_ml.$edit = false ;
+                            vm.selectedItemGroupe_fiche_presence_ml.$selected = false ;
+                            vm.selectedItemGroupe_fiche_presence_ml.id = String(data.response) ;
+                            vm.selectedItemGroupe_fiche_presence_ml.id_formation_ml = id_formation;
+
+                            vm.nouvelItemGroupe_fiche_presence_ml = false ;
+                            vm.selectedItemGroupe_fiche_presence_ml = {};
+
+                        }
+                    })
+                    .error(function (data) {alert("Une erreur s'est produit");});
+                }
+            //Fin liste groupe fiche_presence
+
+            //debut repartition groupe ml pour la formation
+            vm.get_formation_ml_repartition = function()
+            {
+                apiFactory.getAPIgeneraliserREST("formation_ml_repartition/index","menu","getformation_ml_repartitionByformation",'id_formation_ml',vm.selectedItemFormation_ml.id).then(function(result) { 
+                    vm.allFormation_ml_repartition = result.data.response;
+                    console.log(vm.allFormation_ml_repartition);
+                });           
+                vm.selectedItemFormation_ml_repartition ={};
+            }
+            vm.formation_ml_repartition_column = 
+            [   
+                {titre:"N° de groupe à former"},
+                {titre:"Date de formation"},
+                {titre:"Nombre de ML pour la formation"},
+                {titre:"Lieu de la formation"},
+                {titre:"Responsables"}
+            ];                       
+
+            vm.selectionFormation_ml_repartition = function (item) 
+            {
+                vm.selectedItemFormation_ml_repartition = item ;
+            }
+
+            $scope.$watch('vm.selectedItemFormation_ml_repartition', function() {
+                if (!vm.allFormation_ml_repartition) return;
+                vm.allFormation_ml_repartition.forEach(function(item) {
+                    item.$selected = false;
+                });
+                vm.selectedItemFormation_ml_repartition.$selected = true;
+            });
+
+            vm.ajoutFormation_ml_repartition = function(formation_ml_repartition,suppression)
+            {
+                if (NouvelItemFormation_ml_repartition==false)
+                {
+                    test_existenceFormation_ml_repartition(formation_ml_repartition,suppression); 
+                }
+                else
+                {
+                    insert_in_baseFormation_ml_repartition(formation_ml_repartition,suppression);
+                }
+            }
+            vm.ajouterFormation_ml_repartition = function ()
+            {
+                vm.selectedItemFormation_ml_repartition.$selected = false;
+                NouvelItemFormation_ml_repartition = true ;
+                vm.formation_ml_repartition.supprimer=0;
+                vm.formation_ml_repartition.id=0;
+                vm.formation_ml_repartition.num_groupe=null;
+                vm.formation_ml_repartition.date_formation=null;
+                vm.formation_ml_repartition.nbr_ml=null;
+                vm.formation_ml_repartition.lieu_formation=null;
+                vm.formation_ml_repartition.responsable=null;		
+                vm.affichage_masque_formation_ml_repartition=true;
+                vm.selectedItemFormation_ml_repartition = {};
+            }
+            vm.annulerFormation_ml_repartition = function(item)
+            {
+                vm.selectedItemFormation_ml_repartition={};
+                vm.selectedItemFormation_ml_repartition.$selected = false;
+                NouvelItemFormation_ml_repartition = false;
+                vm.affichage_masque_formation_ml_repartition=false;
+                vm.formation_ml_repartition = {};
+            };
+            /*vm.ajout_contrat_agep = function () 
+            {
+                vm.contrat_agep.statu = "En cours";
+                NouvelItemContrat_agep = true;
+            }*/
+
+            vm.modifFormation_ml_repartition = function () 
+            {
+                NouvelItemFormation_ml_repartition = false;                
+                currentItemFormation_ml_repartition = JSON.parse(JSON.stringify(vm.selectedItemFormation_ml_repartition));
+                vm.formation_ml_repartition.num_groupe  = parseInt(vm.selectedItemFormation_ml_repartition.num_groupe) ;
+                vm.formation_ml_repartition.date_formation  = new Date(vm.selectedItemFormation_ml_repartition.date_formation) ;
+                vm.formation_ml_repartition.nbr_ml  = parseInt(vm.selectedItemFormation_ml_repartition.nbr_ml) ;
+                vm.formation_ml_repartition.lieu_formation   = vm.selectedItemFormation_ml_repartition.lieu_formation ;
+                vm.formation_ml_repartition.responsable = vm.selectedItemFormation_ml_repartition.responsable ;
+
+                vm.affichage_masque_formation_ml_repartition=true;
+            }
+
+            vm.supprimerFormation_ml_repartition = function()
+            {
+                vm.affichage_masque = false ;
+                
+                var confirm = $mdDialog.confirm()
+                  .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                  .textContent('')
+                  .ariaLabel('Lucky day')
+                  .clickOutsideToClose(true)
+                  .parent(angular.element(document.body))
+                  .ok('ok')
+                  .cancel('annuler');
+                $mdDialog.show(confirm).then(function() {
+
+                    insert_in_baseFormation_ml_repartition(vm.selectedItemFormation_ml_repartition,1);
+                }, function() {
+                });
+            }
+
+            function insert_in_baseFormation_ml_repartition (formation_ml_repartition, etat_suppression)
+            {
+                vm.affiche_load = true ;
+                var config = {
+                        headers : {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                        }
+                    };
+
+                    var id = 0 ;
+                    var id_format_ml = vm.selectedItemFormation_ml.id ;
+                    if (!NouvelItemFormation_ml_repartition) 
+                    {
+                        id = vm.selectedItemFormation_ml_repartition.id ;
+                        id_format_ml=vm.selectedItemFormation_ml_repartition.id_formation_ml
+                    }
+
+                    var datas = $.param(
+                    {
+                        
+                        id:id,      
+                        supprimer:etat_suppression,
+                        num_groupe:formation_ml_repartition.num_groupe,
+                        date_formation:convert_date(formation_ml_repartition.date_formation),
+                        nbr_ml:formation_ml_repartition.nbr_ml,
+                        lieu_formation:formation_ml_repartition.lieu_formation,
+                        responsable:formation_ml_repartition.responsable,
+                        id_formation_ml: id_format_ml             
+                        
+                    });
+
+                    apiFactory.add("formation_ml_repartition/index",datas, config).success(function (data)
+                    {
+                        if (!NouvelItemFormation_ml_repartition) 
+                        {
+                            if (etat_suppression == 0) 
+                            {  
+                                vm.selectedItemFormation_ml_repartition.num_groupe = formation_ml_repartition.num_groupe ;
+                                vm.selectedItemFormation_ml_repartition.date_formation = new Date(formation_ml_repartition.date_formation) ;
+                                vm.selectedItemFormation_ml_repartition.nbr_ml = formation_ml_repartition.nbr_ml ;
+                                vm.selectedItemFormation_ml_repartition.lieu_formation = formation_ml_repartition.lieu_formation ;
+                                vm.selectedItemFormation_ml_repartition.responsable = formation_ml_repartition.responsable ;                              
+                            }
+                            else
+                            {
+                                vm.allFormation_ml_repartition = vm.allFormation_ml_repartition.filter(function(obj)
+                                {
+                                    return obj.id !== vm.selectedItemFormation_ml_repartition.id ;
+                                });
+                            }
+
+                        }
+                        else
+                        {   
+                            var item =
+                            {
+                            id : String(data.response) ,
+                            num_groupe : formation_ml_repartition.num_groupe ,
+                            date_formation : new Date(formation_ml_repartition.date_formation) ,
+                            nbr_ml : formation_ml_repartition.nbr_ml ,
+                            lieu_formation : formation_ml_repartition.lieu_formation ,
+                            responsable : formation_ml_repartition.responsable,
+                            id_formation_ml: id_format_ml
+                            }
+                            vm.allFormation_ml_repartition.unshift(item) ;
+					        
+                        }
+                        NouvelItemFormation_ml_repartition = false ;
+                        vm.affiche_load = false ;
+                        vm.affichage_masque_formation_ml_repartition=false;
+                        vm.formation_ml_repartition = {};
+                        vm.selectedItemFormation_ml_repartition ={};
+                    })
+                    .error(function (data) {alert("Une erreur s'est produit");});
+            }
+            function test_existenceFormation_ml_repartition (item,suppression)
+            {
+                console.log(item);
+                console.log(currentItemFormation_ml_repartition);
+                if (suppression!=1) 
+                {                    
+                    if((currentItemFormation_ml_repartition.num_groupe   != item.num_groupe )
+                        ||(currentItemFormation_ml_repartition.date_formation   != convert_date(item.date_formation) )
+                        ||(currentItemFormation_ml_repartition.nbr_ml    != item.nbr_ml )
+                        ||(currentItemFormation_ml_repartition.lieu_formation != item.lieu_formation )
+                        ||(currentItemFormation_ml_repartition.responsable != item.responsable )
+                        )                    
+                    { 
+                            insert_in_baseFormation_ml_repartition(item,suppression);                      
+                    }
+                    else
+                    { 
+                        item.$selected=false;
+                        item.$edit=false;
+                    }
+                    
+                }
+                else
+                insert_in_baseFormation_ml_repartition(item,suppression);		
+            }
+            //fin repartition groupe ml pour la formation
+
+            //debut village participant 
+            
+            
+            vm.filtre_village = function()
+            {
+                apiFactory.getAPIgeneraliserREST("formation_ml_repartition_village/index","menu","get_villageBycommune","id_commune",vm.filtre.id_commune).then(function(result)
+                { 
+                vm.all_village = result.data.response;            
+                });
+            }
+            
+            vm.click_formation_ml_repartition_village = function () 
+            {
+                vm.affiche_load = true ;
+               apiFactory.getAPIgeneraliserREST("formation_ml_repartition_village/index","menu","get_repartition_villageByrepartition","id_formation_ml_repartition",vm.selectedItemFormation_ml_repartition.id).then(function(result){
+                    vm.allFormation_ml_repartition_village = result.data.response;                    
+                    vm.affiche_load = false ;
+                    console.log(vm.allFormation_ml_repartition_village);
+                }); 
+                vm.selectedItemFormation_ml_repartition_village = {}; 
+            }
+            
+            vm.formation_ml_repartition_village_column =[  
+                                        {titre:"Village"},
+                                        {titre:"Nombre de Mères/Pères leaders élus"}
+                                    ];
+
+                vm.selectionFormation_ml_repartition_village = function(item)
+                {
+                    vm.selectedItemFormation_ml_repartition_village = item ;
+
+                    if (!vm.selectedItemFormation_ml_repartition_village.$edit) 
+                    {
+                        vm.nouvelItemFormation_ml_repartition_village = false ;  
+
+                    }
+
+                }
+
+                $scope.$watch('vm.selectedItemFormation_ml_repartition_village', function()
+                {
+                    if (!vm.allFormation_ml_repartition_village) return;
+                    vm.allFormation_ml_repartition_village.forEach(function(item)
+                    {
+                        item.$selected = false;
+                    });
+                    vm.selectedItemFormation_ml_repartition_village.$selected = true;
+
+                });
+               
+                vm.ajouterFormation_ml_repartition_village = function()
+                {
+                    var item = 
+                        {                            
+                            $edit: true,
+                            $selected: true,
+                            id:'0',
+                            id_village : null
+                        } ;
+
+                    vm.nouvelItemFormation_ml_repartition_village = true ;                    
+
+                    vm.allFormation_ml_repartition_village.unshift(item);
+                    vm.allFormation_ml_repartition_village.forEach(function(af)
+                    {
+                      if(af.$selected == true)
+                      {
+                        vm.selectedItemFormation_ml_repartition_village = af;
+                        
+                      }
+                    });
+                }
+
+                vm.modifierFormation_ml_repartition_village = function()
+                {
+                    vm.nouvelItemFormation_ml_repartition_village = false ;
+                    vm.selectedItemFormation_ml_repartition_village.$edit = true;
+                
+                    current_selectedItemFormation_ml_repartition_village = angular.copy(vm.selectedItemFormation_ml_repartition_village);
+                    vm.selectedItemFormation_ml_repartition_village.id_village = vm.selectedItemFormation_ml_repartition_village.village.id;
+                    vm.selectedItemFormation_ml_repartition_village.nbr_ml_pl_elu = vm.selectedItemFormation_ml_repartition_village.village.nbr_ml_pl_elu;                  
+                }
+
+                vm.supprimerFormation_ml_repartition_village = function()
+                {
+                    
+                    var confirm = $mdDialog.confirm()
+                      .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                      .textContent('Cliquer sur OK pour confirmer')
+                      .ariaLabel('Lucky day')
+                      .clickOutsideToClose(true)
+                      .parent(angular.element(document.body))
+                      .ok('OK')
+                      .cancel('Annuler');
+                    $mdDialog.show(confirm).then(function() {
+
+                    vm.enregistrerFormation_ml_repartition_village(1);
+                    }, function() {
+                    //alert('rien');
+                    });
+                }
+
+                vm.annulerFormation_ml_repartition_village = function()
+                {
+                    if (vm.nouvelItemFormation_ml_repartition_village) 
+                    {
+                        
+                        vm.allFormation_ml_repartition_village.shift();
+                        vm.selectedItemFormation_ml_repartition_village = {} ;
+                        vm.nouvelItemFormation_ml_repartition_village = false ;
+                    }
+                    else
+                    {
+                        
+
+                        if (!vm.selectedItemFormation_ml_repartition_village.$edit) //annuler selection
+                        {
+                            vm.selectedItemFormation_ml_repartition_village.$selected = false;
+                            vm.selectedItemFormation_ml_repartition_village = {};
+                        }
+                        else
+                        {
+                            vm.selectedItemFormation_ml_repartition_village.$selected = false;
+                            vm.selectedItemFormation_ml_repartition_village.$edit = false;
+                            vm.selectedItemFormation_ml_repartition_village.id_village = current_selectedItemFormation_ml_repartition_village.village.id ;
+                            
+                            vm.selectedItemFormation_ml_repartition_village = {};
+                        }
+
+                        
+
+                    }
+                }
+
+                vm.enregistrerFormation_ml_repartition_village = function(etat_suppression)
+                {
+                    vm.affiche_load = true ;
+                    var config = {
+                        headers : {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                        }
+                    };
+                    var id_formation = vm.selectedItemFormation_ml_repartition.id;
+                    if (vm.nouvelItemFormation_ml_repartition_village==false)
+                    {
+                        id_formation = vm.selectedItemFormation_ml_repartition_village.id_formation_ml_repartition;
+                    }
+
+                    var datas = $.param(
+                    {                        
+                        supprimer:etat_suppression,
+                        id: vm.selectedItemFormation_ml_repartition_village.id,
+                        id_village: vm.selectedItemFormation_ml_repartition_village.id_village,
+                        id_formation_ml_repartition : id_formation 
+                    });
+                    console.log(datas);
+                    apiFactory.add("formation_ml_repartition_village/index",datas, config).success(function (data)
+                    {
+                        vm.affiche_load = false ;
+                      
+                        if (!vm.nouvelItemFormation_ml_repartition_village) 
+                        {
+                            if (etat_suppression == 0) 
+                            {   
+                                var vil = vm.all_village.filter(function(obj)
+                                {
+                                    return obj.id == vm.selectedItemFormation_ml_repartition_village.id_village;
+                                });                             
+                                
+                                vm.selectedItemFormation_ml_repartition_village.village = vil[0];
+                                vm.selectedItemFormation_ml_repartition_village.$edit = false ;
+                                vm.selectedItemFormation_ml_repartition_village.$selected = false ;
+                                vm.selectedItemFormation_ml_repartition_village = {} ;
+                            }
+                            else
+                            {
+                                vm.allFormation_ml_repartition_village = vm.allFormation_ml_repartition_village.filter(function(obj)
+                                {
+                                    return obj.id !== vm.selectedItemFormation_ml_repartition_village.id;
+                                });
+
+                                vm.selectedItemFormation_ml_repartition_village = {} ;
+                            }
+
+                        }
+                        else
+                        {   
+                            
+                            var vil = vm.all_village.filter(function(obj)
+                            {
+                                return obj.id == vm.selectedItemFormation_ml_repartition_village.id_village;
+                            });
+                                                         
+                            
+                            vm.selectedItemFormation_ml_repartition_village.village = vil[0];
+                            vm.selectedItemFormation_ml_repartition_village.$edit = false ;
+                            vm.selectedItemFormation_ml_repartition_village.$selected = false ;
+                            vm.selectedItemFormation_ml_repartition_village.id = String(data.response) ;
+                            vm.selectedItemFormation_ml_repartition_village.id_formation_ml_repartition = id_formation;
+
+                            vm.nouvelItemFormation_ml_repartition_village = false ;
+                            vm.selectedItemFormation_ml_repartition_village = {};
+
+                        }
+                    })
+                    .error(function (data) {alert("Une erreur s'est produit");});
+                }
+                vm.change_village = function(item)
+                {
+                    var vil = vm.all_village.filter(function(obj)
+                    {
+                        return obj.id == item.id_village;
+                    });
+                    item.nbr_ml_pl_elu = vil[0].nbr_ml_pl_elu;
+
+                }
+            //Fin liste groupe participant
+            //fin village participant
 
         
     }

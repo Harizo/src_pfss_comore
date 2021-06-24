@@ -3,10 +3,10 @@
     'use strict';
     angular
         .module('app.pfss.ddb_adm.phase_execution')
-        .controller('phase_executionController', phase_executionController);
+        .controller('Phase_executionController', Phase_executionController);
 
     /** @ngInject */
-    function phase_executionController(apiFactory, $state, $mdDialog, $scope, serveur_central,$cookieStore) 
+    function Phase_executionController(apiFactory, $state, $mdDialog, $scope, serveur_central,$cookieStore) 
     {
       // Déclaration des variables et fonctions
       var vm = this;

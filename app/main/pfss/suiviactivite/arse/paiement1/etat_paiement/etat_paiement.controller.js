@@ -53,16 +53,18 @@
         responsive: true
       };
 
-      vm.detail_etat_presence_column = [{titre:"N° Ident"},{titre:"Chef ménage"},{titre:"Travailleur principal"},{titre:"Mont à payer"},{titre:"Travailleur remplacant"},{titre:"Mont à payer"}];
+      vm.detail_etat_presence_column = [{titre:"N° Ident"},{titre:"Chef ménage"},{titre:"Recepteur principal"},{titre:"Mont payé"},{titre:"Recepteur suppléant"},{titre:"Mont payé"},{titre:"Total"}];
+      vm.liste_paiement_column = [{titre:"Ile"},{titre:"Préfecture"},{titre:"Commune"},{titre:"Village"},{titre:"Date paiement"},{titre:"Tranche"},{titre:"Total à payer"},{titre:"Total payé"},{titre:"Payé ppal"},{titre:"Payé suppl"}];
       //initialisation variable
         vm.affiche_load = false ;
 		vm.affiche_resultat=false;
         vm.selectedItem = {} ;
         vm.selectedItem_individu = {} ;
-		
+		vm.selectedItemPaiement = {} ;
         vm.reponse_individu = {} ;
         vm.all_individus = [] ;
         vm.all_etatpresence = [] ;
+        vm.all_etat_paiement = [] ;
         vm.all_sous_projet = [] ;
         vm.all_lienparental = [] ;
         vm.all_annee = [] ;
@@ -83,25 +85,80 @@
 		vm.filtre={};
 		vm.loc = $location ;
 		vm.url=vm.loc.path();
-		vm.filtre.id_sous_projet=2;
+		
 		if(vm.url=='/suivi-activite/arse/premier-paiement/etat-paiement-1') {
 			vm.filtre.titre =" Premier Tranche";
 			vm.filtre.numero_tranche =1;
+			vm.filtre.id_sous_projet=2;
+			vm.filtre.sous_projet=" ARSE";
+			vm.filtre.etape_id=1;
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",1).then(function(result) {
 				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
 				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
 				vm.filtre.tranche= result.data.response.Phase;
+				vm.filtre.affiche_titre=" Premier Tranche de " + result.data.response.pourcentage + "%";
 			});
-		} else if(vm.url=='/suivi-activite/arse/deuxieme-paiement/etat-paiement-2') {
+		}
+		if(vm.url=='/suivi-activite/arse/deuxieme-paiement/etat-paiement-2') {
 			vm.filtre.titre =" Deuxième Tranche"
+			vm.filtre.numero_tranche =2;
+			vm.filtre.id_sous_projet=2;
+			vm.filtre.sous_projet=" ARSE";
+			vm.filtre.etape_id=2;
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",2).then(function(result) {
 				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
 				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
 				vm.filtre.tranche= result.data.response.Phase;
+				vm.filtre.affiche_titre=" Deuxième Tranche de " + result.data.response.pourcentage + "%";
 			});
-		} else if(vm.url=='/suivi-activite/arse/troisieme-paiement/etat-paiement-3') {
+		}
+		if(vm.url=='/suivi-activite/arse/troisieme-paiement/etat-paiement-3') {
 			vm.filtre.titre =" Troisième Tranche";
+			vm.filtre.numero_tranche =3;
+			vm.filtre.id_sous_projet=2;
+			vm.filtre.sous_projet=" ARSE";
+			vm.filtre.etape_id=3;
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",3).then(function(result) {
+				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
+				vm.filtre.tranche= result.data.response.Phase;
+				vm.filtre.affiche_titre=" Troisième Tranche de " + result.data.response.pourcentage + "%";
+			});
+		}		
+		if(vm.url=='/suivi-activite/covid/premier-paiement/etat-paiement-1') {
+			vm.filtre.titre =" Premier Tranche";
+			vm.filtre.affiche_titre=" Premier Tranche";
+			vm.filtre.numero_tranche =1;
+			vm.filtre.id_sous_projet=4;
+			vm.filtre.sous_projet=" COVID-19";
+			vm.filtre.etape_id=6;
+			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",6).then(function(result) {
+				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
+				vm.filtre.tranche= result.data.response.Phase;
+			});
+		}
+		if(vm.url=='/suivi-activite/covid/deuxieme-paiement/etat-paiement-2') {
+			vm.filtre.titre =" Deuxième Tranche";
+			vm.filtre.affiche_titre =" Deuxième Tranche";
+			vm.filtre.numero_tranche =2;
+			vm.filtre.id_sous_projet=4;
+			vm.filtre.sous_projet=" COVID-19";
+			vm.filtre.etape_id=7;
+			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",7).then(function(result) {
+				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
+				vm.filtre.tranche= result.data.response.Phase;
+			});
+		}
+		if(vm.url=='/suivi-activite/covid/troisieme-paiement/etat-paiement-3') {
+			vm.filtre.titre =" Troisième Tranche";
+			vm.filtre.affiche_titre =" Troisième Tranche";
+			vm.filtre.numero_tranche =3;
+			vm.filtre.id_sous_projet=4;
+			vm.filtre.sous_projet=" COVID-19";
+			vm.filtre.etape_id=8;
+			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",8).then(function(result) {
 				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
 				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
 				vm.filtre.tranche= result.data.response.Phase;
@@ -165,7 +222,7 @@
 			apiFactory.getAll("agence_p/index").then(function(result) { 
 				vm.all_agep= result.data.response;    
 			});
-			apiFactory.getAll("phaseexecution/index").then(function(result) { 
+			apiFactory.getAPIgeneraliserREST("phaseexecution/index","cle_etrangere",vm.filtre.id_sous_projet).then(function(result) {
 				vm.all_etape = result.data.response;    
 			});
 	  
@@ -173,6 +230,7 @@
          apiFactory.getAll("ile/index").then(function(result)
         { 
           vm.all_ile = result.data.response;    
+          vm.all_ile_detail = result.data.response;    
           
         });
 		// utilitaire
@@ -219,80 +277,56 @@
 			vm.actualise = false ;        
         });
       }
-		vm.filtrer = function()	{
+	// DEBUT POUR DETAIL ETAT DEJA IMPORTES
+     vm.filtre_region_detail = function()
+      {
+        apiFactory.getAPIgeneraliserREST("region/index","cle_etrangere",vm.filtredetail.id_ile).then(function(result)
+        { 
+          vm.all_region_detail = result.data.response;   
+          vm.filtredetail.id_region = null ; 
+          vm.filtredetail.id_commune = null ; 
+          vm.filtredetail.village_id = null ; 
+          
+        });
+
+      }
+
+      vm.filtre_commune_detail = function()
+      {
+        apiFactory.getAPIgeneraliserREST("commune/index","cle_etrangere",vm.filtredetail.id_region).then(function(result)
+        { 
+          vm.all_commune_detail = result.data.response; 
+          vm.filtredetail.id_commune = null ; 
+          vm.filtredetail.village_id = null ; 
+          
+        });
+      }
+      vm.filtre_village_detail = function()
+      {
+        apiFactory.getAPIgeneraliserREST("village/index","cle_etrangere",vm.filtredetail.id_commune).then(function(result)
+        { 
+          vm.all_village_detail = result.data.response;    
+          vm.filtredetail.village_id = null ; 
+          
+          
+        });
+      }
+		vm.filtrer_detail = function()	{
 			vm.affiche_load = true ;
-			apiFactory.getAPIgeneraliserREST("requete_export/index","fiche_paiement_arse",1,"village_id",vm.filtre.village_id,"id_sous_projet",vm.filtre.id_sous_projet).then(function(result) { 
-				if(result.data.response.length==0) {
-					$mdDialog.show(
-						$mdDialog.alert()
-						.parent(angular.element(document.querySelector('#popupContainer')))
-						.clickOutsideToClose(false)
-						.parent(angular.element(document.body))
-						.title("INFORMATION")
-						.textContent("Aucune liste de ménage bénéficiaire pour le filtre choisi !.")
-						.ariaLabel('Information')
-						.ok('Fermer')
-						.targetEvent()					
-					);
+			apiFactory.getAPIgeneraliserREST("fiche_paiement/index","ile_id",vm.filtredetail.ile_id,
+																	"id_region",vm.filtredetail.id_region,
+																	"id_commune",vm.filtredetail.id_commune,
+																	"village_id",vm.filtredetail.village_id,
+																	"id_sous_projet",vm.filtre.id_sous_projet,
+																	"etape_id",vm.filtredetail.etape_id).then(function(result) { 
+				if(result.data.response.length==0) { 
+					vm.showAlert("INFORMATION",'Aucun état de paiement pour le filtre choisi !.');
 				}
-					vm.all_menage_beneficiaire = result.data.response;    
+					vm.all_etat_paiement = result.data.response;    
 					vm.affiche_load = false ;
-					vm.actualise = true ;
 			});
 		}
-		vm.export_excel = function() {
-			vm.affiche_load = true ;
-			vm.all_menage_beneficiaire.forEach(function(lie) {
-				if(parseInt(lie.id)==parseInt(vm.filtre.id_fichepresence)) {
-					vm.filtre.id_sous_projet=lie.id_sous_projet;
-					vm.filtre.agex_id=lie.agex_id;
-					vm.filtre.id_annee=lie.id_annee;
-					vm.filtre.etape_id=lie.etape_id;
-				}
-			});			
-			var repertoire = "tableau_de_bord/" ;
-			apiFactory.getAPIgeneraliserREST("requete_export/index",
-                                                "id_ile",vm.filtre.id_ile,
-                                                "id_region",vm.filtre.id_region,                                               
-                                                "id_commune",vm.filtre.id_commune,
-                                                "village_id",vm.filtre.village_id,
-                                                "id_sous_projet",vm.filtre.id_sous_projet,
-												"titre",vm.filtre.titre,
-                                                "pourcentage",vm.filtre.pourcentage,
-                                                "agep_id",vm.filtre.agep_id,
-                                                "fiche_paiement_arse",1,
-                                                "montant_a_payer",vm.filtre.montant_a_payer,
-                                                "export",1
-                                                ).then(function(result) {               
-					vm.status =  result.data.status ;
-					if(vm.status)  {
-						// console.log(result.data.response);
-						var ile =	result.data.ile;
-						var region =result.data.region;
-						var commune =result.data.commune;
-						var village =result.data.village;
-						var nom_ile =result.data.nom_ile;
-						var microprojet =result.data.microprojet;
-						var nom_agex =result.data.nom_agex;
-						var date_edition=result.data.date_edition;
-						var chemin=result.data.chemin;
-						var name_file1=result.data.name_file1;
-						var name_file2=result.data.name_file2;
-						/*Ménage Apte*/
-						if(result.data.fichier=="OK") {
-							var name_file=result.data.name_file;
-							window.location = apiUrlExcel + chemin + name_file; 
-						}	
-						vm.affiche_load =false; 
-					} else {
-						vm.affiche_load =false;
-						console.log(result.data);
-						var message=result.data.message;
-						var message=result.data.nom_file;
-						vm.showAlert('Export en excel',message);
-					}                      
-			});
-		}
+		// FIN POUR DETAIL ETAT DEJA IMPORTES
 		vm.selection= function (item)  {
 			if ((!vm.affiche_load)&&(!vm.affichage_masque))  {
 				vm.selectedItem = item;
@@ -304,6 +338,18 @@
 				item.$selected = false;
 			});
 			vm.selectedItem.$selected = true;
+		})
+		vm.selectionpaiement= function (item)  {
+			if ((!vm.affiche_load))  {
+				vm.selectedItemPaiement = item;
+			}       
+		}
+		$scope.$watch('vm.selectedItemPaiement', function() {
+			if (!vm.all_etat_paiement) return;
+			vm.all_etat_paiement.forEach(function(item) {
+				item.$selected = false;
+			});
+			vm.selectedItemPaiement.$selected = true;
 		})
 		//FIN CHECK BOK MULTISELECT
 		vm.showAlert = function(titre,textcontent) {         
@@ -331,6 +377,11 @@
 			if (dat) {
 				var date = new Date(dat);
 				var mois = date.getMonth()+1;
+				var jour =date.getDate();
+				if(parseInt(jour) <10)
+					jour='0' + jour;
+				if(parseInt(mois) <10)
+					mois='0' + mois;
 				var dates = (date.getDate()+"-"+mois+"-"+date.getFullYear());
 				return dates;
 			}          
@@ -363,38 +414,67 @@
             }
 		}
 		vm.Controler_import_paiement_arse= function () {
+			// Controler le choix du village,la tranche par rapport au fichier excel
 			vm.affiche_load = true ;
 			apiFactory.getAPIgeneraliserREST("requete_import/index",
                                                 "nomfichier",vm.fichier,
                                                 "chemin",vm.repertoire,
                                                 "controle",1,
-												"id_sous_projet",2
+												"id_sous_projet",vm.filtre.id_sous_projet,
+												"id_village",vm.filtre.village_id,
+												"choix_village",vm.filtre.village,
+												"numero_tranche",vm.filtre.numero_tranche,
+												"libelle_tranche",vm.filtre.titre,
+												"pourcentage",vm.filtre.pourcentage,
+												"etape_id",vm.filtre.etape_id
                                                 ).then(function(result) {               
-					vm.status =  result.data.reponse ;
+					vm.status =  result.data.status ;
 					if(vm.status)  {
-						vm.affiche_load = true ;
-						// vm.Importer_paiement_arse();
-					} else {
-						vm.retour =result.data.retour;
-						var mess="Télécharger le fichier puis corriger les erreurs : VOIR LES CELLULES COLORES EN ROUGE";
 						vm.affiche_load =false;
-						vm.showAlert('ERREUR Import en excel',mess);
-						window.location = apiUrlbase + result.data.chemin + result.data.nomfichier;
+						// Après controle sans erreur detecté => place à l'importation dans la BDD
+						vm.Importer_paiement_arse();
+					} else {
+						vm.deja_importe=result.data.retour.deja_importe;
+						vm.village_different=result.data.retour.village_different;
+						vm.tranche_different=result.data.retour.tranche_different;
+						vm.sous_projet_different=result.data.retour.sous_projet_different;
+						if(vm.deja_importe.length >0 || vm.village_different.length >0 || vm.tranche_different.length >0 || vm.sous_projet_different.length >0) {
+							if(vm.deja_importe.length >0) {
+								vm.showAlert('ERREUR IMPORTATION',vm.deja_importe);
+							}	
+							if(vm.village_different.length >0) {
+								vm.showAlert('ERREUR IMPORTATION',vm.village_different);
+							}	
+							if(vm.tranche_different.length >0) {
+								vm.showAlert('ERREUR IMPORTATION',vm.tranche_different);
+							}	
+							if(vm.sous_projet_different.length >0) {
+								vm.showAlert('ERREUR IMPORTATION',vm.sous_projet_different);
+							}	
+							vm.affiche_load =false;
+						} else {
+							vm.retour =result.data.retour;
+							var mess="Télécharger le fichier puis corriger les erreurs : VOIR LES CELLULES COLORES EN ROUGE";
+							vm.affiche_load =false;
+							vm.showAlert('ERREUR Import en excel',mess);
+							window.location = apiUrlbase + result.data.chemin + result.data.nomfichier;
+						}	
 					}                      
 			});			
 		}
 		vm.Importer_paiement_arse= function () {
 			vm.affiche_load = true ;
-			apiFactory.getAPIgeneraliserREST("importation_menage/index",
+			apiFactory.getAPIgeneraliserREST("requete_import/index",
                                                 "nomfichier",vm.fichier,
                                                 "chemin",vm.repertoire,
-                                                "import",1,
-												"id_sous_projet",vm.filtre.id_sous_projet
+                                                "controle",2,
+												"id_sous_projet",vm.filtre.id_sous_projet,
+												"etape_id",vm.filtre.etape_id
                                                 ).then(function(result) {   
 					vm.status =  result.data.status ;
 					if(vm.status)  {
 						vm.affiche_load =false; 
-						vm.all_beneficiaires=result.data.menage;
+						vm.all_menage_beneficiaire=result.data.menage;
 						vm.sous_projet=result.data.sous_projet;
 						vm.nom_ile=result.data.nom_ile;
 						vm.nom_prefecture=result.data.nom_prefecture;
@@ -409,6 +489,30 @@
 						vm.showAlert('ERREUR Import en excel',mess);
 						window.location = apiUrlbase + vm.repertoire + vm.fichier;
 					}                      
+			});			
+		}
+		vm.modifierVillage = function() {
+			vm.filtre.vague=null;
+			vm.filtre.zip=null;
+			vm.all_village.forEach(function(vil) {
+				if(parseInt(vil.id)==parseInt(vm.filtre.village_id)) {
+					vm.filtre.village = vil.Village; 
+					vm.filtre.vague=vil.vague;
+					vm.filtre.zip=vil.id_zip;
+					vm.nontrouvee=false;
+				}
+			});			
+		}
+		vm.modifierVillageDetail = function() {
+			vm.filtredetail.vague=null;
+			vm.filtredetail.zip=null;
+			vm.all_village.forEach(function(vil) {
+				if(parseInt(vil.id)==parseInt(vm.filtredetail.village_id)) {
+					vm.filtredetail.village = vil.Village; 
+					vm.filtredetail.vague=vil.vague;
+					vm.filtredetail.zip=vil.id_zip;
+					vm.nontrouvee=false;
+				}
 			});			
 		}
 		

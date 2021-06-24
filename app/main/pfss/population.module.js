@@ -17,6 +17,7 @@
             // 'app.pfss.traitement',
             // 'app.pfss.validationdonnees',
             // 'app.pfss.importationdonnees',
+            // 'app.pfss.reporting',
             //'app.pfss.importdecoupage',
             'app.pfss.registre_beneficiaire',
             // 'app.pfss.annuaire',
@@ -25,7 +26,7 @@
             //'app.pfss.communaute',
             'app.pfss.suiviactivite',
             // 'app.pfss.mereleaderpereleader',
-            'app.pfss.contratconsultant',
+           // 'app.pfss.contratconsultant',
             // 'app.pfss.enquete',
             'app.pfss.contrat_ugp_agex',
 
@@ -51,8 +52,9 @@
 
             'app.pfss.formation_ml',
             'app.pfss.realisation_ebe',
-            'app.pfss.formation_thematique_agex'
-
+            'app.pfss.formation_thematique_agex',
+            // 'app.pfss.tdb',
+            'app.pfss.planning_ebe'
 
  
        ])

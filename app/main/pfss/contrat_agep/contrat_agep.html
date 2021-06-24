@@ -251,7 +251,7 @@
                         </table>
                     </md-tab> 
                   
-                    <md-tab label="Gérer paiement" ng-disabled="!vm.selectedItemContrat_agep.id" ng-click="vm.click_etat_paiement()">
+                    <!--md-tab label="Gérer paiement" ng-disabled="!vm.selectedItemContrat_agep.id" ng-click="vm.click_etat_paiement()">
                         <div class="price-table style-1 md-whiteframe-1dp" layout="column">
                             <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                                 <div layout="row" layout-align="start center">
@@ -298,11 +298,6 @@
                             <table ng-table="agep" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
                                 <thead>
                                     <tr>
-                                        <!--th class="secondary-text" ng-repeat="c in ::vm.etat_paiement_column">
-                                            <div class="table-header">
-                                                <span class="column-title text-center">{{c.titre}}</span>
-                                            </div>
-                                        </th-->
                                         <th class="secondary-text">
                                           <div class="table-header">
                                             <span class="column-title">Ile</span>
@@ -333,16 +328,6 @@
                                             <span class="column-title">Vague</span>
                                           </div>
                                         </th>
-                                        <!--th class="secondary-text" ng-show="vm.type_sous_projet!='IDB'">
-                                          <div class="table-header">
-                                            <span class="column-title">Village</span>
-                                          </div>
-                                        </th-->
-                                        <!--th class="secondary-text" ng-show="vm.type_sous_projet=='IDB'">
-                                          <div class="table-header">
-                                            <span class="column-title">Communaute</span>
-                                          </div>
-                                        </th-->
                                         <th class="secondary-text">
                                           <div class="table-header">
                                             <span class="column-title">numéro d’ordre de paiement</span>
@@ -378,11 +363,6 @@
                                             <span class="column-title">Pourcentage paiement</span>
                                           </div>
                                         </th>
-                                        <!--th class="secondary-text">
-                                          <div class="table-header">
-                                            <span class="column-title">Montant total prévu</span>
-                                          </div>
-                                        </th-->
                                         <th class="secondary-text">
                                           <div class="table-header">
                                             <span class="column-title">Montant perçu</span>
@@ -487,35 +467,7 @@
                                               </md-input-container>
                                           </span>
                                           <span ng-if="!paie.$edit"> {{paie.village.vague}}</span>
-                                        </td>
-                                      <!--td ng-show="vm.type_sous_projet!='IDB'">
-                                        <span ng-if="paie.$edit">
-                                          <md-input-container style="width:100%; display: flex !important;" ng-if="vm.type_sous_projet!='IDB'">
-                                            <label>Village</label>
-                                            <md-select ng-model="paie.id_village"  style="width:90px;overflow: hidden;text-overflow: ellipsis;" ng-disabled="!paie.id_commune" ng-change='vm.change_village(paie)'>
-                                              <md-option value=''>&nbsp;</md-option>
-                                              <md-option ng-repeat="vil in vm.allVillage" value="{{vil.id}}">
-                                              {{vil.Village}}
-                                              </md-option>
-                                            </md-select>
-                                          </md-input-container>  
-                                        </span>
-                                        <span ng-if="!paie.$edit">{{paie.village.Village}}</span>
-                                      </td-->
-                                      <!--td ng-show="vm.type_sous_projet=='IDB'">
-                                        <span ng-if="paie.$edit">
-                                          <md-input-container style="width:100%; display: flex !important;" ng-if="vm.type_sous_projet=='IDB'">
-                                            <label>Communaute</label>
-                                            <md-select ng-model="paie.id_communaute"  style="width:90px;overflow: hidden;text-overflow: ellipsis;" ng-disabled="!paie.id_commune" ng-change='vm.change_village(paie)'>
-                                              <md-option value=''>&nbsp;</md-option>
-                                              <md-option ng-repeat="com in vm.allCommunaute" value="{{com.id}}">
-                                              {{com.libelle}}
-                                              </md-option>
-                                            </md-select>
-                                          </md-input-container>  
-                                        </span>
-                                        <span ng-if="!paie.$edit">{{paie.communaute.libelle}}</span>
-                                      </td-->  
+                                        </td> 
                                       <td>
                                           <span ng-if="paie.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
@@ -582,15 +534,6 @@
                                           </span>
                                           <span ng-if="!paie.$edit"> {{paie.pourcentage}} %</span>
                                         </td>
-                                        <!--td>
-                                          <span ng-if="paie.$edit">
-                                              <md-input-container style="width:100%;display: flex !important;">
-                                                <label>Montant total prevu</label>                                                
-                                                <input type="number" name="montant_total_prevu"  ng-model="paie.montant_total_prevu" ng-change="vm.change_montantT_pourcentage(paie)"/>
-                                              </md-input-container>
-                                          </span>
-                                          <span ng-if="!paie.$edit"> {{paie.montant_total_prevu}} KMF</span>
-                                        </td-->
                                         <td>
                                           <span ng-if="paie.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
@@ -632,7 +575,7 @@
                                 </tbody>
                             </table>
                         </div>
-                    </md-tab>
+                    </md-tab-->
                     <md-tab label="AVENANT CONTRAT AGEP" ng-disabled="!vm.selectedItemContrat_agep.id" ng-click="vm.click_avenant_agep()">
                         <!--div style="widht:100%;">    
                             <md-button type="submit"class="md-raised md-accent " aria-label="Nouveau" ng-click="vm.ajouterAvenant_agep()" style="width:10%;" ng-disabled="vm.selectedItemContrat_agep.statu=='RESILIE'">

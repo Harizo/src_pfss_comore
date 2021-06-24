@@ -1,0 +1,130 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Données de bases</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;"> Objectif</span>
+                </div>
+    
+                <div class="title">Objectif</div>
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>
+                <md-tabs md-dynamic-height layout="column" flex>
+                    <md-tab label="Objectif" ng-click="vm.Select_table(1)" layout="column" flex>
+                        <md-tab-body>
+                            <fieldset style="width: 100%">
+                                <legend>
+                                        Objectif
+                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterObjectif_tdb()">
+                                      <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
+                                    </md-button>
+                                </legend>
+                                <table ng-table="tablePrestataireObjectif_tdb" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="age in ::vm.objectif_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{age.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="tdb in vm.all_tdb"  ng-class="{selected: tdb.$selected}" ng-click="vm.selectionObjectif_tdb(tdb)">           
+                                            <td style="width:10% !important">
+                                                <span ng-if="tdb.$edit">
+													<md-input-container style="width:100%;">
+													  <label>Île</label>
+														<md-select ng-model="tdb.ile_id" name="ile" ng-change="vm.modifierIle(tdb)">														 
+														  <md-option ng-repeat="ile in vm.all_ile" value="{{ile.id}}" >
+															{{ile.Ile}}
+														  </md-option>
+														</md-select>
+													</md-input-container>
+												</span>
+                                                <span ng-if="!tdb.$edit">{{tdb.ile}}</span>
+                                            </td>
+                                            <td style="width:5% !important">
+                                                <span ng-if="tdb.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;margin:0 !important;padding:0 !important;">
+													  <label>Vague</label>
+														<md-select ng-model="tdb.vague" name="ile" style="margin:0 !important;padding:0 !important;">														 
+														  <md-option value=""  style="height:80% !important;margin:0 !important;padding:0 !important;">&nbsp;</md-option>
+														  <md-option value="1"  style="height:80% !important;margin:0 !important;padding:0 !important;">1</md-option>
+														  <md-option value="2"  style="height:80% !important;margin:0 !important;padding:0 !important;">2</md-option>
+														  <md-option value="3"  style="height:80% !important;margin:0 !important;padding:0 !important;">3</md-option>
+														</md-select>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!tdb.$edit">{{tdb.vague}}</span>
+                                            </td>
+                                            <td style="width:65% !important">
+                                                <span ng-if="tdb.$edit">
+													<md-input-container flex="100" flex-gt-xs="15">
+													  <label>Indicateur</label>
+														<md-select ng-model="tdb.indicateur_id" name="indicateur_id" ng-change="vm.modifierIndicateur(tdb)">
+														  <md-option ng-repeat="ind in vm.all_indicateur" value="{{ind.id}}" >
+															{{ind.description}}
+														  </md-option>
+														</md-select>
+													</md-input-container>
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Indicateur</label>
+                                                        <input type="text" ng-model="tdb.indicateur"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!tdb.$edit">{{tdb.indicateur}}</span>
+                                            </td>
+                                            <td style="width:8% !important">
+                                                <span ng-if="tdb.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Objectif</label>
+                                                        <input type="number" ng-model="tdb.objectif_nombre"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!tdb.$edit">{{tdb.objectif_nombre}}</span>
+                                            </td>
+                                            <td style="width:6% !important">
+                                                <span ng-if="tdb.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Nbr village</label>
+                                                        <input type="number" ng-model="tdb.objectif_village"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!tdb.$edit">{{tdb.objectif_village}}</span>
+                                            </td>
+                                            <td style="width:6% !imposrtant">
+                                                <a ng-if="!tdb.$edit" ng-click="vm.modifierObjectif_tdb(tdb)" title="Modifier">
+                                                    <span class="icon-table-edit"></span>
+                                                </a>
+                                                <a ng-if="!tdb.$edit" ng-click="vm.insert_in_base(tdb,0)" title="Supprimer">
+                                                    <span class="icon-delete"></span>
+                                                </a>
+                                                <a ng-if="tdb.$edit" ng-click="vm.annulerObjectif_tdb(tdb)" title="Annuler modification">
+                                                    <span class="icon-cancel"></span>
+                                                </a>
+                                                <a ng-if="tdb.$edit && tdb.indicateur_id>0 && tdb.ile_id>'' && tdb.vague>''" ng-click="vm.insert_in_base(tdb,0)" title="Sauvegarder">
+                                                    <span class="icon-content-save"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>       
+                    <md-tab>       
+                    </md-tab>       
+                </md-tabs>
+            </div>
+        </div>
+    </div>
+    
