@@ -18,7 +18,7 @@
             <div class="form-wrapper">
                 <div style="clear:both;"></div>
                 <md-tabs md-dynamic-height>
-                    <md-tab label="état de paiement ARSE : {{vm.filtre.titre}} de {{vm.filtre.pourcentage}}%">
+                    <md-tab label="état de paiement {{vm.filtre.sous_projet}} : {{vm.filtre.affiche_titre}}">
                         <md-progress-circular ng-if="vm.affiche_load" class="md-accent" aria-label="Rating" md-mode="indeterminate" md-diameter="64"></md-progress-circular> 
                         <div ng-if="vm.affiche_load" style="position:relative;top: -30px;  left: 60px;color: #039be5">
                             Chargement,veuillez patienter s'il vous plait ...
@@ -77,7 +77,7 @@
                                 </md-input-container>
                                 <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Village</label>
-                                    <md-select ng-model="vm.filtre.village_id" name="village" ng-disabled="!vm.filtre.id_commune"  required>
+                                    <md-select ng-model="vm.filtre.village_id" name="village" ng-disabled="!vm.filtre.id_commune"  required ng-change="vm.modifierVillage()">
                                       <md-option ng-repeat="village in vm.all_village" value="{{village.id}}" >
                                         {{village.Village}}
                                       </md-option>
@@ -89,6 +89,14 @@
                                         <span>Village obligatoire</span>
                                       </div>
                                     </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="5">
+                                  <label>Vague</label>
+										<input type="text"  name="vague" ng-model="vm.filtre.vague" readonly>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="5">
+                                  <label>ZIP</label>
+										<input type="text"  name="zip" ng-model="vm.filtre.zip" readonly>
                                 </md-input-container>
 								<div layout="column" layout-gt-xs="col" flex flex-gt-xs="10" style="display:none;">
 									<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
@@ -197,22 +205,11 @@
 									</md-input-container>								
                             </div>
                         </form>
-								<div>                            
-									<section layout="row" layout-sm="column" layout-align="left" layout-wrap>							 
-										<!--md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
-										  ng-if="!vm.affiche_load" ng-disabled="filtrepardateform.$invalid||vm.affiche_load" ng-click="vm.filtrer(vm.filtre)">
-											Actualiser
-										</md-button-->
-										<!--md-button ng-if="!vm.affiche_load" ng-disabled="filtrepardateform.$invalid||vm.affiche_load || !vm.filtre.montant_a_payer" type="submit" class="md-raised md-primary" aria-label="Enregistrer" ng-disabled="formEffAgeSexe.$invalid" ng-click="vm.export_excel(vm.filtre)"> 
-											Exporter en Excel											 
-										</md-button-->
-									</section>                         
-                            </div>
 							<div>                            
 								<section layout="row" layout-sm="column" layout-align="left" layout-wrap>	
 									<div style="clear:both;"></div>
 									<div class="file-upload" style="display:block;width:100%;">
-										<input file-uploader style="color:#772e03 !important;" id="fichier_chef_menage" name="fichier" type="file" custom-on-change="uploadFile"  ng-multiple="false" />
+										<input file-uploader ng-disabled="!vm.filtre.village_id" style="color:#772e03 !important;width:40% !important;" id="fichier_chef_menage" name="fichier" type="file" custom-on-change="uploadFile"  ng-multiple="false" />
 										<button ng-click="vm.uploadFile(vm.filtre)" ng-disabled="!vm.monfichier" 
 											style="background: #ff843d; /* Old browsers */
 												background: -moz-linear-gradient(top,  #ff843d 0%, #fc8a49 17%, #ef7d3b 33%, #db6520 67%, #ce5712 83%, #ba4603 100%); /* FF3.6+ */
@@ -252,9 +249,197 @@
                               <td>{{menage.identifiant_menage}}</td>
                               <td>{{menage.nomchefmenage}}</td>
                               <td>{{menage.NomTravailleur}}</td>
-                              <td>{{vm.filtre.montant_a_payer |number:0}}</td>
+                              <td>{{vm.filtre.montantpayetravailleur |number:0}}</td>
                               <td>{{menage.NomTravailleurSuppliant}}</td>
-                              <td>&nbsp;</td>
+                              <td>{{vm.filtre.montantpayesuppliant |number:0}}</td>
+                              <td>{{(vm.filtre.montantpayesuppliant * 1) (vm.filtre.montantpayetravailleur * 1) |number:0}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </md-tab>   
+                    <md-tab label="Liste de paiement {{vm.filtre.sous_projet}} déjà importé">
+                        <md-progress-circular ng-if="vm.affiche_load" class="md-accent" aria-label="Rating" md-mode="indeterminate" md-diameter="64"></md-progress-circular> 
+                        <div ng-if="vm.affiche_load" style="position:relative;top: -30px;  left: 60px;color: #039be5">
+                            Chargement,veuillez patienter s'il vous plait ...
+                        </div>
+                        <form name="filtrepardecoupageform" class="md-inline-form" novalidate >
+                             <div layout="column" layout-gt-xs="row" flex>
+                                <md-input-container flex="100" flex-gt-xs="15">
+                                  <label>Île</label>
+                                    <md-select ng-model="vm.filtredetail.id_ile" name="ile" ng-change="vm.filtre_region_detail()" required>
+                                     
+                                      <md-option ng-repeat="ile in vm.all_ile_detail" value="{{ile.id}}" >
+                                        {{ile.Ile}}
+                                      </md-option>
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardecoupageform.ile.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Île obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="15">
+                                  <label>Préfecture</label>
+                                    <md-select ng-model="vm.filtredetail.id_region" name="region" ng-change="vm.filtre_commune_detail()" ng-disabled="!vm.filtredetail.id_ile" >
+                                      
+                                      <md-option ng-repeat="region in vm.all_region_detail" value="{{region.id}}" >
+                                        {{region.Region}}
+                                      </md-option>
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardecoupageform.ile.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Préfecture  obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="15">
+                                  <label>Commune</label>
+                                    <md-select ng-model="vm.filtredetail.id_commune" name="commune" ng-change="vm.filtre_village_detail()" ng-disabled="!vm.filtredetail.id_region"  >
+                                     
+                                      <md-option ng-repeat="commune in vm.all_commune_detail" value="{{commune.id}}" >
+                                        {{commune.Commune}}
+                                      </md-option>
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardecoupageform.ile.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Commune obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="15">
+                                  <label>Village</label>
+                                    <md-select ng-model="vm.filtredetail.village_id" name="village" ng-disabled="!vm.filtredetail.id_commune"  >
+                                      <md-option ng-repeat="village in vm.all_village_detail" value="{{village.id}}" >
+                                        {{village.Village}}
+                                      </md-option>
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardecoupageform.ile.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Village obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="15" style="display:none;">
+                                  <label>Sous-projet</label>
+                                    <md-select ng-model="vm.filtredetail.id_sous_projet" name="sous_projet" ng-disabled="!vm.filtredetail.village_id">
+                                      <md-option value="">&nbsp;</md-option>
+                                      <md-option ng-repeat="ssp in vm.all_sous_projet" value="{{ssp.id}}" >
+                                        {{ssp.description}}
+                                      </md-option>
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardecoupageform.sous_projet.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Sous-projet obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="10" style="display:none;">
+                                  <label>Agence d'execution</label>
+                                    <md-select ng-model="vm.filtredetail.agex_id" name="agence_ex" ng-disabled="!vm.filtredetail.village_id">
+                                      <md-option value="">&nbsp;</md-option>
+                                      <md-option ng-repeat="gex in vm.all_agex" value="{{gex.id}}" >
+                                        {{gex.Nom}}
+                                      </md-option>
+
+                                    </md-select>
+                                    <div ng-messages="filtrepardecoupageform.agence_ex.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>AGEX obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="10" style="display:none;">
+                                  <label>Année</label>
+                                    <md-select ng-model="vm.filtredetail.id_annee" name="id_annee" ng-disabled="!vm.filtredetail.village_id" >
+                                      <md-option value="">&nbsp;</md-option>
+                                      <md-option ng-repeat="an in vm.all_annee" value="{{an.id}}" >
+                                        {{an.annee}}
+                                      </md-option>
+                                    </md-select>
+                                    <div ng-messages="filtrepardecoupageform.id_annee.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Année obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="5">
+                                  <label>Vague</label>
+										<input type="text"  name="vague" ng-model="vm.filtredetail.vague" readonly>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="5">
+                                  <label>ZIP</label>
+										<input type="text"  name="zip" ng-model="vm.filtredetail.zip" readonly>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="10">
+                                  <label>Tranche</label>
+                                    <md-select ng-model="vm.filtredetail.etape_id" name="etape_id" ng-disabled="!vm.filtredetail.village_id">
+                                      <md-option value="">&nbsp;</md-option>
+                                      <md-option ng-repeat="et in vm.all_etape" value="{{et.id}}" >
+                                        {{et.Phase}}
+                                      </md-option>
+                                    </md-select>
+                                    <div ng-messages="filtrepardecoupageform.etape_id.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Tranche obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>                              
+								<div layout="column" layout-gt-xs="col" flex flex-gt-xs="10">
+									<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+										  ng-if="!vm.affichage_masque" ng-disabled="filtrepardecoupageform.$invalid||vm.affiche_load || vm.selectedItem.id" ng-click="vm.filtrer_detail(vm.filtredetail)"  style="height:40% !important;">
+										  Actualiser
+									</md-button>
+								</div>	
+                            </div>
+								<div>                            
+									<section layout="row" layout-sm="column" layout-align="left" layout-wrap>							 
+										<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+										  ng-if="!vm.affiche_load" ng-disabled="filtrepardecoupageform.$invalid||vm.affiche_load" ng-click="vm.filtrer_detail(vm.filtredetail)">
+											Actualiser
+										</md-button>
+										<!--md-button ng-if="!vm.affiche_load" ng-disabled="filtrepardecoupageform.$invalid||vm.affiche_load" type="submit" class="md-raised md-primary" aria-label="Enregistrer" ng-disabled="formEffAgeSexe.$invalid" ng-click="vm.export_excel(vm.filtredetail)"> 
+											Exporter en Excel											 
+										</md-button-->
+									</section>                         
+                            </div>
+                        </form>
+                        
+                        <table class="dataTable row-border hover cell-border text-center" datatable="ng"
+                          dt-options="vm.dtOptions" ng-if="!vm.affichage_masque">
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::vm.liste_paiement_column">
+                                <div class="table-header">
+                                  <span class="column-title text-center">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="paie in vm.all_etat_paiement  track by $index"  ng-class="{selected: paie.$selected}" ng-click="vm.selectionpaiement(paie)">
+                              <td>{{paie.ile}}</td>
+                              <td>{{paie.region}}</td>
+                              <td>{{paie.commune}}</td>
+                              <td>{{paie.village}}</td>
+                              <td>{{vm.formatDateListe(paie.datepaiement)}}</td>
+                              <td>{{paie.tranche}}</td>
+                              <td>{{paie.montanttotalapayer}}</td>
+                              <td>{{paie.montanttotalpaye}}</td>
+                              <td>{{paie.montantpayetravailleur}}</td>
+                              <td>{{paie.montantpayesuppliant}}</td>
                             </tr>
                           </tbody>
                         </table>

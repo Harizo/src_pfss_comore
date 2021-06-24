@@ -38,7 +38,7 @@
         vm.affichage_masque_individu = false ;
         vm.date_now = new Date() ;
 		vm.filtre={};
-		vm.filtre.id_sous_projet=2; //ARSE
+		
         vm.disable_button = false ;
 		
 		vm.loc = $location ;
@@ -46,32 +46,73 @@
 		if(vm.url=='/suivi-activite/arse/premier-fiche-recepteur/fiche-recepteur-1') {
 			vm.filtre.titre =" Premier Tranche";
 			vm.filtre.numero_tranche =1;
+			vm.filtre.sous_projet=" ARSE";
+			vm.filtre.etape_id=1;
+			vm.filtre.id_sous_projet=2; //ARSE
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",1).then(function(result) {
 				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
 				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
 				vm.filtre.tranche= result.data.response.Phase;
 			});
-		} else if(vm.url=='/suivi-activite/arse/deuxieme-fiche-recepteur/fiche-recepteur-2') {
+		}
+		if(vm.url=='/suivi-activite/arse/deuxieme-fiche-recepteur/fiche-recepteur-2') {
 			vm.filtre.titre =" Deuxième Tranche";
 			vm.filtre.numero_tranche =2;
+			vm.filtre.sous_projet=" ARSE";
+			vm.filtre.etape_id=1;
+			vm.filtre.id_sous_projet=2; //ARSE
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",2).then(function(result) {
 				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
 				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
 				vm.filtre.tranche= result.data.response.Phase;
-				console.log(vm.filtre.montant_a_payer);
-				console.log(vm.filtre.pourcentage);
-				console.log(vm.filtre.tranche);
 			});
-		} else if(vm.url=='/suivi-activite/arse/troisieme-fiche-recepteur/fiche-recepteur-3') {
+		}
+		if(vm.url=='/suivi-activite/arse/troisieme-fiche-recepteur/fiche-recepteur-3') {
 			vm.filtre.titre =" Troisième Tranche";
 			vm.filtre.numero_tranche =3;
+			vm.filtre.sous_projet=" ARSE";
+			vm.filtre.etape_id=1;
+			vm.filtre.id_sous_projet=2; //ARSE
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",3).then(function(result) {
 				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
 				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
 				vm.filtre.tranche= result.data.response.Phase;
-				console.log(vm.filtre.montant_a_payer);
-				console.log(vm.filtre.pourcentage);
-				console.log(vm.filtre.tranche);
+			});
+		}
+		if(vm.url=='/suivi-activite/covid/premier-fiche-recepteur/fiche-recepteur-1') {
+			vm.filtre.titre =" Premier Tranche";
+			vm.filtre.numero_tranche =1;
+			vm.filtre.sous_projet=" COVID-19";
+			vm.filtre.etape_id=6;
+			vm.filtre.id_sous_projet=4; //COVID
+			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",6).then(function(result) {
+				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
+				vm.filtre.tranche= result.data.response.Phase;
+			});
+		}
+		if(vm.url=='/suivi-activite/covid/deuxieme-fiche-recepteur/fiche-recepteur-2') {
+			vm.filtre.titre =" Deuxième Tranche";
+			vm.filtre.numero_tranche =2;
+			vm.filtre.sous_projet=" COVID-19";
+			vm.filtre.etape_id=7;
+			vm.filtre.id_sous_projet=4; //COVID
+			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",7).then(function(result) {
+				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
+				vm.filtre.tranche= result.data.response.Phase;
+			});
+		}
+		if(vm.url=='/suivi-activite/covid/troisieme-fiche-recepteur/fiche-recepteur-3') {
+			vm.filtre.titre =" Troisième Tranche";
+			vm.filtre.numero_tranche =3;
+			vm.filtre.sous_projet=" COVID-19";
+			vm.filtre.etape_id=8;
+			vm.filtre.id_sous_projet=4; //COVID
+			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",8).then(function(result) {
+				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
+				vm.filtre.tranche= result.data.response.Phase;
 			});
 		}
         vm.id_user_cookies = $cookieStore.get('id');
@@ -99,8 +140,7 @@
 		});
          apiFactory.getAll("ile/index").then(function(result)
         { 
-          vm.all_ile = result.data.response;    
-          
+          vm.all_ile = result.data.response;              
         });
 		// utilitaire
 		vm.affiche_sexe = function(parametre) {
@@ -184,6 +224,7 @@
 												"pourcentage",vm.filtre.pourcentage,
                                                 "agep_id",vm.filtre.agep_id,
                                                 "montant_a_payer",vm.filtre.montant_a_payer,
+                                                "etape_id",vm.filtre.etape_id,
                                                 "export",1
                                                 ).then(function(result) {               
 						vm.status =  result.data.status ;
@@ -212,6 +253,7 @@
 															"agep_id",vm.filtre.agep_id,
 															"fiche_paiement_arse",1,
 															"montant_a_payer",vm.filtre.montant_a_payer,
+															"etape_id",vm.filtre.etape_id,
 															"export",1
 															).then(function(result) {               
 								vm.status =  result.data.status ;

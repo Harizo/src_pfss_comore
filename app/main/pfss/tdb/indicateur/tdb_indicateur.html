@@ -1,0 +1,79 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Tableau de bord</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;"> Indicateur</span>
+                </div>
+    
+                <div class="title">Indicateur</div>
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>
+                <md-tabs md-dynamic-height layout="column" flex>
+                    <md-tab label="Liste des Indicateurs" ng-click="vm.Select_table(1)" layout="column" flex>
+                        <md-tab-body>
+                            <fieldset style="width: 100%">
+                                <legend>
+                                        Indicateur
+                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterIndicateur()">
+                                      <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
+                                    </md-button>
+
+                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('lien/index','see_typeplainte')">
+                                      <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
+                                    </md-button>
+                                </legend>
+                                <table ng-table="tablePrestataireIndicateur" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                                    <thead>
+                                        <tr>
+                                            <th class="secondary-text" ng-repeat="age in ::vm.Indicateur_column">
+                                                <div class="table-header">
+                                                    <span class="column-title">{{age.titre}}</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="lien in vm.allRecordsindicateur"  ng-class="{selected: lien.$selected}" ng-click="vm.selectionIndicateur(lien)">           
+                                            <td>
+                                                <span ng-if="lien.$edit">
+                                                    <md-input-container style="width:100%;display: flex !important;">
+                                                        <label>Description</label>
+                                                        <input name="description" type="text" ng-model="lien.description"/>
+                                                    </md-input-container>   
+                                                </span>
+                                                <span ng-if="!lien.$edit">{{lien.description}}</span>
+                                            </td>
+                                            <td>
+                                                <a ng-if="!lien.$edit" ng-click="vm.modifierIndicateur(lien)" title="Modifier">
+                                                    <span class="icon-table-edit"></span>
+                                                </a>
+                                                <a ng-if="!lien.$edit" ng-click="vm.supprimerIndicateur(lien)" title="Supprimer">
+                                                    <span class="icon-delete"></span>
+                                                </a>
+                                                <a ng-if="lien.$edit" ng-click="vm.annulerIndicateur(lien)" title="Annuler modification">
+                                                    <span class="icon-cancel"></span>
+                                                </a>
+                                                <a ng-if="lien.$edit && lien.description" ng-click="vm.ajout(lien,0)" title="Sauvegarder">
+                                                    <span class="icon-content-save"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </md-tab-body>
+                    </md-tab>       
+                </md-tabs>
+            </div>
+        </div>
+    </div>
+    
