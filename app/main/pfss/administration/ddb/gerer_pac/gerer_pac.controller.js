@@ -581,7 +581,7 @@ vm.pac_column =[
                       .cancel('annuler');
             $mdDialog.show(confirm).then(function()
             {          
-              ajoutPac(vm.selectedItemPac_detail,1);
+              ajoutPac_detail(vm.selectedItemPac_detail,1);
             }, function() {
             });
           }
