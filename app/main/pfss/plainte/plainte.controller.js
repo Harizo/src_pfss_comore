@@ -71,6 +71,7 @@
         //fin pour les sous tâches
         vm.allActivite = [] ;
         vm.allPlainte = [] ;
+        vm.allTranche = [] ;
         vm.allParent = [] ;
         vm.ListeParent = [] ;
 		vm.all_type_plainte=[];
@@ -83,6 +84,7 @@
 		vm.affichage_masque=false;
 		vm.code_plainte ="";
 		vm.numeroplainte =1;
+		vm.id_sous_projet=1;
         // Data
         vm.dtOptions = {
         dom       : '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
@@ -110,113 +112,108 @@
 		apiFactory.getAll("sous_projet/index").then(function(result){
 			vm.allSous_projet = result.data.response;
 		});    
-        apiFactory.getAll("ile/index").then(function(result)
-        { 
-          vm.all_ile = result.data.response;    
-          
+        apiFactory.getAll("ile/index").then(function(result) { 
+			vm.all_ile = result.data.response;             
         });	
-      vm.filtre_region = function()
-      {
-        apiFactory.getAPIgeneraliserREST("region/index","cle_etrangere",vm.filtre.id_ile).then(function(result)
-        { 
-          vm.all_region = result.data.response;   
-          vm.filtre.id_region = null ; 
-          vm.filtre.id_commune = null ; 
-          vm.filtre.village_id = null ;           
-        });
-
-      }
-      vm.filtre_commune = function()
-      {
-        apiFactory.getAPIgeneraliserREST("commune/index","cle_etrangere",vm.filtre.id_region).then(function(result)
-        { 
-          vm.all_commune = result.data.response; 
-          vm.filtre.id_commune = null ; 
-          vm.filtre.village_id = null ; 
-        });
-      }		
-      vm.filtre_village = function()
-      {
-        apiFactory.getAPIgeneraliserREST("village/index","cle_etrangere",vm.filtre.id_commune).then(function(result)
-        { 
-          vm.all_village = result.data.response;    
-          vm.filtre.village_id = null ; 
-          
-          
-        });
-      }
-	  vm.Get_menage_by_village= function(village_id) {
-        apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",village_id).then(function(result)
-        { 
-			vm.allMenages = result.data.response; 
-			apiFactory.getAPIgeneraliserREST("plainte/index","cle_etrangere",village_id,"nombre_plainte",1).then(function(result)
-			{ 
-				vm.nom_ile="";
-				vm.nom_region = "";
-				vm.nom_commune ="";
-				vm.nom_village ="";
-				vm.numeroplainte = result.data.response[0].nombre;
-				// Numérotation plainte
-				if(parseInt(vm.filtre.id_ile)==1) {
-					vm.nom_ile="MWL";
-				} else if(parseInt(vm.filtre.id_ile)==4){
-					vm.nom_ile="NDZ";
-				} else {
-					vm.nom_ile="NGZ";
-				}			  
-				vm.all_region.forEach(function(ax) {
-					if(parseInt(ax.id)==parseInt(vm.filtre.id_region)) {
-						vm.nom_region = ax.Region; 
-					}
-				});
-				var str1=vm.nom_region;
-				vm.nom_region=str1.substring(0, 3);
-				vm.nom_region=vm.nom_region.toUpperCase();
-				vm.all_commune.forEach(function(ax) {
-					if(parseInt(ax.id)==parseInt(vm.filtre.id_commune)) {
-						vm.nom_commune = ax.Commune; 
-					}
-				});
-				str1=vm.nom_commune;
-				vm.nom_commune=str1.substring(0, 3);	
-				vm.nom_commune=vm.nom_commune.toUpperCase();
-				vm.filtre.vague=null;
-				vm.filtre.zip=null;
-				vm.all_village.forEach(function(ax) {
-					if(parseInt(ax.id)==parseInt(vm.filtre.village_id)) {
-						vm.nom_village = ax.Village; 
-						vm.saisie.village=ax.Village; 
-						vm.filtre.vague=ax.vague;
-						vm.filtre.zip=ax.id_zip;
-					}
-				});
-				str1=vm.nom_village;
-				vm.nom_village=str1.substring(0, 3);	
-				vm.nom_village=vm.nom_village.toUpperCase();	
-			});
-        });
-		  
-	  }
-		vm.filtrer = function()  {
-			vm.affiche_load = true ;
-			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id).then(function(result) { 
-				vm.allMenages = result.data.response;    
-				apiFactory.getAPIgeneraliserREST("plainte/index","cle_etrangere",vm.filtre.village_id).then(function(result) { 
-					vm.allPlainte = result.data.response;   
-					if(vm.allPlainte ==0) {
-						vm.showAlert('INFORMATION','Aucune plainte enregistré pour ce filtre !');
-					}	
-					vm.affiche_load = false ;
-					console.log(vm.allPlainte);
-				});
+		vm.filtre_region = function() {
+			apiFactory.getAPIgeneraliserREST("region/index","cle_etrangere",vm.filtre.id_ile).then(function(result) { 
+				vm.all_region = result.data.response;   
+				vm.filtre.id_region = null ; 
+				vm.filtre.id_commune = null ; 
+				vm.filtre.village_id = null ;           
 			});
 		}
-
-		// apiFactory.getAll("plainte/index").then(function(result) {
-			// vm.allPlainte = result.data.response;
-		// });               
-		// Fin Récupération données référentielles
-		// Message box : alert, information
+		vm.filtre_commune = function() {
+			apiFactory.getAPIgeneraliserREST("commune/index","cle_etrangere",vm.filtre.id_region).then(function(result) { 
+			  vm.all_commune = result.data.response; 
+			  vm.filtre.id_commune = null ; 
+			  vm.filtre.village_id = null ; 
+			});
+		}		
+		vm.filtre_village = function() {
+			apiFactory.getAPIgeneraliserREST("village/index","cle_etrangere",vm.filtre.id_commune).then(function(result)  { 
+				vm.all_village = result.data.response;    
+				vm.filtre.village_id = null ; 
+			});
+		}
+		vm.Get_menage_by_village= function(village_id) {
+			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",village_id).then(function(result)  { 
+				vm.filtre.vague=null;
+				vm.filtre.zip=null;
+				vm.all_village.forEach(function(vil) {
+					if(parseInt(vil.id)==parseInt(vm.filtre.village_id)) {
+						vm.filtre.village = vil.Village; 
+						vm.filtre.vague=vil.vague;
+						vm.filtre.zip=vil.id_zip;
+						vm.nontrouvee=false;
+					}
+				});					
+				vm.allMenages = result.data.response; 
+				apiFactory.getAPIgeneraliserREST("plainte/index","cle_etrangere",village_id,"nombre_plainte",1).then(function(result) { 
+					vm.nom_ile="";
+					vm.nom_region = "";
+					vm.nom_commune ="";
+					vm.nom_village ="";
+					vm.numeroplainte = result.data.response[0].nombre;
+					// Numérotation plainte
+					if(parseInt(vm.filtre.id_ile)==1) {
+						vm.nom_ile="MWL";
+					} else if(parseInt(vm.filtre.id_ile)==4){
+						vm.nom_ile="NDZ";
+					} else {
+						vm.nom_ile="NGZ";
+					}			  
+					vm.all_region.forEach(function(ax) {
+						if(parseInt(ax.id)==parseInt(vm.filtre.id_region)) {
+							vm.nom_region = ax.Region; 
+						}
+					});
+					var str1=vm.nom_region;
+					vm.nom_region=str1.substring(0, 3);
+					vm.nom_region=vm.nom_region.toUpperCase();
+					vm.all_commune.forEach(function(ax) {
+						if(parseInt(ax.id)==parseInt(vm.filtre.id_commune)) {
+							vm.nom_commune = ax.Commune; 
+						}
+					});
+					str1=vm.nom_commune;
+					vm.nom_commune=str1.substring(0, 3);	
+					vm.nom_commune=vm.nom_commune.toUpperCase();
+					vm.filtre.vague=null;
+					vm.filtre.zip=null;
+					vm.all_village.forEach(function(ax) {
+						if(parseInt(ax.id)==parseInt(vm.filtre.village_id)) {
+							vm.nom_village = ax.Village; 
+							vm.saisie.village=ax.Village; 
+							vm.filtre.vague=ax.vague;
+							vm.filtre.zip=ax.id_zip;
+						}
+					});
+					str1=vm.nom_village;
+					vm.nom_village=str1.substring(0, 3);	
+					vm.nom_village=vm.nom_village.toUpperCase();	
+				});
+			});
+		  
+		}
+		vm.filtrer = function()  {
+			vm.affiche_load = true ;
+			// apiFactory.getAPIgeneraliserREST("phaseexecution/index","cle_etrangere",item.id_sous_projet).then(function(result) {
+				// Récupération tranche par id_sous_projet avant tout
+				// vm.allTranche = result.data.response;
+				apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id).then(function(result) { 
+					vm.allMenages = result.data.response;    
+					apiFactory.getAPIgeneraliserREST("plainte/index","cle_etrangere",vm.filtre.village_id).then(function(result) { 
+						vm.allPlainte = result.data.response;   
+						if(vm.allPlainte ==0) {
+							vm.showAlert('INFORMATION','Aucune plainte enregistré pour ce filtre !');
+						}	
+						vm.affiche_load = false ;
+						console.log(vm.allPlainte);
+					});
+				});
+			// });
+		}
         vm.showAlert = function(titre,textcontent) {
             $mdDialog.show(
               $mdDialog.alert()
@@ -274,6 +271,7 @@
                 supprime:vm.saisie.supprime,
                 userid:vm.utilisateur_id,
                 datemodification:vm.saisie.datemodification,
+                tranche_id:vm.saisie.tranche_id,
             });
             //factory
             apiFactory.add("plainte/index",datas, config).success(function (data) {
@@ -308,6 +306,7 @@
 						supprime:vm.saisie.supprime,
 						userid:vm.saisie.userid,
 						datemodification:vm.saisie.datemodification,
+						tranche_id:vm.saisie.tranche_id,
                     };     
                     vm.allPlainte.push(item);
                 }
@@ -321,6 +320,13 @@
         vm.selectionPlainte= function (item) {
             vm.selectedPlainteItem = item;
             currentPlainteItem = JSON.parse(JSON.stringify(vm.selectedPlainteItem));
+			if(vm.allTranche.length==0 || parseInt(item.id_sous_projet)!=parseInt(vm.id_sous_projet)) {
+				// Déja existant et ne concerne pas le paiement => charger la liste de tranche
+				vm.id_sous_projet=item.id_sous_projet;
+				apiFactory.getAPIgeneraliserREST("phaseexecution/index","cle_etrangere",item.id_sous_projet).then(function(result) {
+					vm.allTranche = result.data.response;
+				});
+			}
         };
 		// $watch pour sélectionner ou désélectionner automatiquement un item plainte
         $scope.$watch('vm.selectedPlainteItem', function() {
@@ -365,6 +371,7 @@
 				vm.saisie.supprime=0;		
 				vm.saisie.userid=null;		
 				vm.saisie.datemodification=null;		
+				vm.saisie.tranche_id=null;		
 				vm.saisie.id_sous_projet=null;		
 				vm.saisie.sous_projet='';		
 				vm.saisie.code_sous_projet='';		
@@ -395,55 +402,64 @@
             });
         };
 		// Modification d'un item plainte
-		vm.modifierPlainte = function() {
- 				// vm.saisie.supprimer=0;responsableenregistrement mesureprise
-				vm.saisie.id=vm.selectedPlainteItem.id;
-				vm.saisie.id_serveur_centrale=vm.selectedPlainteItem.id_serveur_centrale;
-				vm.saisie.code=vm.selectedPlainteItem.code;
-				vm.saisie.type_plainte=vm.selectedPlainteItem.type_plainte;
-				vm.saisie.resultat_plainte=vm.selectedPlainteItem.resultat_plainte;
-				if(vm.selectedPlainteItem.menage_id) { 
-					vm.saisie.menage_id=parseInt(vm.selectedPlainteItem.menage_id);
-				} 
-				vm.saisie.NumeroEnregistrement=vm.selectedPlainteItem.NumeroEnregistrement;
-				vm.saisie.nomchefmenage=vm.selectedPlainteItem.nomchefmenage;
-				vm.saisie.activite_id=vm.selectedPlainteItem.activite_id;
-				if(vm.selectedPlainteItem.cellulederecours_id) { 
-					vm.saisie.cellulederecours_id=parseInt(vm.selectedPlainteItem.cellulederecours_id);
-				} 
-				if(vm.selectedPlainteItem.cellulederecours_id) { 
-					vm.saisie.typeplainte_id=parseInt(vm.selectedPlainteItem.typeplainte_id);
-				}	
-				vm.saisie.solution_id=vm.selectedPlainteItem.solution_id;
-                vm.saisie.village_id=vm.filtre.village_id;
-                vm.saisie.programme_id=vm.selectedPlainteItem.programme_id;
-                vm.saisie.Objet=vm.selectedPlainteItem.Objet;
-				if(vm.selectedPlainteItem.datedepot) { 
-					vm.saisie.datedepot=new Date(vm.selectedPlainteItem.datedepot);	
-				}				
-				vm.saisie.reference=vm.selectedPlainteItem.reference;		
-				vm.saisie.nomplaignant=vm.selectedPlainteItem.nomplaignant;		
-				vm.saisie.adresseplaignant=vm.selectedPlainteItem.adresseplaignant;		
-				vm.saisie.responsableenregistrement=vm.selectedPlainteItem.responsableenregistrement;		
-				vm.saisie.mesureprise=vm.selectedPlainteItem.mesureprise;	
-				if(vm.selectedPlainteItem.dateresolution) { 
-					vm.saisie.dateresolution=new Date(vm.selectedPlainteItem.dateresolution);
-				}	
-				if(vm.selectedPlainteItem.statut) { 
-					vm.saisie.statut=parseInt(vm.selectedPlainteItem.statut);		
-				}	
-				vm.saisie.a_ete_modifie=0;		
-				vm.saisie.supprime=0;		
-				vm.saisie.userid=vm.selectedPlainteItem.userid;		
-				if(vm.selectedPlainteItem.datemodification) { 
-					vm.saisie.datemodification=new Date(vm.selectedPlainteItem.datemodification);	
-				}	
-				if(vm.selectedPlainteItem.id_sous_projet) { 
-					vm.saisie.id_sous_projet=parseInt(vm.selectedPlainteItem.id_sous_projet);		
-				}	
-				vm.saisie.sous_projet=vm.selectedPlainteItem.sous_projet;	
-				vm.saisie.code_sous_projet=vm.selectedPlainteItem.code_sous_projet;	
-				vm.saisie.telephone=vm.selectedPlainteItem.telephone;	
+		vm.modifierPlainte = function(item) {
+			if(vm.allTranche.length==0) {
+				// Déja existant et ne concerne pas le paiement => charger la liste de tranche
+				apiFactory.getAPIgeneraliserREST("phaseexecution/index","cle_etrangere",item.id_sous_projet).then(function(result) {
+					vm.allTranche = result.data.response;
+				});
+			}
+			// vm.saisie.supprimer=0;responsableenregistrement mesureprise
+			vm.saisie.id=vm.selectedPlainteItem.id;
+			vm.saisie.id_serveur_centrale=vm.selectedPlainteItem.id_serveur_centrale;
+			vm.saisie.code=vm.selectedPlainteItem.code;
+			vm.saisie.type_plainte=vm.selectedPlainteItem.type_plainte;
+			vm.saisie.resultat_plainte=vm.selectedPlainteItem.resultat_plainte;
+			if(vm.selectedPlainteItem.menage_id) { 
+				vm.saisie.menage_id=parseInt(vm.selectedPlainteItem.menage_id);
+			} 
+			vm.saisie.NumeroEnregistrement=vm.selectedPlainteItem.NumeroEnregistrement;
+			vm.saisie.nomchefmenage=vm.selectedPlainteItem.nomchefmenage;
+			vm.saisie.activite_id=vm.selectedPlainteItem.activite_id;
+			if(vm.selectedPlainteItem.cellulederecours_id) { 
+				vm.saisie.cellulederecours_id=parseInt(vm.selectedPlainteItem.cellulederecours_id);
+			} 
+			if(vm.selectedPlainteItem.typeplainte_id) { 
+				vm.saisie.typeplainte_id=parseInt(vm.selectedPlainteItem.typeplainte_id);
+			}	
+			if(vm.selectedPlainteItem.tranche_id) { 
+				vm.saisie.tranche_id=parseInt(vm.selectedPlainteItem.tranche_id);
+			} 
+			vm.saisie.solution_id=vm.selectedPlainteItem.solution_id;
+			vm.saisie.village_id=vm.filtre.village_id;
+			vm.saisie.programme_id=vm.selectedPlainteItem.programme_id;
+			vm.saisie.Objet=vm.selectedPlainteItem.Objet;
+			if(vm.selectedPlainteItem.datedepot) { 
+				vm.saisie.datedepot=new Date(vm.selectedPlainteItem.datedepot);	
+			}				
+			vm.saisie.reference=vm.selectedPlainteItem.reference;		
+			vm.saisie.nomplaignant=vm.selectedPlainteItem.nomplaignant;		
+			vm.saisie.adresseplaignant=vm.selectedPlainteItem.adresseplaignant;		
+			vm.saisie.responsableenregistrement=vm.selectedPlainteItem.responsableenregistrement;		
+			vm.saisie.mesureprise=vm.selectedPlainteItem.mesureprise;	
+			if(vm.selectedPlainteItem.dateresolution) { 
+				vm.saisie.dateresolution=new Date(vm.selectedPlainteItem.dateresolution);
+			}	
+			if(vm.selectedPlainteItem.statut) { 
+				vm.saisie.statut=parseInt(vm.selectedPlainteItem.statut);		
+			}	
+			vm.saisie.a_ete_modifie=0;		
+			vm.saisie.supprime=0;		
+			vm.saisie.userid=vm.selectedPlainteItem.userid;		
+			if(vm.selectedPlainteItem.datemodification) { 
+				vm.saisie.datemodification=new Date(vm.selectedPlainteItem.datemodification);	
+			}	
+			if(vm.selectedPlainteItem.id_sous_projet) { 
+				vm.saisie.id_sous_projet=parseInt(vm.selectedPlainteItem.id_sous_projet);		
+			}	
+			vm.saisie.sous_projet=vm.selectedPlainteItem.sous_projet;	
+			vm.saisie.code_sous_projet=vm.selectedPlainteItem.code_sous_projet;	
+			vm.saisie.telephone=vm.selectedPlainteItem.telephone;	
             NouvelPlainteItem = false ;
 			vm.affichage_masque=true;
 			console.log(vm.saisie);
@@ -495,6 +511,7 @@
                 supprime: 0,            
                 userid: vm.utilisateur_id,            
                 datemodification: vm.saisie.datemodification,             				
+                tranche_id: vm.saisie.tranche_id,             				
            });
             apiFactory.add("plainte/index",datas, config).success(function (data) {
                 if (NouvelPlainteItem == false) {
@@ -529,6 +546,7 @@
 						vm.selectedPlainteItem.userid= vm.utilisateur_id;           
 						vm.selectedPlainteItem.datemodification= vm.formatDateListe(vm.saisie.datemodification);            									
 						vm.selectedPlainteItem.id_sous_projet= vm.saisie.id_sous_projet;            									
+						vm.selectedPlainteItem.tranche_id= vm.saisie.tranche_id;            									
 						vm.selectedPlainteItem.code_sous_projet= vm.saisie.code_sous_projet;            									
 						vm.selectedPlainteItem.sous_projet= vm.saisie.sous_projet;            									
 						vm.selectedPlainteItem.$selected = false;
@@ -572,6 +590,7 @@
 						userid:vm.utilisateur_id,
 						datemodification:vm.saisie.datemodification,
 						id_sous_projet:vm.saisie.id_sous_projet,
+						tranche_id:vm.saisie.tranche_id,
 						code_sous_projet:vm.saisie.code_sous_projet,
 						sous_projet:vm.saisie.sous_projet,
 					}
@@ -636,6 +655,12 @@
 		}
 		vm.modifierTP = function (item) { 
 			vm.nontrouvee=true;
+			if(vm.allTranche.length==0) {
+				// Déja existant et ne concerne pas le paiement => charger la liste de tranche
+				apiFactory.getAPIgeneraliserREST("phaseexecution/index","cle_etrangere",item.id_sous_projet).then(function(result) {
+					vm.allTranche = result.data.response;
+				});
+			}
 			vm.all_type_plainte.forEach(function(ax) {
 				if(parseInt(ax.id)==parseInt(item.typeplainte_id)) {
 					vm.saisie.typeplainte_id = ax.id; 
@@ -645,6 +670,9 @@
 					vm.saisie.reference = vm.saisie.code_sous_projet + "-" + vm.code_plainte + "-" + vm.nom_ile +"-" + vm.nom_region+"-" + vm.nom_commune+"-" + vm.nom_village + "-" + vm.numeroplainte;
 				}
 			});
+			if(parseInt(item.typeplainte_id)!=2) {
+				vm.saisie.tranche_id=null;
+			}
 			if(vm.nontrouvee==true) {				
 					vm.saisie.typeplainte_id = null; 
 					vm.saisie.type_plainte='';
@@ -652,37 +680,45 @@
 		}
 		vm.modifierMenage = function (item) { 
 			vm.nontrouvee=true;
-			vm.allMenages.forEach(function(ax) {
-				if(parseInt(ax.id)==parseInt(item.menage_id)) {
-					vm.saisie.menage_id = ax.id; 
-					vm.saisie.NumeroEnregistrement=ax.NumeroEnregistrement;
-					vm.saisie.nomchefmenage=ax.nomchefmenage;
-					vm.saisie.adresseplaignant=ax.Addresse;
-					vm.nontrouvee=false;
+			if(parseInt(item.menage_id) >0) {
+				vm.allMenages.forEach(function(ax) {
+					if(parseInt(ax.id)==parseInt(item.menage_id)) {
+						vm.saisie.menage_id = ax.id; 
+						vm.saisie.NumeroEnregistrement=ax.NumeroEnregistrement;
+						vm.saisie.nomchefmenage=ax.nomchefmenage;
+						vm.saisie.adresseplaignant=ax.Addresse;
+						vm.nontrouvee=false;
+					}
+				});
+				if(vm.nontrouvee==true) {				
+						vm.saisie.menage_id = null; 
+						vm.saisie.NumeroEnregistrement='';
+						vm.saisie.nomchefmenage='';
 				}
-			});
-			if(vm.nontrouvee==true) {				
-					vm.saisie.menage_id = null; 
-					vm.saisie.NumeroEnregistrement='';
-					vm.saisie.nomchefmenage='';
-			}
+			} else {
+				item.menage_id=null;
+				item.adresseplaignant=null;
+			}	
 		}
 		vm.modifierSSP = function (item) { 
 			vm.nontrouvee=true;
-			vm.allSous_projet.forEach(function(ax) {
-				if(parseInt(ax.id)==parseInt(item.id_sous_projet)) {
-					vm.saisie.id_sous_projet = ax.id; 
-					vm.saisie.sous_projet=ax.description;
-					vm.saisie.code_sous_projet=ax.code;
-					vm.nontrouvee=false;
-					vm.saisie.reference = vm.saisie.code_sous_projet + "-" + vm.code_plainte + "-" + vm.nom_ile +"-" + vm.nom_region+"-" + vm.nom_commune+"-" + vm.nom_village + "-" + vm.numeroplainte;
+			apiFactory.getAPIgeneraliserREST("phaseexecution/index","cle_etrangere",item.id_sous_projet).then(function(result) {
+				vm.allTranche = result.data.response;
+				vm.allSous_projet.forEach(function(ax) {
+					if(parseInt(ax.id)==parseInt(item.id_sous_projet)) {
+						vm.saisie.id_sous_projet = ax.id; 
+						vm.saisie.sous_projet=ax.description;
+						vm.saisie.code_sous_projet=ax.code;
+						vm.nontrouvee=false;
+						vm.saisie.reference = vm.saisie.code_sous_projet + "-" + vm.code_plainte + "-" + vm.nom_ile +"-" + vm.nom_region+"-" + vm.nom_commune+"-" + vm.nom_village + "-" + vm.numeroplainte;
+					}
+				});
+				if(vm.nontrouvee==true) {				
+						vm.saisie.id_sous_projet = null; 
+						vm.saisie.sous_projet='';
+						vm.saisie.code_sous_projet='';
 				}
 			});
-			if(vm.nontrouvee==true) {				
-					vm.saisie.id_sous_projet = null; 
-					vm.saisie.sous_projet='';
-					vm.saisie.code_sous_projet='';
-			}
 		}
 		vm.modifierSOLUTION = function (item) { 
 			vm.nontrouvee=true;
@@ -696,6 +732,11 @@
 			if(vm.nontrouvee==true) {				
 					vm.saisie.solution_id = null; 
 					vm.saisie.resultat_plainte='';
+					vm.saisie.resultat_plainte='';
+			}
+			if(parseInt(vm.saisie.solution_id)!=1) {
+				// Non résolu ou autre statut => dateresolution=null;
+				vm.saisie.dateresolution=null;
 			}
 		}
 		function formatDateBDD(dat) {

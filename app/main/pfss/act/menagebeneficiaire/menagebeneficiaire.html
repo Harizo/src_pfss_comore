@@ -23,6 +23,10 @@
                         <div ng-if="vm.affiche_load" style="position:relative;top: -30px;  left: 60px;color: #039be5">
                             Chargement,veuillez patienter s'il vous plait ...
                         </div>
+                        <md-progress-circular ng-if="vm.affiche_export_carte" class="md-accent" aria-label="Rating" md-mode="indeterminate" md-diameter="64"></md-progress-circular> 
+                        <div ng-if="vm.affiche_export_carte" style="position:relative;top: -30px;  left: 60px;color: #039be5">
+                            Export carte bénéficiaire en-cours,veuillez patienter s'il vous plait ...
+                        </div>
                         <div style="widht:100%;">    
                             <!--md-button type="submit" ng-show="(vm.filtre.id_region)&&(vm.filtre.id_region)&&(vm.filtre.id_commune)&&(vm.filtre.village_id) &&(vm.filtre.id_sous_projet)  && !vm.affichage_masque" class="md-raised custum_button_new" aria-label="Nouveau" ng-click="vm.ajouter_menage()" style="width:10%;">
 							<md-icon md-font-icon="icon-plus" class="s16 center" style="color: white;"></md-icon>
@@ -37,7 +41,7 @@
                               Retour présélectionné
                             </md-button>
 							<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
-							  ng-if="!vm.affichage_masque" ng-disabled="filtrepardateform.$invalid||vm.affiche_load" ng-click="vm.export_carte_beneficiaire(vm.filtre)">
+							  ng-if="!vm.affichage_masque" ng-disabled="filtrepardateform.$invalid||vm.affiche_load || vm.affiche_export_carte" ng-click="vm.export_carte_beneficiaire(vm.filtre)">
 							  Carte bénéficiaire
 							</md-button>
                             <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque"   class="md-raised custum_button_del" aria-label="Sortir" ng-click="vm.showTabDialog(vm.selectedItem.id)" style="width:10%;">
@@ -303,19 +307,35 @@
 										  </div>
 										</div>
 									</md-input-container>
-									<md-input-container flex="100" flex-gt-xs="20" ng-show="vm.affichage_masque">
-										<input type="text"  name="Addresse" ng-model="vm.filtre.Addresse"
-										placeholder="Addresse " >
-										<div ng-messages="filtrepardateform.Addresse.$error"
-											role="alert">
-											<div ng-message="required">
-												<span>Addresse obligatoire.</span>
-											</div>
+									<md-input-container flex="100" flex-gt-xs="10"ng-show="vm.affichage_masque">
+									  <label>Situation matrimoniale</label>
+										<md-select ng-model="vm.filtre.situation_matrimoniale" name="situation_matrimoniale"  >
+										  <md-option  value="">&nbsp;</md-option>
+										  <md-option  value="1">célibataire</md-option>
+										  <md-option  value="2">marié(e)</md-option>                                      
+										  <md-option  value="3">veuf(ve)</md-option>                                      
+										  <md-option  value="4">divorcé(e)</md-option>                                      
+										</md-select>
+										<div ng-messages="filtrepardateform.situation_matrimoniale.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Situation matrimoniale obligatoire</span>
+										  </div>
 										</div>
 									</md-input-container>
 								</div>
 								<div layout="column" layout-gt-xs="row" flex>
-								  <md-input-container flex-gt-xs="15" ng-show="vm.affichage_masque">
+									<md-input-container flex="100" flex-gt-xs="20" ng-show="vm.affichage_masque">
+										<input type="text"  name="Addresse" ng-model="vm.filtre.Addresse"
+										placeholder="Adresse " >
+										<div ng-messages="filtrepardateform.Addresse.$error"
+											role="alert">
+											<div ng-message="required">
+												<span>Adresse obligatoire.</span>
+											</div>
+										</div>
+									</md-input-container>
+									<md-input-container flex-gt-xs="15" ng-show="vm.affichage_masque">
 										<input type="text"  name="NumeroCIN" ng-model="vm.filtre.NumeroCIN"
 										placeholder="Numero NIN " >
 										<div ng-messages="filtrepardateform.NumeroCIN.$error"
@@ -325,7 +345,7 @@
 											</div>
 										</div>
 									</md-input-container>
-								  <md-input-container flex-gt-xs="15" ng-show="vm.affichage_masque">
+									<md-input-container flex-gt-xs="15" ng-show="vm.affichage_masque">
 										<input type="text"  name="NumeroCarteElectorale" ng-model="vm.filtre.NumeroCarteElectorale"
 										placeholder="Numero Carte éléctorale " >
 										<div ng-messages="filtrepardateform.NumeroCarteElectorale.$error"
@@ -388,6 +408,8 @@
 											</div>
 										</div>
 									</md-input-container>
+								</div>
+								<div layout="column" layout-gt-xs="row" flex>
 									<md-input-container flex-gt--xs="10" ng-show="vm.affichage_masque">
 										<input type="text"  name="telephone_chef_menage" ng-model="vm.filtre.telephone_chef_menage"
 										placeholder="Téléphone chef ménage" >
@@ -398,122 +420,6 @@
 											</div>
 										</div>
 									</md-input-container>
-								</div>
-								<div layout="column" layout-gt-xs="row" flex>
-									<md-input-container flex-gt-xs="20" ng-show="vm.affichage_masque">
-										<input type="text"  name="NomTravailleur" ng-model="vm.filtre.NomTravailleur"
-										placeholder="{{vm.placeholder_nom_travailleur}}" required>
-										<div ng-messages="filtrepardateform.NomTravailleur.$error"
-											role="alert">
-											<div ng-message="required">
-												<span>{{vm.placeholder_nom_travailleur}} obligatoire</span>
-											</div>
-										</div>
-									</md-input-container>
-									<div layout="column" layout-gt-xs="row" ng-show="vm.affichage_masque">
-										<md-input-container>
-										<span>Date naissance</span>
-										</md-input-container>
-										<md-datepicker ng-model="vm.filtre.datedenaissancetravailleur" md-max-date="vm.date_now"  md-placeholder="Date de naissance" >                       
-										</md-datepicker>
-								   
-									</div>
-									<md-input-container  flex="100" flex-gt-xs="5" ng-show="vm.affichage_masque">
-									  <input type="number"  name="agetravailleur" ng-model="vm.filtre.agetravailleur"
-									  placeholder="Age" >
-									  <div ng-messages="filtrepardateform.agetravailleur.$error"
-										  role="alert">
-										  <div ng-message="required">
-											  <span>age travailleur obligatoire.</span>
-										  </div>
-									  </div>
-									</md-input-container>								  
-									<md-input-container flex="100" flex-gt-xs="5"ng-show="vm.affichage_masque">
-									  <label>Sexe</label>
-										<md-select ng-model="vm.filtre.SexeTravailleur" name="SexeTravailleur"  >
-										  <md-option  value="">&nbsp;</md-option>
-										  <md-option  value="M">Homme</md-option>
-										  <md-option  value="F">Femme</md-option>                                      
-										</md-select>
-										<div ng-messages="filtrepardateform.SexeTravailleur.$error"
-										  role="alert">
-										  <div ng-message="required">
-											<span>Sexe travailleur obligatoire</span>
-										  </div>
-										</div>
-									</md-input-container>
-									<md-input-container flex="100" flex-gt-xs="15" ng-show="vm.affichage_masque">
-									  <label>Lien parental</label>
-										<md-select ng-model="vm.filtre.lien_travailleur" name="lien_travailleur" ng-change="vm.modifier_lienparentalTravailleuretSuppleant(vm.filtre,1)">										 
-										  <md-option ng-repeat="lien in vm.all_lienparental" value="{{lien.id}}" >
-											{{lien.description}}
-										  </md-option>
-										</md-select>
-										<div ng-messages="filtrepardateform.lien.$error"
-										  role="alert">
-										  <div ng-message="required">
-											<span>Lien parental obligatoire</span>
-										  </div>
-										</div>
-									</md-input-container>
-									<md-input-container flex-gt-xs="20" ng-show="vm.affichage_masque">
-										<input type="text"  name="NomTravailleurSuppliant" ng-model="vm.filtre.NomTravailleurSuppliant"
-										placeholder="{{vm.placeholder_nom_suppleant}}" required>
-										<div ng-messages="filtrepardateform.NomTravailleurSuppliant.$error"
-											role="alert">
-											<div ng-message="required">
-												<span>{{vm.placeholder_nom_suppleant}} obligatoire.</span>
-											</div>
-										</div>
-									</md-input-container>
-									<div layout="column" layout-gt-xs="row" ng-show="vm.affichage_masque">
-										<md-input-container>
-										<span>Date naissance</span>
-										</md-input-container>
-										<md-datepicker ng-model="vm.filtre.datedenaissancesuppliant" md-max-date="vm.date_now"  md-placeholder="Date de naissance" >                       
-										</md-datepicker>
-								   
-									</div>
-									<md-input-container  flex="100" flex-gt-xs="10" ng-show="vm.affichage_masque">
-									  <input type="number"  name="agesuppliant" ng-model="vm.filtre.agesuppliant"
-									  placeholder="Age" >
-									  <div ng-messages="filtrepardateform.agesuppliant.$error"
-										  role="alert">
-										  <div ng-message="required">
-											  <span>age travailleur suppléant obligatoire.</span>
-										  </div>
-									  </div>
-									</md-input-container>								  
-									<md-input-container flex="100" flex-gt-xs="5"ng-show="vm.affichage_masque">
-									  <label>Sexe</label>
-										<md-select ng-model="vm.filtre.SexeTravailleurSuppliant" name="SexeTravailleurSuppliant"  >
-										  <md-option  value="">&nbsp;</md-option>
-										  <md-option  value="M">Homme</md-option>
-										  <md-option  value="F">Femme</md-option>                                      
-										</md-select>
-										<div ng-messages="filtrepardateform.SexeTravailleurSuppliant.$error"
-										  role="alert">
-										  <div ng-message="required">
-											<span>Sexe travailleur suppléant obligatoire</span>
-										  </div>
-										</div>
-									</md-input-container>
-									<md-input-container flex="100" flex-gt-xs="15" ng-show="vm.affichage_masque">
-									  <label>Lien parental</label>
-										<md-select ng-model="vm.filtre.lien_suppleant" name="lien_suppleant" ng-change="vm.modifier_lienparentalTravailleuretSuppleant(vm.filtre,2)">										 
-										  <md-option ng-repeat="lien in vm.all_lienparental" value="{{lien.id}}" >
-											{{lien.description}}
-										  </md-option>
-										</md-select>
-										<div ng-messages="filtrepardateform.lien.$error"
-										  role="alert">
-										  <div ng-message="required">
-											<span>Lien parental obligatoire</span>
-										  </div>
-										</div>
-									</md-input-container>
-								</div>
-								<div layout="column" layout-gt-xs="row" flex>
 									<md-input-container flex="100" flex-gt-xs="10"ng-show="vm.affichage_masque">
 									  <label>Milieu</label>
 										<md-select ng-model="vm.filtre.milieu" name="milieu"  >
@@ -538,7 +444,7 @@
 											</div>
 										</div>
 									</md-input-container>
-									<md-input-container flex-gt-xs="10" ng-show="vm.affichage_masque">
+									<!--md-input-container flex-gt-xs="10" ng-show="vm.affichage_masque">
 										<input type="text"  name="zip" ng-model="vm.filtre.zip"
 										placeholder="ZIP" >
 										<div ng-messages="filtrepardateform.zip.$error"
@@ -547,7 +453,7 @@
 												<span>ZIP obligatoire.</span>
 											</div>
 										</div>
-									</md-input-container>
+									</md-input-container-->
 									<md-input-container flex-gt-xs="20" ng-show="vm.affichage_masque">
 										<input type="text"  name="PersonneInscription" ng-model="vm.filtre.PersonneInscription"
 										placeholder="Nom de l'enquêteur" >
@@ -558,9 +464,9 @@
 											</div>
 										</div>
 									</md-input-container>
-									<md-input-container flex="100" flex-gt-xs="20" ng-show="vm.affichage_masque">
+									<md-input-container flex="100" flex-gt-xs="20" ng-show="vm.affichage_masque" style="display:none;">
 									  <label>Activité/Sous-projet</label>
-										<md-select ng-model="vm.filtre.id_sous_projet" name="id_sous_projet" ng-change="vm.generer_ref()" required>
+										<md-select ng-model="vm.filtre.id_sous_projet" name="id_sous_projet" ng-change="vm.generer_ref()">
 										  <md-option  value="">&nbsp;</md-option>
 										  <md-option ng-repeat="ssp in vm.all_sous_projet" value="{{ssp.id}}" >
 											{{ssp.description}}
@@ -574,7 +480,7 @@
 										  </div>
 										</div>
 									</md-input-container>
-									<md-input-container flex="100" flex-gt-xs="20" ng-show="vm.affichage_masque">
+									<md-input-container flex="100" flex-gt-xs="20" ng-show="vm.affichage_masque" style="display:none;">
 									  <label>Statut</label>
 										<md-select ng-model="vm.filtre.statut" name="statut"  disabled>
 										  <md-option  value="INSCRIT">INSCRIT</md-option>
@@ -602,11 +508,10 @@
 										</div>
 									</md-input-container>
 								</div>
-								<div layout="column" layout-gt-xs="row" flex>
+								<div layout="column" layout-gt-xs="row" flex style="display:none;">
 									<md-input-container flex-gt-xs="20" ng-show="vm.affichage_masque">
 										<input type="text"  name="motif_non_selection" ng-model="vm.filtre.motif_non_selection"
-										placeholder="Motif de non seléction" ng-disabled="vm.filtre.preselectionne!=0 || vm.filtre.beneficiaire!=0"
-										ng-required="vm.filtre.preselectionne==0 && vm.filtre.beneficiaire==0">
+										placeholder="Motif de non seléction" ng-disabled="vm.filtre.preselectionne!=0 || vm.filtre.beneficiaire!=0">
 										<div ng-messages="filtrepardateform.motif_non_selection.$error"
 											role="alert">
 											<div ng-message="required">
@@ -615,13 +520,13 @@
 										</div>
 									</md-input-container>
 								</div>
-							</fieldset>	
+							</fieldset>									
 							<fieldset ng-if="vm.affichage_masque">
 								<label><b>Information conjoint(e)</b></label>
 								<div layout="column" layout-gt-xs="row" flex>
 									<md-input-container flex-gt-xs="15" ng-show="vm.affichage_masque">
 										<input type="text"  name="nom_conjoint" ng-model="vm.filtre.nom_conjoint"
-										placeholder="Nom conjoint(e)"  required>
+										placeholder="Nom conjoint(e)">
 										<div ng-messages="filtrepardateform.nom_conjoint.$error"
 											role="alert">
 											<div ng-message="required">
@@ -721,7 +626,7 @@
 									</md-input-container>
 									<md-input-container flex-gt--xs="15" ng-show="vm.affichage_masque" ng-disabled="vm.filtre.conjoint_travail==0">
 										<input type="text"  name="activite_conjoint" ng-model="vm.filtre.activite_conjoint"
-										placeholder="Activité chef ménage">
+										placeholder="Activité conjoint(e)">
 										<div ng-messages="filtrepardateform.activite_conjoint.$error"
 											role="alert">
 											<div ng-message="required">
@@ -740,6 +645,145 @@
 										</div>
 									</md-input-container>
 								</div>
+							</fieldset>	
+							<fieldset ng-if="vm.affichage_masque">
+								<label><b>Information {{vm.placeholder_nom_travailleur}}</b></label>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex-gt-xs="20" ng-show="vm.affichage_masque">
+										<input type="text"  name="NomTravailleur" ng-model="vm.filtre.NomTravailleur"
+										placeholder="{{vm.placeholder_nom_travailleur}}" required>
+										<div ng-messages="filtrepardateform.NomTravailleur.$error"
+											role="alert">
+											<div ng-message="required">
+												<span>{{vm.placeholder_nom_travailleur}} obligatoire</span>
+											</div>
+										</div>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row" ng-show="vm.affichage_masque">
+										<md-input-container>
+										<span>Date naissance</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.datedenaissancetravailleur" md-max-date="vm.date_now"  md-placeholder="Date de naissance" >                       
+										</md-datepicker>
+								   
+									</div>
+									<md-input-container  flex="100" flex-gt-xs="5" ng-show="vm.affichage_masque">
+									  <input type="number"  name="agetravailleur" ng-model="vm.filtre.agetravailleur"
+									  placeholder="Age" >
+									  <div ng-messages="filtrepardateform.agetravailleur.$error"
+										  role="alert">
+										  <div ng-message="required">
+											  <span>age {{vm.placeholder_nom_travailleur}} obligatoire.</span>
+										  </div>
+									  </div>
+									</md-input-container>								  
+									<md-input-container flex="100" flex-gt-xs="5"ng-show="vm.affichage_masque">
+									  <label>Sexe</label>
+										<md-select ng-model="vm.filtre.SexeTravailleur" name="SexeTravailleur"  >
+										  <md-option  value="">&nbsp;</md-option>
+										  <md-option  value="M">Homme</md-option>
+										  <md-option  value="F">Femme</md-option>                                      
+										</md-select>
+										<div ng-messages="filtrepardateform.SexeTravailleur.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Sexe {{vm.placeholder_nom_travailleur}} obligatoire</span>
+										  </div>
+										</div>
+									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="15" ng-show="vm.affichage_masque">
+									  <label>Lien parental</label>
+										<md-select ng-model="vm.filtre.lien_travailleur" name="lien_travailleur" ng-change="vm.modifier_lienparentalTravailleuretSuppleant(vm.filtre,1)">										 
+										  <md-option ng-repeat="lien in vm.all_lienparental" value="{{lien.id}}" >
+											{{lien.description}}
+										  </md-option>
+										</md-select>
+										<div ng-messages="filtrepardateform.lien.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Lien parental obligatoire</span>
+										  </div>
+										</div>
+									</md-input-container>
+									<md-input-container  flex="100" flex-gt-xs="10" ng-show="vm.affichage_masque">
+									  <input type="text"  name="telephone_travailleur" ng-model="vm.filtre.telephone_travailleur"
+									  placeholder="Téléphone" >
+									  <div ng-messages="filtrepardateform.telephone_travailleur.$error"
+										  role="alert">
+										  <div ng-message="required">
+											  <span>Tél {{vm.placeholder_nom_travailleur}} obligatoire.</span>
+										  </div>
+									  </div>
+									</md-input-container>								  
+								</div>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex-gt-xs="20" ng-show="vm.affichage_masque">
+										<input type="text"  name="NomTravailleurSuppliant" ng-model="vm.filtre.NomTravailleurSuppliant"
+										placeholder="{{vm.placeholder_nom_suppleant}}" required>
+										<div ng-messages="filtrepardateform.NomTravailleurSuppliant.$error"
+											role="alert">
+											<div ng-message="required">
+												<span>{{vm.placeholder_nom_suppleant}} obligatoire.</span>
+											</div>
+										</div>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row" ng-show="vm.affichage_masque">
+										<md-input-container>
+										<span>Date naissance</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.datedenaissancesuppliant" md-max-date="vm.date_now"  md-placeholder="Date de naissance" >                       
+										</md-datepicker>
+								   
+									</div>
+									<md-input-container  flex="100" flex-gt-xs="10" ng-show="vm.affichage_masque">
+									  <input type="number"  name="agesuppliant" ng-model="vm.filtre.agesuppliant"
+									  placeholder="Age" >
+									  <div ng-messages="filtrepardateform.agesuppliant.$error"
+										  role="alert">
+										  <div ng-message="required">
+											  <span>age {{vm.placeholder_nom_suppleant}} obligatoire.</span>
+										  </div>
+									  </div>
+									</md-input-container>								  
+									<md-input-container flex="100" flex-gt-xs="5"ng-show="vm.affichage_masque">
+									  <label>Sexe</label>
+										<md-select ng-model="vm.filtre.SexeTravailleurSuppliant" name="SexeTravailleurSuppliant"  >
+										  <md-option  value="">&nbsp;</md-option>
+										  <md-option  value="M">Homme</md-option>
+										  <md-option  value="F">Femme</md-option>                                      
+										</md-select>
+										<div ng-messages="filtrepardateform.SexeTravailleurSuppliant.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Sexe {{vm.placeholder_nom_suppleant}} obligatoire</span>
+										  </div>
+										</div>
+									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="15" ng-show="vm.affichage_masque">
+									  <label>Lien parental</label>
+										<md-select ng-model="vm.filtre.lien_suppleant" name="lien_suppleant" ng-change="vm.modifier_lienparentalTravailleuretSuppleant(vm.filtre,2)">										 
+										  <md-option ng-repeat="lien in vm.all_lienparental" value="{{lien.id}}" >
+											{{lien.description}}
+										  </md-option>
+										</md-select>
+										<div ng-messages="filtrepardateform.lien_suppleant.$error"
+										  role="alert">
+										  <div ng-message="required">
+											<span>Lien parental obligatoire</span>
+										  </div>
+										</div>
+									</md-input-container>
+									<md-input-container  flex="100" flex-gt-xs="10" ng-show="vm.affichage_masque">
+									  <input type="text"  name="telephone_suppleant" ng-model="vm.filtre.telephone_suppleant"
+									  placeholder="Téléphone" >
+									  <div ng-messages="filtrepardateform.telephone_suppleant.$error"
+										  role="alert">
+										  <div ng-message="required">
+											  <span>Tél {{vm.placeholder_nom_suppleant}} obligatoire.</span>
+										  </div>
+									  </div>
+									</md-input-container>								  
+								</div>							
 							</fieldset>	
 								<div>                            
 									<section layout="row" layout-sm="column" layout-align="left" layout-wrap>
@@ -1578,17 +1622,15 @@
                                 </div>
                             </md-input-container>
                             <md-input-container flex="100" flex-gt-xs="5"ng-show="vm.affichage_masque_individu">
-                              <label>Travailleur</label>
+                              <label>{{vm.placeholder_nom_travailleur}}</label>
                                 <md-select ng-model="vm.individu_masque.travailleur" name="travailleur"  >
                                   <md-option  value="Oui">Oui</md-option>
                                   <md-option  value="Non">Non</md-option>
-                                  
-
                                 </md-select>
                                 <div ng-messages="individu_form.travailleur.$error"
                                   role="alert">
                                   <div ng-message="required">
-                                    <span>travailleur obligatoire</span>
+                                    <span>{{vm.placeholder_nom_travailleur}} obligatoire</span>
                                   </div>
                                 </div>
                             </md-input-container>

@@ -226,7 +226,7 @@
 			vm.filtre.conjoint_travail = "" ;
 			vm.filtre.activite_chef_menage = "" ;
 			vm.filtre.activite_conjoint = "" ;
-			vm.filtre.id_sous_projet = null ;
+			vm.filtre.id_sous_projet = vm.filtre.id_sous_projet ;
 			vm.filtre.nom_conjoint = "" ;
 			vm.filtre.sexe_conjoint = "" ;
 			vm.filtre.age_conjoint = "" ;
@@ -291,8 +291,11 @@
 			vm.filtre.lien_suppleant  = null ;
 			vm.filtre.quartier  = null ;
 			vm.filtre.milieu  = null ;
-			vm.filtre.zip  = null ;
+			// vm.filtre.zip  = null ;
 			vm.filtre.motif_non_selection  = null ;
+			vm.filtre.situation_matrimoniale  = null ;
+			vm.filtre.telephone_travailleur  = null ;
+			vm.filtre.telephone_suppleant  = null ;
 			// vm.get_max_id_generer_ref();		  
 		}
 		vm.modifier = function()  {
@@ -352,6 +355,12 @@
 			vm.filtre.milieu  =  vm.selectedItem.milieu ;
 			vm.filtre.zip  =  vm.selectedItem.zip ;
 			vm.filtre.motif_non_selection  =  vm.selectedItem.motif_non_selection ;
+			if(vm.selectedItem.situation_matrimoniale)
+			vm.filtre.situation_matrimoniale =  parseInt(vm.selectedItem.situation_matrimoniale) ;
+			if(vm.selectedItem.telephone_travailleur)
+			vm.filtre.telephone_travailleur =  parseInt(vm.selectedItem.telephone_travailleur) ;
+			if(vm.selectedItem.telephone_suppleant)
+			vm.filtre.telephone_suppleant =  parseInt(vm.selectedItem.telephone_suppleant) ;
 			if(vm.selectedItem.nombre_personne_plus_soixantedixans)
 			vm.filtre.nombre_personne_plus_soixantedixans =  parseInt(vm.selectedItem.nombre_personne_plus_soixantedixans) ;
 			if(vm.selectedItem.taille_menage)
@@ -807,17 +816,11 @@
 					break;
 			}
 		}
-		vm.affichage_etat_statut = function(etat) {      
-			switch (etat) {
-				case '1':
-					return "Oui" ;
-					break;
-				case '0':
-					return "Non" ;
-					break;
-				default:
-					return "???"
-					break;
+		vm.affichage_etat_statut = function(etat) { 
+			if(parseInt(etat) >0) {
+				return "Oui" ;
+			} else {
+				return "Non" ;
 			}
 		}
 		vm.save_reponse_menage = function() {
@@ -1055,6 +1058,9 @@
                       milieu: menage.milieu,
                       zip: menage.zip,
                       motif_non_selection: menage.motif_non_selection,
+                      situation_matrimoniale: menage.situation_matrimoniale,
+                      telephone_travailleur: menage.telephone_travailleur,
+                      telephone_suppleant: menage.telephone_suppleant,
                       statut: menage.statut,
                       inapte: menage.inapte,
                       inscrit: menage.inscrit,
@@ -1154,18 +1160,25 @@
 						milieu: menage.milieu,
 						zip: menage.zip,
 						motif_non_selection: menage.motif_non_selection,
+						situation_matrimoniale: menage.situation_matrimoniale,
+						telephone_travailleur: menage.telephone_travailleur,
+						telephone_suppleant: menage.telephone_suppleant,
 						inapte: menage.inapte,
 						inscrit: menage.inscrit,
 						preselectionne: menage.preselectionne,
 						beneficiaire: menage.beneficiaire,
 					}
 						   console.log(menage);
+					vm.nouvelle_element =false;	   
 					vm.all_menages.push(mng) ;
+					vm.selectedItem ={};	
 				} else {
 					if(parseInt(suppression)==1) {
 						vm.all_menages = vm.all_menages.filter(function(obj) {
 							return obj.id !== vm.selectedItem.id;
-						});						
+						});	
+						vm.nouvelle_element =false;	 
+						vm.selectedItem ={};	
 					} else {
 						vm.affichage_masque_individu = false ;
 						vm.selectedItem.DateInscription =  vm.filtre.DateInscription ;
@@ -1237,8 +1250,12 @@
 						vm.selectedItem.milieu = vm.filtre.milieu  ;
 						vm.selectedItem.zip = vm.filtre.zip  ;
 						vm.selectedItem.motif_non_selection = vm.filtre.motif_non_selection  ;
+						vm.selectedItem.situation_matrimoniale = vm.filtre.situation_matrimoniale  ;
+						vm.selectedItem.telephone_travailleur = vm.filtre.telephone_travailleur  ;
+						vm.selectedItem.telephone_suppleant = vm.filtre.telephone_suppleant  ;
 						vm.selectedItem.$selected=false;
 						vm.selectedItem.$edit=false;
+						vm.nouvelle_element =false;	   
 						vm.selectedItem={};
 						vm.all_individus=[];
 					}	
@@ -2047,6 +2064,5 @@
 			vm.filtre.taille_menage_enquete=vm.total;
 		}	
 		// FIN DIFFRENTES FONCTIONS UTILES POUR LA SAUVEGARDE VARIABLE INTERVENTION
-
 	}
   })();

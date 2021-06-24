@@ -230,7 +230,7 @@
                                       </div>
                                     </div>
                                 </md-input-container>
-                                <md-input-container flex="100" flex-gt-xs="90">
+                                <md-input-container flex="100" flex-gt-xs="90" style="display:none;">
                                   <label>Sous-projet</label>
                                     <md-select ng-model="vm.filtredetail.id_sous_projet" name="sous_projet" ng-disabled="!vm.filtredetail.village_id">
                                       <md-option value="">&nbsp;</md-option>
@@ -278,7 +278,7 @@
                                     </div>
                                 </md-input-container>
                                 <md-input-container flex="100" flex-gt-xs="90">
-                                  <label>Etape</label>
+                                  <label>Tranche</label>
                                     <md-select ng-model="vm.filtredetail.etape_id" name="etape_id" ng-disabled="!vm.filtredetail.village_id">
                                       <md-option value="">&nbsp;</md-option>
                                       <md-option ng-repeat="et in vm.all_etape" value="{{et.id}}" >
@@ -288,7 +288,7 @@
                                     <div ng-messages="filtrepardecoupageform.etape_id.$error"
                                       role="alert">
                                       <div ng-message="required">
-                                        <span>Etape obligatoire</span>
+                                        <span>Tranche obligatoire</span>
                                       </div>
                                     </div>
                                 </md-input-container>                              

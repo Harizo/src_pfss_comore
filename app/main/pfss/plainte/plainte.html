@@ -26,7 +26,7 @@
 					<md-icon md-font-icon="icon-plus" class="s16 center" style="color: white;"></md-icon>
 					  Nouveau
 					</md-button>
-					<md-button type="submit" ng-if="!vm.affichage_masque" ng-show="(vm.selectedPlainteItem.id)" class="md-raised custum_button" aria-label="Modifier" ng-click="vm.modifierPlainte()" style="width:10%;">
+					<md-button type="submit" ng-if="!vm.affichage_masque" ng-show="(vm.selectedPlainteItem.id)" class="md-raised custum_button" aria-label="Modifier" ng-click="vm.modifierPlainte(vm.selectedPlainteItem)" style="width:10%;">
 					<md-icon md-font-icon="icon-table-edit" class="s16" style="color: white;"></md-icon>
 					  Modifier
 					</md-button>
@@ -152,7 +152,7 @@
 							</md-input-container>
 							<md-input-container  flex="100" flex-gt-xs="15"  ng-show="vm.affichage_masque">
 								<input type="text"  name="adresseplaignant" ng-model="vm.saisie.adresseplaignant"
-								placeholder="Adresse plaignant" required>
+								placeholder="Adresse plaignant" ng-readonly="vm.saisie.menage_id >''" required>
 								<div ng-messages="saisieplainteform.adresseplaignant.$error"
 									role="alert">
 									<div ng-message="required">
@@ -193,12 +193,33 @@
 							</md-input-container>
 							<md-input-container flex-gt-xs="10">
 							  <label>TYpe plainte</label>
-								<md-select name="typeplainte_id" ng-model="vm.saisie.typeplainte_id" ng-change="vm.modifierTP(vm.saisie)" required style="display: inline-block;" style="width:90px;overflow: hidden;text-overflow: ellipsis;">
+								<md-select name="typeplainte_id" ng-model="vm.saisie.typeplainte_id" ng-change="vm.modifierTP(vm.saisie)" required style="display: inline-block;" style="width:90px;overflow: hidden;text-overflow: ellipsis;" required>
 								  <md-option value=''>&nbsp;</md-option>
 								  <md-option ng-repeat="tp in vm.all_type_plainte" value="{{tp.id}}">
 									{{tp.Code}}-{{tp.TypePlainte}}
 								  </md-option>
 								</md-select>
+								<div ng-messages="saisieplainteform.typeplainte_id.$error"
+									role="alert">
+									<div ng-message="required">
+										<span>Type plainte obligatoire</span>
+									</div>
+								</div>
+							</md-input-container>   
+							<md-input-container flex-gt-xs="10" ng-show="vm.saisie.typeplainte_id=='2'">
+							  <label>Tranche</label>
+								<md-select name="tranche_id" ng-model="vm.saisie.tranche_id" ng-change="vm.modifierTRANCHE(vm.saisie)" ng-required="vm.saisie.typeplainte_id=='2'" style="display: inline-block;" style="width:90px;overflow: hidden;text-overflow: ellipsis;">
+								  <md-option value=''>&nbsp;</md-option>
+								  <md-option ng-repeat="trh in vm.allTranche" value="{{trh.id}}">
+									{{trh.Phase}}
+								  </md-option>
+								</md-select>
+								<div ng-messages="saisieplainteform.tranche_id.$error"
+									role="alert">
+									<div ng-message="required">
+										<span>Tranche obligatoire</span>
+									</div>
+								</div>
 							</md-input-container>   
 							<md-input-container flex-gt-sm ng-show="vm.affichage_masque" flex-gt-xs="15">
 								<input type="text"  name="reference" ng-model="vm.saisie.reference"	placeholder="Plainte N°" readonly>
@@ -212,7 +233,7 @@
 						<div layout="column" layout-gt-xs="row" flex>
 							<md-input-container>
 							  <label>Responsable enregistrement</label>
-								<md-select name="responsableenregistrement" ng-model="vm.saisie.responsableenregistrement"  style="display: inline-block;" style="width:90px;overflow: hidden;text-overflow: ellipsis;">
+								<md-select name="responsableenregistrement" ng-model="vm.saisie.responsableenregistrement"  style="display: inline-block;" style="width:90px;overflow: hidden;text-overflow: ellipsis;" required>
 								  <md-option value=''>&nbsp;</md-option>
 								  <md-option value='UGP'>UGP</md-option>
 								  <md-option value='CPS'>CPS</md-option>
@@ -242,6 +263,12 @@
 									{{rp.code}}-{{rp.libelle}}
 								  </md-option>
 								</md-select>
+								<div ng-messages="saisieplainteform.solution_id.$error"
+									role="alert">
+									<div ng-message="required">
+										<span>Staut obligatoire</span>
+									</div>
+								</div>
 							</md-input-container>   
 							<md-input-container>
 							<span ng-hide="vm.saisie.solution_id!=1">Date résolution</span>

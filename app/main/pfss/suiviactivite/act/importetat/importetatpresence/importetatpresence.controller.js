@@ -77,7 +77,8 @@
         vm.affichage_masque = false ;
         vm.affichage_masque_individu = false ;
         vm.date_now = new Date() ;
-
+		vm.filtredetail ={};
+		vm.filtredetail.id_sous_projet=1;
         vm.disable_button = false ;
       //initialisation variable
 
@@ -101,10 +102,9 @@
 			apiFactory.getAll("agent_ex/index").then(function(result) { 
 				vm.all_agex= result.data.response;    
 			});
-			apiFactory.getAll("phaseexecution/index").then(function(result) { 
-				vm.all_etape = result.data.response;    
-			});
-	  
+			apiFactory.getAPIgeneraliserREST("phaseexecution/index","cle_etrangere",1).then(function(result) {
+				vm.all_etape =result.data.response;    
+			});	  
 		});
          apiFactory.getAll("ile/index").then(function(result)
         { 

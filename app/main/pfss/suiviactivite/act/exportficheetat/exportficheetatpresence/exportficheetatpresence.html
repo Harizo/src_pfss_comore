@@ -89,7 +89,7 @@
                                       </div>
                                     </div>
                                 </md-input-container>
-                                <md-input-container flex="100" flex-gt-xs="90">
+                                <md-input-container flex="100" flex-gt-xs="90" style="display:none;">
                                   <label>Sous-projet</label>
                                     <md-select ng-model="vm.filtre.id_sous_projet" name="sous_projet" g-disabled="!vm.filtre.village_id"  required>
                                       <md-option ng-repeat="ssp in vm.all_sous_projet" value="{{ssp.id}}" >
@@ -134,7 +134,7 @@
                                     </div>
                                 </md-input-container>
                                 <md-input-container flex="100" flex-gt-xs="90">
-                                  <label>Etape</label>
+                                  <label>Tranche</label>
                                     <md-select ng-model="vm.filtre.etape_id" name="etape_id" ng-disabled="!vm.filtre.id_annee"  required>
                                       <md-option ng-repeat="et in vm.all_etape" value="{{et.id}}" >
                                         {{et.Phase}}
@@ -143,7 +143,7 @@
                                     <div ng-messages="filtrepardateform.etape_id.$error"
                                       role="alert">
                                       <div ng-message="required">
-                                        <span>Etape obligatoire</span>
+                                        <span>Tranche obligatoire</span>
                                       </div>
                                     </div>
                                 </md-input-container>
