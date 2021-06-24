@@ -1,0 +1,49 @@
+<md-dialog aria-label="Mango (Fruit)"  ng-cloak>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Séléctionnez les ménages qui ont choisis cette sous-activité</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="assets/angular-material-assets/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <table class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="dtOptions" ms-responsive-table>
+            <thead>
+                <tr>
+                    <th class="secondary-text" ng-repeat="sc in ::entete_dialog_art">
+                        <div class="table-header">
+                            <span class="column-title text-center">{{sc.titre}}</span>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="m in all_menage" ng-class="{selected: m.$selected}"
+                    ng-click="selection(m)">
+                   
+                    <td>{{m.identifiant_menage}}</td>
+                    <td>{{m.nomchefmenage}}</td>
+                    <td>{{m.groupe}}</td>
+                   
+                   
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      
+      <span flex></span>
+      <md-button class="md-raised custum_buttons" ng-disabled="tab_menage.length == 0" ng-click="answer('not useful')">
+       Enregistrer tous
+      </md-button>
+     
+    </md-dialog-actions>
+  </form>
+</md-dialog>

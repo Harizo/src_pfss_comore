@@ -33,24 +33,24 @@
                                     <div class="border-right">
                                       <span class="md-headline">Phase d'exécution  &nbsp</span>
                                     </div>
-                                      <div class="border-right" ng-if="!vm.selected_phase_execution.id&&!vm.nouvelle_phase_execution">
+                                      <!--div class="border-right" ng-if="!vm.selected_phase_execution.id&&!vm.nouvelle_phase_execution">
                                         <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_phase_execution()">
                                           <md-icon md-font-icon="icon-plus-box"></md-icon>
                                           <md-tooltip><span>Ajouter</span></md-tooltip>
                                         </md-button>
-                                      </div> 
+                                      </div--> 
                                       <div class="border-right" ng-if="vm.selected_phase_execution.id&&!vm.selected_phase_execution.$edit">
                                         <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_phase_execution()">
                                           <md-icon md-font-icon="icon-table-edit"></md-icon>
                                           <md-tooltip><span>Modifier</span></md-tooltip>
                                         </md-button>
                                       </div>    
-                                      <div class="border-right" ng-if="vm.selected_phase_execution.id&&!vm.selected_phase_execution.$edit">
+                                      <!--div class="border-right" ng-if="vm.selected_phase_execution.id&&!vm.selected_phase_execution.$edit">
                                         <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_phase_execution()">
                                           <md-icon md-font-icon="icon-delete"></md-icon>
                                           <md-tooltip><span>Supprimer</span></md-tooltip>
                                         </md-button>
-                                      </div>  
+                                      </div-->  
 
                                       <div class="border-right" ng-if="vm.selected_phase_execution.id">
                                         <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_phase_execution()">

@@ -210,6 +210,11 @@
                                     </div>
                                   </div>
                             </md-input-container>
+                            <div style="font-size: 13px !important;" flex="100" flex-gt-xs="25">
+                              <label>Date d'édition:</label>
+                              <md-datepicker  ng-model="vm.realisation_ebe.date_edition" md-placeholder="jj/mm/aaaa" required>                       
+                              </md-datepicker>
+                            </div>
                             <md-input-container flex="100" flex-gt-xs="25">
                                 <label>Espace bien être</label>
                                 <md-select ng-model="vm.realisation_ebe.id_espace_bien_etre" name="id_espace_bien_etre">
@@ -287,7 +292,11 @@
                           <tbody>
                             <tr ng-repeat="contr in vm.allRealisation_ebe"  ng-class="{selected: contr.$selected}" ng-click="vm.selection(contr)">
                                 
-                                <td>{{contr.contrat_agex.numero_contrat}}</td>
+                                <td>
+                                  <span ><strong >Contrat N°</strong>: {{contr.contrat_agex.numero_contrat}}</span><br>
+                                  <span ><strong >Date de signature</strong>: {{contr.contrat_agex.date_signature}}</span>
+                                </td>
+                                <td>{{contr.date_edition | date:'dd/MM/yyyy'}}</td>
                                 <td>{{contr.espace_bien_etre.description}}</td>
                                 <td>{{contr.but_regroupement}}</td> 
                                 <td>{{contr.date_regroupement | date:'dd/MM/yyyy'}}</td>
@@ -390,7 +399,7 @@
                             </table>
                         </div>
                     </md-tab>
-                    <md-tab label="Participant formation" ng-disabled="!vm.selectedItemRealisation_ebe.id" ng-click="vm.click_groupe_participant_ebe()">
+                    <md-tab label="Fiche de présence" ng-disabled="!vm.selectedItemRealisation_ebe.id" ng-click="vm.click_groupe_participant_ebe()">
                         <div class="price-table style-1 md-whiteframe-1dp" layout="column">
                             <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                                 <div layout="row" layout-align="start center">
@@ -404,20 +413,20 @@
                                       <md-tooltip><span>Ajouter</span></md-tooltip>
                                     </md-button>
                                   </div> 
-                                  <div class="border-right" ng-if="vm.selectedItemGroupe_participant_ebe.id && !vm.selectedItemGroupe_participant_ebe.$edit">
+                                  <div class="border-right" ng-if="vm.selectedItemGroupe_participant_ebe.id_menage_prevu && !vm.selectedItemGroupe_participant_ebe.$edit">
                                     <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierGroupe_participant_ebe()">
                                       <md-icon md-font-icon="icon-table-edit"></md-icon>
                                       <md-tooltip><span>Modifier</span></md-tooltip>
                                     </md-button>
                                   </div>    
-                                  <div class="border-right" ng-if="vm.selectedItemGroupe_participant_ebe.id && !vm.selectedItemGroupe_participant_ebe.$edit">
+                                  <div class="border-right" ng-if="vm.selectedItemGroupe_participant_ebe.id_menage_prevu && !vm.selectedItemGroupe_participant_ebe.$edit">
                                     <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerGroupe_participant_ebe()">
                                       <md-icon md-font-icon="icon-delete"></md-icon>
                                       <md-tooltip><span>Supprimer</span></md-tooltip>
                                     </md-button>
                                   </div>  
 
-                                  <div class="border-right" ng-if="vm.selectedItemGroupe_participant_ebe.id">
+                                  <div class="border-right" ng-if="vm.selectedItemGroupe_participant_ebe.id_menage_prevu">
                                     <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annulerGroupe_participant_ebe()">
                                       <md-icon md-font-icon="icon-cancel"></md-icon>
                                       <md-tooltip><span>Annuler</span></md-tooltip>
@@ -449,40 +458,218 @@
                                      
                                       <td>
                                         <span ng-if="groupe_par.$edit">
-                                          <md-input-container style="width:100%;display: flex !important;">
+                                          <md-checkbox type="checkbox" class="md-primary" ng-model="groupe_par.checkbox_menage" aria-label="checkbox_menage"/>
+                                        
+                                        </span>
+                                        <span ng-if="!groupe_par.$edit">
+                                          <md-checkbox type="checkbox" class="md-primary" ng-model="groupe_par.checkbox_menage" aria-label="checkbox_menage" disabled/>
+                                        
+                                        </span>
+                                    </td>
+                                      <td>
+                                          <!--md-input-container style="width:100%;display: flex !important;">
                                               <label>Ménage</label>
                                               <md-select ng-model="groupe_par.id_menage" name="id_menage" ng-change="vm.change_menage(groupe_par)">
                                                   <md-option ng-repeat="gr in vm.allMenage" value="{{gr.id}}">
                                                       {{gr.identifiant_menage}}-{{gr.nomchefmenage}}
                                                   </md-option>                                                
                                               </md-select>
-                                          </md-input-container> 
+                                          </md-input-container-->
+                                        
                                         </span>
-                                        <span ng-if="!groupe_par.$edit"> {{groupe_par.menage.identifiant_menage}}-{{groupe_par.menage.nomchefmenage}}</span>
+                                        <span> {{groupe_par.identifiant_menage}}-{{groupe_par.nomchefmenage}}</span>
                                     </td>
                                     <td>
-                                          <span ng-if="groupe_par.$edit">
-                                              <md-input-container style="width:100%;display: flex !important;">
-                                                <label>Addresse</label>                                                
-                                                <input type="text" name="Addresse"  ng-model="groupe_par.Addresse" disabled/>
-                                              </md-input-container>
-                                          </span>
-                                          <span ng-if="!groupe_par.$edit"> {{groupe_par.menage.Addresse}}</span>
-                                        </td>
+                                        <span ng-if="!groupe_par.$edit"> {{groupe_par.nombre_enfant_moins_six_ans}}</span>
+                                    </td>
                                         <td>
                                               <span ng-if="groupe_par.$edit">
-                                                  <md-input-container style="width:100%;display: flex !important;">
-                                                    <label>Téléphone</label>                                                
-                                                    <input type="text" name="telephone_chef_menage"  ng-model="groupe_par.telephone_chef_menage" disabled/>
-                                                  </md-input-container>
+                                                <label>Date de présence:</label>
+                                              <md-datepicker  ng-model="groupe_par.date_presence" md-placeholder="jj/mm/aaaa" required>                       
+                                              </md-datepicker>
                                               </span>
-                                              <span ng-if="!groupe_par.$edit"> {{groupe_par.menage.telephone_chef_menage}}</span>
+                                              <span ng-if="!groupe_par.$edit"> {{groupe_par.date_presence | date:'dd/MM/yyyy'}}</span>
                                             </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </md-tab> 
+                    <md-tab label="Fiche de collection de donnés" ng-disabled="!vm.selectedItemRealisation_ebe.id" ng-click="vm.get_fiche_collection_donnee_ebe()">
+                      
+                      <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                        <div layout="row" layout-align="start center">
+                        <div class="border-right">
+                            
+                          <span class="md-headline">Fiche de collection &nbsp</span>
+                        </div>
+                          <div class="border-right" ng-if="!vm.selectedItemFiche_collection_donnee_ebe.id">
+                            <md-button class="md-icon-button" style=" font-size:11px " aria-label="Ajout" ng-click="vm.ajouterFiche_collection_donnee_ebe()">
+                              <md-icon md-font-icon="icon-plus-box"></md-icon>
+                              <md-tooltip><span>Ajouter</span></md-tooltip>
+                            </md-button>
+                          </div> 
+                          <div class="border-right" ng-if="vm.selectedItemFiche_collection_donnee_ebe.id">
+                            <md-button class="md-icon-button" aria-label="Modifier" style=" font-size:11px " ng-click="vm.modifFiche_collection_donnee_ebe()">
+                              <md-icon md-font-icon="icon-table-edit"></md-icon>
+                              <md-tooltip><span>Modifier</span></md-tooltip>
+                            </md-button>
+                          </div>    
+                          <div class="border-right" ng-if="vm.selectedItemFiche_collection_donnee_ebe.id">
+                            <md-button class="md-icon-button" aria-label="Suppression" style=" font-size:11px " ng-click="vm.supprimerFiche_collection_donnee_ebe()">
+                              <md-icon md-font-icon="icon-delete"></md-icon>
+                              <md-tooltip><span>Supprimer</span></md-tooltip>
+                            </md-button>
+                          </div>    
+                          <div class="border-right" ng-if="vm.selectedItemFiche_collection_donnee_ebe.id">
+                            <md-button class="md-icon-button" aria-label="Annuler" style=" font-size:11px " ng-click="vm.annulerFiche_collection_donnee_ebe()">
+                              <md-icon md-font-icon="icon-cancel"></md-icon>
+                              <md-tooltip><span>Annuler</span></md-tooltip>
+                            </md-button>
+                          </div>                  
+                        </div>
+                    </header>
+                      <!----------FORM AGEP--------------->       
+                       
+                      <form ng-show="vm.affichage_masque_fiche_collection_donnee_ebe" name="formfiche_collection_donnee_eb" class="md-inline-form" novalidate >
+
+                        <div layout="column" layout-gt-xs="row" flex>                           
+                           
+                          <div style="margin-top: 14px; font-size: 13px !important;" flex="100" flex-gt-xs="25">
+                            <label>Date:</label>
+                            <md-datepicker  ng-model="vm.fiche_collection_donnee_ebe.date" md-placeholder="jj/mm/aaaa" required>                       
+                            </md-datepicker>
+                          </div>                                 
+                          <md-input-container flex="100" flex-gt-xs="25">
+                            <label>Localité</label>
+                            <input  type="text" name="localite" ng-model="vm.fiche_collection_donnee_ebe.localite" required>
+                            <div ng-messages="formfiche_collection_donnee_ebe.localite.$error"role="alert">
+                                <div ng-message="required">
+                                    <span>Localité obligatoire.</span>
+                                </div>
+                            </div>
+                          </md-input-container>
+                          <md-input-container flex="100" flex-gt-xs="25">
+                              <label>Thème à discuter</label>
+                              <md-select ng-model="vm.fiche_collection_donnee_ebe.id_theme_sensibilisation" name="id_theme_sensibilisation" required>
+                                  <md-option ng-repeat="mena in vm.allTheme_sensibilisation" value="{{mena.id}}">
+                                          {{mena.description}}
+                                  </md-option>                                                
+                                </md-select>
+                                <div ng-messages="formfiche_collection_donnee_ebe.id_theme_sensibilisation.$error" role="alert">
+                                  <div ng-message="required">
+                                    <span>Thème à discuter Obligatoire.</span>
+                                  </div>
+                                </div>
+                          </md-input-container> 
+                          <md-input-container flex="100" flex-gt-xs="25">
+                              <label>Outils utilisés</label>
+                              <md-select ng-model="vm.fiche_collection_donnee_ebe.id_outils_utilise" name="id_outils_utilise" required>
+                                  <md-option ng-repeat="mena in vm.allOutils_utilise" value="{{mena.id}}">
+                                          {{mena.description}}
+                                  </md-option>                                                
+                                </md-select>
+                                <div ng-messages="formfiche_collection_donnee_ebe.id_outils_utilise.$error" role="alert">
+                                  <div ng-message="required">
+                                    <span>Outils utilisés Obligatoire.</span>
+                                  </div>
+                                </div>
+                          </md-input-container>
+                          </div>
+                          <div layout="column" layout-gt-xs="row" flex>                                  
+                          <md-input-container flex="100" flex-gt-xs="25">
+                            <label>Nombre de participants Femme</label>
+                            <input  type="number" name="nbr_femme" ng-model="vm.fiche_collection_donnee_ebe.nbr_femme" required>
+                            <div ng-messages="formfiche_collection_donnee_ebe.nbr_femme.$error"role="alert">
+                                <div ng-message="required">
+                                    <span>Nombre de participants Femme obligatoire.</span>
+                                </div>
+                            </div>
+                          </md-input-container>
+                                                            
+                          <md-input-container flex="100" flex-gt-xs="25">
+                            <label>Nombre de participants Homme</label>
+                            <input  type="number" name="nbr_homme" ng-model="vm.fiche_collection_donnee_ebe.nbr_homme" required>
+                            <div ng-messages="formfiche_collection_donnee_ebe.nbr_homme.$error"role="alert">
+                                <div ng-message="required">
+                                    <span>Nombre de participants Homme obligatoire.</span>
+                                </div>
+                            </div>
+                          </md-input-container>
+                                                            
+                          <md-input-container flex="100" flex-gt-xs="25">
+                            <label>Nombre de participants Enfant</label>
+                            <input  type="number" name="nbr_enfant" ng-model="vm.fiche_collection_donnee_ebe.nbr_enfant" required>
+                            <div ng-messages="formfiche_collection_donnee_ebe.nbr_enfant.$error"role="alert">
+                                <div ng-message="required">
+                                    <span>Nombre de participants Enfant obligatoire.</span>
+                                </div>
+                            </div>
+                          </md-input-container>
+                                    
+                          <md-input-container flex="100" flex-gt-xs="25">
+                              <label>Animateur</label>
+                                <input name="animateur" type="text" ng-model="vm.fiche_collection_donnee_ebe.animateur" required md-select-on-focus required>
+                                  <div ng-messages="formfiche_collection_donnee_ebe.animateur.$error" role="alert">
+                                    <div ng-message="required">
+                                        <span>Animateur obligatoire.</span>
+                                    </div>
+                                  </div>
+                            </md-input-container>
+                            </div>
+                            <div layout="column" layout-gt-xs="row" flex> 
+                            <md-input-container flex="100" flex-gt-xs="25">
+                                <label>Observation</label>
+                                  <textarea name="observation" type="text" ng-model="vm.fiche_collection_donnee_ebe.observation" required md-select-on-focus required></textarea>
+                                    <div ng-messages="formfiche_collection_donnee_ebe.observation.$error" role="alert">
+                                      <div ng-message="required">
+                                          <span>Observation obligatoire.</span>
+                                      </div>
+                                    </div>
+                              </md-input-container>
+                 
+                        </div>
+
+                          <div>
+                              <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                      ng-disabled="formfiche_collection_donnee_ebe.$invalid " ng-click="vm.ajoutFiche_collection_donnee_ebe(vm.fiche_collection_donnee_ebe,0)">
+                                      Enregistrer
+                              </md-button>
+                              <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerFiche_collection_donnee_ebe()">
+                                      Annuler
+                              </md-button>
+                          </div>
+                          </form>
+                                      
+                      <!--FORM  agep--> 
+                      <table class="dataTable row-border hover cell-border text-center" datatable="ng"
+                        dt-options="vm.dtOptions_new" ms-responsive-table>
+                        <thead>
+                          <tr>
+                            <th class="secondary-text" ng-repeat="re in ::vm.fiche_collection_donnee_ebe_column">
+                              <div class="table-header">
+                                <span class="column-title text-center">{{re.titre}}</span>
+                              </div>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr ng-repeat="contr in vm.allFiche_collection_donnee_ebe"  ng-class="{selected: contr.$selected}" ng-click="vm.selectionFiche_collection_donnee_ebe(contr)">
+                              
+                              
+                            <td>{{contr.date | date:'dd/MM/yyyy'}}</td>
+                            <td>{{contr.localite}}</td>
+                            <td>{{contr.theme_sensibilisation.description}}</td>
+                            <td>{{contr.outils_utilise.description}}</td>
+                            <td>{{contr.nbr_femme}}</td>
+                            <td>{{contr.nbr_homme}}</td>
+                            <td>{{contr.nbr_enfant}}</td>
+                            <td>{{contr.animateur}}</td>
+                            <td>{{contr.observation}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </md-tab>
                     <md-tab>
                     </md-tab>
                 </md-tabs>

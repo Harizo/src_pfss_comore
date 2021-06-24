@@ -7,6 +7,7 @@
 			'app.pfss.macc.macc_arse.mere_leader.groupemlpl',
 			'app.pfss.macc.macc_arse.mere_leader.rapportmensuelmlpl',
 			'app.pfss.macc.macc_arse.mere_leader.visitedomicile',
+            'app.pfss.macc.macc_arse.mere_leader.fsdr'
             ])
         // .run(testPermission)
         .config(config);

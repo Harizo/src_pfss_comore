@@ -2193,10 +2193,10 @@
 
             vm.estimation_depense_column =
             [
+                {titre:"Localité"},
                 {titre:"Désignation"},
                 {titre:"Unité"},
                 {titre:"Quantité"},
-                {titre:"Localité"},
                 {titre:"Prix unitaire"},
                 {titre:"Total"}
             ];

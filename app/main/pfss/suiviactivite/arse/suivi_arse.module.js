@@ -2,7 +2,8 @@
 {
     'use strict';
     angular
-        .module('app.pfss.suiviactivite.suivi_arse', [		
+        .module('app.pfss.suiviactivite.suivi_arse', [	
+            'app.pfss.suiviactivite.suivi_arse.activite_choisis_menage'	,
 			'app.pfss.suiviactivite.suivi_arse.paiement1',
 			'app.pfss.suiviactivite.suivi_arse.profilage_orientation',
 			'app.pfss.suiviactivite.suivi_arse.plan_relevement',

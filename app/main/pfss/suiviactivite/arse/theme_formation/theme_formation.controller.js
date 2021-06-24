@@ -98,7 +98,8 @@
 							vm.showAlert('Erreur','Erreur lors de la suppression de donnée');
 						});
 					}, function() {
-						// Aucune action = sans suppression
+						// Aucune action = sans suppression            
+            vm.mainGridOptions.dataSource.read();
 					});               
                 },
                 //creation Theme
@@ -303,8 +304,10 @@
 						}).error(function (data) {
 							vm.showAlert('Erreur','Erreur lors de la suppression de donnée');
 						}); 
-					}, function() {
-						// Aucune action = sans suppression
+					}, function()
+          {
+            vm.mainGridOptions.dataSource.read();
+            
 					});					
               },
               //creation district

@@ -1,0 +1,272 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Planning espace de bien être |&nbsp {{vm.type_sous_projet}}</span>
+                    <span class="parent"> </span>
+                    <!--md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;">Groupe ML/PL</span-->
+                </div>
+    
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>
+                      <form name="filtreform" class="md-inline-form" novalidate >
+                        <div layout="column" layout-gt-xs="row" flex>
+                           <md-input-container flex="100" flex-gt-xs="90">
+                             <label>Île</label>
+                               <md-select ng-model="vm.filtre.id_ile" name="ile" ng-change="vm.filtre_region()" required>
+                                
+                                 <md-option ng-repeat="ile in vm.all_ile" value="{{ile.id}}" >
+                                   {{ile.Ile}}
+                                 </md-option>
+
+                               </md-select>
+                               <div ng-messages="filtreform.ile.$error"
+                                 role="alert">
+                                 <div ng-message="required">
+                                   <span>Île obligatoire</span>
+                                 </div>
+                               </div>
+                           </md-input-container>
+
+                           <md-input-container flex="100" flex-gt-xs="90">
+                             <label>Préfecture</label>
+                               <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_ile" required>
+                                 
+                                 <md-option ng-repeat="region in vm.all_region" value="{{region.id}}" >
+                                   {{region.Region}}
+                                 </md-option>
+
+                               </md-select>
+                               <div ng-messages="filtreform.region.$error"
+                                 role="alert">
+                                 <div ng-message="required">
+                                   <span>Région obligatoire</span>
+                                 </div>
+                               </div>
+                           </md-input-container>
+
+                           <md-input-container flex="100" flex-gt-xs="90">
+                             <label>Commune</label>
+                               <md-select ng-model="vm.filtre.id_commune" name="commune" ng-disabled="!vm.filtre.id_region" ng-change="vm.filtre_village()" required>
+                                
+                                 <md-option ng-repeat="commune in vm.all_commune" value="{{commune.id}}" >
+                                   {{commune.Commune}}
+                                 </md-option>
+
+                               </md-select>
+                               <div ng-messages="filtreform.commune.$error"
+                                 role="alert">
+                                 <div ng-message="required">
+                                   <span>Commune obligatoire</span>
+                                 </div>
+                               </div>
+                           </md-input-container>
+
+                           <md-input-container flex="100" flex-gt-xs="90">
+                             <label>Village</label>
+                               <md-select ng-model="vm.filtre.id_village" name="village" ng-disabled="!vm.filtre.id_commune" ng-change="vm.filtre_zip_groupe()" required>
+                                
+                                 <md-option ng-repeat="village in vm.all_village" value="{{village.id}}" >
+                                   {{village.Village}}
+                                 </md-option>
+
+                               </md-select>
+                               <div ng-messages="filtreform.village.$error"
+                                 role="alert">
+                                 <div ng-message="required">
+                                   <span>village obligatoire</span>
+                                 </div>
+                               </div>
+                           </md-input-container>
+                                                    
+                           <md-input-container flex="80" flex-gt-xs="50">
+                            <label>Zip</label>
+                              <md-select ng-model="vm.filtre.id_zip" name="zip" ng-disabled="!vm.filtre.id_village">
+                               
+                                <md-option ng-repeat="zip in vm.allZip" value="{{zip.id}}" >
+                                  {{zip.libelle}}
+                                </md-option>
+
+                              </md-select>
+                              <div ng-messages="filtreform.zip.$error"
+                                role="alert">
+                                <div ng-message="required">
+                                  <span>Zip obligatoire</span>
+                                </div>
+                              </div>
+                          </md-input-container>
+                          <md-input-container flex="80" flex-gt-xs="50">
+                            <label>Vague</label>
+                              <input ng-model="vm.filtre.vague" type="text" name="vague" disabled/>
+                               
+                              <div ng-messages="filtreform.vague.$error"
+                                role="alert">
+                                <div ng-message="required">
+                                  <span>Vague obligatoire</span>
+                                </div>
+                              </div>
+                          </md-input-container> 
+                          
+                       </div>	
+                      <div>                            
+                        <section layout="row" layout-sm="column" layout-align="left" layout-wrap>
+                      
+                          <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                             ng-disabled="filtreform.$invalid||vm.affiche_load" ng-click="vm.get_planning_ebe(vm.filtre)">
+                            Actualiser
+                          </md-button>                              
+                        </section>                         
+                       </div>
+                   </form>
+                        <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                          <div layout="row" layout-align="start center">
+                          <div class="border-right">
+                              
+                            <span class="md-headline">Planning EBE &nbsp</span>
+                          </div>
+                            <div class="border-right" ng-if="vm.filtre.id_commune && !vm.selectedItemPlanning_ebe.id">
+                              <md-button class="md-icon-button" style=" font-size:11px " aria-label="Ajout" ng-click="vm.ajouterPlanning_ebe()">
+                                <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                <md-tooltip><span>Ajouter</span></md-tooltip>
+                              </md-button>
+                            </div> 
+                            <div class="border-right" ng-if="vm.selectedItemPlanning_ebe.id">
+                              <md-button class="md-icon-button" aria-label="Modifier" style=" font-size:11px " ng-click="vm.modifPlanning_ebe()">
+                                <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                <md-tooltip><span>Modifier</span></md-tooltip>
+                              </md-button>
+                            </div>    
+                            <div class="border-right" ng-if="vm.selectedItemPlanning_ebe.id">
+                              <md-button class="md-icon-button" aria-label="Suppression" style=" font-size:11px " ng-click="vm.supprimerPlanning_ebe()">
+                                <md-icon md-font-icon="icon-delete"></md-icon>
+                                <md-tooltip><span>Supprimer</span></md-tooltip>
+                              </md-button>
+                            </div>    
+                            <div class="border-right" ng-if="vm.selectedItemPlanning_ebe.id">
+                              <md-button class="md-icon-button" aria-label="Annuler" style=" font-size:11px " ng-click="vm.annulerPlanning_ebe()">
+                                <md-icon md-font-icon="icon-cancel"></md-icon>
+                                <md-tooltip><span>Annuler</span></md-tooltip>
+                              </md-button>
+                            </div>                  
+                          </div>
+                      </header>
+                        <!----------FORM AGEP--------------->       
+                         
+                        <form ng-show="vm.affichage_masque" name="formplanning_ebe" class="md-inline-form" novalidate >
+
+                          <div layout="column" layout-gt-xs="row" flex> 
+                            
+                                                              
+                            <md-input-container flex="100" flex-gt-xs="15">
+                              <label>Numero</label>
+                              <input  type="text" name="numero" ng-model="vm.planning_ebe.numero" ng-init="vm.planning_ebe.numero=''" required>
+                              <div ng-messages="formplanning_ebe.numero.$error"role="alert">
+                                  <div ng-message="required">
+                                      <span>Numero obligatoire.</span>
+                                  </div>
+                              </div>
+                            </md-input-container>
+                            <md-input-container flex="100" flex-gt-xs="25">
+                                <label>Groupe ML</label>
+                                <md-select ng-model="vm.planning_ebe.id_groupe_ml_pl" name="id_groupe_ml_pl" required>
+                                    <md-option ng-repeat="mena in vm.allGroupe_ml_pl" value="{{mena.id}}">
+                                            {{mena.nom_groupe}}
+                                    </md-option>                                                
+                                  </md-select>
+                                  <div ng-messages="formplanning_ebe.id_groupe_ml_pl.$error" role="alert">
+                                    <div ng-message="required">
+                                      <span>Groupe Obligatoire.</span>
+                                    </div>
+                                  </div>
+                            </md-input-container>
+                            
+                            <div style="font-size: 13px !important;" flex="100" flex-gt-xs="25">
+                              <label>Date EBE:</label>
+                              <md-datepicker  ng-model="vm.planning_ebe.date_ebe" md-placeholder="jj/mm/aaaa" required>                       
+                              </md-datepicker>
+                            </div>
+                                                              
+                            <md-input-container flex="100" flex-gt-xs="25">
+                              <label>Durée</label>
+                              <input  type="text" name="duree" ng-model="vm.planning_ebe.duree" required>
+                              <div ng-messages="formplanning_ebe.duree.$error"role="alert">
+                                  <div ng-message="required">
+                                      <span>Durée obligatoire.</span>
+                                  </div>
+                              </div>
+                            </md-input-container>
+                                      
+                            <md-input-container flex="100" flex-gt-xs="25">
+                                <label>Lieux</label>
+                                  <input name="lieu" type="text" ng-model="vm.planning_ebe.lieu" required md-select-on-focus required>
+                                    <div ng-messages="formplanning_ebe.lieu.$error" role="alert">
+                                      <div ng-message="required">
+                                          <span>Lieux obligatoire.</span>
+                                      </div>
+                                    </div>
+                              </md-input-container>
+                              <md-input-container flex="100" flex-gt-xs="25">
+                                  <label>Thème à discuter</label>
+                                  <md-select ng-model="vm.planning_ebe.id_theme_sensibilisation" name="id_theme_sensibilisation" required>
+                                      <md-option ng-repeat="mena in vm.allTheme_sensibilisation" value="{{mena.id}}">
+                                              {{mena.description}}
+                                      </md-option>                                                
+                                    </md-select>
+                                    <div ng-messages="formplanning_ebe.id_theme_sensibilisation.$error" role="alert">
+                                      <div ng-message="required">
+                                        <span>Thème à discuter Obligatoire.</span>
+                                      </div>
+                                    </div>
+                              </md-input-container> 
+                   
+                          </div>
+
+                            <div>
+                                <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                        ng-disabled="formplanning_ebe.$invalid " ng-click="vm.ajoutPlanning_ebe(vm.planning_ebe,0)">
+                                        Enregistrer
+                                </md-button>
+                                <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerPlanning_ebe()">
+                                        Annuler
+                                </md-button>
+                            </div>
+                            </form>
+                                        
+                        <!--FORM  agep--> 
+                        <table class="dataTable row-border hover cell-border text-center" datatable="ng"
+                          dt-options="vm.dtOptions_new" ms-responsive-table>
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::vm.planning_ebe_column">
+                                <div class="table-header">
+                                  <span class="column-title text-center">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="contr in vm.allPlanning_ebe"  ng-class="{selected: contr.$selected}" ng-click="vm.selection(contr)">
+                                
+                                <td>{{contr.numero}}</td>
+                                <td>
+                                  <span ><strong >Nom groupe</strong>: {{contr.groupe_ml_pl.nom_groupe}}</span><br>
+                                  <span ><strong >Nom ML</strong>: {{contr.groupe_ml_pl.nom_prenom_ml_pl}}</span><br>
+                                  <span ><strong >Nombre menage membre</strong>: {{contr.groupe_ml_pl.nbr_menage_membre}}</span>
+                                </td>
+                                <td>{{contr.date_ebe | date:'dd/MM/yyyy'}}</td> 
+                                <td>{{contr.duree}}</td>
+                                <td>{{contr.lieu}}</td>
+                                <td>{{contr.theme_sensibilisation.description}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+            </div>
+        </div>
+    </div>

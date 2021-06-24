@@ -33,7 +33,7 @@
             title: 'Réalisation EBE ARSE',
             icon  : 'icon-data',
             state: 'app.pfss_macc_macc_arse_sensibilisation_espace_bien_etre_realisation_ebe_arse',
-			weight:1
+			weight:2
         });
     }
     
