@@ -190,7 +190,7 @@
 		vm.ajouterInfrastructure_eligible = function()
 		{
 			vm.nouvelItemInfrastructure_eligible = true ;
-			apiFactory.getAPIgeneraliserREST("infrastructure/index","menu","getinfrastructurebyvillageandeligible","id_village",vm.filtre_eligible.id_village).then(function(result) { 				
+			apiFactory.getAPIgeneraliserREST("infrastructure/index","menu","getinfrastructurebyvillage","id_village",vm.filtre_eligible.id_village).then(function(result) { 				
 				var liste_infrastructure = result.data.response;
 				var numero_code= null;
 				if (liste_infrastructure.length==0)
