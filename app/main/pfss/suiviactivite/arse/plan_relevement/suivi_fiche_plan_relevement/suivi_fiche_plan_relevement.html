@@ -793,8 +793,10 @@
                                 <span ng-if="cm.$edit">
                                     <md-input-container style="width:100%;display: flex !important;">
                                       <label>Problèmes</label>
-                                      <textarea name="probleme"  ng-model="cm.probleme"/>
-    </textarea>                               </md-input-container>   
+                                      <textarea name="probleme"  ng-model="cm.probleme">
+                                        
+                                      </textarea>                               
+                                    </md-input-container>   
                                     
                                 </span>
                                 <span ng-if="!cm.$edit">
@@ -808,8 +810,9 @@
                                 <span ng-if="cm.$edit">
                                     <md-input-container style="width:100%;display: flex !important;">
                                       <label>Solution apportée</label>
-                                      <textarea name="solution"  ng-model="cm.solution"/>
-    </textarea>                               </md-input-container>   
+                                      <textarea name="solution"  ng-model="cm.solution">
+                                        </textarea>                               
+                                      </md-input-container>   
                                     
                                 </span>
                                 <span ng-if="!cm.$edit">
