@@ -803,7 +803,7 @@
                     {
                         vm.nouvelItemGroupe_participant_ebe = false ;
                         vm.selectedItemGroupe_participant_ebe.$edit = true;
-                     
+                        vm.selectedItemGroupe_participant_ebe.date_presence = new Date(vm.selectedItemGroupe_participant_ebe.date_presence);
                     }
                     else
                     {

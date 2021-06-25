@@ -763,10 +763,28 @@ vm.click_connaissance_experiance_menage_entete = function ()
                             }
                             else
                             {
-                                vm.allConnaissance_experiance_menage_detail = vm.allConnaissance_experiance_menage_detail.filter(function(obj)
+                               /* vm.allConnaissance_experiance_menage_detail = vm.allConnaissance_experiance_menage_detail.filter(function(obj)
                                 {
                                     return obj.id !== vm.selectedItemConnaissance_experiance_menage_detail.id ;
-                                });
+                                });*/
+                                
+                                vm.selectedItemConnaissance_experiance_menage_detail.activite_realise_auparavant = null ; 
+                                vm.selectedItemConnaissance_experiance_menage_detail.id = null ; 
+                                vm.selectedItemConnaissance_experiance_menage_detail.difficulte_rencontre = null ;  
+                                vm.selectedItemConnaissance_experiance_menage_detail.nbr_annee_activite = null ;   
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise = null ;   
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_mar = null ;   
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_pep = null ;   
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_cul = null ;   
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_tra_act1 = null ;  
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_tra_act3 = null ; 
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_cap = null;  
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_avi = null ;  
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_bov = null ;  
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_tec = null ;  
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_aut_act1 = null ;  
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_aut_act2 = null ;  
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_aut_act3 = null ; 
                             }
 
                         }
