@@ -3,7 +3,8 @@
     'use strict';
     angular
         .module('app.pfss.macc.macc_arse.formation_mere_leader', [	
-            'app.pfss.macc.macc_arse.formation_mere_leader.formation_ml_arse'		
+            'app.pfss.macc.macc_arse.formation_mere_leader.formation_ml_arse',
+            'app.pfss.macc.macc_arse.formation_mere_leader.fiche_supervision_ml_arse'		
             ])
         // .run(testPermission)
         .config(config);

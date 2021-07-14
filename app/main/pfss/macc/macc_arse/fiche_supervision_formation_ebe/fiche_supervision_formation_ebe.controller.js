@@ -15,7 +15,7 @@
       var current_selectedItemFiche_supervision_formation_ebe = {} ;
       vm.nouvelItemFiche_supervision_formation_ebe = false ;
       vm.allFiche_supervision_formation_ebe = [];
-      vm.affiche_load = false ;
+      vm.affiche_load = true ;
 
       
       vm.selectedItemFiche_supervision_formation_ebe_planning = {} ;
@@ -44,14 +44,15 @@
     apiFactory.getAll("Ile/index").then(function(result)
     {
         vm.all_ile = result.data.response;
-    });
-    apiFactory.getAll("agent_ex/index").then(function(result)
-    {
-        vm.allAgex = result.data.response;
-    });
-    apiFactory.getAll("theme_sensibilisation/index").then(function(result)
-    {
-        vm.allTheme_sensibilisation = result.data.response;
+        apiFactory.getAll("agent_ex/index").then(function(result)
+        {
+            vm.allAgex = result.data.response;
+            apiFactory.getAll("theme_sensibilisation/index").then(function(result)
+            {
+                vm.allTheme_sensibilisation = result.data.response;
+                vm.affiche_load = false ;
+            });
+        });
     });
 
      vm.filtre_region = function()
@@ -145,7 +146,6 @@
        apiFactory.getAPIgeneraliserREST("fiche_supervision_formation_ebe/index","menu","get_supervision_formationbyvillage","id_village",vm.filtre.id_village).then(function(result){
             vm.allFiche_supervision_formation_ebe = result.data.response;                    
             vm.affiche_load = false ;
-            console.log(vm.allFiche_supervision_formation_ebe);
         }); 
         vm.selectedItemFiche_supervision_formation_ebe = {}; 
         
@@ -361,7 +361,6 @@
        apiFactory.getAPIgeneraliserREST("fiche_supervision_formation_ebe_planning/index","menu","get_planningbyfiche","id_fiche_supervision",vm.selectedItemFiche_supervision_formation_ebe.id).then(function(result){
             vm.allFiche_supervision_formation_ebe_planning = result.data.response;                    
             vm.affiche_load = false ;
-            console.log(vm.allFiche_supervision_formation_ebe_planning);
         }); 
         vm.selectedItemFiche_supervision_formation_ebe_planning = {}; 
         
@@ -550,7 +549,6 @@
        apiFactory.getAPIgeneraliserREST("fiche_supervision_formation_ebe_point_verifier/index","menu","get_point_verifierbyfiche","id_fiche_supervision",vm.selectedItemFiche_supervision_formation_ebe.id).then(function(result){
             vm.allFiche_supervision_formation_ebe_point_verifier = result.data.response;                    
             vm.affiche_load = false ;
-            console.log(vm.allFiche_supervision_formation_ebe_point_verifier);
         }); 
         vm.selectedItemFiche_supervision_formation_ebe_point_verifier = {}; 
         
@@ -739,7 +737,6 @@
        apiFactory.getAPIgeneraliserREST("fiche_supervision_formation_ebe_conclusion/index","menu","get_problemebyfiche","id_fiche_supervision",vm.selectedItemFiche_supervision_formation_ebe.id).then(function(result){
             vm.allFiche_supervision_formation_ebe_conclusion = result.data.response;                    
             vm.affiche_load = false ;
-            console.log(vm.allFiche_supervision_formation_ebe_conclusion);
         }); 
         vm.selectedItemFiche_supervision_formation_ebe_conclusion = {}; 
         

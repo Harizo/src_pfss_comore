@@ -16,10 +16,10 @@
         </div>
         <div class="content" layout="column">
             <div class="form-wrapper">
-                <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                <!--div ng-if="vm.affiche_load" layout="row" layout-align="center center">
                     <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
                     <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
-                </div>
+                </div-->
                 <div style="clear:both;"></div>
                 <md-tabs md-dynamic-height layout="column" flex>
                     
@@ -64,7 +64,11 @@
                                           <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                                           <md-tooltip><span>Enregistrer</span></md-tooltip>
                                         </md-button>
-                                      </div>                
+                                      </div>                              
+                                      <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                        <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                        <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                                    </div>                
                                     </div>
                                 </header>
 
@@ -204,7 +208,11 @@
                                           <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                                           <md-tooltip><span>Enregistrer</span></md-tooltip>
                                         </md-button>
-                                      </div>                
+                                      </div>                              
+                                      <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                        <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                        <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                                    </div>                
                                     </div>
                                   </header>
 

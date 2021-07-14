@@ -4,6 +4,8 @@
     angular
         .module('app.pfss.suiviactivite.suivi_arse.formation_technique', [	
 				'app.pfss.suiviactivite.suivi_arse.formation_technique.fiche_presence_formation',
+				'app.pfss.suiviactivite.suivi_arse.formation_technique.formation_thematique_agex_activite_arse',
+				'app.pfss.suiviactivite.suivi_arse.formation_technique.formation_thematique_suivi_agex_activite_arse',
             ])
         // .run(testPermission)
         .config(config);

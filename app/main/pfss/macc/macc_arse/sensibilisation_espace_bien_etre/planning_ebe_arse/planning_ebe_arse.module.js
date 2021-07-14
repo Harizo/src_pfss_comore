@@ -31,9 +31,9 @@
         // Navigation
         msNavigationServiceProvider.saveItem('pfss.macc.macc_arse.sensibilisation_espace_bien_etre.planning_ebe_arse', {
             title: 'Planning EBE ARSE',
-            icon  : 'icon-data',
+            icon  : 'icon-lumx',
             state: 'app.pfss_macc_macc_arse_sensibilisation_espace_bien_etre_planning_ebe_arse',
-			weight:1
+			weight:2
         });
     }
     

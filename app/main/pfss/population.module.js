@@ -52,9 +52,12 @@
 
             'app.pfss.formation_ml',
             'app.pfss.realisation_ebe',
-            'app.pfss.formation_thematique_agex',
+            'app.pfss.formation_thematique_agex_macc',
             // 'app.pfss.tdb',
-            'app.pfss.planning_ebe'
+            'app.pfss.planning_ebe',
+            'app.pfss.formation_thematique_suivi_agex_macc',
+            'app.pfss.formation_thematique_agex_activite',
+            'app.pfss.formation_thematique_suivi_agex_activite'
 
  
        ])

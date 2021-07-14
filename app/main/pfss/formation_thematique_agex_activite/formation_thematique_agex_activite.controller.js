@@ -3,11 +3,11 @@
     'use strict';
 
     angular
-        .module('app.pfss.formation_thematique_agex')
-        .controller('Formation_thematique_agexController', Formation_thematique_agexController);
+        .module('app.pfss.formation_thematique_agex_activite')
+        .controller('Formation_thematique_agex_activiteController', Formation_thematique_agex_activiteController);
 
     /** @ngInject */
-    function Formation_thematique_agexController(apiFactory, $scope, $mdDialog,$state)
+    function Formation_thematique_agex_activiteController(apiFactory, $scope, $mdDialog,$state)
     {console.log($state);
         //console.log(type_sous_projet);
     	var vm = this ;
@@ -20,12 +20,7 @@
 
         vm.allFormation_thematique_agex = [];
         vm.formation_thematique_agex = {};
-        vm.affiche_load = false ;
-        
-        vm.selectedItemGroupe_beneficiaire = {} ;
-        var current_selectedItemGroupe_beneficiaire = {} ;
-        vm.nouvelItemGroupe_beneficiaire = false ;
-        vm.allGroupe_beneficiaire = [];
+        vm.affiche_load = true ;
 
         vm.dtOptions_new =
         {
@@ -36,37 +31,43 @@
         };
 
  
-        apiFactory.getAPIgeneraliserREST("contrat_ugp_agex/index",'id_sous_projet',id_sous_projet_state).then(function(result)
-        {
-            vm.allContrat_agex = result.data.response;
-        });
 
         apiFactory.getAll("Ile/index").then(function(result)
         {
             vm.all_ile = result.data.response;
+            apiFactory.getAPIgeneraliserREST("contrat_ugp_agex/index",'id_sous_projet',id_sous_projet_state).then(function(result)
+            {
+                vm.allContrat_agex = result.data.response;
+                apiFactory.getAll("theme_formation/index").then(function(result)
+                {
+                    vm.allTheme_formation = result.data.response;
+                    console.log(vm.allTheme_formation);
+                    apiFactory.getAPIgeneraliserREST("formation_thematique_agex_activite/index","menu","getformation_thematique_agex").then(function(result) { 
+                        vm.allFormation_thematique_agex = result.data.response;
+                        vm.affiche_load = false ;
+                        console.log(vm.allFormation_thematique_agex);
+                    });
+                    
+                });
+            });
         });
-        apiFactory.getAll("theme_sensibilisation/index").then(function(result)
-        {
-            vm.allTheme_sensibilisation = result.data.response;
+      vm.change_theme_formation = function(item)
+      {
+        apiFactory.getAPIgeneraliserREST("formation_thematique_agex_activite/index","menu","gettheme_formation_datailBytheme","id_theme_formation",item.id_theme_formation).then(function(result) { 
+            vm.allTheme_formation_detail = result.data.response;
         });
-      
-        apiFactory.getAPIgeneraliserREST("formation_thematique_agex/index","menu","getformation_thematique_agexBysousprojet",'id_sous_projet',id_sous_projet_state).then(function(result) { 
-            vm.allFormation_thematique_agex = result.data.response;
-            console.log(vm.allFormation_thematique_agex);
-        });
+      }
             vm.formation_thematique_agex_column = 
             [   
                 {titre:"Contrat AGEX N°"},
                 {titre:"Thème de la formation"},
-                {titre:"Date de debut prévu"},
-                {titre:"Date de fin prévu"},
-                {titre:"Date de debut réalisation"},
-                {titre:"Date de fin réalisation"},
-                {titre:"Nombre des bénéficiaires ciblés"},
-                {titre:"Nombre des participants"},
-                {titre:"Nombre de femmes"},
-                {titre:"Formateurs"},
-                {titre:"Observation"}
+                {titre:"Sous thème"},
+                {titre:"Contenu"},
+                {titre:"Objectifs de formations"},
+                {titre:"Méthodologies de formation"},
+                {titre:"Matériels didactiques"},
+                {titre:"Date de formation"},
+                {titre:"Durées"}
             ];                       
 
             vm.selection = function (item) 
@@ -74,7 +75,6 @@
                 vm.selectedItemFormation_thematique_agex = item ;                
                 vm.selectedItemGroupe_beneficiaire = {};                 
                 vm.allGroupe_beneficiaire = []; 
-                console.log(vm.selectedItemFormation_thematique_agex);
             }
 
             $scope.$watch('vm.selectedItemFormation_thematique_agex', function() {
@@ -102,14 +102,14 @@
                 NouvelItemFormation_thematique_agex = true ;
                 vm.formation_thematique_agex.supprimer=0;
                 vm.formation_thematique_agex.id=0;
-                vm.formation_thematique_agex.id_theme_sensibilisation=null;
-                vm.formation_thematique_agex.date_debut_prevu=null;
-                vm.formation_thematique_agex.date_fin_prevu=null;
-                vm.formation_thematique_agex.date_debut_realisation=null;
-                vm.formation_thematique_agex.date_fin_realisation=null;
-                vm.formation_thematique_agex.nbr_beneficiaire_cible=null;
-                vm.formation_thematique_agex.formateur=null;
-                vm.formation_thematique_agex.observation=null;
+                vm.formation_thematique_agex.id_theme_formation=null;
+                vm.formation_thematique_agex.id_theme_formation_detail=null;
+                vm.formation_thematique_agex.contenu=null;
+                vm.formation_thematique_agex.objectif=null;
+                vm.formation_thematique_agex.methodologie=null;
+                vm.formation_thematique_agex.materiel=null;
+                vm.formation_thematique_agex.date=null;
+                vm.formation_thematique_agex.duree=null;
                 vm.formation_thematique_agex.id_contrat_agex=null;
                 //vm.formation_thematique_agex.id_commune=null;		
                 vm.affichage_masque=true;
@@ -133,17 +133,22 @@
             {
                 NouvelItemFormation_thematique_agex = false;                
                 currentItemFormation_thematique_agex = JSON.parse(JSON.stringify(vm.selectedItemFormation_thematique_agex));
-                vm.formation_thematique_agex.id_theme_sensibilisation   = vm.selectedItemFormation_thematique_agex.theme_sensibilisation.id ;
-                vm.formation_thematique_agex.lieu                       = vm.selectedItemFormation_thematique_agex.lieu ;
-                vm.formation_thematique_agex.date_debut_prevu           = new Date(vm.selectedItemFormation_thematique_agex.date_debut_prevu) ;
-                vm.formation_thematique_agex.date_fin_prevu             = new Date(vm.selectedItemFormation_thematique_agex.date_fin_prevu) ;
-                vm.formation_thematique_agex.date_debut_realisation     = new Date(vm.selectedItemFormation_thematique_agex.date_debut_realisation) ;
-                vm.formation_thematique_agex.date_fin_realisation       = new Date(vm.selectedItemFormation_thematique_agex.date_fin_realisation) ;
-                vm.formation_thematique_agex.nbr_beneficiaire_cible     = parseInt(vm.selectedItemFormation_thematique_agex.nbr_beneficiaire_cible) ;
-                vm.formation_thematique_agex.formateur                  = vm.selectedItemFormation_thematique_agex.formateur ;
-                vm.formation_thematique_agex.observation                = vm.selectedItemFormation_thematique_agex.observation;
-                vm.formation_thematique_agex.id_contrat_agex            = vm.selectedItemFormation_thematique_agex.contrat_agex.id ;                     
-                
+                vm.formation_thematique_agex.id_theme_formation   = vm.selectedItemFormation_thematique_agex.theme_formation.id ;
+                vm.formation_thematique_agex.id_theme_formation_detail   = vm.selectedItemFormation_thematique_agex.theme_formation_detail.id ;
+                vm.formation_thematique_agex.contenu           = vm.selectedItemFormation_thematique_agex.contenu ;
+                vm.formation_thematique_agex.objectif             = vm.selectedItemFormation_thematique_agex.objectif ;
+                vm.formation_thematique_agex.methodologie     = vm.selectedItemFormation_thematique_agex.methodologie ;
+                vm.formation_thematique_agex.materiel       =vm.selectedItemFormation_thematique_agex.materiel ;
+                vm.formation_thematique_agex.date = null;
+                if (vm.selectedItemFormation_thematique_agex.date)
+                {                    
+                    vm.formation_thematique_agex.date     = new Date(vm.selectedItemFormation_thematique_agex.date) ;
+                }
+                vm.formation_thematique_agex.duree           = parseFloat(vm.selectedItemFormation_thematique_agex.duree) ;
+                vm.formation_thematique_agex.id_contrat_agex = vm.selectedItemFormation_thematique_agex.contrat_agex.id ;                     
+                apiFactory.getAPIgeneraliserREST("formation_thematique_agex_activite/index","menu","gettheme_formation_datailBytheme","id_theme_formation",vm.selectedItemFormation_thematique_agex.theme_formation.id).then(function(result) { 
+                    vm.allTheme_formation_detail = result.data.response;
+                });
                 vm.affichage_masque=true;
             }
 
@@ -186,19 +191,19 @@
                         
                         id:id,      
                         supprimer:etat_suppression,
-                        id_theme_sensibilisation:   formation_thematique_agex.id_theme_sensibilisation,
-                        date_debut_prevu:           convert_date(formation_thematique_agex.date_debut_prevu),
-                        date_fin_prevu:             convert_date(formation_thematique_agex.date_fin_prevu),
-                        date_debut_realisation:     convert_date(formation_thematique_agex.date_debut_realisation),
-                        date_fin_realisation:       convert_date(formation_thematique_agex.date_fin_realisation),
+                        id_theme_formation:   formation_thematique_agex.id_theme_formation,
+                        id_theme_formation_detail:   formation_thematique_agex.id_theme_formation_detail,
+                        contenu:           formation_thematique_agex.contenu,
+                        objectif:             formation_thematique_agex.objectif,
+                        methodologie:     formation_thematique_agex.methodologie,
+                        materiel:       formation_thematique_agex.materiel,
                         id_contrat_agex:            formation_thematique_agex.id_contrat_agex,
-                        nbr_beneficiaire_cible:     formation_thematique_agex.nbr_beneficiaire_cible,
-                        formateur:                  formation_thematique_agex.formateur,
-                        observation:                formation_thematique_agex.observation              
+                        date:    convert_date(formation_thematique_agex.date), 
+                        duree:     formation_thematique_agex.duree             
                         
                     });
 
-                    apiFactory.add("formation_thematique_agex/index",datas, config).success(function (data)
+                    apiFactory.add("formation_thematique_agex_activite/index",datas, config).success(function (data)
                     {
                         if (!NouvelItemFormation_thematique_agex) 
                         {
@@ -212,21 +217,29 @@
                                 {                                  
                                     vm.selectedItemFormation_thematique_agex.contrat_agex = contrat[0] ;  
                                 }
-                                var them = vm.allTheme_sensibilisation.filter(function(obj)
+                                var them = vm.allTheme_formation.filter(function(obj)
                                 {
-                                    return obj.id == formation_thematique_agex.id_theme_sensibilisation  ;
+                                    return obj.id == formation_thematique_agex.id_theme_formation  ;
                                 });
                                 if (them.length!=0)
                                 {                                  
-                                    vm.selectedItemFormation_thematique_agex.theme_sensibilisation = them[0] ;  
+                                    vm.selectedItemFormation_thematique_agex.theme_formation = them[0] ;  
                                 }
-                                vm.selectedItemFormation_thematique_agex.date_debut_prevu       = new Date(formation_thematique_agex.date_debut_prevu) ;
-                                vm.selectedItemFormation_thematique_agex.date_fin_prevu         = new Date(formation_thematique_agex.date_fin_prevu) ;
-                                vm.selectedItemFormation_thematique_agex.date_debut_realisation = new Date(formation_thematique_agex.date_debut_realisation) ;
-                                vm.selectedItemFormation_thematique_agex.date_fin_realisation   = new Date(formation_thematique_agex.date_fin_realisation) ;
-                                vm.selectedItemFormation_thematique_agex.nbr_beneficiaire_cible = formation_thematique_agex.nbr_beneficiaire_cible ;
-                                vm.selectedItemFormation_thematique_agex.formateur              = formation_thematique_agex.formateur ;
-                                vm.selectedItemFormation_thematique_agex.observation            = formation_thematique_agex.observation ;                              
+                                
+                                var them_detail = vm.allTheme_formation_detail.filter(function(obj)
+                                {
+                                    return obj.id == formation_thematique_agex.id_theme_formation_detail  ;
+                                });
+                                if (them_detail.length!=0)
+                                {                                  
+                                    vm.selectedItemFormation_thematique_agex.theme_formation_detail = them_detail[0] ;  
+                                }
+                                vm.selectedItemFormation_thematique_agex.contenu       = formation_thematique_agex.contenu ;
+                                vm.selectedItemFormation_thematique_agex.objectif         = formation_thematique_agex.objectif ;
+                                vm.selectedItemFormation_thematique_agex.methodologie = formation_thematique_agex.methodologie ;
+                                vm.selectedItemFormation_thematique_agex.materiel   = formation_thematique_agex.materiel ;
+                                vm.selectedItemFormation_thematique_agex.date = new Date(formation_thematique_agex.date) ; 
+                                vm.selectedItemFormation_thematique_agex.duree = formation_thematique_agex.duree ;                             
                             }
                             else
                             {
@@ -243,30 +256,39 @@
                             {
                                 return obj.id == formation_thematique_agex.id_contrat_agex  ;
                             });
-                            if (contrat.length!=0)
+                           /* if (contrat.length!=0)
                             {                                  
                                 vm.selectedItemFormation_thematique_agex.contrat_agex = contrat[0] ;  
-                            }
-                            var them = vm.allTheme_sensibilisation.filter(function(obj)
+                            }*/
+                            var them = vm.allTheme_formation.filter(function(obj)
                             {
-                                return obj.id == formation_thematique_agex.id_theme_sensibilisation  ;
+                                return obj.id == formation_thematique_agex.id_theme_formation  ;
                             });
-                            if (them.length!=0)
+                           /* if (them.length!=0)
                             {                                  
-                                vm.selectedItemFormation_thematique_agex.theme_sensibilisation = them[0] ;  
-                            }
+                                vm.selectedItemFormation_thematique_agex.theme_formation = them[0] ;  
+                            }*/
+                            
+                            var them_detail = vm.allTheme_formation_detail.filter(function(obj)
+                            {
+                                return obj.id == formation_thematique_agex.id_theme_formation_detail  ;
+                            });
+                            /*if (them_detail.length!=0)
+                            {                                  
+                                vm.selectedItemFormation_thematique_agex.theme_formation_detail = them_detail[0] ;  
+                            }*/
                             var item =
                             {
                             id : String(data.response) ,
                             contrat_agex            : contrat[0] ,
-                            theme_sensibilisation   : them[0] ,
-                            date_debut_prevu        : new Date(formation_thematique_agex.date_debut_prevu) ,
-                            date_fin_prevu          : new Date(formation_thematique_agex.date_fin_prevu),
-                            date_debut_realisation  : new Date(formation_thematique_agex.date_debut_realisation) ,
-                            date_fin_realisation    : new Date(formation_thematique_agex.date_fin_realisation),
-                            nbr_beneficiaire_cible  : formation_thematique_agex.nbr_beneficiaire_cible ,
-                            formateur               : formation_thematique_agex.formateur ,
-                            observation             : formation_thematique_agex.observation
+                            theme_formation   : them[0] ,
+                            theme_formation_detail   : them_detail[0] ,
+                            contenu        : formation_thematique_agex.contenu ,
+                            objectif          : formation_thematique_agex.objectif,
+                            methodologie  : formation_thematique_agex.methodologie ,
+                            materiel    : formation_thematique_agex.materiel,
+                            date  : new Date(formation_thematique_agex.date),
+                            duree  : formation_thematique_agex.duree
                             }
                             vm.allFormation_thematique_agex.unshift(item) ;
 					        
@@ -285,14 +307,14 @@
                 console.log(currentItemFormation_thematique_agex);
                 if (suppression!=1) 
                 {                    
-                    if((currentItemFormation_thematique_agex.theme_sensibilisation.id   != item.id_theme_sensibilisation )
-                        ||(currentItemFormation_thematique_agex.date_debut_prevu        != convert_date(item.date_debut_prevu) )
-                        ||(currentItemFormation_thematique_agex.date_fin_prevu          != convert_date(item.date_fin_prevu))
-                        ||(currentItemFormation_thematique_agex.date_debut_realisation  != convert_date(item.date_debut_realisation) )
-                        ||(currentItemFormation_thematique_agex.date_fin_realisation    != convert_date(item.date_fin_realisation))
-                        ||(currentItemFormation_thematique_agex.nbr_beneficiaire_cible  != item.nbr_beneficiaire_cible )
-                        ||(currentItemFormation_thematique_agex.formateur               != item.formateur )
-                        ||(currentItemFormation_thematique_agex.observation             != item.observation )
+                    if((currentItemFormation_thematique_agex.theme_formation.id   != item.id_theme_formation )
+                        ||(currentItemFormation_thematique_agex.theme_formation_detail.id        != item.id_theme_formation_detail)
+                        ||(currentItemFormation_thematique_agex.contenu        != item.contenu) 
+                        ||(currentItemFormation_thematique_agex.objectif          != item.objectif)
+                        ||(currentItemFormation_thematique_agex.methodologie  != item.methodologie) 
+                        ||(currentItemFormation_thematique_agex.materiel    != item.materiel)
+                        ||(currentItemFormation_thematique_agex.date  != convert_date(item.date))
+                        ||(currentItemFormation_thematique_agex.duree  != item.duree )
                         )                    
                     { 
                             insert_in_baseFormation_thematique_agex(item,suppression);                      
@@ -359,7 +381,7 @@
 
             
             //Debut liste groupe participant
-            vm.filtre_region = function()
+       /*     vm.filtre_region = function()
         {
           apiFactory.getAPIgeneraliserREST("region/index","cle_etrangere",vm.filtre.id_ile).then(function(result)
           { 
@@ -399,56 +421,6 @@
           });
         }
 
-       /* vm.filtre_zip_groupe = function()
-          {
-            vm.allZip=[];
-            var vil = vm.all_village.filter(function(obj)
-            {
-              return obj.id == vm.filtre.id_village;
-            });
-            if (vil.length!=0)
-            {
-                if (vil[0].vague)
-                {
-                  vm.filtre.vague = vil[0].vague;
-                }
-                else
-                {
-                  vm.filtre.vague = null ; 
-                }
-                if (vil[0].zip)
-                {
-                  apiFactory.getAPIgeneraliserREST("zip/index",'id',vil[0].zip.id).then(function(result){
-                      vm.allZip.push(result.data.response);
-                      
-                      if (result.data.response)
-                      {
-                        vm.filtre.id_zip = result.data.response.id;
-                      }
-                      else
-                      {
-                          vm.filtre.id_zip = null;
-                      }
-                      
-                    });
-                }
-                else
-                {
-                  vm.filtre.id_zip = null ; 
-                }
-                apiFactory.getAPIgeneraliserREST("menage/index","id_village",vm.filtre.id_village).then(function(result)
-                { 
-                    vm.allMenage = result.data.response; 
-                    console.log(vm.allMenage);           
-                });
-  
-            }
-            else
-            {
-              vm.filtre.id_zip = null;
-              vm.filtre.vague = null ; 
-            }
-          }*/
           
           vm.filtre_groupe_ml = function(village_id)
           {
@@ -477,12 +449,7 @@
                 vm.selectedItemGroupe_beneficiaire = {}; 
             }
             
-         /*vm.click_beneficiaire = function () 
-            {
-                vm.filtre = [];
-                vm.allGroupe_beneficiaire = []; 
-                vm.selectedItemGroupe_beneficiaire = {}; 
-            }*/
+  
             
             vm.groupe_beneficiaire_column =[  
                 {titre:"Village"},
@@ -706,7 +673,7 @@
                     vm.allMenage = result.data.response; 
                     console.log(vm.allMenage);          
                 });
-            }
+            }*/
 
         
     }

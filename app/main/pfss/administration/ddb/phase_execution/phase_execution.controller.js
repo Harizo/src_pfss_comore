@@ -42,20 +42,20 @@
       apiFactory.getAll("sous_projet/index").then(function(result)
       {
         vm.allSous_projet= result.data.response; 
-        console.log(vm.allSous_projet);       
-      }); 
-        apiFactory.getAll("phaseexecution/index").then(function(result)
-        {
-          vm.all_phase_execution = result.data.response;
-          
-          apiFactory.getAll("annee/index").then(function(result)
+        apiFactory.getAll("annee/index").then(function(result)
           {
             vm.all_annee = result.data.response;
-            vm.affiche_load = false ;
+            
+            apiFactory.getAll("phaseexecution/index").then(function(result)
+            {
+              vm.all_phase_execution = result.data.response;
+              vm.affiche_load = false ;
+    
+            }); 
   
-          });
-
-        });  
+          });     
+      }); 
+         
       
 
       //phase_execution..

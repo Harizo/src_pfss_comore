@@ -28,12 +28,12 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.macc.macc_arse.fiche_supervision_formation_ebe', {
+       /* msNavigationServiceProvider.saveItem('pfss.macc.macc_arse.fiche_supervision_formation_ebe', {
             title : "Supervision formation EBE",
             icon  : 'icon-data',
             state:'app.pfss_macc_macc_arse_fiche_supervision_formation_ebe',
             weight: 5,
-        });
+        });*/
     }
     function testPermission(loginService,$cookieStore,apiFactory)
     {

@@ -164,7 +164,11 @@
                                       <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                                       <md-tooltip><span>Enregistrer</span></md-tooltip>
                                     </md-button>
-                                  </div>                
+                                  </div>                              
+                                  <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                    <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                    <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                                </div>               
                                 </div>
                             </header>
                             
@@ -172,9 +176,84 @@
                             <table ng-table="agep" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
                                 <thead>
                                     <tr>
-                                        <th class="secondary-text" ng-repeat="c in ::vm.pges_column">
+                                        <!--th class="secondary-text" ng-repeat="c in ::vm.pges_column">
                                             <div class="table-header">
                                                 <span class="column-title text-center">{{c.titre}}</span>
+                                            </div>
+                                        </th-->
+                                        <th class="secondary-text">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Bureau d'étude</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Référence contrat</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-if="vm.type_sous_projet=='IDB'">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Infrastructure</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text" ng-if="vm.type_sous_projet=='IDB'">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Type infrastructure</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Montant total</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Description environnementale</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Composante zone susceptible</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Problèmes environnementaux</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Mésures envisagées</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Date d’établissement</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nom et prénoms de celui qui a établi</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nom et prénoms du Responsable de la validation</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Date de visa UGP</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Nom et prénoms du responsable UGP</span>
+                                            </div>
+                                        </th>
+                                        <th class="secondary-text">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">Observation</span>
                                             </div>
                                         </th>
                                     </tr>
@@ -200,7 +279,7 @@
                                           </span>
                                           <span ng-if="!paie.$edit"> {{paie.ref_contrat}}</span>
                                         </td>
-                                        <td>
+                                        <td ng-if="vm.type_sous_projet=='IDB'">
                                             <span ng-if="paie.$edit">
                                               <md-input-container style="width:100%;display: flex !important;">
                                                   <label>Infrastructure</label>
@@ -219,7 +298,7 @@
                                               <span ><strong ng-if="paie.infrastructure.libelle">Libelle</strong>: {{paie.infrastructure.libelle}}</span>
                                             </span>
                                         </td>
-                                        <td>
+                                        <td ng-if="vm.type_sous_projet=='IDB'">
                                             <span> 
                                               <span ><strong ng-if="paie.infrastructure.code_type">Code</strong>: {{paie.infrastructure.code_type}}</span><br>
                                               <span ><strong ng-if="paie.infrastructure.libelle_type">Libelle</strong>: {{paie.infrastructure.libelle_type}}</span>
@@ -366,7 +445,11 @@
                                       <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                                       <md-tooltip><span>Enregistrer</span></md-tooltip>
                                     </md-button>
-                                  </div>                
+                                  </div>                              
+                                  <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                    <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                    <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                                </div>               
                                 </div>
                             </header>
                             
@@ -390,8 +473,11 @@
                                           <md-input-container style="width:100%;display: flex !important;">
                                               <label>Phase</label>
                                               <md-select ng-model="pges_p.phase" name="phase">
-                                                  <md-option value="REALISATION">REALISATION</md-option>
-                                                  <md-option value="EXPLOITATION">EXPLOITATION</md-option>                                               
+                                                  <!--md-option value="REALISATION">REALISATION</md-option>
+                                                  <md-option value="EXPLOITATION">EXPLOITATION</md-option-->
+                                                  <md-option ng-repeat="phase in vm.type_phase" value="{{phase.valeur}}" >
+                                                    {{phase.titre}}
+                                                  </md-option>                                               
                                               </md-select>
                                           </md-input-container> 
                                         </span>
