@@ -3,7 +3,7 @@
     'use strict';
     angular
         .module('app.pfss.suiviactivite.suivi_arse.formation_technique', [	
-				'app.pfss.suiviactivite.suivi_arse.formation_technique.fiche_presence_formation',
+				'app.pfss.suiviactivite.suivi_arse.formation_technique.formation_menage',
             ])
         // .run(testPermission)
         .config(config);

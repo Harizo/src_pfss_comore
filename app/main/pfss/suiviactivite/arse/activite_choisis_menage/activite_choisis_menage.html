@@ -114,7 +114,7 @@
                     <div layout="column" layout-gt-xs="row" flex>
                         <md-input-container flex="100" flex-gt-xs="20" >
                           <label>Activités</label>
-                          <md-select ng-model="vm.identification.activite" name="activite" ng-change="vm.get_region_by_ile()" required>
+                          <md-select ng-model="vm.identification.activite" name="activite" required>
                               
                               <md-option ng-repeat="sp in vm.all_theme_formation" value="{{sp.id}}">{{sp.description}}</md-option>
                               
@@ -136,28 +136,8 @@
                 </md-button>
 
                 <md-tabs md-dynamic-height>
-                    <md-tab label="Sous-activités">
-                        <table class="dataTable row-border hover cell-border text-center" datatable="ng"
-                          dt-options="vm.dtOptions_new" ms-responsive-table>
-                          <thead>
-                            <tr>
-                              <th class="secondary-text" ng-repeat="re in ::vm.entete_identification">
-                                <div class="table-header">
-                                  <span class="column-title text-center">{{re.titre}}</span>
-                                </div>
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr ng-repeat="cua in vm.all_theme_formation_detail"  ng-class="{selected: cua.$selected}" ng-click="vm.selection(cua)">
-      
-                                <td>{{cua.description}}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                    </md-tab>
 
-                    <md-tab label="Ménages du sous-activité {{vm.selected_identification.description}}" ng-disabled="!vm.selected_identification || !vm.identification.id_village">
+                    <md-tab label="Les ménages de l'activité {{vm.tfm}}" ng-disabled="!vm.identification.activite || !vm.identification.id_village">
 
                         
 
@@ -249,21 +229,119 @@
                         <!--FIN PERSONNE RENCONTRE -->
 
                     </md-tab>
+                    <!-- <md-tab label="Sous-activités" ng-disabled="!vm.selected_activite_choisis_menage.id">
+                        <table class="dataTable row-border hover cell-border text-center" datatable="ng"
+                          dt-options="vm.dtOptions_new" ms-responsive-table>
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::vm.entete_identification">
+                                <div class="table-header">
+                                  <span class="column-title text-center">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="cua in vm.all_theme_formation_detail"  ng-class="{selected: cua.$selected}" ng-click="vm.selection(cua)">
+      
+                                <td>{{cua.description}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </md-tab> -->
+                    <md-tab label="Sous-activités choisis par le ménage {{vm.selected_activite_choisis_menage.identifiant_menage}}" ng-disabled="!vm.selected_activite_choisis_menage.id">
+                      <!-- sous-activité -->
+                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                <div layout="row" layout-align="start center">
+                            
+
+                                    <div class="border-right">
+                                      <span class="md-subhead">Sous-activités </span>
+                                    </div>
+                              
+                                  <div class="border-right" ng-if="!vm.selected_activite_choisis_menage_sous_activite.id&&!vm.nouvelle_activite_choisis_menage_sous_activite">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_activite_choisis_menage_sous_activite()">
+                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                      <md-tooltip><span>Ajouter</span></md-tooltip>
+                                    </md-button>
+                                  </div> 
+                                  <div class="border-right" ng-if="vm.selected_activite_choisis_menage_sous_activite.id&&!vm.selected_activite_choisis_menage_sous_activite.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_activite_choisis_menage_sous_activite()">
+                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                      <md-tooltip><span>Modifier</span></md-tooltip>
+                                    </md-button>
+                                  </div>    
+                                  <div class="border-right" ng-if="vm.selected_activite_choisis_menage_sous_activite.id&&!vm.selected_activite_choisis_menage_sous_activite.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_activite_choisis_menage_sous_activite()">
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Supprimer</span></md-tooltip>
+                                    </md-button>
+                                  </div>  
+
+                                  <div class="border-right" ng-if="vm.selected_activite_choisis_menage_sous_activite.id">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_activite_choisis_menage_sous_activite()">
+                                      <md-icon md-font-icon="icon-cancel"></md-icon>
+                                      <md-tooltip><span>Annuler</span></md-tooltip>
+                                    </md-button>
+                                  </div>   
+
+                                  <div ng-if="vm.selected_activite_choisis_menage_sous_activite.$edit">
+                                    <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_activite_choisis_menage_sous_activite(0)">
+                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                    </md-button>
+                                  </div>                
+                                </div>
+                            </header>
+                            
+                        
+                            <table ng-table="agex" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+                                <thead>
+                                    <tr>
+                                        <th class="secondary-text" ng-repeat="c in ::vm.entete_activite_choisis_menage_sous_activite">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">{{c.titre}}</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="cm in vm.all_activite_choisis_menage_sous_activite"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_activite_choisis_menage_sous_activite(cm)">                                       
+                                        
+                                        
+                                     
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Sous-activité</label>
+
+                                                    <md-select ng-model="cm.id_theme_formation_detail" name="id_theme_formation_detail"  required>
+                                  
+                                                        <md-option ng-repeat="sp in vm.all_theme_formation_detail" value="{{sp.id}}"> {{sp.description}}</md-option>
+
+                                                    </md-select>   
+                                                </md-input-container>
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.description_theme_formation_detail}} 
+
+                                            </span>
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <!--FIN sous-activité -->
+                    </md-tab>
+
+                    
 
                 </md-tabs>
 
                     
-                    <!-- <div>
-                        <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
-                            ng-disabled="form_filtreidentification.$invalid||vm.affiche_load " ng-click="vm.get_identification(vm.identification,0)">
-                            Afficher les données
-                        </md-button>
-
-                        <md-button type="submit" ng-disabled="form_filtreidentification.$invalid||vm.affiche_load " class="md-raised md-primary" aria-label="Fermer" ng-click="vm.fermer_masque_filtre()">
-                            Ajouter des ménages aux sous-activités
-                        </md-button>
-                       
-                    </div> -->
+     
                 
             </div>
         </div>

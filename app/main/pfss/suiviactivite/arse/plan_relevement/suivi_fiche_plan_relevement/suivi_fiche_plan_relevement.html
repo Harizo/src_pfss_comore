@@ -139,10 +139,10 @@
                 Afficher les données
               </md-button>
 
-              <!-- <md-button type="submit" class="md-raised md-primary" aria-label="Fermer"
-                ng-click="vm.fermer_masque_filtre()">
-                Fermer
-              </md-button> -->
+              <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                  ng-disabled="!vm.selected_identification.id||vm.affiche_load " ng-click="vm.export_excel()">
+                  Exporter en excel
+              </md-button>
 
             </div>
           </form>

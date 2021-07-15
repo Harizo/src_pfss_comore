@@ -121,6 +121,7 @@
             
             
         })
+        
 
 
         apiFactory.getAll("Theme_formation/index").then(function(result)
@@ -128,9 +129,36 @@
             vm.affiche_load = false ;
             vm.all_theme_formation = result.data.response;
 
-            console.log(vm.all_theme_formation);
             
         });
+        vm.all_theme_formation_details = [];
+        apiFactory.getAll("Theme_formation_detail/index").then(function(result)
+        {
+            vm.affiche_load = false ;
+            vm.all_theme_formation_details = result.data.response;
+
+            
+        });
+
+        $scope.$watch('vm.identification.activite', function() 
+        {
+            if (vm.identification.activite) 
+            {
+                vm.get_menage_par_activite();
+
+                var tf = vm.all_theme_formation.filter(function (obj) 
+                {
+                   return obj.id ==  vm.identification.activite ;
+                });
+
+                vm.tfm = tf[0].description ;
+            }
+            vm.all_theme_formation_detail = vm.all_theme_formation_details.filter(function (obj)
+            {
+                return obj.id_theme_formation == vm.identification.activite ;
+            });
+
+        })
 
 
 
@@ -142,84 +170,28 @@
                 vm.affiche_load = false ;
                 vm.all_menage = result.data.response;
                 $rootScope.all_menage = vm.all_menage;
-
-                console.log(vm.all_menage);
                 
             });
         }
 
-        //SOUS-ACTIVITES
+        vm.get_menage_par_activite = function()
+        {
 
-        	vm.dtOptions_new =
+            //id_theme_formation_detail dia id_theme_formation fa tsy te hanova code bdb
+            vm.affiche_load = true ;
+            apiFactory.getParamsDynamic("Activite_choisis_menage/index?id_theme_formation_detail="+vm.identification.activite+"&id_village="+vm.identification.id_village).then(function(result)
             {
-                dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
-                pagingType: 'simple_numbers',
-                retrieve:'true',
-                order:[] 
-            };
+                vm.affiche_load = false ;
+                vm.all_activite_choisis_menage = result.data.response;
 
-            vm.entete_identification = 
-            [
-                {titre:"Déscription"}
-            ];
-
-            vm.selected_identification = {};
-
-        	apiFactory.getAll("Theme_formation_detail/index").then(function(result)
-	        {
-	            vm.affiche_load = false ;
-	            vm.all_theme_formation_details = result.data.response;
-
-	            console.log(vm.all_theme_formation_details);
-	            
-	        });
-
-	        vm.all_theme_formation_detail = [];
-
-	        $scope.$watch('vm.identification.activite', function() 
-	        {
-	            if (!vm.identification.activite) return;
-	            else
-	            {
-	                
-	                vm.all_theme_formation_detail = vm.all_theme_formation_details;
-	                vm.all_theme_formation_detail = vm.all_theme_formation_detail.filter(function (obj)
-	                {
-	                    return obj.id_theme_formation == vm.identification.activite ;
-	                })
-	            }
-	            
-	        })
-
-	        vm.get_menage_by_theme_detail = function(id_theme_detail)
-	        {
-	            vm.affiche_load = true ;
-	            apiFactory.getParamsDynamic("Activite_choisis_menage/index?id_theme_formation_detail="+id_theme_detail+"&id_village="+vm.identification.id_village).then(function(result)
-	            {
-	                vm.affiche_load = false ;
-	                vm.all_activite_choisis_menage = result.data.response;
-
-	                console.log(vm.all_activite_choisis_menage);
-	                
-	            });
-	        }
-
-	        vm.selection = function (item) 
-            {
-                vm.selected_identification = item ;
-        		vm.get_menage_by_theme_detail(item.id);
-        		$rootScope.selected_identification = item ;
-              
-            }
-
-            $scope.$watch('vm.selected_identification', function() {
-                if (!vm.all_theme_formation_detail) return;
-                vm.all_theme_formation_detail.forEach(function(item) {
-                    item.$selected = false;
-                });
-                vm.selected_identification.$selected = true;
+                console.log(vm.all_activite_choisis_menage);
+                
             });
+        }
 
+        //EXPORT EXCEL
+
+        	
             var repertoire = "activitemenage/";
 
             vm.export_excel = function () 
@@ -243,11 +215,11 @@
                 
             }
 
-        //FIN SOUS-ACTIVITES
+        //FIN EXPORT EXCEL
         //MENAGE
 
-        	
-        	//activite_choisis_menage 
+            
+            //activite_choisis_menage 
             vm.dtOptions_new =
             {
                 dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
@@ -275,6 +247,7 @@
                 vm.selection_activite_choisis_menage = function(item)
                 {
                     vm.selected_activite_choisis_menage = item ;
+                    vm.get_sous_activites_menage();
 
                     if (!vm.selected_activite_choisis_menage.$edit) //si simple selection
                     {
@@ -306,7 +279,7 @@
                             $edit: true,
                             $selected: true,
                             id:'0',
-                            id_theme_formation_detail:vm.selected_identification.id,
+                            id_theme_formation:vm.identification.activite,
                             id_menage:null
                             
                         } ;
@@ -374,7 +347,7 @@
                             vm.selected_activite_choisis_menage.$selected = false;
                             vm.selected_activite_choisis_menage.$edit = false;
                         
-                            vm.selected_activite_choisis_menage.id_theme_formation_detail = current_selected_activite_choisis_menage.id_theme_formation_detail;  
+                            vm.selected_activite_choisis_menage.id_theme_formation = current_selected_activite_choisis_menage.id_theme_formation;  
                             vm.selected_activite_choisis_menage.id_menage = current_selected_activite_choisis_menage.id_menage;  
                             vm.selected_activite_choisis_menage = {};
                         }
@@ -401,7 +374,7 @@
                         id:vm.selected_activite_choisis_menage.id,
                       
 
-                        id_theme_formation_detail : vm.selected_identification.id ,
+                        id_theme_formation : vm.identification.activite ,
                         id_menage : vm.selected_activite_choisis_menage.id_menage 
                         
                         
@@ -412,10 +385,10 @@
                     {
 
                     
-		                var men = vm.all_menage.filter(function (obj)
-		                {
-		                    return obj.id == vm.selected_activite_choisis_menage.id_menage ;
-		                });
+                        var men = vm.all_menage.filter(function (obj)
+                        {
+                            return obj.id == vm.selected_activite_choisis_menage.id_menage ;
+                        });
 
 
 
@@ -478,7 +451,7 @@
                         id:vm.selected_activite_choisis_menage.id,
                        
                         etat_save_all:true,
-                        id_theme_formation_detail : vm.selected_identification.id ,
+                        id_theme_formation : vm.identification.activite ,
                         all_menage : JSON.stringify(tab)
                         
                         
@@ -487,9 +460,9 @@
 
                     apiFactory.add("activite_choisis_menage/index",datas, config).success(function (data)
                     {
-                    	vm.get_menage_by_theme_detail(vm.selected_identification.id);
+                        vm.get_menage_par_activite();
                     
-		               
+                       
                     })
                     .error(function (data) {alert("Une erreur s'est produit");});
                 }
@@ -497,7 +470,278 @@
             
 
             //fin activite_choisis_menage..
-        //FIN activite_choisis_menage
+        //FIN MENAGE
+
+        //SOUS-ACTIVITE
+
+            
+            //activite_choisis_menage_sous_activite 
+            vm.dtOptions_new =
+            {
+                dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
+                pagingType: 'simple_numbers',
+                retrieve:'true',
+                order:[] 
+            };
+            vm.all_activite_choisis_menage_sous_activite = [] ;
+
+            vm.entete_activite_choisis_menage_sous_activite =
+            [
+                {titre:"Déscription"}
+            ];
+
+            vm.affiche_load = false ;
+
+
+            //activite_choisis_menage_sous_activite..
+                
+                vm.selected_activite_choisis_menage_sous_activite = {} ;
+                var current_selected_activite_choisis_menage_sous_activite = {} ;
+                 vm.nouvelle_activite_choisis_menage_sous_activite = false ;
+
+            vm.get_sous_activites_menage = function()
+            {
+
+                //id_theme_formation_detail dia id_theme_formation fa tsy te hanova code bdb
+                vm.affiche_load = true ;
+                apiFactory.getParamsDynamic("Activite_choisis_menage_sous_activite/index?id_theme_formation="+vm.identification.activite+"&id_menage="+vm.selected_activite_choisis_menage.id_menage).then(function(result)
+                {
+                    vm.affiche_load = false ;
+                    vm.all_activite_choisis_menage_sous_activite = result.data.response;
+
+                    console.log(vm.all_activite_choisis_menage_sous_activite);
+                    
+                });
+            }
+
+            
+                vm.selection_activite_choisis_menage_sous_activite = function(item)
+                {
+                    vm.selected_activite_choisis_menage_sous_activite = item ;
+
+
+                    if (!vm.selected_activite_choisis_menage_sous_activite.$edit) //si simple selection
+                    {
+                        vm.nouvelle_activite_choisis_menage_sous_activite = false ;  
+
+                    }
+
+                }
+
+                $scope.$watch('vm.selected_activite_choisis_menage_sous_activite', function()
+                {
+                    if (!vm.all_activite_choisis_menage_sous_activite) return;
+                    vm.all_activite_choisis_menage_sous_activite.forEach(function(item)
+                    {
+                        item.$selected = false;
+                    });
+                    vm.selected_activite_choisis_menage_sous_activite.$selected = true;
+
+                });
+
+               
+
+                vm.ajouter_activite_choisis_menage_sous_activite = function()
+                {
+                    vm.nouvelle_activite_choisis_menage_sous_activite = true ;
+                    var item = 
+                        {
+                            
+                            $edit: true,
+                            $selected: true,
+                            id:'0',
+                            id_theme_formation_detail:null,
+                            id_menage:vm.selected_activite_choisis_menage.id_menage
+                            
+                        } ;
+
+                    vm.all_activite_choisis_menage_sous_activite.unshift(item);
+                    vm.all_activite_choisis_menage_sous_activite.forEach(function(af)
+                    {
+                      if(af.$selected == true)
+                      {
+                        vm.selected_activite_choisis_menage_sous_activite = af;
+                        
+                      }
+                    });
+                }
+
+                vm.modifier_activite_choisis_menage_sous_activite = function()
+                {
+                    vm.nouvelle_activite_choisis_menage_sous_activite = false ;
+                    vm.selected_activite_choisis_menage_sous_activite.$edit = true;
+                
+                    current_selected_activite_choisis_menage_sous_activite = angular.copy(vm.selected_activite_choisis_menage_sous_activite);
+
+                }
+
+                vm.supprimer_activite_choisis_menage_sous_activite = function()
+                {
+
+                    
+                    var confirm = $mdDialog.confirm()
+                      .title('Etes-vous sûr de supprimer cet enregistrement ?')
+                      .textContent('Cliquer sur OK pour confirmer')
+                      .ariaLabel('Lucky day')
+                      .clickOutsideToClose(true)
+                      .parent(angular.element(document.body))
+                      .ok('OK')
+                      .cancel('Annuler');
+                    $mdDialog.show(confirm).then(function() {
+
+                    vm.enregistrer_activite_choisis_menage_sous_activite(1);
+                    }, function() {
+                    //alert('rien');
+                    });
+                }
+
+                vm.annuler_activite_choisis_menage_sous_activite = function()
+                {
+                    if (vm.nouvelle_activite_choisis_menage_sous_activite) 
+                    {
+                        
+                        vm.all_activite_choisis_menage_sous_activite.shift();
+                        vm.selected_activite_choisis_menage_sous_activite = {} ;
+                        vm.nouvelle_activite_choisis_menage_sous_activite = false ;
+                    }
+                    else
+                    {
+                        
+
+                        if (!vm.selected_activite_choisis_menage_sous_activite.$edit) //annuler selection
+                        {
+                            vm.selected_activite_choisis_menage_sous_activite.$selected = false;
+                            vm.selected_activite_choisis_menage_sous_activite = {};
+                        }
+                        else
+                        {
+                            vm.selected_activite_choisis_menage_sous_activite.$selected = false;
+                            vm.selected_activite_choisis_menage_sous_activite.$edit = false;
+                        
+                            vm.selected_activite_choisis_menage_sous_activite.id_theme_formation_detail = current_selected_activite_choisis_menage_sous_activite.id_theme_formation_detail;  
+                            vm.selected_activite_choisis_menage_sous_activite.id_menage = current_selected_activite_choisis_menage_sous_activite.id_menage;  
+                            vm.selected_activite_choisis_menage_sous_activite = {};
+                        }
+
+                        
+
+                    }
+                }
+
+                vm.enregistrer_activite_choisis_menage_sous_activite = function(etat_suppression)
+                {
+                    vm.affiche_load = true ;
+                    var config = {
+                        headers : {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                        }
+                    };
+
+
+                    var datas = $.param(
+                    {
+                        
+                        supprimer:etat_suppression,
+                        id:vm.selected_activite_choisis_menage_sous_activite.id,
+                      
+
+                        id_theme_formation_detail : vm.selected_activite_choisis_menage_sous_activite.id_theme_formation_detail ,
+                        id_menage : vm.selected_activite_choisis_menage.id_menage 
+                        
+                        
+                        
+                    });
+
+                    apiFactory.add("activite_choisis_menage_sous_activite/index",datas, config).success(function (data)
+                    {
+
+                    
+                        var tfd = vm.all_theme_formation_detail.filter(function (obj)
+                        {
+                            return obj.id == vm.selected_activite_choisis_menage_sous_activite.id_theme_formation_detail;
+                        });
+
+                        console.log(tfd);
+
+
+                        vm.affiche_load = false ;
+                        if (!vm.nouvelle_activite_choisis_menage_sous_activite) 
+                        {
+                            if (etat_suppression == 0) 
+                            {
+                                vm.selected_activite_choisis_menage_sous_activite.$edit = false ;
+                                vm.selected_activite_choisis_menage_sous_activite.$selected = false ;
+                                vm.selected_activite_choisis_menage_sous_activite.id_theme_formation_detail = tfd[0].id  ;
+                                vm.selected_activite_choisis_menage_sous_activite.description_theme_formation_detail = tfd[0].description  ;
+                         ;
+                                vm.selected_activite_choisis_menage_sous_activite = {} ;
+                            }
+                            else
+                            {
+                                vm.all_activite_choisis_menage_sous_activite = vm.all_activite_choisis_menage_sous_activite.filter(function(obj)
+                                {
+                                    return obj.id !== vm.selected_activite_choisis_menage_sous_activite.id;
+                                });
+
+                                vm.selected_activite_choisis_menage_sous_activite = {} ;
+                            }
+
+                        }
+                        else
+                        {
+                            vm.selected_activite_choisis_menage_sous_activite.$edit = false ;
+                            vm.selected_activite_choisis_menage_sous_activite.$selected = false ;
+                            vm.selected_activite_choisis_menage_sous_activite.id = String(data.response) ;
+
+
+                            vm.selected_activite_choisis_menage_sous_activite.id_theme_formation_detail = tfd[0].id  ;
+                            vm.selected_activite_choisis_menage_sous_activite.description_theme_formation_detail = tfd[0].description  ;
+
+                            vm.nouvelle_activite_choisis_menage_sous_activite = false ;
+                            vm.selected_activite_choisis_menage_sous_activite = {};
+
+                        }
+                    })
+                    .error(function (data) {alert("Une erreur s'est produit");});
+                }
+
+                vm.enregistrer_all_activite_choisis_menage_sous_activite = function(etat_suppression,tab)
+                {
+                    vm.affiche_load = true ;
+                    var config = {
+                        headers : {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                        }
+                    };
+
+
+                    var datas = $.param(
+                    {
+                        
+                        supprimer:etat_suppression,
+                        id:vm.selected_activite_choisis_menage_sous_activite.id,
+                       
+                        etat_save_all:true,
+                        id_theme_formation_detail : vm.identification.activite ,
+                        all_menage : JSON.stringify(tab)
+                        
+                        
+                        
+                    });
+
+                    apiFactory.add("activite_choisis_menage_sous_activite/index",datas, config).success(function (data)
+                    {
+                        vm.get_menage_by_theme_detail(vm.identification.activite);
+                    
+                       
+                    })
+                    .error(function (data) {alert("Une erreur s'est produit");});
+                }
+
+            
+
+            //fin activite_choisis_menage_sous_activite..
+        //FIN SOUS-ACTIVITE
 
         vm.show_dialog = function () 
     	{
