@@ -21,8 +21,6 @@
 			.constant("apiUrl_serve_central", "https://mis.island-agro.com/2020/pfss_comores/api/index.php/api/")//ip serveur cantrale si dans les ile pour l'envoi des données
 			.constant("serveur_central", true)*/
 
-			.constant("apiUrl_serve_central", "https://mis.island-agro.com/2020/pfss_comores/api/index.php/api/")*///ip serveur cantrale si dans les ile pour l'envoi des données
-			.constant("serveur_central", true)
 
 		//FIN SERVEUR LOCAL
 
