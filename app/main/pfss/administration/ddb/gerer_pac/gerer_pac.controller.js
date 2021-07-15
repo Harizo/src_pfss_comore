@@ -39,21 +39,24 @@
      vm.allPac= result.data.response ;
  });
 }*/
+vm.affiche_load = true;
 apiFactory.getAll("ile/index").then(function(result){
   vm.allIle = result.data.response;
+  apiFactory.getAll("type_agr/index").then(function(result)
+  {
+    vm.allType_agr = result.data.response;
+    apiFactory.getAll("pac/index").then(function(result)
+    {
+      vm.allPac = result.data.response;
+      vm.affiche_load = false;
+    });
+  });
 });
 /*apiFactory.getAll("zip/index").then(function(result){
   vm.allZip = result.data.response;
 });*/
 
-apiFactory.getAll("pac/index").then(function(result){
-  vm.allPac = result.data.response;
-  console.log(vm.allPac);
-});
-apiFactory.getAll("type_agr/index").then(function(result){
-  vm.allType_agr = result.data.response;
-  console.log(vm.allType_agr);
-});
+
   vm.change_ile = function()
       {
         apiFactory.getAPIgeneraliserREST("region/index","cle_etrangere",vm.pac.id_ile).then(function(result)
@@ -232,6 +235,7 @@ vm.pac_column =[
         {
           NouvelItemPac = false ;			
           currentItemPac = angular.copy(vm.selectedItemPac);
+          vm.pac.id = vm.selectedItemPac.id;
           vm.pac.milieu_physique = vm.selectedItemPac.milieu_physique;
           vm.pac.condition_climatique         = vm.selectedItemPac.condition_climatique;
           vm.pac.diffi_socio_eco  = vm.selectedItemPac.diffi_socio_eco;      
@@ -298,6 +302,7 @@ vm.pac_column =[
  
         function insert_in_basePac(entite,suppression)
         {  
+            vm.affiche_load = true;
               //add
               var config = {
                 headers : {
@@ -338,7 +343,7 @@ vm.pac_column =[
               //factory
               apiFactory.add("pac/index",datas, config).success(function (data)
               {
-              
+                vm.affiche_load = false;
                 if (NouvelItemPac == false)
                 {
                   // Update or delete: id exclu                   
@@ -489,6 +494,65 @@ vm.pac_column =[
               else
                   insert_in_basePac(item,suppression);			
         }
+        vm.change_identi_prio_arse = function(item)
+        {
+          if (NouvelItemPac==false)
+          {
+            var pac_moin_current = vm.allPac.filter(function(obj)
+            {
+                return obj.id != item.id;
+            });
+            var cherche_identi_prio_arse = pac_moin_current.filter(function(obj)
+            {
+                return parseInt(obj.identi_prio_arse) == parseInt(item.identi_prio_arse);
+            });
+            
+           /* console.log(item);
+            console.log(pac_moin_current);
+            console.log(cherche_identi_prio_arse);*/
+            if (cherche_identi_prio_arse.length!=0)
+            {
+                var confirm = $mdDialog.confirm()
+                    .title('Ce numero d\'identification et priorisation éxiste déjà?')
+                    .textContent('Veuillez choisir autre numero d\'identification')
+                    .ariaLabel('Lucky day')
+                    .clickOutsideToClose(false)
+                    .parent(angular.element(document.body))
+                    .ok('fermer')
+                    //.cancel('annuler');
+                $mdDialog.show(confirm).then(function()
+                { 
+                  item.identi_prio_arse = null;
+                }, function() {
+                });
+            }
+          }
+          else
+          {
+            
+            var cherche_identi_prio_arse = vm.allPac.filter(function(obj)
+            {
+                return parseInt(obj.identi_prio_arse) == parseInt(item.identi_prio_arse);
+            });
+            //console.log(cherche_identi_prio_arse);
+            if (cherche_identi_prio_arse.length!=0)
+            {
+                var confirm = $mdDialog.confirm()
+                    .title('Ce numero d\'identification et priorisation éxiste déjà?')
+                    .textContent('Veuillez choisir autre numero d\'identification')
+                    .ariaLabel('Lucky day')
+                    .clickOutsideToClose(false)
+                    .parent(angular.element(document.body))
+                    .ok('fermer')
+                    //.cancel('annuler');
+                $mdDialog.show(confirm).then(function()
+                { 
+                  item.identi_prio_arse = null;
+                }, function() {
+                });
+            }
+          }
+        }
   
  /* ***************Fin pac**********************/
 
@@ -501,12 +565,14 @@ vm.pac_column =[
     {titre:"Calendrier de l'activité"}
     ];
     vm.click_pac_detail = function()
-    {
+    { 
+      vm.affiche_load = true;
       apiFactory.getAPIgeneraliserREST("pac_detail/index","menu","getpac_derailbypac","id_pac",vm.selectedItemPac.id).then(function(result)
-    {
-        vm.allPac_detail= result.data.response ;
-    });
-    vm.selectedItemPac_detail = {};
+      {
+          vm.allPac_detail= result.data.response ;
+          vm.affiche_load = false;
+      });
+      vm.selectedItemPac_detail = {};
     }
     
     vm.selectionPac_detail= function (item)
@@ -587,7 +653,8 @@ vm.pac_column =[
           }
    
           function insert_in_basePac_detail(entite,suppression)
-          {  
+          {   
+                vm.affiche_load = true;
                 //add
                 var config = {
                   headers : {
@@ -614,7 +681,7 @@ vm.pac_column =[
                 //factory
                 apiFactory.add("pac_detail/index",datas, config).success(function (data)
                 {
-                
+                  vm.affiche_load = false;
                   if (NouvelItemPac_detail == false)
                   {
                     // Update or delete: id exclu                   
@@ -648,7 +715,6 @@ vm.pac_column =[
                     vm.selectedItemPac_detail ={};
                   }
                   NouvelItemPac_detail = false ;
-                  vm.affiche_load = false ;
                   vm.affichage_masque_detail=false;
                   vm.pac_detail = {};
                 }).error(function (data) {

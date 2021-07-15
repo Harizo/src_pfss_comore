@@ -50,7 +50,11 @@
                                           <md-icon md-font-icon="icon-cancel"></md-icon>
                                           <md-tooltip><span>Annuler</span></md-tooltip>
                                         </md-button>
-                                      </div>                  
+                                      </div>
+                                      <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                        <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                        <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                                    </div>                   
                                     </div>
                                 </header>
                                 
@@ -211,7 +215,7 @@
                                     </md-input-container>
                                     <md-input-container flex="100" flex-gt-xs="40">
                                         <label>Identification et priorisation des ARS</label>
-                                        <input  type="number" name="identi_prio_arse" ng-model="vm.pac.identi_prio_arse"  aria-label="identi_prio_arse" required>
+                                        <input  type="number" name="identi_prio_arse" ng-model="vm.pac.identi_prio_arse"  aria-label="identi_prio_arse" ng-change="vm.change_identi_prio_arse(vm.pac)" required>
                                         <div ng-messages="formpac.identi_prio_arse.$error"role="alert">
                                             <div ng-message="required">
                                                 <span>Identification et priorisation des ARSE obligatoire.</span>
@@ -371,7 +375,11 @@
                                   <md-icon md-font-icon="icon-cancel"></md-icon>
                                   <md-tooltip><span>Annuler</span></md-tooltip>
                                 </md-button>
-                              </div>                  
+                              </div>
+                              <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                            </div>                   
                             </div>
                         </header>
                         

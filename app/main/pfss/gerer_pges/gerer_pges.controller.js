@@ -24,7 +24,15 @@
         var current_selectedItemPges_phases = {} ;
         vm.nouvelItemPges_phases = false ;
         vm.allPges_phases = [] ;
-        vm.affiche_load = false ;
+        vm.affiche_load = true ;
+
+        var type_phases=
+        [
+          {titre:'REALISATION',valeur:'REALISATION'},
+          {titre:'EXPLOITATION',valeur:'EXPLOITATION'}  
+        ];
+        
+        vm.type_phase=type_phases;
        // vm.tab_pges_phase = false; 
         vm.dtOptions_new =
         {
@@ -37,21 +45,22 @@
         apiFactory.getAll("Sous_projet/index").then(function(result)
         {
             vm.allSous_projet = result.data.response;
+            apiFactory.getAll("ile/index").then(function(result)
+            { 
+                vm.all_ile = result.data.response;
+                apiFactory.getAll("type_infrastructure/index").then(function(result)
+                { 
+                  vm.allType_infrastructure = result.data.response;    
+                  vm.affiche_load = false
+                });    
+                
+              });
         }); 
         /*apiFactory.getAll("pges/index").then(function(result)
         {
             vm.allPges = result.data.response;
             console.log(vm.allPges);
-        });*/apiFactory.getAll("ile/index").then(function(result)
-        { 
-            vm.all_ile = result.data.response;    
-            
-          });
-          apiFactory.getAll("type_infrastructure/index").then(function(result)
-          { 
-            vm.allType_infrastructure = result.data.response;    
-            
-          });
+        });*/
   
        vm.filtre_region = function()
         {
@@ -66,6 +75,7 @@
             
           });
           vm.allInfrastructure_eligible = [] ;
+          vm.allPges = [];
   
         }
   
@@ -80,6 +90,7 @@
             vm.filtre.vague = null ;           
           });
           vm.allInfrastructure_eligible = [] ;
+          vm.allPges = [];
         }
         vm.filtre_village = function()
         {
@@ -91,6 +102,7 @@
             vm.filtre.vague = null ;          
           });
           vm.allInfrastructure_eligible = [] ;
+          vm.allPges = [];
         }
         vm.filtre_zip = function()
           {
@@ -258,8 +270,11 @@
              vm.selectedItemPges.nom_prenom_validation    = vm.selectedItemPges.nom_prenom_validation;     
              vm.selectedItemPges.date_visa_ugp            = new Date(vm.selectedItemPges.date_visa_ugp);      
              vm.selectedItemPges.nom_prenom_ugp           = vm.selectedItemPges.nom_prenom_ugp;      
-             vm.selectedItemPges.date_etablissement       = new Date(vm.selectedItemPges.date_etablissement);    
-             vm.selectedItemPges.id_infrastructure        = vm.selectedItemPges.infrastructure.id;      
+             vm.selectedItemPges.date_etablissement       = new Date(vm.selectedItemPges.date_etablissement);
+             if (vm.type_sous_projet=='IDB')
+             {                 
+                vm.selectedItemPges.id_infrastructure        = vm.selectedItemPges.infrastructure.id; 
+             }         
              vm.selectedItemPges.montant_total            =parseFloat(vm.selectedItemPges.montant_total);
          }
 
@@ -317,8 +332,11 @@
                      vm.selectedItemPges.nom_prenom_validation    = current_selectedItemPges.nom_prenom_validation;     
                      vm.selectedItemPges.date_visa_ugp            = current_selectedItemPges.date_visa_ugp;      
                      vm.selectedItemPges.nom_prenom_ugp           = current_selectedItemPges.nom_prenom_ugp;      
-                     vm.selectedItemPges.date_etablissement       = current_selectedItemPges.date_etablissement;     
-                     vm.selectedItemPges.id_infrastructure        = current_selectedItemPges.infrastructure.id;     
+                     vm.selectedItemPges.date_etablissement       = current_selectedItemPges.date_etablissement;
+                     if (vm.type_sous_projet=='IDB')
+                     {
+                        vm.selectedItemPges.id_infrastructure        = current_selectedItemPges.infrastructure.id;                         
+                     }          
                      vm.selectedItemPges.montant_total            = current_selectedItemPges.montant_total;
                      
                      vm.selectedItemPges = {};
@@ -342,28 +360,51 @@
              {
                  villa = vm.selectedItemPges.id_village
              }
-
+             
              var datas = $.param(
-             {                        
-                 supprimer:etat_suppression,
-                 id: vm.selectedItemPges.id,
-                 bureau_etude             : vm.selectedItemPges.bureau_etude,
-                 ref_contrat              : vm.selectedItemPges.ref_contrat,       
-                 description_env          : vm.selectedItemPges.description_env,      
-                 composante_zone_susce    : vm.selectedItemPges.composante_zone_susce,      
-                 probleme_env             : vm.selectedItemPges.probleme_env,      
-                 mesure_envisage          : vm.selectedItemPges.mesure_envisage,      
-                 observation              : vm.selectedItemPges.observation,      
-                 nom_prenom_etablissement : vm.selectedItemPges.nom_prenom_etablissement,     
-                 nom_prenom_validation    : vm.selectedItemPges.nom_prenom_validation,     
-                 date_visa_ugp            : convert_date(vm.selectedItemPges.date_visa_ugp),      
-                 nom_prenom_ugp           : vm.selectedItemPges.nom_prenom_ugp,      
-                 date_etablissement       : convert_date(vm.selectedItemPges.date_etablissement),                        
-                 id_sous_projet           : id_sous_projet_state,      
-                 id_infrastructure        : vm.selectedItemPges.id_infrastructure,      
-                 id_village               : villa,                       
-                 montant_total            : vm.selectedItemPges.montant_total
-             });
+                {                        
+                    supprimer:etat_suppression,
+                    id: vm.selectedItemPges.id,
+                    bureau_etude             : vm.selectedItemPges.bureau_etude,
+                    ref_contrat              : vm.selectedItemPges.ref_contrat,       
+                    description_env          : vm.selectedItemPges.description_env,      
+                    composante_zone_susce    : vm.selectedItemPges.composante_zone_susce,      
+                    probleme_env             : vm.selectedItemPges.probleme_env,      
+                    mesure_envisage          : vm.selectedItemPges.mesure_envisage,      
+                    observation              : vm.selectedItemPges.observation,      
+                    nom_prenom_etablissement : vm.selectedItemPges.nom_prenom_etablissement,     
+                    nom_prenom_validation    : vm.selectedItemPges.nom_prenom_validation,     
+                    date_visa_ugp            : convert_date(vm.selectedItemPges.date_visa_ugp),      
+                    nom_prenom_ugp           : vm.selectedItemPges.nom_prenom_ugp,      
+                    date_etablissement       : convert_date(vm.selectedItemPges.date_etablissement),                        
+                    id_sous_projet           : id_sous_projet_state,      
+                    id_village               : villa,                       
+                    montant_total            : vm.selectedItemPges.montant_total
+                });
+             if (vm.type_sous_projet=='IDB')
+             {
+                datas = $.param(
+                {                        
+                    supprimer:etat_suppression,
+                    id: vm.selectedItemPges.id,
+                    bureau_etude             : vm.selectedItemPges.bureau_etude,
+                    ref_contrat              : vm.selectedItemPges.ref_contrat,       
+                    description_env          : vm.selectedItemPges.description_env,      
+                    composante_zone_susce    : vm.selectedItemPges.composante_zone_susce,      
+                    probleme_env             : vm.selectedItemPges.probleme_env,      
+                    mesure_envisage          : vm.selectedItemPges.mesure_envisage,      
+                    observation              : vm.selectedItemPges.observation,      
+                    nom_prenom_etablissement : vm.selectedItemPges.nom_prenom_etablissement,     
+                    nom_prenom_validation    : vm.selectedItemPges.nom_prenom_validation,     
+                    date_visa_ugp            : convert_date(vm.selectedItemPges.date_visa_ugp),      
+                    nom_prenom_ugp           : vm.selectedItemPges.nom_prenom_ugp,      
+                    date_etablissement       : convert_date(vm.selectedItemPges.date_etablissement),                        
+                    id_sous_projet           : id_sous_projet_state,      
+                    id_infrastructure        : vm.selectedItemPges.id_infrastructure,      
+                    id_village               : villa,                       
+                    montant_total            : vm.selectedItemPges.montant_total
+                });                 
+            }
 
              apiFactory.add("pges/index",datas, config).success(function (data)
              {
@@ -372,12 +413,15 @@
                  {
                      if (etat_suppression == 0) 
                      {   
-                         var infra = vm.allInfrastructure_choisi.filter(function(obj)
+                         if (vm.type_sous_projet=='IDB')
                          {
-                             return obj.id == vm.selectedItemPges.id_infrastructure;
-                         });
-                         console.log(infra);
-                         vm.selectedItemPges.infrastructure = infra[0] ;
+                            var infra = vm.allInfrastructure_choisi.filter(function(obj)
+                            {
+                                return obj.id == vm.selectedItemPges.id_infrastructure;
+                            });
+                            vm.selectedItemPges.infrastructure = infra[0] ;
+                             
+                         }
                          vm.selectedItemPges.$edit = false ;
                          vm.selectedItemPges.$selected = false ;
                          vm.selectedItemPges = {} ;
@@ -395,12 +439,15 @@
                  }
                  else
                  {   
-                    var infra = vm.allInfrastructure_choisi.filter(function(obj)
-                    {
-                        return obj.id == vm.selectedItemPges.id_infrastructure;
-                    });
-                    console.log(infra);
-                    vm.selectedItemPges.infrastructure = infra[0] ;
+                    if (vm.type_sous_projet=='IDB')
+                    { 
+                        var infra = vm.allInfrastructure_choisi.filter(function(obj)
+                        {
+                            return obj.id == vm.selectedItemPges.id_infrastructure;
+                        });
+                        vm.selectedItemPges.infrastructure = infra[0] ;
+                    }
+                    
                      vm.selectedItemPges.$edit = false ;
                      vm.selectedItemPges.$selected = false ;
                      vm.selectedItemPges.id = String(data.response) ;
@@ -484,10 +531,24 @@
                     {
                       if(af.$selected == true)
                       {
-                        vm.selectedItemPges_phases = af;
-                        
+                        vm.selectedItemPges_phases = af;                        
                       }
                     });
+                    var pges_phase_realise = vm.allPges_phases.filter(function(obj)
+                    {
+                        return obj.phase == 'REALISATION';
+                    });
+                    if (pges_phase_realise.length!=0)
+                    {
+                        vm.type_phase = type_phases.filter(function(obj)
+                        {
+                            return obj.titre != 'REALISATION';
+                        }); 
+                    }
+                    else
+                    {
+                        vm.type_phase = type_phases;
+                    }
                 }
 
                 vm.modifierPges_phases = function()
@@ -502,7 +563,28 @@
                     vm.selectedItemPges_phases.mesures      = vm.selectedItemPges_phases.mesures;
                     vm.selectedItemPges_phases.responsable  = vm.selectedItemPges_phases.responsable;      
                     vm.selectedItemPges_phases.calendrier_execution    = vm.selectedItemPges_phases.calendrier_execution;*/      
-                    vm.selectedItemPges_phases.cout_estimatif  = parseFloat(vm.selectedItemPges_phases.cout_estimatif);  
+                    vm.selectedItemPges_phases.cout_estimatif  = parseFloat(vm.selectedItemPges_phases.cout_estimatif);
+                    var pges_phase_current = vm.allPges_phases.filter(function(obj)
+                    {
+                        return obj.id != vm.selectedItemPges_phases.id;
+                    });
+                    //console.log(pges_phase_current);
+                    var pges_phase_realise = pges_phase_current.filter(function(obj)
+                    {
+                        return obj.phase == 'REALISATION';
+                    });
+                    
+                    if (pges_phase_realise.length!=0)
+                    {
+                        vm.type_phase = type_phases.filter(function(obj)
+                        {
+                            return obj.titre != 'REALISATION';
+                        }); 
+                    } 
+                    else
+                    {
+                        vm.type_phase = type_phases;
+                    } 
                 }
                 
                 vm.supprimerPges_phases = function()
@@ -785,7 +867,7 @@
                                         
                     
                 }*/
-
+                
                 vm.click_tab_phases = function()
                 {
                     vm.affiche_load = true ;

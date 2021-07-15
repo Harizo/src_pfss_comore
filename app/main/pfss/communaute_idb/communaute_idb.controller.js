@@ -21,7 +21,7 @@
 		
 		
         vm.date_now = new Date() ;
-		vm.affiche_load = false;
+		vm.affiche_load = true;
 		vm.selectedItemInfrastructure_eligible = {} ;
         var current_selectedItemInfrastructure_eligible = {} ;
         vm.nouvelItemInfrastructure_eligible = false ;
@@ -37,12 +37,12 @@
 	 
          apiFactory.getAll("ile/index").then(function(result)
         { 
-          vm.all_ile = result.data.response;    
-          
-        });
-		apiFactory.getAll("type_infrastructure/index").then(function(result)
-        { 
-          vm.allType_infrastructure = result.data.response;    
+          vm.all_ile = result.data.response;  
+		  apiFactory.getAll("type_infrastructure/index").then(function(result)
+		  { 
+			vm.allType_infrastructure = result.data.response;    
+			vm.affiche_load = false;
+		  });  
           
         });
 

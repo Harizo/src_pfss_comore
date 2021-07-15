@@ -16,10 +16,10 @@
         </div>
         <div class="content" layout="column">
             <div class="form-wrapper">
-                <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                <!--div ng-if="vm.affiche_load" layout="row" layout-align="center center">
                     <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
                     <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
-                </div>
+                </div-->
                 <div style="clear:both;"></div>
                 <md-tabs md-dynamic-height layout="column" flex>
                     
@@ -66,7 +66,11 @@
                                           <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                                           <md-tooltip><span>Enregistrer</span></md-tooltip>
                                         </md-button>
-                                      </div>                
+                                      </div>                              
+                                      <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                        <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                        <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                                    </div>                 
                                     </div>
                                 </header>
 
@@ -181,7 +185,11 @@
                                           <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                                           <md-tooltip><span>Enregistrer</span></md-tooltip>
                                         </md-button>
-                                      </div>                
+                                      </div>                              
+                                      <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                        <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                        <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                                    </div>                 
                                     </div>
                                 </header>
 
@@ -281,9 +289,6 @@
                                                 </span>
                                             </td>
                                             <td>
-
-                                                
-
                                             <span ng-if="cm.$edit">
                                                     <md-input-container style="width:100%;display: flex !important;">
                                                       <label>Coût estimatif</label>
@@ -346,7 +351,11 @@
                                           <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                                           <md-tooltip><span>Enregistrer</span></md-tooltip>
                                         </md-button>
-                                      </div>                
+                                      </div>                             
+                                      <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                        <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                        <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                                    </div>                 
                                     </div>
                                 </header>
 
@@ -363,8 +372,7 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="cm in vm.all_sous_projet"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_sous_projet(cm)">  
-                                                                                 
-                                            
+                                          
                                             <td>
 
                                                     
@@ -518,7 +526,11 @@
                                           <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                                           <md-tooltip><span>Enregistrer</span></md-tooltip>
                                         </md-button>
-                                      </div>                
+                                      </div>                             
+                                      <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                        <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                        <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                                    </div>                 
                                     </div>
                                 </header>
 
@@ -938,7 +950,11 @@
                                           <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                                           <md-tooltip><span>Enregistrer</span></md-tooltip>
                                         </md-button>
-                                      </div>                
+                                      </div>                             
+                                      <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                        <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                        <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                                    </div>                 
                                     </div>
                                 </header>
 
@@ -1061,7 +1077,11 @@
 
                               <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb_general('fiche_env/index','fiche_env')">
                                 <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
-                              </md-button>
+                              </md-button>                             
+                              <div ng-if="vm.affiche_load">
+                                <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                <span style="color: #039be5">Chargement...</span>
+                            </div> 
                             </legend>
                             <table ng-table="tableFiche_env" id="tableFiche_env" class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
                               <thead>
@@ -1203,7 +1223,11 @@
 
                               <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central && vm.show_botton_ajout_fiche" ng-click="vm.download_ddb_general('plan_gestion_env/index','plan_gestion_env')">
                                 <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
-                              </md-button>
+                              </md-button>                             
+                              <div ng-if="vm.affiche_load">
+                                <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                <span style="color: #039be5">Chargement...</span>
+                            </div> 
                             </legend>
                             <div flex>
                               <table ng-table="tablePlan_gestion_env" id="tablePlan_gestion_env" class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
@@ -1332,7 +1356,11 @@
                                           <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                                           <md-tooltip><span>Enregistrer</span></md-tooltip>
                                         </md-button>
-                                      </div>                
+                                      </div>                             
+                                      <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                        <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                        <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                                    </div>                 
                                     </div>
                                 </header>
 
@@ -1522,7 +1550,11 @@
                                           <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                                           <md-tooltip><span>Enregistrer</span></md-tooltip>
                                         </md-button>
-                                      </div>                
+                                      </div>                             
+                                      <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                        <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                        <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                                    </div>                 
                                     </div>
                                 </header>
 
@@ -1673,7 +1705,11 @@
                                           <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                                           <md-tooltip><span>Enregistrer</span></md-tooltip>
                                         </md-button>
-                                      </div>                
+                                      </div>                             
+                                      <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                        <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                        <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                                    </div>                 
                                     </div>
                                 </header>
 
@@ -1692,9 +1728,7 @@
                                         <tr ng-repeat="cm in vm.all_convention_mod"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_convention_mod(cm)">  
                                                                                  
                                             
-                                            <td>
-
-                                                    
+                                            <td>   
                                                 <span ng-if="cm.$edit">
                                                     <md-input-container style="width:100%;display: flex !important;">
                                                       <label>Les deux parties concernées</label>
@@ -1825,7 +1859,11 @@
                                           <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                                           <md-tooltip><span>Enregistrer</span></md-tooltip>
                                         </md-button>
-                                      </div>                
+                                      </div>                             
+                                      <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                        <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                        <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                                    </div>                 
                                     </div>
                                 </header>
 

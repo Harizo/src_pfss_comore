@@ -1,4 +1,4 @@
-(function ()
+ (function ()
 {
     'use strict';
 
@@ -32,7 +32,7 @@
         var current_selectedItemEtat_paiement = {} ;
         vm.nouvelItemEtat_paiement = false ;
         vm.allEtat_paiement = [] ;
-        vm.affiche_load = false ;
+        
         /*if ($state.current.id_sous_projet==3)
         {
            vm.show_communaute = true;
@@ -43,6 +43,7 @@
             vm.show_communaute = false;
             vm.show_village = true; 
         }*/
+        vm.affiche_load = true ;
         vm.dtOptions_new =
         {
             dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
@@ -52,13 +53,17 @@
         };
 
         
-        apiFactory.getAll("Agence_p/index").then(function(result)
-        {
-            vm.allAgep = result.data.response;
-        });
         apiFactory.getAll("Ile/index").then(function(result)
         {
             vm.allIle = result.data.response;
+            apiFactory.getAll("Agence_p/index").then(function(result)
+            {
+                vm.allAgep = result.data.response;
+                apiFactory.getAPIgeneraliserREST("contrat_agep/index","menu","getcontrat_agepBysousprojet",'id_sous_projet',id_sous_projet_state).then(function(result) { 
+                    vm.allContrat_agep = result.data.response;
+                    vm.affiche_load = false ;
+                });
+            });
         });
 
        /* apiFactory.getAll("Sous_projet/index").then(function(result)
@@ -69,17 +74,14 @@
         {
             vm.allContrat_agep = result.data.response;
             console.log(vm.allContrat_agep);
-        });*/
-        apiFactory.getAPIgeneraliserREST("contrat_agep/index","menu","getcontrat_agepBysousprojet",'id_sous_projet',id_sous_projet_state).then(function(result) { 
-            vm.allContrat_agep = result.data.response;
-            console.log(vm.allContrat_agep);
-        }); 
+        });*/ 
 
             vm.contrat_agep_column = 
-            [
+            [   
+                {titre:"Numero d'ordre"},
+                {titre:"Contrat N°"},
                 {titre:"AGEP"},
                 {titre:"Adresse de l'agep"},
-                {titre:"Contrat N°"},
                // {titre:"Sous projet"},
                 {titre:"Objet du contrat"},
                 {titre:"Montant du contrat"},
@@ -93,8 +95,7 @@
 
             vm.selection = function (item) 
             {
-                vm.selectedItemContrat_agep = item ;
-                console.log(vm.selectedItemContrat_agep);
+                vm.selectedItemContrat_agep = item;
             }
 
             $scope.$watch('vm.selectedItemContrat_agep', function() {
@@ -119,6 +120,11 @@
             vm.ajouterContrat_agep = function ()
             {
                 var montant_a_effectue_prevu=0;
+                var numero=1;
+                if (vm.allContrat_agep.length!=0)
+                {
+                    numero= vm.allContrat_agep.length + 1;
+                }
                 if (vm.type_sous_projet=='ACT')
                 {
                     montant_a_effectue_prevu = 75000;
@@ -139,6 +145,7 @@
                 NouvelItemContrat_agep = true ;
                 vm.contrat_agep.supprimer=0;
                 vm.contrat_agep.id=0;
+                vm.contrat_agep.numero_ordre=numero;
                 vm.contrat_agep.numero_contrat=null;
                 vm.contrat_agep.id_agep=null;
                 vm.contrat_agep.id_sous_projet=id_sous_projet_state;
@@ -170,6 +177,7 @@
             {
                 NouvelItemContrat_agep = false;                
                 currentItemContrat_agep = JSON.parse(JSON.stringify(vm.selectedItemContrat_agep));
+                vm.contrat_agep.numero_ordre  = vm.selectedItemContrat_agep.numero_ordre ;
                 vm.contrat_agep.numero_contrat  = vm.selectedItemContrat_agep.numero_contrat ;
                 vm.contrat_agep.id_agep         = vm.selectedItemContrat_agep.agep.id ;
                 vm.contrat_agep.adresse         = vm.selectedItemContrat_agep.agep.adresse ;
@@ -224,6 +232,7 @@
                         
                         id:id,      
                         supprimer:etat_suppression,
+                        numero_ordre:contrat_agep.numero_ordre,
                         numero_contrat:contrat_agep.numero_contrat,
                         id_agep:contrat_agep.id_agep,
                         id_sous_projet:contrat_agep.id_sous_projet,
@@ -256,6 +265,7 @@
                                 });*/
                                 vm.selectedItemContrat_agep.agep = agep[0];
                                 vm.selectedItemContrat_agep.id_sous_projet = contrat_agep.id_sous_projet ;
+                                vm.selectedItemContrat_agep.numero_ordre = contrat_agep.numero_ordre ;
                                 vm.selectedItemContrat_agep.numero_contrat = contrat_agep.numero_contrat ;
                                 vm.selectedItemContrat_agep.objet_contrat = contrat_agep.objet_contrat ;
                                 vm.selectedItemContrat_agep.montant_contrat = contrat_agep.montant_contrat ;
@@ -291,6 +301,7 @@
                             id : String(data.response) ,
                             agep : agep[0],
                             id_sous_projet : contrat_agep.id_sous_projet ,
+                            numero_ordre : contrat_agep.numero_ordre ,
                             numero_contrat : contrat_agep.numero_contrat ,
                             objet_contrat : contrat_agep.objet_contrat ,
                             montant_contrat : contrat_agep.montant_contrat ,
@@ -317,6 +328,7 @@
                 {                    
                     if((currentItemContrat_agep.agep.id         != item.id_agep)
                         //||(currentItemContrat_agep.sous_projet      != item.id_sous_projet )
+                        ||(currentItemContrat_agep.numero_ordre   != item.numero_ordre )
                         ||(currentItemContrat_agep.numero_contrat   != item.numero_contrat )
                         ||(currentItemContrat_agep.objet_contrat    != item.objet_contrat )
                         ||(currentItemContrat_agep.montant_contrat != item.montant_contrat )
@@ -386,6 +398,7 @@
                                 id : vm.selectedItemContrat_agep.id ,
                                 id_agep : vm.selectedItemContrat_agep.agep.id,
                                 id_sous_projet : vm.selectedItemContrat_agep.id_sous_projet ,
+                                numero_ordre : vm.selectedItemContrat_agep.numero_ordre ,
                                 numero_contrat : vm.selectedItemContrat_agep.numero_contrat ,
                                 objet_contrat : vm.selectedItemContrat_agep.objet_contrat ,
                                 montant_contrat : vm.selectedItemContrat_agep.montant_contrat ,
@@ -419,6 +432,7 @@
                                 id : vm.selectedItemContrat_agep.id ,
                                 id_agep : vm.selectedItemContrat_agep.agep.id,
                                 id_sous_projet : vm.selectedItemContrat_agep.id_sous_projet ,
+                                numero_ordre : vm.selectedItemContrat_agep.numero_ordre ,
                                 numero_contrat : vm.selectedItemContrat_agep.numero_contrat ,
                                 objet_contrat : vm.selectedItemContrat_agep.objet_contrat ,
                                 montant_contrat : vm.selectedItemContrat_agep.montant_contrat ,
@@ -1618,7 +1632,6 @@
                 vm.selection_avenant = function (item) 
                 {
                     vm.selectedItemAvenant_agep = item ;
-                    console.log(vm.selectedItemAvenant_agep);
                 }
     
                 $scope.$watch('vm.selectedItemAvenant_agep', function() {

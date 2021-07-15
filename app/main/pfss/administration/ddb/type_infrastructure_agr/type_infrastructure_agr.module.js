@@ -25,7 +25,7 @@
             data : {
               authorizer : true,
               permitted : ["USER","PERSONNEL","ADMIN"],
-              page: "type_infrastructure_agr"
+              page: "Type_activité-ARSE-ACT"
             }
 
         });

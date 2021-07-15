@@ -3,7 +3,8 @@
     'use strict';
     angular
         .module('app.pfss.macc.macc_arse.formation_agex', [	
-            'app.pfss.macc.macc_arse.formation_agex.formation_thematique_agex_arse'		
+            'app.pfss.macc.macc_arse.formation_agex.formation_thematique_agex_arse',
+            'app.pfss.macc.macc_arse.formation_agex.formation_thematique_suivi_agex_macc_arse'		
             ])
         // .run(testPermission)
         .config(config);

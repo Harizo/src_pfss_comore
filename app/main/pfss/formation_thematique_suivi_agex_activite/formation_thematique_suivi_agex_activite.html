@@ -1,0 +1,218 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Suivi activité</span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">ARSE</span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Formation technique de base</span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Suivi de formation AGEX |&nbsp {{vm.type_sous_projet}}</span>
+                    <span class="parent"> </span>
+                    <!--md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;">Groupe ML/PL</span-->
+                </div>
+    
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>                     
+                        <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                          <div layout="row" layout-align="start center">
+                          <div class="border-right">
+                              
+                            <span class="md-headline">Suivi de formation &nbsp</span>
+                          </div>
+                            <div class="border-right" ng-if="!vm.selectedItemFormation_thematique_suivi_agex_activite.id">
+                              <md-button class="md-icon-button" style=" font-size:11px " aria-label="Ajout" ng-click="vm.ajouterFormation_thematique_suivi_agex_activite()">
+                                <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                <md-tooltip><span>Ajouter</span></md-tooltip>
+                              </md-button>
+                            </div> 
+                            <div class="border-right" ng-if="vm.selectedItemFormation_thematique_suivi_agex_activite.id">
+                              <md-button class="md-icon-button" aria-label="Modifier" style=" font-size:11px " ng-click="vm.modifFormation_thematique_suivi_agex_activite()">
+                                <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                <md-tooltip><span>Modifier</span></md-tooltip>
+                              </md-button>
+                            </div>    
+                            <div class="border-right" ng-if="vm.selectedItemFormation_thematique_suivi_agex_activite.id">
+                              <md-button class="md-icon-button" aria-label="Suppression" style=" font-size:11px " ng-click="vm.supprimerFormation_thematique_suivi_agex_activite()">
+                                <md-icon md-font-icon="icon-delete"></md-icon>
+                                <md-tooltip><span>Supprimer</span></md-tooltip>
+                              </md-button>
+                            </div>    
+                            <div class="border-right" ng-if="vm.selectedItemFormation_thematique_suivi_agex_activite.id">
+                              <md-button class="md-icon-button" aria-label="Annuler" style=" font-size:11px " ng-click="vm.annulerFormation_thematique_suivi_agex_activite()">
+                                <md-icon md-font-icon="icon-cancel"></md-icon>
+                                <md-tooltip><span>Annuler</span></md-tooltip>
+                              </md-button>
+                            </div>                              
+                            <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                              <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                              <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                          </div>                  
+                          </div>
+                      </header>
+                        <!----------FORM AGEP--------------->       
+                         
+                        <form ng-show="vm.affichage_masque" name="formformation_thematique_suivi_agex_activite" class="md-inline-form" novalidate >
+
+                          <div layout="column" layout-gt-xs="row" flex> 
+                            
+                            <md-input-container flex="100" flex-gt-xs="30">
+                                <label>Contrat AGEX</label>
+                                <md-select ng-model="vm.formation_thematique_suivi_agex_activite.id_contrat_agex" name="id_contrat_agex">
+                                    <md-option ng-repeat="mena in vm.allContrat_agex" value="{{mena.id}}">
+                                            {{mena.numero_contrat}}
+                                    </md-option>                                                
+                                  </md-select>
+                                  <div ng-messages="formformation_thematique_suivi_agex_activite.id_contrat_agex.$error" role="alert">
+                                    <div ng-message="required">
+                                      <span>Contrat AGEX Obligatoire.</span>
+                                    </div>
+                                  </div>
+                            </md-input-container>
+                            
+                            <md-input-container flex="100" flex-gt-xs="30">
+                              <label>Theme formation</label>
+                              <md-select ng-model="vm.formation_thematique_suivi_agex_activite.id_theme_formation" name="id_theme_formation">
+                                  <md-option ng-repeat="them in vm.allTheme_formation" value="{{them.id}}">
+                                          {{them.description}}
+                                  </md-option>                                                
+                                </md-select>
+                                <div ng-messages="formformation_thematique_suivi_agex_activite.id_theme_formation.$error" role="alert">
+                                  <div ng-message="required">
+                                    <span>Theme formation Obligatoire.</span>
+                                  </div>
+                                </div>
+                          </md-input-container>
+                          <md-input-container flex="100" flex-gt-xs="30">
+                            <label>Période prévue</label>
+                            <input  type="text" name="periode_prevu" ng-model="vm.formation_thematique_suivi_agex_activite.periode_prevu" required>
+                            <div ng-messages="formformation_thematique_suivi_agex_activite.periode_prevu.$error"role="alert">
+                                <div ng-message="required">
+                                    <span>Période prévue ciblés obligatoire.</span>
+                                </div>
+                            </div>
+                          </md-input-container>
+                          <md-input-container flex="100" flex-gt-xs="30">
+                            <label>Période réalisation</label>
+                            <input  type="text" name="periode_realisation" ng-model="vm.formation_thematique_suivi_agex_activite.periode_realisation" required>
+                            <div ng-messages="formformation_thematique_suivi_agex_activite.periode_realisation.$error"role="alert">
+                                <div ng-message="required">
+                                    <span>Période réalisation ciblés obligatoire.</span>
+                                </div>
+                            </div>
+                          </md-input-container>
+                            
+                          </div>  
+                          <div layout="column" layout-gt-xs="row" flex>  
+                                   
+                            <md-input-container flex="100" flex-gt-xs="30">
+                              <label>Bénéficiaires</label>
+                              <input  type="text" name="beneficiaire" ng-model="vm.formation_thematique_suivi_agex_activite.beneficiaire" required>
+                              <div ng-messages="formformation_thematique_suivi_agex_activite.beneficiaire.$error"role="alert">
+                                  <div ng-message="required">
+                                      <span>Bénéficiaires obligatoire.</span>
+                                  </div>
+                              </div>
+                            </md-input-container>        
+                            <md-input-container flex="100" flex-gt-xs="30">
+                              <label>Nombre des bénéficiaires ciblés</label>
+                              <input  type="number" name="nbr_beneficiaire_cible" ng-model="vm.formation_thematique_suivi_agex_activite.nbr_beneficiaire_cible" required>
+                              <div ng-messages="formformation_thematique_suivi_agex_activite.nbr_beneficiaire_cible.$error"role="alert">
+                                  <div ng-message="required">
+                                      <span>Nombre des bénéficiaires ciblés obligatoire.</span>
+                                  </div>
+                              </div>
+                            </md-input-container>                           
+                            <md-input-container flex="100" flex-gt-xs="25">
+                              <label>Nombre de participants</label>
+                              <input  type="text" name="nbr_participant" ng-model="vm.formation_thematique_suivi_agex_activite.nbr_participant" ng-init="vm.formation_thematique_suivi_agex_activite.nbr_participant=''" required>
+                              <div ng-messages="formformation_thematique_suivi_agex_activite.nbr_participant.$error"role="alert">
+                                  <div ng-message="required">
+                                      <span>Nombre de participants obligatoire.</span>
+                                  </div>
+                              </div>
+                            </md-input-container>
+                                                              
+                            <md-input-container flex="100" flex-gt-xs="25">
+                              <label>Nombre de femmes</label>
+                              <input  type="text" name="nbr_femme" ng-model="vm.formation_thematique_suivi_agex_activite.nbr_femme" ng-init="vm.formation_thematique_suivi_agex_activite.nbr_femme=''" required>
+                              <div ng-messages="formformation_thematique_suivi_agex_activite.nbr_femme.$error"role="alert">
+                                  <div ng-message="required">
+                                      <span>Nombre de femmes obligatoire.</span>
+                                  </div>
+                              </div>
+                            </md-input-container>
+                                      
+                            <md-input-container flex="100" flex-gt-xs="25">
+                                <label>Formateur</label>
+                                  <input name="formateur" type="text" ng-model="vm.formation_thematique_suivi_agex_activite.formateur" required md-select-on-focus>
+                                    <div ng-messages="formformation_thematique_suivi_agex_activite.formateur.$error" role="alert">
+                                      <div ng-message="required">
+                                          <span>Formateur obligatoire.</span>
+                                      </div>
+                                    </div>
+                              </md-input-container>                                     
+                   
+                          </div>
+                          <div layout="column" layout-gt-xs="row" flex>
+                          <md-input-container flex="100">
+                            <label>Observation</label>
+                              <textarea name="observation" type="text" ng-model="vm.formation_thematique_suivi_agex_activite.observation" required md-select-on-focus></textarea>
+                                <div ng-messages="formformation_thematique_suivi_agex_activite.observation.$error" role="alert">
+                                  <div ng-message="required">
+                                      <span>Observation obligatoire.</span>
+                                  </div>
+                                </div>
+                          </md-input-container>
+                        </div>
+                            <div>
+                                <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                        ng-disabled="formformation_thematique_suivi_agex_activite.$invalid " ng-click="vm.ajoutFormation_thematique_suivi_agex_activite(vm.formation_thematique_suivi_agex_activite,0)">
+                                        Enregistrer
+                                </md-button>
+                                <md-button type="submit" class="md-raised md-primary" aria-label="Annuler" ng-click="vm.annulerFormation_thematique_suivi_agex_activite()">
+                                        Annuler
+                                </md-button>
+                            </div>
+                            </form>
+                                        
+                        <!--FORM  agep--> 
+                        <table class="dataTable row-border hover cell-border text-center" datatable="ng"
+                          dt-options="vm.dtOptions_new" ms-responsive-table>
+                          <thead>
+                            <tr>
+                              <th class="secondary-text" ng-repeat="re in ::vm.formation_thematique_suivi_agex_activite_column">
+                                <div class="table-header">
+                                  <span class="column-title text-center">{{re.titre}}</span>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="contr in vm.allFormation_thematique_suivi_agex_activite"  ng-class="{selected: contr.$selected}" ng-click="vm.selection(contr)">
+                                
+                                <td>{{contr.contrat_agex.numero_contrat}}</td>
+                                <td>{{contr.theme_formation.description}}</td>
+                                <td>{{contr.periode_prevu}}</td>
+                                <td>{{contr.periode_realisation}}</td>
+                                <td>{{contr.beneficiaire}}</td>
+                                <td>{{contr.nbr_beneficiaire_cible}}</td>
+                                <td>{{contr.nbr_participant}}</td>
+                                <td>{{contr.nbr_femme}}</td>
+                                <td>{{contr.formateur}}</td> 
+                                <td>{{contr.observation}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                   
+            </div>
+        </div>
+    </div>

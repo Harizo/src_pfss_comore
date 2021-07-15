@@ -25,7 +25,7 @@
             data : {
               authorizer : true,
               permitted : ["USER","PERSONNEL","ADMIN"],
-              page: "plan_action_reinstallation"
+              page: "plan-action-reinstallation"
             }
 
         });
