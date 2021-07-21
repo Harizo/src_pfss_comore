@@ -39,6 +39,7 @@
                   var datas = $.param({
                           supprimer: 0,
                           id:        e.data.models[0].id,      
+                          code:        e.data.models[0].code,      
                           description:      e.data.models[0].description
                       });
                   apiFactory.add("theme_formation/index",datas, config).success(function (data)
@@ -99,7 +100,7 @@
 						});
 					}, function() {
 						// Aucune action = sans suppression            
-            vm.mainGridOptions.dataSource.read();
+						vm.mainGridOptions.dataSource.read();
 					});               
                 },
                 //creation Theme
@@ -110,6 +111,7 @@
                     var datas = $.param({
                             supprimer: 0,
                             id:        0,      
+                            code:       e.data.models[0].code,             
                             description:       e.data.models[0].description              
                         });
                     apiFactory.add("theme_formation/index",datas, config).success(function (data)
@@ -145,6 +147,7 @@
                     id: "id",
                     fields:
                     {
+                        code: {type: "string", validation: {required: true}},
                         description: {type: "string", validation: {required: true}}
                     }
                 }
@@ -194,6 +197,11 @@
                 //this.expandRow(this.tbody.find("tr.k-master-row").first());
             //},
           columns: [
+            {
+              field: "code",
+              title: "Code",
+              width: "Auto"
+            },
             {
               field: "description",
               title: "Description",
@@ -257,7 +265,7 @@
                   /***********Debut add historique***********/
                       var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
                       var datas = $.param({
-                              action:"Modification : Composante indicateur de description de " + e.data.models[0].description,
+                              action:"Modification : Thème de formation de description de " + e.data.models[0].description,
                               id_utilisateur:vm.id_utilisateur
                       });
                             
@@ -295,7 +303,7 @@
 							/***********Debut add historique***********/
 							var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
 							var datas = $.param({
-									action:"Suppression : composante indicateur de description de " + e.data.models[0].description,
+									action:"Suppression : Thème de formation de description de " + e.data.models[0].description,
 									id_utilisateur:vm.id_utilisateur
 							});                             
 							apiFactory.add("historique_utilisateur/index",datas, config).success(function (data) {
@@ -306,7 +314,7 @@
 						}); 
 					}, function()
           {
-            vm.mainGridOptions.dataSource.read();
+						vm.mainGridOptions.dataSource.read();
             
 					});					
               },
@@ -357,7 +365,7 @@
                     id: "id",
                     fields:
                     {
-                        code: {type: "string",validation: {required: true}},
+                        code: {type: "string", validation: {required: true}},
                         description: {type: "string", validation: {required: true}}
                     }
                 }
@@ -403,6 +411,11 @@
                    // this.expandRow(this.tbody.find("tr.k-master-row").first());
                // },
           columns: [
+            {
+              field: "code",
+              title: "Code",
+              width: "Auto"
+            },
             {
               field: "description",
               title: "Description",

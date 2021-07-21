@@ -194,12 +194,24 @@
                           </thead>
                           <tbody>
                             <tr ng-repeat="menage in vm.all_beneficiaires  track by $index"  ng-class="{selected: menage.$selected}" ng-click="vm.selection(menage)">
-                              <td>{{menage.NumeroEnregistrement}}</td>
+                              <td>{{menage.identifiant_menage}}</td>
                               <td>{{menage.nomchefmenage}}</td>
                               <td>{{menage.NomTravailleur}}</td>
-                              <td>{{menage.travailleurpresent}}</td>
+                              <td style="text-align:right !important">{{vm.formatMillier(menage.montantpayetravailleur * 1)}}</td>
                               <td>{{menage.NomTravailleurSuppliant}}</td>
-                              <td>{{menage.suppliantpresent}}</td>
+                              <td style="text-align:right !important">{{vm.formatMillier(menage.montantpayesuppliant * 1)}}</td>
+                              <td style="text-align:right !important">{{vm.formatMillier((menage.montantpayetravailleur * 1) + (menage.montantpayesuppliant * 1))}}</td>
+                            </tr>
+                          </tbody>
+                          <tbody>
+                            <tr ng-if=" vm.all_beneficiaires.length >0">
+                              <td>&nbsp;</td>
+                              <td>&nbsp;</td>
+                              <td><b>TOTAL : </b></td>
+                              <td style="text-align:right !important"><b>{{vm.formatMillier(vm.getTotalTravailleurParEtat())}}</b></td>
+                              <td>&nbsp;</td>
+                              <td style="text-align:right !important"><b>{{vm.formatMillier(vm.getTotalSuppleantParEtat())}}</b></td>
+                              <td style="text-align:right !important"><b>{{vm.formatMillier(vm.getTotalPayeParEtat())}}</b></td>
                             </tr>
                           </tbody>
                         </table>
@@ -277,7 +289,7 @@
                                       </div>
                                     </div>
                                 </md-input-container>
-                                <md-input-container flex="100" flex-gt-xs="90">
+                                <md-input-container flex="100" flex-gt-xs="90" style="display:none;">
                                   <label>Sous-projet</label>
                                     <md-select ng-model="vm.filtredetail.id_sous_projet" name="sous_projet" ng-disabled="!vm.filtredetail.village_id">
                                       <md-option value="">&nbsp;</md-option>

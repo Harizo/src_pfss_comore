@@ -242,6 +242,10 @@
 							<md-icon md-font-icon="icon-close-circle-outline" class="s16" style="color: white;"></md-icon>
                               Supprimer
                             </md-button>
+							<md-button type="submit" ng-show="vm.selectedItem.id" class="md-raised md-primary" aria-label="Enregistrer"
+							    ng-click="vm.annuler()">
+							  Annuler
+							</md-button>
                           
                         </div>
                         <div ng-if="!vm.affichage_masque">                      

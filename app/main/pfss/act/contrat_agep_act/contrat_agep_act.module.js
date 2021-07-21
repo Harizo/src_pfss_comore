@@ -31,7 +31,7 @@
 
         // Navigation
         msNavigationServiceProvider.saveItem('pfss.act.contrat_agep_act', {
-            title: 'Gérer AGEP ACT',
+            title: 'Gérer AGEP',
             icon  : 'icon-data',
             state: 'app.pfss_act_contrat_agep_act',
 			weight:8,

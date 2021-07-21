@@ -619,6 +619,26 @@
 										</div>
 									</md-input-container>
 									<md-input-container  flex="100" flex-gt-xs="10" ng-show="vm.affichage_masque">
+									  <input type="text"  name="numerocintravailleur" ng-model="vm.filtre.numerocintravailleur"
+									  placeholder="NIN {{vm.placeholder_nom_travailleur}}" >
+									  <div ng-messages="filtrepardateform.numerocintravailleur.$error"
+										  role="alert">
+										  <div ng-message="required">
+											  <span>NIN {{vm.placeholder_nom_travailleur}} obligatoire.</span>
+										  </div>
+									  </div>
+									</md-input-container>								  
+									<md-input-container  flex="100" flex-gt-xs="10" ng-show="vm.affichage_masque">
+									  <input type="text"  name="numerocarteelectoraletravailleur" ng-model="vm.filtre.numerocarteelectoraletravailleur"
+									  placeholder="C.E {{vm.placeholder_nom_travailleur}}" >
+									  <div ng-messages="filtrepardateform.numerocarteelectoraletravailleur.$error"
+										  role="alert">
+										  <div ng-message="required">
+											  <span>C.E {{vm.placeholder_nom_travailleur}} obligatoire.</span>
+										  </div>
+									  </div>
+									</md-input-container>								  
+									<md-input-container  flex="100" flex-gt-xs="10" ng-show="vm.affichage_masque">
 									  <input type="text"  name="telephone_travailleur" ng-model="vm.filtre.telephone_travailleur"
 									  placeholder="Téléphone" >
 									  <div ng-messages="filtrepardateform.telephone_travailleur.$error"
@@ -630,7 +650,7 @@
 									</md-input-container>								  
 								</div>
 								<div layout="column" layout-gt-xs="row" flex>
-									<md-input-container flex-gt-xs="20" ng-show="vm.affichage_masque">
+									<md-input-container flex-gt-xs="15" ng-show="vm.affichage_masque">
 										<input type="text"  name="NomTravailleurSuppliant" ng-model="vm.filtre.NomTravailleurSuppliant"
 										placeholder="{{vm.placeholder_nom_suppleant}}">
 										<div ng-messages="filtrepardateform.NomTravailleurSuppliant.$error"
@@ -686,6 +706,26 @@
 										  </div>
 										</div>
 									</md-input-container>
+									<md-input-container  flex="100" flex-gt-xs="10" ng-show="vm.affichage_masque">
+									  <input type="text"  name="numerocinsuppliant" ng-model="vm.filtre.numerocinsuppliant"
+									  placeholder="NIN {{vm.placeholder_nom_suppleant}}" >
+									  <div ng-messages="filtrepardateform.numerocinsuppliant.$error"
+										  role="alert">
+										  <div ng-message="required">
+											  <span>NIN {{vm.placeholder_nom_suppleant}} obligatoire.</span>
+										  </div>
+									  </div>
+									</md-input-container>								  
+									<md-input-container  flex="100" flex-gt-xs="10" ng-show="vm.affichage_masque">
+									  <input type="text"  name="numerocarteelectoralesuppliant" ng-model="vm.filtre.numerocarteelectoralesuppliant"
+									  placeholder="C.E {{vm.placeholder_nom_suppleant}}" >
+									  <div ng-messages="filtrepardateform.numerocarteelectoralesuppliant.$error"
+										  role="alert">
+										  <div ng-message="required">
+											  <span>C.E {{vm.placeholder_nom_suppleant}} obligatoire.</span>
+										  </div>
+									  </div>
+									</md-input-container>								  
 									<md-input-container  flex="100" flex-gt-xs="10" ng-show="vm.affichage_masque">
 									  <input type="text"  name="telephone_suppleant" ng-model="vm.filtre.telephone_suppleant"
 									  placeholder="Téléphone" >

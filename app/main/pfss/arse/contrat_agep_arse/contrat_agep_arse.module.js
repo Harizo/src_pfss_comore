@@ -31,7 +31,7 @@
 
         // Navigation
         msNavigationServiceProvider.saveItem('pfss.arse.contrat_agep_arse', {
-            title: 'Gérer AGEP ARSE',
+            title: 'Gérer AGEP',
             icon  : 'icon-data',
             state: 'app.pfss_arse_contrat_agep_arse',
 			weight:8,

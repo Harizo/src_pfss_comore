@@ -39,6 +39,7 @@
                   var datas = $.param({
                           supprimer: 0,
                           id:        e.data.models[0].id,      
+                          code:       e.data.models[0].code,               
                           description:       e.data.models[0].description               
                       });
                   apiFactory.add("milieu/index",datas, config).success(function (data)
@@ -109,6 +110,7 @@
                     var datas = $.param({
                             supprimer: 0,
                             id:        0,      
+                            code:       e.data.models[0].code,              
                             description:       e.data.models[0].description              
                         });
                     apiFactory.add("milieu/index",datas, config).success(function (data)
@@ -193,6 +195,11 @@
                 //this.expandRow(this.tbody.find("tr.k-master-row").first());
             //},
           columns: [
+            {
+              field: "code",
+              title: "Code",
+              width: "Auto"
+            },
             {
               field: "description",
               title: "Libelle",

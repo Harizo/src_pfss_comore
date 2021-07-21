@@ -53,7 +53,7 @@
         responsive: true
       };
 
-      vm.menage_column = [{titre:"N° Ident"},{titre:"Chef ménage"},{titre:"Travailleur principal"},{titre:"Nb jour"},{titre:"Travailleur remplacant"},{titre:"Nb jour"}];
+      vm.menage_column = [{titre:"N° Ident"},{titre:"Chef ménage"},{titre:"Travailleur principal"},{titre:"Montant reçu"},{titre:"Travailleur remplacant"},{titre:"Montant reçu"},{titre:"Total"}];
       vm.liste_presence_column = [{titre:"ZIP"},{titre:"Présence du"}
 	  ,{titre:"Au"},{titre:"Nb jour"},{titre:"Total payé"},{titre:"Payé Trvailleur"},{titre:"Payé Remplacant"},{titre:"Payé le"},{titre:"Agep"},{titre:"Sous projet"},{titre:"Année"},{titre:"Etape"}];
       //initialisation variable
@@ -73,7 +73,7 @@
         vm.all_etape = [] ;
         vm.all_agex = [] ;
         vm.all_agep = [] ;
-
+		vm.id_sous_projet =1;
         vm.nouvelle_element = false ;
         vm.nouvelle_element_individu = false ;
         vm.affichage_masque = false ;
@@ -107,7 +107,7 @@
 				vm.all_agep= result.data.response; 
 				console.log(vm.all_agep);	
 			});
-			apiFactory.getAll("phaseexecution/index").then(function(result) { 
+			apiFactory.getAPIgeneraliserREST("phaseexecution/index","cle_etrangere",vm.id_sous_projet).then(function(result) {
 				vm.all_etape = result.data.response;    
 			});
 	  
@@ -358,8 +358,8 @@
                                                 ).then(function(result) {               
 					vm.status =  result.data.status ;
 					if(vm.status)  {
-						vm.all_beneficiaires = result.data.fiche_paiement;
-						vm.all_fiche_presence.push(result.data.fiche_paiementmenage);
+						vm.all_beneficiaires = result.data.fiche_paiementmenage ;
+						vm.all_fiche_presence=result.data.fiche_paiement;
 						vm.affiche_load =false; 
 						vm.showAlert('Importation etat de présence en excel',"Les données sont insérées dans la base de données. Merci !");
 					} else {
@@ -470,6 +470,39 @@
                 return "";
             }
 		}
+		// PAIEMENT DETAILLE
+		vm.getTotalPayeParEtat = function(){
+			var total = 0;
+			if(vm.all_beneficiaires.length >0) {
+				for(var i=0;i < vm.all_beneficiaires.length;i++) {
+					var product = vm.all_beneficiaires[i];
+					total += parseFloat(product.montantpayetravailleur) +  parseFloat(product.montantpayesuppliant) ;
+				}
+			}	
+			return total;
+		}		
+		vm.getTotalTravailleurParEtat = function(){
+			var total = 0;
+			if(vm.all_beneficiaires.length >0) {
+				for(var i=0;i < vm.all_beneficiaires.length;i++) {
+					var product = vm.all_beneficiaires[i];
+					total += parseFloat(product.montantpayetravailleur) ;
+				}
+			}	
+			return total;
+		}		
+		vm.getTotalSuppleantParEtat = function(){
+			var total = 0;
+			if(vm.all_beneficiaires.length >0) {
+				for(var i=0;i < vm.all_beneficiaires.length;i++) {
+					var product = vm.all_beneficiaires[i];
+					total += parseFloat(product.montantpayesuppliant);
+				}
+			}	
+			return total;
+		}		
+		// PAIEMENT DETAILLE
+		// PAR PAIEMENT
 		vm.getTotalPaye = function(){
 			var total = 0;
 			if(vm.all_fiche_presence.length >0) {
@@ -500,6 +533,6 @@
 			}	
 			return total;
 		}		
-		
+		// PAR PAIEMENT		
 	}
   })();

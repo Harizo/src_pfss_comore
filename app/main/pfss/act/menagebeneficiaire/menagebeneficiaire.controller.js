@@ -164,12 +164,14 @@
                     });
 			apiFactory.add("menage/index",datas, config).success(function (data)  {
 				vm.disable_button = false ;
+				vm.affiche_load = false ;
 				vm.showAlert("Information",'Enregistrement réussi!');
 				if (vm.id_enquete_menage == 0) {
 					vm.id_enquete_menage = data.response ;
 				}        
 			}).error(function (data) {
 				vm.disable_button = false ;
+				vm.affiche_load = false ;
 				console.log('erreur '+data);
 				vm.showAlert("Attention","Erreur lors de l'enregistrement!");
 			});         
@@ -393,11 +395,15 @@
 			vm.filtre.datedenaissancetravailleur  = new Date() ;
 			vm.filtre.agetravailleur  =null  ;
 			vm.filtre.lien_travailleur  =null  ;
+			vm.filtre.numerocintravailleur  =null  ;
+			vm.filtre.numerocarteelectoraletravailleur  =null  ;
 			vm.filtre.NomTravailleurSuppliant  =""  ;
 			vm.filtre.SexeTravailleurSuppliant  = null ;
 			vm.filtre.datedenaissancesuppliant  = new Date() ;
 			vm.filtre.agesuppliant  = null ;
 			vm.filtre.lien_suppleant  = null ;
+			vm.filtre.numerocinsuppliant  = null ;
+			vm.filtre.numerocarteelectoralesuppliant  = null ;
 			vm.filtre.quartier  = null ;
 			vm.filtre.milieu  = null ;
 			// vm.filtre.zip  = null ;
@@ -454,6 +460,8 @@
 			}
 			vm.filtre.agetravailleur  =  parseInt(vm.selectedItem.agetravailleur) ;
 			vm.filtre.lien_travailleur  =vm.selectedItem.lien_travailleur ;
+			vm.filtre.numerocintravailleur  =vm.selectedItem.numerocintravailleur ;
+			vm.filtre.numerocarteelectoraletravailleur  =vm.selectedItem.numerocarteelectoraletravailleur ;
 			vm.filtre.NomTravailleurSuppliant  =  vm.selectedItem.NomTravailleurSuppliant ;
 			vm.filtre.SexeTravailleurSuppliant  =  vm.selectedItem.SexeTravailleurSuppliant ;
 			if(vm.selectedItem.datedenaissancesuppliant) {
@@ -463,6 +471,8 @@
 			}
 			vm.filtre.agesuppliant  =  parseInt(vm.selectedItem.agesuppliant) ;
 			vm.filtre.lien_suppleant  =vm.selectedItem.lien_suppleant ;
+			vm.filtre.numerocinsuppliant  =vm.selectedItem.numerocinsuppliant ;
+			vm.filtre.numerocarteelectoralesuppliant  =vm.selectedItem.numerocarteelectoralesuppliant ;
 			vm.filtre.quartier  =  vm.selectedItem.quartier ;
 			vm.filtre.milieu  =  vm.selectedItem.milieu ;
 			vm.filtre.zip  =  vm.selectedItem.zip ;
@@ -682,7 +692,6 @@
 			vm.affiche_load = true ;
 			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"etat_statut","beneficiaire","id_sous_projet",vm.filtre.id_sous_projet,"beneficiaire",1).then(function(result) { 
 				vm.all_menages = result.data.response; 
-				console.log(result.data.taiza);
 				var msg ="Aucun ménage bénéficiaire dans le village de " +vm.filtre.village + " pour le sous-projet/Activité : " + vm.filtre.sous_projet + ". Merci !";				
 				if(result.data.response.length==0) {
 					vm.showAlert("INFORMATION",msg);
@@ -1210,11 +1219,15 @@
                       datedenaissancetravailleur: formatDateBDD(menage.datedenaissancetravailleur),
                       agetravailleur: menage.agetravailleur,
                       lien_travailleur: menage.lien_travailleur,
+                      numerocintravailleur: menage.numerocintravailleur,
+                      numerocarteelectoraletravailleur: menage.numerocarteelectoraletravailleur,
                       NomTravailleurSuppliant: menage.NomTravailleurSuppliant,
                       SexeTravailleurSuppliant: menage.SexeTravailleurSuppliant,
                       datedenaissancesuppliant: formatDateBDD(menage.datedenaissancesuppliant),
                       agesuppliant: menage.agesuppliant,
                       lien_suppleant: menage.lien_suppleant,
+                      numerocinsuppliant: menage.numerocinsuppliant,
+                      numerocarteelectoralesuppliant: menage.numerocarteelectoralesuppliant,
                       quartier: menage.quartier,
                       milieu: menage.milieu,
                       zip: menage.zip,
@@ -1315,11 +1328,15 @@
 						datedenaissancetravailleur: menage.datedenaissancetravailleur,
 						agetravailleur: menage.agetravailleur,
 						lien_travailleur: menage.lien_travailleur,
+						numerocintravailleur: menage.numerocintravailleur,
+						numerocarteelectoraletravailleur: menage.numerocarteelectoraletravailleur,
 						NomTravailleurSuppliant: menage.NomTravailleurSuppliant,
 						SexeTravailleurSuppliant: menage.SexeTravailleurSuppliant,
 						datedenaissancesuppliant: menage.datedenaissancesuppliant,
 						agesuppliant: menage.agesuppliant,
 						lien_suppleant: menage.lien_suppleant,
+						numerocinsuppliant: menage.numerocinsuppliant,
+						numerocarteelectoralesuppliant: menage.numerocarteelectoralesuppliant,
 						quartier: menage.quartier,
 						milieu: menage.milieu,
 						zip: menage.zip,
@@ -1408,11 +1425,15 @@
 						vm.selectedItem.datedenaissancetravailleur = vm.filtre.datedenaissancetravailleur  ;
 						vm.selectedItem.agetravailleur = vm.filtre.agetravailleur  ;
 						vm.selectedItem.lien_travailleur = vm.filtre.lien_travailleur  ;
+						vm.selectedItem.numerocintravailleur = vm.filtre.numerocintravailleur  ;
+						vm.selectedItem.numerocarteelectoraletravailleur = vm.filtre.numerocarteelectoraletravailleur  ;
 						vm.selectedItem.NomTravailleurSuppliant = vm.filtre.NomTravailleurSuppliant  ;
 						vm.selectedItem.SexeTravailleurSuppliant = vm.filtre.SexeTravailleurSuppliant  ;
 						vm.selectedItem.datedenaissancesuppliant = vm.filtre.datedenaissancesuppliant  ;
 						vm.selectedItem.agesuppliant = vm.filtre.agesuppliant  ;
 						vm.selectedItem.lien_suppleant = vm.filtre.lien_suppleant  ;
+						vm.selectedItem.numerocinsuppliant = vm.filtre.numerocinsuppliant  ;
+						vm.selectedItem.numerocarteelectoralesuppliant = vm.filtre.numerocarteelectoralesuppliant  ;
 						vm.selectedItem.quartier = vm.filtre.quartier  ;
 						vm.selectedItem.milieu = vm.filtre.milieu  ;
 						vm.selectedItem.zip = vm.filtre.zip  ;
