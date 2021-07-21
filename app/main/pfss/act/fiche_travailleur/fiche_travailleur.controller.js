@@ -11,7 +11,7 @@
 
         vm.all_commune = [];
         vm.all_village = [];
-
+        vm.identification = {};
         apiFactory.getAll("ile").then(function (result) {
             vm.all_ile = result.data.response;
         });
@@ -26,10 +26,7 @@
 
         });
 
-        apiFactory.getAll("village").then(function (result) {
-            vm.all_villages = result.data.response;
-
-        });
+        
 
         $scope.$watch('vm.identification.id_ile', function () {
             if (!vm.identification.id_ile) return;
@@ -68,11 +65,43 @@
             if (!vm.identification.id_commune) return;
             else {
 
-                vm.all_village = vm.all_villages;
-                vm.all_village = vm.all_village.filter(function (obj) {
-                    return obj.commune.id == vm.identification.id_commune;
-                })
+                vm.affiche_load = true ;
+
+                apiFactory.getParamsDynamic("Fiche_travailleur/index?get_village_act=" + 1 +
+                    "&id_commune=" + vm.identification.id_commune ).then(function (result) 
+                {
+                    vm.all_villages = result.data.response;
+
+                    vm.all_village = vm.all_villages;
+
+                    vm.affiche_load = false ;
+
+                    if (vm.all_village.length == 0) 
+                    { 
+                        var confirm = $mdDialog.confirm()
+                            .title('Information!')
+                            .textContent("Il n'y a pas de village contenant de menage ACT dans cette commune")
+                            .ariaLabel('Lucky day')
+                            .clickOutsideToClose(true)
+                            .parent(angular.element(document.body))
+                            .ok('ok');
+
+                        $mdDialog.show(confirm).then(function() {           
+                            vm.identification.id_village = null;
+                        }, function() {
+                        //alert('rien');
+                        });
+                    }
+                    /*vm.all_village = vm.all_village.filter(function (obj) {
+                        return obj.commune.id == vm.identification.id_commune;
+                    })*/
+
+                });
+
+                
             }
+
+           
 
         })
 
@@ -80,42 +109,43 @@
 
             var v = vm.all_village.filter(function (obj) {
                 return obj.id == vm.identification.id_village;
-            })
+            });
 
-            if (v.length > 0 && v[0].zip != null) {
-                vm.identification.zip = v[0].zip.libelle;
+
+            if (v.length > 0 && v[0].zip_code != null) 
+            {
+
+                vm.identification.zip = v[0].zip_code;
                 vm.identification.vague = v[0].vague;
 
 
             }
-            else {
+            else 
+            {
                 vm.identification.zip = "";
                 vm.identification.vague = "";
             }
 
-            var repertoire = "fichetravailleur/";
-            vm.export_excel = function () {
-                vm.affiche_load = true;
-                apiFactory.getParamsDynamic("Fiche_travailleur/index?etat_export_excel=" + 1 +
-                    "&repertoire=" + repertoire +
-                    "&id_ile=" + vm.identification.id_ile +
-                    "&id_region=" + vm.identification.id_region +
-                    "&id_commune=" + vm.identification.id_commune +
-                    "&id_village=" + vm.identification.id_village ).then(function (result) {
-
-                        var nom_file = result.data.nom_file;
-                        vm.affiche_load = false;
-                        window.location = apiUrlExcel + repertoire + nom_file;
-
-
-                    });
-
-            }
-
-
-
-
 
         });
+
+        var repertoire = "fichetravailleur/";
+        vm.export_excel = function () {
+            vm.affiche_load = true;
+            apiFactory.getParamsDynamic("Fiche_travailleur/index?etat_export_excel=" + 1 +
+                "&repertoire=" + repertoire +
+                "&id_ile=" + vm.identification.id_ile +
+                "&id_region=" + vm.identification.id_region +
+                "&id_commune=" + vm.identification.id_commune +
+                "&id_village=" + vm.identification.id_village ).then(function (result) {
+
+                    var nom_file = result.data.nom_file;
+                    vm.affiche_load = false;
+                    window.location = apiUrlExcel + repertoire + nom_file;
+
+
+                });
+
+        }
     }
 })();
