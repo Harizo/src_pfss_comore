@@ -32,7 +32,7 @@
 
         // Navigation
         msNavigationServiceProvider.saveItem('pfss.idb.contrat_agep_idb', {
-            title: 'Gérer AGEP IDB',
+            title: 'Gérer AGEP',
             icon  : 'icon-data',
             state: 'app.pfss_idb_contrat_agep_idb',
 			weight:2,

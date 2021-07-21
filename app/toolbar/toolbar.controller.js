@@ -169,14 +169,14 @@
                                     }
                                 );              
                 }   
-
+                //console.log(resultat);
             });
             apiFactory.getAPIgeneraliserREST("pges/index",'menu','get_pges_montant_differant').then(function(result) 
             {
                 var resultat = result.data.response;
-                console.log(resultat);
+                //console.log(resultat);
                 if (parseInt(resultat.length)!=0)
-                { console.log('tost2');
+                { 
                     var tost=toastr.error(
                                     "Cliquer ici pour plus de détails",
                                     'Notification PGES',
@@ -216,7 +216,7 @@
                 locals:{pges: param},
                 clickOutsideToClose:true
                 });
-                console.log(param);
+               // console.log(param);
         }
           
     }    

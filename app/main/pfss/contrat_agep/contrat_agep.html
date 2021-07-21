@@ -88,12 +88,10 @@
                          
                         <form ng-show="vm.affichage_masque" name="formcontrat_agep" class="md-inline-form" novalidate >
 
-                          <div layout="column" layout-gt-xs="row" flex> 
-
-                            
+                          <div layout="column" layout-gt-xs="row" flex>                             
                                                           
                             <md-input-container flex="100" flex-gt-xs="40" ng-disabled="!vm.contrat_agep.id_agep">
-                              <input  type="text" name="numero_ordre" ng-model="vm.contrat_agep.numero_ordre" placeholder="N° Contrat" required disabled>
+                              <input  type="text" name="numero_ordre" ng-model="vm.contrat_agep.numero_ordre" placeholder="N° d'ordre" required disabled>
                               <div ng-messages="formcontrat_agep.numero_ordre.$error"role="alert">
                                   <div ng-message="required">
                                       <span>N° d'ordre obligatoire.</span>
