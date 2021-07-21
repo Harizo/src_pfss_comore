@@ -14,7 +14,7 @@
     {
         // State
         $stateProvider.state('app.pfss_suiviactivite_suivi_arse_activite_choisis_menage', {
-            url      : '/suivi-activite/arse/theme-formation',
+            url      : '/suivi-activite/arse/activite-choisi-menage',
             views    : {
                 'content@app': {
                     templateUrl: 'app/main/pfss/suiviactivite/arse/activite_choisis_menage/activite_choisis_menage.html',

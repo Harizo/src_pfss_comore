@@ -284,11 +284,15 @@
 			vm.filtre.datedenaissancetravailleur  = new Date() ;
 			vm.filtre.agetravailleur  =null  ;
 			vm.filtre.lien_travailleur  =null  ;
+			vm.filtre.numerocintravailleur  =null  ;
+			vm.filtre.numerocarteelectoraletravailleur  =null  ;
 			vm.filtre.NomTravailleurSuppliant  =""  ;
 			vm.filtre.SexeTravailleurSuppliant  = null ;
 			vm.filtre.datedenaissancesuppliant  = new Date() ;
 			vm.filtre.agesuppliant  = null ;
 			vm.filtre.lien_suppleant  = null ;
+			vm.filtre.numerocinsuppliant  = null ;
+			vm.filtre.numerocarteelectoralesuppliant  = null ;
 			vm.filtre.quartier  = null ;
 			vm.filtre.milieu  = null ;
 			// vm.filtre.zip  = null ;
@@ -342,6 +346,8 @@
 			}
 			vm.filtre.agetravailleur  =  parseInt(vm.selectedItem.agetravailleur) ;
 			vm.filtre.lien_travailleur  =vm.selectedItem.lien_travailleur ;
+			vm.filtre.numerocintravailleur  =vm.selectedItem.numerocintravailleur ;
+			vm.filtre.numerocarteelectoraletravailleur  =vm.selectedItem.numerocarteelectoraletravailleur ;
 			vm.filtre.NomTravailleurSuppliant  =  vm.selectedItem.NomTravailleurSuppliant ;
 			vm.filtre.SexeTravailleurSuppliant  =  vm.selectedItem.SexeTravailleurSuppliant ;
 			if(vm.selectedItem.datedenaissancesuppliant) {
@@ -351,6 +357,8 @@
 			}
 			vm.filtre.agesuppliant  =  parseInt(vm.selectedItem.agesuppliant) ;
 			vm.filtre.lien_suppleant  =vm.selectedItem.lien_suppleant ;
+			vm.filtre.numerocinsuppliant  =vm.selectedItem.numerocinsuppliant ;
+			vm.filtre.numerocarteelectoralesuppliant  =vm.selectedItem.numerocarteelectoralesuppliant ;
 			vm.filtre.quartier  =  vm.selectedItem.quartier ;
 			vm.filtre.milieu  =  vm.selectedItem.milieu ;
 			vm.filtre.zip  =  vm.selectedItem.zip ;
@@ -1049,11 +1057,15 @@
                       datedenaissancetravailleur: formatDateBDD(menage.datedenaissancetravailleur),
                       agetravailleur: menage.agetravailleur,
                       lien_travailleur: menage.lien_travailleur,
+                      numerocintravailleur: menage.numerocintravailleur,
+                      numerocarteelectoraletravailleur: menage.numerocarteelectoraletravailleur,
                       NomTravailleurSuppliant: menage.NomTravailleurSuppliant,
                       SexeTravailleurSuppliant: menage.SexeTravailleurSuppliant,
                       datedenaissancesuppliant: formatDateBDD(menage.datedenaissancesuppliant),
                       agesuppliant: menage.agesuppliant,
                       lien_suppleant: menage.lien_suppleant,
+                      numerocinsuppliant: menage.numerocinsuppliant,
+                      numerocarteelectoralesuppliant: menage.numerocarteelectoralesuppliant,
                       quartier: menage.quartier,
                       milieu: menage.milieu,
                       zip: menage.zip,
@@ -1151,11 +1163,15 @@
 						datedenaissancetravailleur: menage.datedenaissancetravailleur,
 						agetravailleur: menage.agetravailleur,
 						lien_travailleur: menage.lien_travailleur,
+						numerocintravailleur: menage.numerocintravailleur,
+						numerocarteelectoraletravailleur: menage.numerocarteelectoraletravailleur,
 						NomTravailleurSuppliant: menage.NomTravailleurSuppliant,
 						SexeTravailleurSuppliant: menage.SexeTravailleurSuppliant,
 						datedenaissancesuppliant: menage.datedenaissancesuppliant,
 						agesuppliant: menage.agesuppliant,
 						lien_suppleant: menage.lien_suppleant,
+						numerocinsuppliant: menage.numerocinsuppliant,
+						numerocarteelectoralesuppliant: menage.numerocarteelectoralesuppliant,
 						quartier: menage.quartier,
 						milieu: menage.milieu,
 						zip: menage.zip,
@@ -1241,11 +1257,15 @@
 						vm.selectedItem.datedenaissancetravailleur = vm.filtre.datedenaissancetravailleur  ;
 						vm.selectedItem.agetravailleur = vm.filtre.agetravailleur  ;
 						vm.selectedItem.lien_travailleur = vm.filtre.lien_travailleur  ;
+						vm.selectedItem.numerocintravailleur = vm.filtre.numerocintravailleur  ;
+						vm.selectedItem.numerocarteelectoraletravailleur = vm.filtre.numerocarteelectoraletravailleur  ;
 						vm.selectedItem.NomTravailleurSuppliant = vm.filtre.NomTravailleurSuppliant  ;
 						vm.selectedItem.SexeTravailleurSuppliant = vm.filtre.SexeTravailleurSuppliant  ;
 						vm.selectedItem.datedenaissancesuppliant = vm.filtre.datedenaissancesuppliant  ;
 						vm.selectedItem.agesuppliant = vm.filtre.agesuppliant  ;
 						vm.selectedItem.lien_suppleant = vm.filtre.lien_suppleant  ;
+						vm.selectedItem.numerocinsuppliant = vm.filtre.numerocinsuppliant  ;
+						vm.selectedItem.numerocarteelectoralesuppliant = vm.filtre.numerocarteelectoralesuppliant  ;
 						vm.selectedItem.quartier = vm.filtre.quartier  ;
 						vm.selectedItem.milieu = vm.filtre.milieu  ;
 						vm.selectedItem.zip = vm.filtre.zip  ;

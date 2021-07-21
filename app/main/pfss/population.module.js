@@ -53,7 +53,7 @@
             'app.pfss.formation_ml',
             'app.pfss.realisation_ebe',
             'app.pfss.formation_thematique_agex',
-            // 'app.pfss.tdb',
+            'app.pfss.tdb',
             'app.pfss.planning_ebe'
 
  

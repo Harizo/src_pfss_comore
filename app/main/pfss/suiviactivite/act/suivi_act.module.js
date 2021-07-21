@@ -3,8 +3,10 @@
     'use strict';
     angular
         .module('app.pfss.suiviactivite.suivi_act', [	
-			'app.pfss.suiviactivite.suivi_act.exportficheetat',	
-			'app.pfss.suiviactivite.suivi_act.importetat',		
+			'app.pfss.suiviactivite.suivi_act.premier_paiement',	
+			'app.pfss.suiviactivite.suivi_act.deuxieme_paiement',	
+			// 'app.pfss.suiviactivite.suivi_act.exportficheetat',	
+			// 'app.pfss.suiviactivite.suivi_act.importetat',		
             ])
         // .run(testPermission)
         .config(config);

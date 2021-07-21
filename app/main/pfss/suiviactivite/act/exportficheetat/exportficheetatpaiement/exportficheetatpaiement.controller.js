@@ -32,7 +32,7 @@
         vm.all_agex = [] ;
         vm.all_agep = [] ;
         vm.all_detail_etatpresence = [] ;
-
+		vm.id_sous_projet=1;
         vm.nouvelle_element = false ;
         vm.nouvelle_element_individu = false ;
         vm.affichage_masque = false ;
@@ -65,7 +65,8 @@
 			apiFactory.getAll("agence_p/index").then(function(result) { 
 				vm.all_agep= result.data.response;    
 			});
-			apiFactory.getAll("phaseexecution/index").then(function(result) { 
+			apiFactory.getAPIgeneraliserREST("phaseexecution/index","cle_etrangere",vm.id_sous_projet).then(function(result) {
+			// apiFactory.getAll("phaseexecution/index").then(function(result) { 
 				vm.all_etape = result.data.response;    
 			});
 	  

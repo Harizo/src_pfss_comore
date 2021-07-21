@@ -2,7 +2,9 @@
 {
     'use strict';
     angular
-        .module('app.pfss.suiviactivite.suivi_arse.suivi_evaluation', [			
+        .module('app.pfss.suiviactivite.suivi_arse.suivi_evaluation', [	
+			'app.pfss.suiviactivite.suivi_arse.suivi_evaluation.questionnairemereleader',
+			'app.pfss.suiviactivite.suivi_arse.suivi_evaluation.informationmereleader'
             ])
         // .run(testPermission)
         .config(config);

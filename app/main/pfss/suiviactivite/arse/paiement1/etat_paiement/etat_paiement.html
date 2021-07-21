@@ -98,7 +98,19 @@
                                   <label>ZIP</label>
 										<input type="text"  name="zip" ng-model="vm.filtre.zip" readonly>
                                 </md-input-container>
-								<div layout="column" layout-gt-xs="col" flex flex-gt-xs="10" style="display:none;">
+                                <md-input-container flex="100" flex-gt-xs="5">
+                                  <label>Tranche</label>
+										<input type="text"  name="tranche" ng-model="vm.filtre.tranche" readonly>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="5">
+                                  <label>%</label>
+										<input type="text"  name="pourcentage" ng-model="vm.filtre.pourcentage" readonly>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="5">
+                                  <label>Montant</label>
+										<input type="text"  name="montant_a_payer" ng-model="vm.filtre.montant_a_payer" readonly>
+                                </md-input-container>
+        						<div layout="column" layout-gt-xs="col" flex flex-gt-xs="10" style="display:none;">
 									<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
 										  ng-if="!vm.affichage_masque" ng-disabled="filtrepardateform.$invalid||vm.affiche_load" ng-click="vm.filtrer(vm.filtre)"  style="height:50% !important;">
 										  Actualiser

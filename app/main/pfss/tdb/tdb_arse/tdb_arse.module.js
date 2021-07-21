@@ -18,7 +18,7 @@
 
         // Navigation
         msNavigationServiceProvider.saveItem('pfss.tdb.tdb_arse', {
-            title : 'ARSE',
+            title : "ARSE",
             icon  : 'icon-apps',
             weight: 2
         });

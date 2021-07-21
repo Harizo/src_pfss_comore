@@ -20,7 +20,7 @@
             data : {
               authorizer : true,
               permitted : ["USER","PERSONNEL","ADMIN"],
-              page: "TDB-Objectif"
+              page: "TDB-Objectif-ACT"
             }
         });
         // Navigation

@@ -14,21 +14,24 @@
 		var NouvelItemObjectif_tdb=false;
 		var currentItemObjectif_tdb;
 		vm.selectedItemObjectif_tdb = {} ;
-		vm.all_tdb =[];
+		// vm.all_tdb =[];
 		//style
 		vm.dtOptions = {
 		dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
 		pagingType: 'simple',
-		autoWidth: false,
-		responsive: true
+		autoWidth: true,
+		// responsive: true
 		};
 		//col table
 		vm.objectif_column =[
 		{titre:"Ile"},
-		{titre:"Vague"},
 		{titre:"Indicateur"},
-		{titre:"Objectif"},
-		{titre:"Nombre Village"},
+		{titre:"Objectif vague1"},
+		{titre:"Nbr Village vague1"},
+		{titre:"Objectif vague2"},
+		{titre:"Nbr Village vague2"},
+		{titre:"Objectif vague3"},
+		{titre:"Nbr Village vague3"},
 		{titre:"Actions"}
 		];
 		apiFactory.getAll("ile/index").then(function(result) {
@@ -42,25 +45,22 @@
 			apiFactory.getAPIgeneraliserREST("tableau_de_bord/index","type_tdb",vm.type_tdb).then(function(result)	{ 
 				vm.all_tdb = result.data.response; 
 			});
-		} else if(vm.url=='/tableaudebord/act/objectif') {
+		} else if(vm.url=='/tableaudebord/arse/objectif') {
 			vm.type_tdb="ARSE";
 			vm.titre =" ARSE"
 			apiFactory.getAPIgeneraliserREST("tableau_de_bord/index","type_tdb",vm.type_tdb).then(function(result)	{ 
 				vm.all_tdb = result.data.response; 
 			});
-			apiFactory.getAPIgeneraliserREST("tableau_de_bord/index","type_tdb",vm.type_tdb).then(function(result)	{ 
-				vm.all_tdb = result.data.response; 
-			});
 		} else if(vm.url=='/tableaudebord/macc/objectif') {
 			vm.type_tdb="MACC";
-			vm.titre =" COVID-19";
+			vm.titre =" MACC";
 			apiFactory.getAPIgeneraliserREST("tableau_de_bord/index","type_tdb",vm.type_tdb).then(function(result)	{ 
 				vm.all_tdb = result.data.response; 
 			});
 		}		
-			apiFactory.getAll("indicateur_tdb/index").then(function(result)	{ 
-				vm.all_indicateur = result.data.response; 
-			});
+		apiFactory.getAll("indicateur_tdb/index").then(function(result)	{ 
+			vm.all_indicateur = result.data.response; 
+		});
 	// Debut type plainte
         vm.insert_in_base= function(tableau,suppression) {  
 			//add			
@@ -78,10 +78,13 @@
 				id:getId,      
 				type_tdb: vm.type_tdb,      
 				ile_id: tableau.ile_id,      
-				vague: tableau.vague,      
 				indicateur_id: tableau.indicateur_id,      
-				objectif_nombre: tableau.objectif_nombre,
-				objectif_village: tableau.objectif_village,
+				objectif_nombre_vague1: tableau.objectif_nombre_vague1,
+				objectif_village_vague1: tableau.objectif_village_vague1,
+				objectif_nombre_vague2: tableau.objectif_nombre_vague2,
+				objectif_village_vague2: tableau.objectif_village_vague2,
+				objectif_nombre_vague3: tableau.objectif_nombre_vague3,
+				objectif_village_vague3: tableau.objectif_village_vague3,
 				rang: tableau.rang,
 				visible: tableau.visible,
 			});       
@@ -91,11 +94,14 @@
 					if(suppression==0) {
 					  vm.selectedItemObjectif_tdb.type_tdb = tableau.type_tdb;
 					  vm.selectedItemObjectif_tdb.ile_id = tableau.ile_id;
-					  vm.selectedItemObjectif_tdb.vague = tableau.vague;
 					  vm.selectedItemObjectif_tdb.indicateur_id = tableau.indicateur_id;
 					  vm.selectedItemObjectif_tdb.indicateur = tableau.indicateur;
-					  vm.selectedItemObjectif_tdb.objectif_nombre = tableau.objectif_nombre;
-					  vm.selectedItemObjectif_tdb.objectif_village = tableau.objectif_village;
+					  vm.selectedItemObjectif_tdb.objectif_nombre_vague1 = tableau.objectif_nombre_vague1;
+					  vm.selectedItemObjectif_tdb.objectif_village_vague1 = tableau.objectif_village_vague1;
+					  vm.selectedItemObjectif_tdb.objectif_nombre_vague2 = tableau.objectif_nombre_vague2;
+					  vm.selectedItemObjectif_tdb.objectif_village_vague2 = tableau.objectif_village_vague2;
+					  vm.selectedItemObjectif_tdb.objectif_nombre_vague3 = tableau.objectif_nombre_vague3;
+					  vm.selectedItemObjectif_tdb.objectif_village_vague3 = tableau.objectif_village_vague3;
 					  vm.selectedItemObjectif_tdb.rang = tableau.rang;
 					  vm.selectedItemObjectif_tdb.visible = tableau.visible;
 					  vm.selectedItemObjectif_tdb.$selected = false;
@@ -140,11 +146,14 @@
 				supprimer:0,
                 type_tdb: vm.type_tdb,
                 ile_id: null,
-                vague: null,
                 indicateur: '',
                 indicateur_id: null,
-                objectif_nombre: null,
-                objectif_village: null,
+                objectif_nombre_vague1: null,
+                objectif_village_vague1: null,
+                objectif_nombre_vague2: null,
+                objectif_village_vague2: null,
+                objectif_nombre_vague3: null,
+                objectif_village_vague3: null,
                 rang: vm.rang,
                 visible: 1,
                 ile: null,
@@ -165,11 +174,14 @@
 			item.$edit=false;
 			NouvelItemObjectif_tdb = false;
 			item.ile_id = currentItemObjectif_tdb.ile_id;
-			item.vague = currentItemObjectif_tdb.vague;
 			item.indicateur_id = currentItemObjectif_tdb.indicateur_id;
 			item.indicateur = currentItemObjectif_tdb.indicateur;
-			item.objectif_nombre = currentItemObjectif_tdb.objectif_nombre;
-			item.objectif_village = currentItemObjectif_tdb.objectif_village;
+			item.objectif_nombre_vague1 = currentItemObjectif_tdb.objectif_nombre_vague1;
+			item.objectif_village_vague1 = currentItemObjectif_tdb.objectif_village_vague1;
+			item.objectif_nombre_vague2 = currentItemObjectif_tdb.objectif_nombre_vague2;
+			item.objectif_village_vague2 = currentItemObjectif_tdb.objectif_village_vague2;
+			item.objectif_nombre_vague3 = currentItemObjectif_tdb.objectif_nombre_vague3;
+			item.objectif_village_vague3 = currentItemObjectif_tdb.objectif_village_vague3;
 			item.rang = currentItemObjectif_tdb.rang;
 			item.visible = currentItemObjectif_tdb.visible;
 			item.ile = currentItemObjectif_tdb.ile;
@@ -186,14 +198,37 @@
 			item.$edit = true;	
 			item.$selected = true;	
 			item.ile_id = parseInt(vm.selectedItemObjectif_tdb.ile_id);
-			item.vague = parseInt(vm.selectedItemObjectif_tdb.vague);
 			item.indicateur_id = parseInt(vm.selectedItemObjectif_tdb.indicateur_id);
 			item.indicateur = vm.selectedItemObjectif_tdb.indicateur;
-			item.objectif_nombre = parseInt(vm.selectedItemObjectif_tdb.objectif_nombre);
-			if(vm.selectedItemObjectif_tdb.objectif_village) {
-				item.objectif_village = parseInt(vm.selectedItemObjectif_tdb.objectif_village);
+			if(vm.selectedItemObjectif_tdb.objectif_nombre_vague1) {
+				item.objectif_nombre_vague1 = parseInt(vm.selectedItemObjectif_tdb.objectif_nombre_vague1);
 			} else {
-				item.objectif_village = null;
+				item.objectif_nombre_vague1 = null;
+			}	
+			if(vm.selectedItemObjectif_tdb.objectif_village_vague1) {
+				item.objectif_village_vague1 = parseInt(vm.selectedItemObjectif_tdb.objectif_village_vague1);
+			} else {
+				item.objectif_village_vague1 = null;
+			}	
+			if(vm.selectedItemObjectif_tdb.objectif_nombre_vague2) {
+				item.objectif_nombre_vague2 = parseInt(vm.selectedItemObjectif_tdb.objectif_nombre_vague2);
+			} else {
+				item.objectif_nombre_vague2 = null;
+			}	
+			if(vm.selectedItemObjectif_tdb.objectif_village_vague2) {
+				item.objectif_village_vague2 = parseInt(vm.selectedItemObjectif_tdb.objectif_village_vague2);
+			} else {
+				item.objectif_village_vague2 = null;
+			}	
+			if(vm.selectedItemObjectif_tdb.objectif_nombre_vague3) {
+				item.objectif_nombre_vague3 = parseInt(vm.selectedItemObjectif_tdb.objectif_nombre_vague3);
+			} else {
+				item.objectif_nombre_vague3 = null;
+			}	
+			if(vm.selectedItemObjectif_tdb.objectif_village_vague3) {
+				item.objectif_village_vague3 = parseInt(vm.selectedItemObjectif_tdb.objectif_village_vague3);
+			} else {
+				item.objectif_village_vague3 = null;
 			}	
 			if(vm.selectedItemObjectif_tdb.visible) {
 				item.visible = parseInt(vm.selectedItemObjectif_tdb.visible);
@@ -213,8 +248,8 @@
                 .parent(angular.element(document.body))
                 .ok('supprimer')
                 .cancel('annuler');
-			$mdDialog.show(confirm).then(function() {          
-				ajout(vm.selectedItemObjectif_tdb,1);
+			$mdDialog.show(confirm).then(function() { 
+				vm.insert_in_base(vm.selectedItemObjectif_tdb,1);
 			}, function() {
 			});
         }
