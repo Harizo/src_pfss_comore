@@ -38,12 +38,12 @@
                                    
                                         <md-input-container flex="100" flex-gt-xs="40">
                                           <input  type="text" name="numero_contrat" ng-model="vm.contrat_ugp_agex.numero_contrat"
-                                            placeholder="N° Contrat"    ng-init="vm.contrat_ugp_agex.numero_contrat=''"
+                                            placeholder="Réf Contrat"    ng-init="vm.contrat_ugp_agex.numero_contrat=''"
                                             required>
                                             <div ng-messages="form_contrat_ugp_agex.numero_contrat.$error"
                                               role="alert">
                                               <div ng-message="required">
-                                                <span>N° Contrat obligatoire.</span>
+                                                <span>Réf Contrat obligatoire.</span>
                                               </div>
                                             </div>
                                         </md-input-container>
@@ -177,7 +177,8 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr ng-repeat="cua in vm.all_contrat_ugp_agex"  ng-class="{selected: cua.$selected}" ng-click="vm.selection(cua)">
+                            <tr ng-repeat="(index,cua) in vm.all_contrat_ugp_agex"  ng-class="{selected: cua.$selected}" ng-click="vm.selection(cua)">
+                                <td>{{(index+1)}}</td>
                                 <td>{{cua.numero_contrat}}</td>
                                 <td>
                                      <span class="text-truncate">- <b>Dénomination:</b> {{cua.nom_agex}} </span> <br>

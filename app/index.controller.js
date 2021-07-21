@@ -10,7 +10,7 @@
         .controller('IndexController', IndexController);
 
     /** @ngInject */
-    function IndexController(fuseTheming, apiFactory, $location, $mdToast, $cookieStore)
+    function IndexController(fuseTheming, apiFactory, $location, $mdToast, $cookieStore,$mdDialog)
     {
         var vm = this;
 
@@ -28,7 +28,7 @@
 
                     if (tab.length > 0) 
                     {
-                        $mdToast.show({
+                        /*$mdToast.show({
                         hideDelay: false,
                         position: 'bottom right',
                         controller: 'ToastCtrl',
@@ -37,8 +37,23 @@
                        
                       }).catch(function(error) {
                         
-                      });
+                      });*/
+                        var option = {
+                                            closeButton: true,
+                                            tapToDismiss: false,
+                                            extendedTimeOut:0,
+                                            timeOut: 0,
+                                            fadeOut:0, 
+                                            //positionClass: "toast-bottom-full-width",
+                                            onclick: function()
+                                            {
+                                                afficher_details(); 
+                                            }
+                        };
+
+                        var toast = toastr.error("Cliquer ici pour plus de détails","FIN CONTRAT ou AVENANT CONTRAT UGP/AGEX",option);
                     }
+
        
             });
             
@@ -65,10 +80,23 @@
         });*/
         }
 
+        function afficher_details ()
+        {
+            $mdDialog.show({
+              controller: DialogController,
+              templateUrl: 'app/main/pfss/gerer_mdp/dialog_detail_mdtoast.html',
+              parent: angular.element(document.body),
+              
+              clickOutsideToClose:true
+            })
+        }
+
 
        
         
     }
+
+    
 
     function ToastCtrl($mdToast, $mdDialog, $scope) 
     {

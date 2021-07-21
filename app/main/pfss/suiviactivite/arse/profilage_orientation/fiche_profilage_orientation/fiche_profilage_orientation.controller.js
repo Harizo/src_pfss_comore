@@ -6,7 +6,7 @@
         .controller('Fiche_profilage_orientationController', Fiche_profilage_orientationController);
 
     /** @ngInject */
-    function Fiche_profilage_orientationController(apiFactory, $state, $mdDialog, $scope,$cookieStore)
+    function Fiche_profilage_orientationController(apiFactory, $state, $mdDialog, $scope,$cookieStore,apiUrlExcel)
 	{
 		var vm = this;
 		vm.dtOptions =
@@ -53,14 +53,19 @@
         var currentItemFiche_profilage_besoin_formation;
 		vm.fiche_profilage_besoin_formation = {};
         vm.allFiche_profilage_besoin_formation = [];
-
+        vm.affiche_load = true;
 		apiFactory.getAll("Ile/index").then(function(result)
         {
             vm.all_ile = result.data.response;
-        });
-		apiFactory.getAll("agent_ex/index").then(function(result)
-        {
-            vm.allAgex = result.data.response;
+            apiFactory.getAll("agent_ex/index").then(function(result)
+            {
+                vm.allAgex = result.data.response;
+                apiFactory.getAll("theme_formation/index").then(function(result)
+                {
+                    vm.allType_formation= result.data.response;
+                    vm.affiche_load = false;
+                });
+            });
         });
 		vm.filtre_region = function()
 		{
@@ -148,12 +153,39 @@
               console.log(vm.allMenage);
           });
 		}
-
-		vm.get_fiche_profilage_orientation_entete = function()
+        vm.get_export_excel_profilage_orientation = function()
       	{
+            vm.affiche_load = true ;
+            var repertoire = 'fiche_profilage_orientation';
+            var data_entete = JSON.stringify(vm.selectedItemFiche_profilage_orientation_entete);
+            var decoupage = JSON.stringify(vm.filtre);
+            
+            //console.log(data_entete);
+           apiFactory.getAPIgeneraliserREST("export_excel_profilage_orientation/index","menu","getexport_excel_profilage_orientationByvillage",
+           'repertoire',repertoire,'data_entete',data_entete,'decoupage',decoupage).then(function(result)
+            {
+                vm.status    = result.data.status; 
+                
+                if(vm.status)
+                {
+                    vm.nom_file = result.data.nom_file;            
+                    window.location = apiUrlExcel+"fiche_profilage_orientation/"+vm.nom_file ;
+                    vm.affiche_load =false; 
+                    console.log(result.data.response);
+
+                }else{
+                    vm.message=result.data.message;
+                    vm.Alert('Export en excel',vm.message);
+                    vm.affiche_load =false; 
+                }
+            });
+        }
+		vm.get_fiche_profilage_orientation_entete = function()
+      	{   
+            vm.affiche_load = true;
           apiFactory.getAPIgeneraliserREST("fiche_profilage_orientation_entete/index","menu","getfiche_profilage_orientation_enteteByvillage",'id_village',vm.filtre.id_village).then(function(result) { 
               vm.allFiche_profilage_orientation_entete = result.data.response;
-              console.log(vm.allFiche_profilage_orientation_entete);
+              vm.affiche_load = false;
           });           
           vm.selectedItemFiche_profilage_orientation_entete={};
       	}
@@ -167,7 +199,6 @@
             vm.selection = function (item) 
             {
                 vm.selectedItemFiche_profilage_orientation_entete = item ;
-                console.log(vm.selectedItemFiche_profilage_orientation_entete);
             }
 
             $scope.$watch('vm.selectedItemFiche_profilage_orientation_entete', function() {
@@ -539,7 +570,6 @@ vm.click_connaissance_experiance_menage_entete = function ()
             vm.selectionConnaissance_experiance_menage_detail = function (item) 
             {
                 vm.selectedItemConnaissance_experiance_menage_detail = item ;
-                console.log(vm.selectedItemConnaissance_experiance_menage_detail);
             }
 
             $scope.$watch('vm.selectedItemConnaissance_experiance_menage_detail', function() {
@@ -594,6 +624,7 @@ vm.click_connaissance_experiance_menage_entete = function ()
                     console.log('mod');
                     vm.connaissance_experiance_menage_detail.id_activite_realise_auparavant_prevu   = vm.selectedItemConnaissance_experiance_menage_detail.id_activite_realise_auparavant_prevu ;
                     vm.connaissance_experiance_menage_detail.difficulte_rencontre   = vm.selectedItemConnaissance_experiance_menage_detail.difficulte_rencontre ;
+                    vm.connaissance_experiance_menage_detail.autre_activite_realise_auparavant   = vm.selectedItemConnaissance_experiance_menage_detail.autre_activite_realise_auparavant ;
                     vm.connaissance_experiance_menage_detail.nbr_annee_activite   = vm.selectedItemConnaissance_experiance_menage_detail.nbr_annee_activite ;
                     vm.connaissance_experiance_menage_detail.formation_acquise  = vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise ;
                     vm.connaissance_experiance_menage_detail.autre_activite_realise_auparavant  = vm.selectedItemConnaissance_experiance_menage_detail.autre_activite_realise_auparavant ;
@@ -630,6 +661,25 @@ vm.click_connaissance_experiance_menage_entete = function ()
                     vm.connaissance_experiance_menage_detail.formation_acquise_aut_act1  = null ;
                     vm.connaissance_experiance_menage_detail.formation_acquise_aut_act2  = null;
                     vm.connaissance_experiance_menage_detail.formation_acquise_aut_act3  = null ;
+                    vm.connaissance_experiance_menage_detail.autre_activite_realise_auparavant  = null ;
+                    if (parseInt(vm.selectedItemConnaissance_experiance_menage_detail.id_activite_realise_auparavant_prevu)==8)
+                    {
+                        vm.affichage_masque = false ;                
+                        var confirm = $mdDialog.confirm()
+                        .title('Etes-vous sûr de changer la connaissance et experience en néant ?')
+                        .textContent('')
+                        .ariaLabel('Lucky day')
+                        .clickOutsideToClose(true)
+                        .parent(angular.element(document.body))
+                        .ok('ok')
+                        .cancel('annuler');
+                        $mdDialog.show(confirm).then(function() {
+
+                            insert_in_baseConnaissance_experiance_menage_detail(vm.connaissance_experiance_menage_detail,0);
+                        }, function() {
+                        });
+                    }
+                    
                 }                
                 currentItemConnaissance_experiance_menage_detail = JSON.parse(JSON.stringify(vm.selectedItemConnaissance_experiance_menage_detail));
                 
@@ -723,6 +773,11 @@ vm.click_connaissance_experiance_menage_entete = function ()
                     {
                         tab.push('aut_act3');
                     }
+                    var autre_activite_realise_avant = null;
+                    if(parseInt(connaissance_experiance_menage_detail.id_activite_realise_auparavant_prevu) == 7)
+                    {
+                        autre_activite_realise_avant=connaissance_experiance_menage_detail.autre_activite_realise_auparavant;
+                    }
 
                     var datas = $.param(
                     {
@@ -733,6 +788,7 @@ vm.click_connaissance_experiance_menage_entete = function ()
                         id_fiche_profilage_orientation: vm.selectedItemFiche_profilage_orientation_entete.id,
                         difficulte_rencontre: connaissance_experiance_menage_detail.difficulte_rencontre,
                         nbr_annee_activite: connaissance_experiance_menage_detail.nbr_annee_activite,
+                        autre_activite_realise_auparavant: autre_activite_realise_avant,
                         formation_acquise: tab
                         
                     });
@@ -746,6 +802,7 @@ vm.click_connaissance_experiance_menage_entete = function ()
                                 //vm.selectedItemConnaissance_experiance_menage_detail.id_activite_realise_auparavant = connaissance_experiance_menage_detail.id_activite_realise_auparavant_prevu ;
                                 //vm.selectedItemConnaissance_experiance_menage_detail.id_fiche_profilage_orientation = vm.selectedItemFiche_profilage_orientation_entete.id ; 
                                 vm.selectedItemConnaissance_experiance_menage_detail.difficulte_rencontre = connaissance_experiance_menage_detail.difficulte_rencontre ;  
+                                vm.selectedItemConnaissance_experiance_menage_detail.autre_activite_realise_avant = connaissance_experiance_menage_detail.autre_activite_realise_avant ;  
                                 vm.selectedItemConnaissance_experiance_menage_detail.nbr_annee_activite = connaissance_experiance_menage_detail.nbr_annee_activite ;   
                                 vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise = connaissance_experiance_menage_detail.formation_acquise ;   
                                 vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_mar = connaissance_experiance_menage_detail.formation_acquise_mar ;   
@@ -763,10 +820,28 @@ vm.click_connaissance_experiance_menage_entete = function ()
                             }
                             else
                             {
-                                vm.allConnaissance_experiance_menage_detail = vm.allConnaissance_experiance_menage_detail.filter(function(obj)
+                               /* vm.allConnaissance_experiance_menage_detail = vm.allConnaissance_experiance_menage_detail.filter(function(obj)
                                 {
                                     return obj.id !== vm.selectedItemConnaissance_experiance_menage_detail.id ;
-                                });
+                                });*/
+                                vm.selectedItemConnaissance_experiance_menage_detail.autre_activite_realise_avant = null ;                                
+                                vm.selectedItemConnaissance_experiance_menage_detail.activite_realise_auparavant = null ; 
+                                vm.selectedItemConnaissance_experiance_menage_detail.id = null ; 
+                                vm.selectedItemConnaissance_experiance_menage_detail.difficulte_rencontre = null ;  
+                                vm.selectedItemConnaissance_experiance_menage_detail.nbr_annee_activite = null ;   
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise = null ;   
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_mar = null ;   
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_pep = null ;   
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_cul = null ;   
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_tra_act1 = null ;  
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_tra_act3 = null ; 
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_cap = null;  
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_avi = null ;  
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_bov = null ;  
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_tec = null ;  
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_aut_act1 = null ;  
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_aut_act2 = null ;  
+                                vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_aut_act3 = null ; 
                             }
 
                         }
@@ -791,7 +866,67 @@ vm.click_connaissance_experiance_menage_entete = function ()
                                 vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_aut_act1 = connaissance_experiance_menage_detail.formation_acquise_aut_act1 ;  
                                 vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_aut_act2 = connaissance_experiance_menage_detail.formation_acquise_aut_act2 ;  
                                 vm.selectedItemConnaissance_experiance_menage_detail.formation_acquise_aut_act3 = connaissance_experiance_menage_detail.formation_acquise_aut_act3 ;
-					        
+                                vm.selectedItemConnaissance_experiance_menage_detail.autre_activite_realise_avant = connaissance_experiance_menage_detail.autre_activite_realise_avant ;
+                                if (parseInt(vm.selectedItemConnaissance_experiance_menage_detail.id_activite_realise_auparavant_prevu)==8)
+                                {
+                                    vm.allConnaissance_experiance_menage_detail.forEach(function(item)
+                                    {
+                                       if (parseInt(item.id_activite_realise_auparavant_prevu)!=8)
+                                       {
+                                            item.id = null ;
+                                            item.activite_realise_auparavant = false ;
+                                            item.id_activite_realise_auparavant = null ;
+                                            item.id_fiche_profilage_orientation = null ; 
+                                            item.difficulte_rencontre = null ;  
+                                            item.nbr_annee_activite = null ;   
+                                            item.formation_acquise = null ;   
+                                            item.formation_acquise_mar = null ;   
+                                            item.formation_acquise_pep = null ;   
+                                            item.formation_acquise_cul = null ;   
+                                            item.formation_acquise_tra_act1 = null ; 
+                                            item.formation_acquise_tra_act3 = null ;  
+                                            item.formation_acquise_cap = null ;  
+                                            item.formation_acquise_avi = null ;  
+                                            item.formation_acquise_bov = null ;  
+                                            item.formation_acquise_tec = null ;  
+                                            item.formation_acquise_aut_act1 = null ;  
+                                            item.formation_acquise_aut_act2 = null ;  
+                                            item.formation_acquise_aut_act3 = null ;
+                                            item.autre_activite_realise_avant = null ;
+                                       }
+                                        
+                                    });
+                                }
+                                else
+                                {
+                                    vm.allConnaissance_experiance_menage_detail.forEach(function(item)
+                                    {
+                                       if (parseInt(item.id_activite_realise_auparavant_prevu)==8)
+                                       {
+                                            item.id = null ;
+                                            item.activite_realise_auparavant = false ;
+                                            item.id_activite_realise_auparavant = null ;
+                                            item.id_fiche_profilage_orientation = null ; 
+                                            item.difficulte_rencontre = null ;  
+                                            item.nbr_annee_activite = null ;   
+                                            item.formation_acquise = null ;   
+                                            item.formation_acquise_mar = null ;   
+                                            item.formation_acquise_pep = null ;   
+                                            item.formation_acquise_cul = null ;   
+                                            item.formation_acquise_tra_act1 = null ; 
+                                            item.formation_acquise_tra_act3 = null ;  
+                                            item.formation_acquise_cap = null ;  
+                                            item.formation_acquise_avi = null ;  
+                                            item.formation_acquise_bov = null ;  
+                                            item.formation_acquise_tec = null ;  
+                                            item.formation_acquise_aut_act1 = null ;  
+                                            item.formation_acquise_aut_act2 = null ;  
+                                            item.formation_acquise_aut_act3 = null ;
+                                            item.autre_activite_realise_avant = null ;
+                                       }
+                                        
+                                    });
+                                }
                         }
                         NouvelItemConnaissance_experiance_menage_detail = false ;
                         vm.affiche_load = false ;
@@ -819,6 +954,7 @@ vm.click_connaissance_experiance_menage_entete = function ()
                         ||(currentItemConnaissance_experiance_menage_detail.formation_acquise_aut_act1 != item.formation_acquise_aut_act1)  
                         ||(currentItemConnaissance_experiance_menage_detail.formation_acquise_aut_act2 != item.formation_acquise_aut_act2)  
                         ||(currentItemConnaissance_experiance_menage_detail.formation_acquise_aut_act3 != item.formation_acquise_aut_act3)
+                        ||(currentItemConnaissance_experiance_menage_detail.autre_activite_realise_avant != item.autre_activite_realise_avant)
                         )                    
                     { 
                             insert_in_baseConnaissance_experiance_menage_detail(item,suppression);                      
@@ -859,10 +995,11 @@ vm.click_connaissance_experiance_menage_entete = function ()
             //Debut ressource disponible
 
         vm.get_fiche_profilage_ressource = function()
-      	{
+      	{   
+            vm.affiche_load = true;
           apiFactory.getAPIgeneraliserREST("fiche_profilage_ressource/index","menu","getfiche_profilage_ressourceByentete",'id_fiche_profilage_orientation',vm.selectedItemFiche_profilage_orientation_entete.id).then(function(result) { 
               vm.allFiche_profilage_ressource = result.data.response;
-              console.log(vm.allFiche_profilage_ressource);
+              vm.affiche_load = false;
           });           
           vm.selectedItemFiche_profilage_ressource={};
       	}
@@ -876,7 +1013,6 @@ vm.click_connaissance_experiance_menage_entete = function ()
             vm.selectionFiche_profilage_ressource = function (item) 
             {
                 vm.selectedItemFiche_profilage_ressource = item ;
-                console.log(vm.selectedItemFiche_profilage_ressource);
             }
 
             $scope.$watch('vm.selectedItemFiche_profilage_ressource', function() {
@@ -1046,9 +1182,10 @@ vm.click_connaissance_experiance_menage_entete = function ()
 
         vm.get_fiche_profilage_orientation = function()
       	{
+            vm.affiche_load = true;
           apiFactory.getAPIgeneraliserREST("fiche_profilage_orientation/index","menu","getfiche_profilage_orientationByentete",'id_fiche_profilage_orientation',vm.selectedItemFiche_profilage_orientation_entete.id).then(function(result) { 
               vm.allFiche_profilage_orientation = result.data.response;
-              console.log(vm.allFiche_profilage_orientation);
+              vm.affiche_load = false;
           });           
           vm.selectedItemFiche_profilage_orientation={};
       	}
@@ -1056,6 +1193,7 @@ vm.click_connaissance_experiance_menage_entete = function ()
             [   
                 {titre:"Activités"},
                 {titre:"Types d'activités"},
+                {titre:"Secteur"},
                 {titre:"Groupe"}
             ];                       
 
@@ -1092,6 +1230,7 @@ vm.click_connaissance_experiance_menage_entete = function ()
                 vm.fiche_profilage_orientation.id=0;
                 vm.fiche_profilage_orientation.activite=null;
                 vm.fiche_profilage_orientation.type_activite=null;
+                vm.fiche_profilage_orientation.secteur=null;
                 vm.fiche_profilage_orientation.groupe=null;		
                 vm.affichage_masque_orientation=true;
                 vm.selectedItemFiche_profilage_orientation = {};
@@ -1116,8 +1255,8 @@ vm.click_connaissance_experiance_menage_entete = function ()
                 currentItemFiche_profilage_orientation = JSON.parse(JSON.stringify(vm.selectedItemFiche_profilage_orientation));
                 vm.fiche_profilage_orientation.activite  =  vm.selectedItemFiche_profilage_orientation.activite ;
                 vm.fiche_profilage_orientation.type_activite   = vm.selectedItemFiche_profilage_orientation.type_activite;
+                vm.fiche_profilage_orientation.secteur   = vm.selectedItemFiche_profilage_orientation.secteur ;
                 vm.fiche_profilage_orientation.groupe   = vm.selectedItemFiche_profilage_orientation.groupe ;
-
                 vm.affichage_masque_orientation=true;
             }
 
@@ -1162,6 +1301,7 @@ vm.click_connaissance_experiance_menage_entete = function ()
                         supprimer:      etat_suppression,
                         activite:    fiche_profilage_orientation.activite,
                         type_activite:   	fiche_profilage_orientation.type_activite,
+                        secteur:           fiche_profilage_orientation.secteur,
                         groupe:           fiche_profilage_orientation.groupe,
                         id_fiche_profilage_orientation :vm.selectedItemFiche_profilage_orientation_entete.id        
                         
@@ -1175,7 +1315,8 @@ console.log(datas);
                             {  
                                 vm.selectedItemFiche_profilage_orientation.activite = fiche_profilage_orientation.activite ; 
                                 vm.selectedItemFiche_profilage_orientation.type_activite = fiche_profilage_orientation.type_activite ; 
-                                vm.selectedItemFiche_profilage_orientation.groupe = fiche_profilage_orientation.groupe ;                             
+                                vm.selectedItemFiche_profilage_orientation.groupe = fiche_profilage_orientation.groupe ; 
+                                vm.selectedItemFiche_profilage_orientation.secteur = fiche_profilage_orientation.secteur ;                            
                             }
                             else
                             {
@@ -1193,6 +1334,7 @@ console.log(datas);
                             id :         String(data.response) ,
                             activite :    fiche_profilage_orientation.activite ,
                             type_activite :    fiche_profilage_orientation.type_activite ,
+                            secteur :        fiche_profilage_orientation.secteur ,
                             groupe :        fiche_profilage_orientation.groupe 
                             }
                             vm.allFiche_profilage_orientation.unshift(item) ;
@@ -1211,7 +1353,8 @@ console.log(datas);
                 if (suppression!=1) 
                 {                    
                     if((currentItemFiche_profilage_orientation.activite   != item.activite)
-                        ||(currentItemFiche_profilage_orientation.type_activite   != item.type_activite ) 
+                        ||(currentItemFiche_profilage_orientation.type_activite   != item.type_activite )
+                        ||(currentItemFiche_profilage_orientation.secteur   != item.secteur ) 
                         ||(currentItemFiche_profilage_orientation.groupe   != item.groupe )
                         )                    
                     { 
@@ -1245,14 +1388,13 @@ console.log(datas);
             //Fin orientation
 
             //Debut besoin formation
-            apiFactory.getAll("theme_formation/index").then(function(result)
-            {
-                vm.allType_formation= result.data.response;
-            });
+            
         vm.get_fiche_profilage_besoin_formation = function()
         {
+            vm.affiche_load = true;
         apiFactory.getAPIgeneraliserREST("fiche_profilage_besoin_formation/index","menu","getfiche_profilage_besoin_formationByentete",'id_fiche_profilage_orientation',vm.selectedItemFiche_profilage_orientation_entete.id).then(function(result) { 
             vm.allFiche_profilage_besoin_formation = result.data.response;
+            vm.affiche_load = false;
             console.log(vm.allFiche_profilage_besoin_formation);
         });           
         vm.selectedItemFiche_profilage_besoin_formation={};
@@ -1480,5 +1622,19 @@ console.log(datas);
                 }            
 
             }
+            vm.Alert = function(titre,content)
+        {
+          $mdDialog.show(
+            $mdDialog.alert()
+            .parent(angular.element(document.querySelector('#popupContainer')))
+            .clickOutsideToClose(false)
+            .parent(angular.element(document.body))
+            .title(titre)
+            .textContent(content)
+            .ariaLabel('Alert')
+            .ok('Fermer')
+            .targetEvent()
+          );
+        }
 	}
   })();

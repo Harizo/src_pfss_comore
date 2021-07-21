@@ -77,15 +77,35 @@
                                 <md-icon md-font-icon="icon-cancel"></md-icon>
                                 <md-tooltip><span>Annuler</span></md-tooltip>
                               </md-button>
-                            </div>                  
+                            </div>                             
+                            <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                              <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                              <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                          </div>                  
                           </div>
                       </header>
                         <!----------FORM AGEP--------------->       
                          
                         <form ng-show="vm.affichage_masque" name="formcontrat_agep" class="md-inline-form" novalidate >
 
-                          <div layout="column" layout-gt-xs="row" flex> 
-
+                          <div layout="column" layout-gt-xs="row" flex>                             
+                                                          
+                            <md-input-container flex="100" flex-gt-xs="40" ng-disabled="!vm.contrat_agep.id_agep">
+                              <input  type="text" name="numero_ordre" ng-model="vm.contrat_agep.numero_ordre" placeholder="N° d'ordre" required disabled>
+                              <div ng-messages="formcontrat_agep.numero_ordre.$error"role="alert">
+                                  <div ng-message="required">
+                                      <span>N° d'ordre obligatoire.</span>
+                                  </div>
+                              </div>
+                            </md-input-container>                                
+                            <md-input-container flex="100" flex-gt-xs="40" ng-disabled="!vm.contrat_agep.id_agep">
+                              <input  type="text" name="numero_contrat" ng-model="vm.contrat_agep.numero_contrat" placeholder="N° Contrat" required disabled>
+                              <div ng-messages="formcontrat_agep.numero_contrat.$error"role="alert">
+                                  <div ng-message="required">
+                                      <span>N° Contrat obligatoire.</span>
+                                  </div>
+                              </div>
+                            </md-input-container>
                             <md-input-container flex="100" flex-gt-xs="30">
                                 <label>AGEP</label>
                                 <md-select ng-model="vm.contrat_agep.id_agep" name="id_agep" ng-change="vm.change_agep()">
@@ -104,15 +124,6 @@
                               <div ng-messages="formcontrat_agep.adresse.$error"role="alert">
                                   <div ng-message="required">
                                       <span>Adresse obligatoire.</span>
-                                  </div>
-                              </div>
-                            </md-input-container>
-                                                              
-                            <md-input-container flex="100" flex-gt-xs="40" ng-disabled="!vm.contrat_agep.id_agep">
-                              <input  type="text" name="numero_contrat" ng-model="vm.contrat_agep.numero_contrat" placeholder="N° Contrat"    ng-init="vm.contrat_agep.numero_contrat=''" required disabled>
-                              <div ng-messages="formcontrat_agep.numero_contrat.$error"role="alert">
-                                  <div ng-message="required">
-                                      <span>N° Contrat obligatoire.</span>
                                   </div>
                               </div>
                             </md-input-container>
@@ -233,9 +244,11 @@
                           <tbody>
                             <tr ng-repeat="contr in vm.allContrat_agep"  ng-class="{selected: contr.$selected, colorby: contr.retard}" ng-click="vm.selection(contr)">
                                 
-                                <td>{{contr.agep.identifiant}}</td>
-                                <td>{{contr.agep.adresse}}</td> 
-                                <td>{{contr.numero_contrat}}</td>                              
+                                
+                              <td>{{contr.numero_ordre}}</td>  
+                              <td>{{contr.numero_contrat}}</td> 
+                              <td>{{contr.agep.identifiant}}</td>
+                                <td>{{contr.agep.adresse}}</td>                             
                                 <!--td>{{contr.sous_projet.description}}</td-->
                                 <td>{{contr.objet_contrat}}</td>
                                 <td>{{contr.montant_contrat}}</td>
@@ -637,7 +650,11 @@
                                 <md-icon md-font-icon="icon-cancel" ></md-icon>
                                 <md-tooltip><span>Annuler</span></md-tooltip>
                               </md-button>
-                            </div> 
+                            </div>                             
+                            <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                              <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                              <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                          </div> 
                           </div>
                                              
                           </div>

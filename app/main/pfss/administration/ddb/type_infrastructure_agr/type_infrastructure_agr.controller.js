@@ -10,7 +10,27 @@
     {
       // Déclaration des variables et fonctions
       var vm = this;
-            vm.serveur_central = serveur_central ;
+      vm.serveur_central = serveur_central ;
+      vm.all_activite_act = [] ;      
+      vm.selected_activite_act = {} ;
+      var current_selected_activite_act = {} ;
+      vm.nouvelle_activite_act = false ;
+       
+      
+      vm.all_type_infrastructure_agr = [] ;
+      vm.selected_type_infrastructure_agr = {} ;
+      var current_selected_type_infrastructure_agr = {} ;
+      vm.nouvelle_type_infrastructure_agr = false ;
+
+      vm.all_type_activite_act = [] ;
+      vm.selected_type_activite_act = {} ;
+      var current_selected_type_activite_act = {} ;
+      vm.nouvelle_type_activite_act = false ;
+      
+      vm.all_agr = [] ;
+      vm.selected_agr = {} ;
+      var current_selected_agr = {} ;
+      vm.nouvelle_agr = false; 
 
 
      vm.dtOptions = {
@@ -25,7 +45,6 @@
 
     //type_infrastructure_agr NEW CODE
 
-      vm.all_type_infrastructure_agr = [] ;
 
       vm.type_infrastructure_agr_column =
       [
@@ -33,29 +52,25 @@
         {titre:"Libelle "},
 
       ];
-      
-        vm.affiche_load = true ;
-       /* apiFactory.getAll("Type_infrastructure/index").then(function(result){
-          vm.all_type_infrastructure_agr = result.data.response;
-          console.log( vm.all_type_infrastructure_agr);
-          vm.affiche_load = false ;
-
-        }); */
-
-        apiFactory.getAll("type_infrastructure/index").then(function(result){
-          vm.all_type_infrastructure_agr = result.data.response;
-          console.log( vm.all_type_infrastructure_agr);
-          vm.affiche_load = false ;
+      vm.affiche_load = true
+        apiFactory.getAll("type_infrastructure/index").then(function(result)
+        {
+          vm.all_type_infrastructure_agr = result.data.response;        
+          apiFactory.getAll("type_agr/index").then(function(result)
+          {
+            vm.all_agr = result.data.response;
+            apiFactory.getAll("type_activite_act/index").then(function(result)
+            {
+              vm.all_type_activite_act = result.data.response;
+              vm.affiche_load = false ;
+            });
+  
+          });
 
         }); 
       
 
-      //type_infrastructure_agr..
-        
-          vm.selected_type_infrastructure_agr = {} ;
-          var current_selected_type_infrastructure_agr = {} ;
-           vm.nouvelle_type_infrastructure_agr = false ;
-
+      //type_infrastructure_agr.. 
         
         vm.selection_type_infrastructure_agr = function(item)
         {
@@ -66,7 +81,6 @@
             vm.nouvelle_type_infrastructure_agr = false ;  
 
           }
-          console.log(vm.selected_type_infrastructure_agr);
 
         }
 
@@ -105,7 +119,6 @@
                   }
                 });
         }
-        console.log(vm.ajouter_type_infrastructure_agr);
 
         vm.modifier_type_infrastructure_agr = function()
         {
@@ -164,8 +177,6 @@
               vm.selected_type_infrastructure_agr.Libelle = current_selected_type_infrastructure_agr.Libelle ;             
               vm.selected_type_infrastructure_agr = {};
             }
-
-            console.log(vm.selected_type_infrastructure_agr)
 
           }
         }
@@ -231,33 +242,14 @@
 
         //AGR NEW CODE
 
-      vm.all_agr = [] ;
-
       vm.agr_column =
       [
         {titre:"Code "},
         {titre:"Libelle "}
       ];
-
-      vm.affiche_load = false ;
-
-      vm.get_all_agr = function () 
-      {
-        vm.affiche_load = true ;
-        apiFactory.getAll("type_agr/index").then(function(result){
-          vm.all_agr = result.data.response;
-          console.log(result.data);
-          vm.affiche_load = false ;
-
-        });  
-      }
-
-      //agr..
-        
-          vm.selected_agr = {} ;
-          var current_selected_agr = {} ;
-           vm.nouvelle_agr = false ;
-
+     
+      
+       //agr..
         
         vm.selection_agr = function(item)
         {
@@ -433,35 +425,15 @@
               .error(function (data) {alert("Une erreur s'est produit");});
         }
 
-        //Type activite ACT NEW CODE
-
-      vm.all_type_activite_act = [] ;
+        //Type activite ACT NEW CODE      
 
       vm.type_activite_act_column =
       [
         {titre:"Code "},
         {titre:"Libelle "}
       ];
-
-      vm.affiche_load = false ;
-
-      
-              
-      vm.affiche_load = true ;
-        apiFactory.getAll("type_activite_act/index").then(function(result){
-          vm.all_type_activite_act = result.data.response;
-          console.log(result.data);
-          vm.affiche_load = false ;
-        });
-
-
-
+       
       //agr..
-        
-          vm.selected_type_activite_act = {} ;
-          var current_selected_type_activite_act = {} ;
-           vm.nouvelle_type_activite_act = false ;
-
         
         vm.selection_type_activite_act = function(item)
         {
@@ -633,9 +605,7 @@
               .error(function (data) {alert("Une erreur s'est produit");});
         }
 
-        //activite_act NEW CODE
-
-      vm.all_activite_act = [] ;
+        //activite_act NEW CODE       
 
       vm.activite_act_column =
       [
@@ -644,37 +614,21 @@
 
       ];
       
-        vm.affiche_load = true ;
-       /* apiFactory.getAll("Type_infrastructure/index").then(function(result){
-          vm.all_type_infrastructure_agr = result.data.response;
-          console.log( vm.all_type_infrastructure_agr);
-          vm.affiche_load = false ;
-
-        }); */
-
-        apiFactory.getAll("activite_act/index").then(function(result){
-          vm.all_activite_act = result.data.response;
-          console.log( vm.all_activite_act);
-          vm.affiche_load = false ;
-
-        }); 
+       
          vm.get_all_activite_act = function()
-         {
-                    apiFactory.getAPIgeneraliserREST("activite_act/index","menu","getactivite_actbytype","id_type_activite_act",vm.selected_type_activite_act.id).then(function(result)
-                    {
-                        vm.all_activite_act = result.data.response;
-                     });
+         {  
+          vm.affiche_load = true ;
+            apiFactory.getAPIgeneraliserREST("activite_act/index","menu","getactivite_actbytype","id_type_activite_act",vm.selected_type_activite_act.id).then(function(result)
+            {
+              vm.all_activite_act = result.data.response;
+              vm.affiche_load = false ;
+            });
                      
           }
           
       
 
-      //activite_act...
-        
-          vm.selected_activite_act = {} ;
-          var current_selected_activite_act = {} ;
-           vm.nouvelle_activite_act = false ;
-
+      //activite_act... 
         
         vm.selection_activite_act = function(item)
         {
@@ -685,7 +639,6 @@
             vm.nouvelle_activite_act = false ;  
 
           }
-          console.log(vm.selected_activite_act);
 
         }
 
@@ -724,7 +677,6 @@
                   }
                 });
         }
-        console.log(vm.ajouter_activite_act);
 
         vm.modifier_activite_act = function()
         {
@@ -783,8 +735,6 @@
               vm.selected_activite_actr.libelle = current_selected_activite_act.libelle ;             
               vm.selected_activite_actr = {};
             }
-
-            console.log(vm.selected_activite_act)
 
           }
         }
@@ -859,40 +809,7 @@
 
 
       //fin type_infrastructure_agr..
-    //FIN type_infrastructure_agr NEW CODE   
-    
- 
-
-      /*  vm.modifierRegion = function (item) { 
-      vm.allregion.forEach(function(prg) {
-        if(prg.id==item.id_region) {
-          item.region=[];
-          var itemss = {
-            id: prg.id,
-            code: prg.code,
-            nom: prg.nom,
-          };
-          item.region.push(itemss);
-        }
-      });
-    } 
-        vm.modifierTypeacteur = function (item) { 
-      vm.allRecordstype_infrastructure_agr.forEach(function(prg) {
-        if(prg.id==item.id_type_acteur) {
-          item.typeacteur=[];
-          var itemss = {
-            id: prg.id,
-            description: prg.description,
-          };
-          item.typeacteur.push(itemss);
-        }
-      });
-      console.log(item.typeacteur);
-    }*/ 
-
- 
-      
-   
+    //FIN type_infrastructure_agr NEW CODE 
 
 
     }

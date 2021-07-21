@@ -15,7 +15,7 @@
       var currentItemLivrable_ong_encadrement = {} ;
       var NouvelItemLivrable_ong_encadrement = false ;
       vm.allLivrable_ong_encadrement = [];
-      vm.affiche_load = false ;
+      vm.affiche_load = true ;
       vm.livrable_ong_encadrement = {};
 
       
@@ -40,12 +40,12 @@
     apiFactory.getAll("Ile/index").then(function(result)
     {
         vm.all_ile = result.data.response;
-    });
     
-    apiFactory.getAll("agent_ex/index").then(function(result)
-    {
-        vm.allAgex = result.data.response;
-
+        apiFactory.getAll("agent_ex/index").then(function(result)
+        {
+            vm.allAgex = result.data.response;
+            vm.affiche_load = false ;
+        });
     });
 
      vm.filtre_region = function()
@@ -145,7 +145,6 @@
        apiFactory.getAPIgeneraliserREST("livrable_ong_encadrement/index","menu","get_livrable_ong_encadrementbycommune","id_commune",vm.filtre.id_commune).then(function(result){
             vm.allLivrable_ong_encadrement = result.data.response;                    
             vm.affiche_load = false ;
-            console.log(vm.allLivrable_ong_encadrement);
         }); 
         vm.selectedItemLivrable_ong_encadrement = {};
     }
@@ -381,7 +380,6 @@
        apiFactory.getAPIgeneraliserREST("fiche_supervision_formation_ml_cps_planning/index","menu","get_planningbyfiche","id_fiche_supervision",vm.selectedItemLivrable_ong_encadrement.id).then(function(result){
             vm.allLivrable_ong_encadrement_planning = result.data.response;                    
             vm.affiche_load = false ;
-            console.log(vm.allLivrable_ong_encadrement_planning);
         }); 
         vm.selectedItemLivrable_ong_encadrement_planning = {}; 
         
@@ -571,7 +569,6 @@
        apiFactory.getAPIgeneraliserREST("livrable_ong_encadrement_village/index","menu","get_repartition_villageBylivrable","id_livrable_ong_encadrement",vm.selectedItemLivrable_ong_encadrement.id).then(function(result){
             vm.allLivrable_ong_encadrement_village = result.data.response;                    
             vm.affiche_load = false ;
-            console.log(vm.allLivrable_ong_encadrement_village);
         }); 
         vm.selectedItemLivrable_ong_encadrement_village = {}; 
     }

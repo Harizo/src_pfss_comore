@@ -15,7 +15,7 @@
       var current_selectedItemFiche_supervision_formation_ml_cps = {} ;
       vm.nouvelItemFiche_supervision_formation_ml_cps = false ;
       vm.allFiche_supervision_formation_ml_cps = [];
-      vm.affiche_load = false ;
+      vm.affiche_load = true ;
 
       
       vm.selectedItemFiche_supervision_formation_ml_cps_planning = {} ;
@@ -44,10 +44,11 @@
     apiFactory.getAll("Ile/index").then(function(result)
     {
         vm.all_ile = result.data.response;
-    });
-    apiFactory.getAll("agent_ex/index").then(function(result)
-    {
-        vm.allAgex = result.data.response;
+        apiFactory.getAll("agent_ex/index").then(function(result)
+        {
+            vm.allAgex = result.data.response;
+            vm.affiche_load = false
+        });
     });
 
      vm.filtre_region = function()
@@ -343,7 +344,6 @@
        apiFactory.getAPIgeneraliserREST("fiche_supervision_formation_ml_cps_planning/index","menu","get_planningbyfiche","id_fiche_supervision",vm.selectedItemFiche_supervision_formation_ml_cps.id).then(function(result){
             vm.allFiche_supervision_formation_ml_cps_planning = result.data.response;                    
             vm.affiche_load = false ;
-            console.log(vm.allFiche_supervision_formation_ml_cps_planning);
         }); 
         vm.selectedItemFiche_supervision_formation_ml_cps_planning = {}; 
         
@@ -532,7 +532,6 @@
        apiFactory.getAPIgeneraliserREST("fiche_supervision_formation_ml_cps_point_verifier/index","menu","get_point_verifierbyfiche","id_fiche_supervision",vm.selectedItemFiche_supervision_formation_ml_cps.id).then(function(result){
             vm.allFiche_supervision_formation_ml_cps_point_verifier = result.data.response;                    
             vm.affiche_load = false ;
-            console.log(vm.allFiche_supervision_formation_ml_cps_point_verifier);
         }); 
         vm.selectedItemFiche_supervision_formation_ml_cps_point_verifier = {}; 
         
@@ -724,7 +723,6 @@
        apiFactory.getAPIgeneraliserREST("fiche_supervision_formation_ml_cps_probleme/index","menu","get_problemebyfiche","id_fiche_supervision",vm.selectedItemFiche_supervision_formation_ml_cps.id).then(function(result){
             vm.allFiche_supervision_formation_ml_cps_probleme = result.data.response;                    
             vm.affiche_load = false ;
-            console.log(vm.allFiche_supervision_formation_ml_cps_probleme);
         }); 
         vm.selectedItemFiche_supervision_formation_ml_cps_probleme = {}; 
         
@@ -860,7 +858,6 @@
                 probleme:vm.selectedItemFiche_supervision_formation_ml_cps_probleme.probleme ,  
                 solution: vm.selectedItemFiche_supervision_formation_ml_cps_probleme.solution
             });
-            console.log(datas);
             apiFactory.add("fiche_supervision_formation_ml_cps_probleme/index",datas, config).success(function (data)
             {
                 vm.affiche_load = false ;

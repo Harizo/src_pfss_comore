@@ -28,12 +28,12 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.macc.macc_arse.fiche_supervision_formation_ml_cps', {
+       /* msNavigationServiceProvider.saveItem('pfss.macc.macc_arse.fiche_supervision_formation_ml_cps', {
             title : "Supervision formation ML/CPS",
             icon  : 'icon-data',
             state:'app.pfss_macc_macc_arse_fiche_supervision_formation_ml_cps',
             weight: 3,
-        });
+        });*/
     }
     function testPermission(loginService,$cookieStore,apiFactory)
     {

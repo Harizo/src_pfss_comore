@@ -5,7 +5,7 @@
           <div class="breadcrumb" layout="row" layout-align="start center">
               <md-icon md-font-icon="icon-home" class="s16"></md-icon>
               <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
-              <span class="parent">Fiche de supervision de formation ML/CPS |&nbsp {{vm.type_sous_projet}}</span>
+              <span class="parent">Livrable ONG d'encadrement |&nbsp {{vm.type_sous_projet}}</span>
               <span class="parent"> </span>
               <!--md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
               <span class="parent" href="javascript:;">Groupe ML/PL</span-->
@@ -17,7 +17,7 @@
       <div class="form-wrapper">
           <div style="clear:both;"></div>
           <md-tabs md-dynamic-height>              
-              <md-tab label="Fiche de supervision de formation ML/CPS">
+              <md-tab label="Livrable ONG d'encadrement">
                   <div class="price-table style-1 md-whiteframe-1dp" layout="column">
                     <form name="filtreform" class="md-inline-form" novalidate >
                       <div layout="column" layout-gt-xs="row" flex>
@@ -157,7 +157,11 @@
                                 <md-icon md-font-icon="icon-cancel"></md-icon>
                                 <md-tooltip><span>Annuler</span></md-tooltip>
                               </md-button>
-                            </div>                  
+                            </div>                           
+                            <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                              <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                              <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                          </div>                  
                           </div>
                       </header>
                         <!----------FORM AGEP--------------->       
@@ -238,7 +242,7 @@
                                             <span>Planning par Groupe de Formation" obligatoire.</span>
                                         </div>
                                       </div>
-                                </md-input-container>0349620980
+                                </md-input-container>
                    
                           </div>
 
@@ -326,7 +330,11 @@
                               <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                               <md-tooltip><span>Enregistrer</span></md-tooltip>
                             </md-button>
-                          </div>                
+                          </div>                           
+                          <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                            <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                            <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                        </div>                
                         </div>
                     </header>
                     

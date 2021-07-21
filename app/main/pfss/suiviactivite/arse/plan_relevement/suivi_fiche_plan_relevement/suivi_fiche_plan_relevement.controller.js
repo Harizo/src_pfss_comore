@@ -5,7 +5,7 @@
         .controller('suivi_fiche_plan_relevementController', suivi_fiche_plan_relevementController);
 
     /** @ngInject */
-    function suivi_fiche_plan_relevementController(apiFactory, $scope, $mdDialog) {
+    function suivi_fiche_plan_relevementController(apiFactory, $scope, $mdDialog, apiUrlExcel) {
         var vm = this;
 
         vm.identification = {};
@@ -142,7 +142,7 @@
             apiFactory.getParamsDynamic("Menage/index?cle_etrangere=" + vm.identification.id_village).then(function (result) {
                 vm.affiche_load = false;
                 vm.all_menage = result.data.response;
-                console.log(vm.all_menage);
+                
 
             });
 
@@ -156,7 +156,7 @@
             apiFactory.getParamsDynamic("Groupe_mlpl/index?cle_etrangere=" + vm.identification.id_village).then(function (result) {
                 vm.affiche_load = false;
                 vm.all_ml_pl = result.data.response;
-                console.log(vm.all_ml_pl);
+                
 
             });
         }
@@ -190,7 +190,7 @@
 
 
         vm.convert_to_date_html = function (date) {
-            console.log(date);
+           
             if (date && (date != "0000-00-00") && (date != null)) {
                 var d = new Date(date);
                 var jour = d.getDate();
@@ -356,6 +356,34 @@
                 });
             }
 
+            var repertoire = "suivificheplanrelevement/";
+            vm.export_excel = function () 
+            {
+                var m = vm.all_menage.filter(function (obj) {
+                        return obj.id == vm.selected_identification.id_menage;
+                    });
+             
+
+                vm.affiche_load = true;
+                apiFactory.getParamsDynamic("Fiche_suivi_plan_relevement/index?export_excel="+1+
+                    "&repertoire="+repertoire+
+                    "&identifiant_menage="+m[0].identifiant_menage+
+                    "&nomchefmenage="+m[0].nomchefmenage+
+                    "&NomTravailleur="+m[0].NomTravailleur+
+                    "&NomTravailleurSuppliant="+m[0].NomTravailleurSuppliant+
+                    "&id_village="+vm.identification.id_village+
+                    "&id="+vm.selected_identification.id).then(function(result)
+                {
+
+                    var nom_file = result.data.nom_file;
+                    vm.affiche_load = false ;
+                    window.location = apiUrlExcel+repertoire+nom_file ;
+                  
+                        
+                });
+                
+            }
+
             vm.save_in_bdd = function (data_masque, etat_suppression) {
                 vm.affiche_load = true;
                 var config = {
@@ -414,7 +442,7 @@
                     var ag = vm.all_agex.filter(function (obj) {
                         return obj.id == data_masque.id_agex;
                     });
-                    console.log(ag);
+                
 
                     if (!nouvelle_identification) {
                         if (etat_suppression == 0) {
@@ -699,7 +727,6 @@
                                 return obj.id == vm.selected_fiche_suivi_plan_relevement_intervenants.objectif ;
                             });
 
-                            console.log(mlpl);
 
                             vm.affiche_load = false ;
                             if (!vm.nouvelle_fiche_suivi_plan_relevement_intervenants) 
@@ -1571,7 +1598,15 @@
                 {
                     vm.nouvelle_fiche_suivi_prelevement_payement = false ;
                     vm.selected_fiche_suivi_prelevement_payement.$edit = true;
-                    vm.selected_fiche_suivi_prelevement_payement.date_paiement = new Date(vm.selected_fiche_suivi_prelevement_payement.date_paiement);
+                    if (vm.selected_fiche_suivi_prelevement_payement.date_paiement == '0000-00-00') 
+                    {
+
+                        vm.selected_fiche_suivi_prelevement_payement.date_paiement = new Date();
+                    }
+                    else
+                    {
+                        vm.selected_fiche_suivi_prelevement_payement.date_paiement = new Date(vm.selected_fiche_suivi_prelevement_payement.date_paiement);
+                    }
 
                 
                     current_selected_fiche_suivi_prelevement_payement = angular.copy(vm.selected_fiche_suivi_prelevement_payement);

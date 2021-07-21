@@ -6,7 +6,7 @@
         .controller('ficheplanrelevementController', ficheplanrelevementController);
 
     /** @ngInject */
-    function ficheplanrelevementController(apiFactory, $scope, $mdDialog) 
+    function ficheplanrelevementController(apiFactory, $scope, $mdDialog, apiUrlExcel) 
     {
 
         var vm = this ;
@@ -197,7 +197,28 @@
                 {titre:"AGEX"},
                 {titre:"Représentant CPS"}
             ];
-           
+
+            var repertoire = "ficheplanrelevement/";
+            vm.export_excel = function () 
+            {
+                vm.affiche_load = true;
+                apiFactory.getParamsDynamic("Fiche_plan_relevement_identification/index?export_excel="+1+
+                    "&repertoire="+repertoire+
+                  /*  "&id_ile="+vm.identification.id_ile+
+                    "&id_region="+vm.identification.id_region+
+                    "&id_commune="+vm.identification.id_commune+
+                    "&id_village="+vm.identification.id_village+*/
+                    "&id="+vm.selected_identification.id).then(function(result)
+                {
+
+                    var nom_file = result.data.nom_file;
+                    vm.affiche_load = false ;
+                    window.location = apiUrlExcel+repertoire+nom_file ;
+                  
+                        
+                });
+                
+            }
             
             vm.open_masque_filtre = function () 
             {
@@ -289,7 +310,7 @@
             vm.selection = function (item) 
             {
                 vm.selected_identification = item ;
-        
+
               
             }
 

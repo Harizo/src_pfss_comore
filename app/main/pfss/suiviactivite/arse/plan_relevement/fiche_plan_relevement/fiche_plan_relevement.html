@@ -35,6 +35,7 @@
                             <md-icon md-font-icon="icon-close-circle-outline" class="s16" style="color: white;"></md-icon>
                           Supprimer
                         </md-button>
+                        
 
 
                         <form  ng-show="vm.affichage_masque_filtre" name="form_filtreidentification" class="md-inline-form" novalidate >
@@ -129,6 +130,11 @@
                                 <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
                                     ng-disabled="form_filtreidentification.$invalid||vm.affiche_load " ng-click="vm.get_identification(vm.identification,0)">
                                     Afficher les données
+                                </md-button>
+
+                                <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+                                    ng-disabled="!vm.selected_identification.id||vm.affiche_load " ng-click="vm.export_excel()">
+                                    Exporter en excel
                                 </md-button>
 
                                 <md-button type="submit" class="md-raised md-primary" aria-label="Fermer" ng-click="vm.fermer_masque_filtre()">

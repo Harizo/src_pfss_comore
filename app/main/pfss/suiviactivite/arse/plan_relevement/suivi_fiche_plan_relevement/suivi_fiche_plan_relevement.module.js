@@ -25,7 +25,7 @@
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_arse.plan_relevement.suivi_fiche_plan_relevement', {
+        msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_arse.suivi_technique.suivi_fiche_plan_relevement', {
             title: 'Suivi Fiche plan relèvement',
             icon: 'icon-newspaper',
             state: 'app.pfss_suivi_arse_plan_relevementsuivi_fiche_plan_relevement',

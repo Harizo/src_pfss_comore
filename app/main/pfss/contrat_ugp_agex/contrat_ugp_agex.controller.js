@@ -41,7 +41,8 @@
 
             vm.entete_contrat_ugp_agex = 
             [
-                {titre:"Contrat N°"},
+                {titre:"N°"},
+                {titre:"Réf Contrat"},
                 {titre:"AGEX"},
                 {titre:"Sous-projet"},
                 {titre:"Objet du contrat"},

@@ -31,9 +31,9 @@
         // Navigation
         msNavigationServiceProvider.saveItem('pfss.macc.macc_arse.formation_mere_leader.formation_ml_arse', {
             title: 'Formation ML ARSE',
-            icon  : 'icon-data',
+            icon  : 'icon-lumx',
             state: 'app.pfss_macc_macc_arse_formation_mere_leader_formation_ml_arse',
-			weight:1
+			weight:2
         });
     }
     

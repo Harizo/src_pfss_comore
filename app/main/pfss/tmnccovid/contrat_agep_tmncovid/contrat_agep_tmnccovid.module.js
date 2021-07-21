@@ -32,7 +32,7 @@
 
         // Navigation
         msNavigationServiceProvider.saveItem('pfss.tmnccovid.contrat_agep_tmnccovid', {
-            title: 'Gérer AGEP TMNC-COVID',
+            title: 'Gérer AGEP',
             icon  : 'icon-data',
             state: 'app.pfss_tmnccovid_contrat_agep_tmnccovid',
 			weight:8,

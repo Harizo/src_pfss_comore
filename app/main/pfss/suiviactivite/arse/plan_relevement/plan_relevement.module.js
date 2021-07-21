@@ -13,11 +13,12 @@
     /** @ngInject */
     function config(msNavigationServiceProvider)
     {
-        msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_arse.plan_relevement', {
+        /*msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_arse.suivi_technique.plan_relevement', {
+        //msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_arse.plan_relevement', {
             title : 'Plan de relèvement',
             icon  : 'icon-data',
             weight: 4,
-        });
+        });*/
     }
     function testPermission(loginService,$cookieStore,apiFactory)
     {

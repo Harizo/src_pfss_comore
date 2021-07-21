@@ -122,7 +122,7 @@
                         <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
                            ng-disabled="filtreform.$invalid||vm.affiche_load" ng-click="vm.get_fiche_profilage_orientation_entete(vm.filtre)">
                           Actualiser
-                        </md-button>                              
+                        </md-button>                            
                       </section>                         
                      </div>
                  </form>
@@ -149,13 +149,23 @@
                               <md-icon md-font-icon="icon-delete"></md-icon>
                               <md-tooltip><span>Supprimer</span></md-tooltip>
                             </md-button>
-                          </div>    
+                          </div> 
+                          <div class="border-right" ng-if="vm.selectedItemFiche_profilage_orientation_entete.id">
+                            <md-button class="md-icon-button" aria-label="Modifier" style=" font-size:11px " ng-click="vm.get_export_excel_profilage_orientation(vm.filtre)">
+                              <md-icon md-font-icon="icon-file-excel"></md-icon>
+                              <md-tooltip><span>Export excel</span></md-tooltip>
+                            </md-button>
+                          </div>   
                           <div class="border-right" ng-if="vm.selectedItemFiche_profilage_orientation_entete.id">
                             <md-button class="md-icon-button" aria-label="Annuler" style=" font-size:11px " ng-click="vm.annulerFiche_profilage_orientation_entete()">
                               <md-icon md-font-icon="icon-cancel"></md-icon>
                               <md-tooltip><span>Annuler</span></md-tooltip>
                             </md-button>
-                          </div>                  
+                          </div>                            
+                          <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                            <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                            <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                        </div>                  
                         </div>
                     </header>
                       <!----------FORM AGEP--------------->       
@@ -286,7 +296,12 @@
                                     <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                                     <md-tooltip><span>Enregistrer</span></md-tooltip>
                                   </md-button>
-                                </div-->                
+                                </div-->
+                                                           
+                                <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                  <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                  <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                              </div>                 
                               </div>
                           </header>
                           <div>                             
@@ -361,7 +376,7 @@
                                   <md-tooltip><span>Modifier</span></md-tooltip>
                                 </md-button>
                               </div>    
-                              <div class="border-right" ng-if="vm.selectedItemConnaissance_experiance_menage_detail.id_activite_realise_auparavant_prevu">
+                              <div class="border-right" ng-if="vm.selectedItemConnaissance_experiance_menage_detail.id">
                                 <md-button class="md-icon-button" aria-label="Suppression" style=" font-size:11px " ng-click="vm.supprimerConnaissance_experiance_menage_detail()">
                                   <md-icon md-font-icon="icon-delete"></md-icon>
                                   <md-tooltip><span>Supprimer</span></md-tooltip>
@@ -372,7 +387,11 @@
                                   <md-icon md-font-icon="icon-cancel"></md-icon>
                                   <md-tooltip><span>Annuler</span></md-tooltip>
                                 </md-button>
-                              </div>                  
+                              </div>                            
+                              <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                            </div>                  
                             </div>
                         </header>
                           <!----------FORM debut connaissance experiance menage detail --------------->       
@@ -388,6 +407,16 @@
                                 </md-datepicker>
                               </div-->
                               
+                              <md-input-container flex="100" flex-gt-xs="30" ng-if="vm.connaissance_experiance_menage_detail.id_activite_realise_auparavant_prevu==7">
+                                <label>Si autre,Préciser</label>
+                                <input  type="text" name="autre_activite_realise_auparavant" ng-model="vm.connaissance_experiance_menage_detail.autre_activite_realise_auparavant" required>
+                            
+                                  <div ng-messages="formconnaissance_experiance_menage_detail.autre_activite_realise_auparavant.$error" role="alert">
+                                    <div ng-message="required">
+                                      <span>Si autre,Préciser Obligatoire.</span>
+                                    </div>
+                                  </div>
+                            </md-input-container>
                                 <md-input-container flex="100" flex-gt-xs="30">
                                     <label>Difficultés rencontrées</label>
                                     <input  type="text" name="difficulte_rencontre" ng-model="vm.connaissance_experiance_menage_detail.difficulte_rencontre" required>
@@ -513,9 +542,12 @@
                                   <div layout="column" layout-gt-xs="row" flex>
                                     
                                       <span flex="100" flex-gt-xs="40">
-                                        {{contr.activite_realise_auparavant_description}}
+                                        {{contr.activite_realise_auparavant_description}}:                                        
+                                        <span ng-if="contr.id_activite_realise_auparavant_prevu==7">
+                                          {{contr.autre_activite_realise_auparavant}}
+                                        </span>
                                       </span>
-                                      <span flex="100" flex-gt-xs="40">
+                                      <span flex="100" flex-gt-xs="50">
                                         <md-checkbox ng-model="contr.activite_realise_auparavant" aria-label="Checkbox 1" class="md-primary" disabled>
                                         </md-checkbox>
                                       </span>
@@ -614,7 +646,11 @@
                               <md-icon md-font-icon="icon-cancel"></md-icon>
                               <md-tooltip><span>Annuler</span></md-tooltip>
                             </md-button>
-                          </div>                  
+                          </div>                           
+                          <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                            <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                            <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                        </div>                   
                         </div>
                     </header>
                       <!----------FORM AGEP--------------->       
@@ -721,7 +757,11 @@
                               <md-icon md-font-icon="icon-cancel"></md-icon>
                               <md-tooltip><span>Annuler</span></md-tooltip>
                             </md-button>
-                          </div>                  
+                          </div>                            
+                          <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                            <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                            <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                        </div>                  
                         </div>
                     </header>
                       <!----------FORM AGEP--------------->       
@@ -754,6 +794,15 @@
                                   </div>
                                 </div>
                           </md-input-container> 
+                          <md-input-container flex="100" flex-gt-xs="40">
+                              <label>Secteur</label>
+                              <input  type="text" name="secteur" ng-model="vm.fiche_profilage_orientation.secteur" required>
+                                <div ng-messages="formfiche_profilage_orientation.secteur.$error" role="alert">
+                                  <div ng-message="required">
+                                    <span>Secteur Obligatoire.</span>
+                                  </div>
+                                </div>
+                          </md-input-container>
                           <md-input-container flex="100" flex-gt-xs="40">
                               <label>Groupe</label>
                               <input  type="text" name="groupe" ng-model="vm.fiche_profilage_orientation.groupe" required>
@@ -797,6 +846,9 @@
                               {{vm.affichage_type_activite(contr.type_activite)}}
                             </td>
                             <td>
+                               {{contr.secteur}}
+                            </td>
+                            <td>
                                {{contr.groupe}}
                             </td>
                           </tr>
@@ -833,7 +885,11 @@
                             <md-icon md-font-icon="icon-cancel"></md-icon>
                             <md-tooltip><span>Annuler</span></md-tooltip>
                           </md-button>
-                        </div>                  
+                        </div>                           
+                        <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                          <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                          <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                      </div>                   
                       </div>
                   </header>
                     <!----------FORM AGEP--------------->       

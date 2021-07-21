@@ -5,6 +5,12 @@
                 <div class="breadcrumb" layout="row" layout-align="start center">
                     <md-icon md-font-icon="icon-home" class="s16"></md-icon>
                     <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">MACC</span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">ARSE</span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Formation des AGEX</span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
                     <span class="parent">Thématique de formation AGEX |&nbsp {{vm.type_sous_projet}}</span>
                     <span class="parent"> </span>
                     <!--md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
@@ -16,8 +22,8 @@
         <div class="content" layout="column">
             <div class="form-wrapper">
                 <div style="clear:both;"></div>
-                <md-tabs md-dynamic-height>
-                    <md-tab label="Thématique de formation AGEX">                      
+                <!--md-tabs md-dynamic-height>
+                    <md-tab label="Thématique de formation AGEX"-->                      
                         <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
                           <div layout="row" layout-align="start center">
                           <div class="border-right">
@@ -47,7 +53,11 @@
                                 <md-icon md-font-icon="icon-cancel"></md-icon>
                                 <md-tooltip><span>Annuler</span></md-tooltip>
                               </md-button>
-                            </div>                  
+                            </div>                              
+                            <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                              <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                              <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                          </div>                  
                           </div>
                       </header>
                         <!----------FORM AGEP--------------->       
@@ -83,86 +93,67 @@
                                   </div>
                                 </div>
                           </md-input-container>
-                            <div style="margin-top: 14px !important; font-size: 13px !important;" flex="100" flex-gt-xs="30">
-                              <label>Date de debut prévu:</label>
-                              <md-datepicker  ng-model="vm.formation_thematique_agex.date_debut_prevu" md-placeholder="jj/mm/aaaa" required>                       
-                              </md-datepicker>
+                               
+                          <md-input-container flex="100" flex-gt-xs="30">
+                            <label>Contenu</label>
+                            <textarea type="text" name="contenu" ng-model="vm.formation_thematique_agex.contenu" required md-select-on-focus></textarea>
+                            <div ng-messages="formformation_thematique_agex.contenu.$error"role="alert">
+                                <div ng-message="required">
+                                    <span>Contenu obligatoire.</span>
+                                </div>
                             </div>
+                          </md-input-container>
+
+                          <md-input-container flex="100" flex-gt-xs="30">
+                            <label>Objectifs de formations</label>
+                            <textarea  type="text" name="objectif" ng-model="vm.formation_thematique_agex.objectif" required md-select-on-focus></textarea>
+                            <div ng-messages="formformation_thematique_agex.objectif.$error"role="alert">
+                                <div ng-message="required">
+                                    <span>Objectifs de formations obligatoire.</span>
+                                </div>
+                            </div>
+                          </md-input-container> 
                             
                           </div>
                             
                           <div layout="column" layout-gt-xs="row" flex>
-                            
-                          <div style="margin-top: 14px !important; font-size: 13px !important;" flex="100" flex-gt-xs="30">
-                            <label>Date de fin prévu:</label>
-                            <md-datepicker  ng-model="vm.formation_thematique_agex.date_fin_prevu" md-placeholder="jj/mm/aaaa" ng-disabled="!vm.formation_thematique_agex.date_debut_prevu" md-min-date="vm.formation_thematique_agex.date_debut_prevu">                       
-                            </md-datepicker>
-                          </div> 
-                            <div style="margin-top: 14px !important; font-size: 13px !important;" flex="100" flex-gt-xs="30">
-                              <label>Date de debut réalisation:</label>
-                              <md-datepicker  ng-model="vm.formation_thematique_agex.date_debut_realisation" md-placeholder="jj/mm/aaaa" required flex="100">                       
-                              </md-datepicker>
-                              
+                             
+                                
+                          <md-input-container flex="100" flex-gt-xs="30">
+                            <label>Méthologies de formations</label>
+                            <textarea  type="text" name="methodologie" ng-model="vm.formation_thematique_agex.methodologie" required md-select-on-focus></textarea>
+                            <div ng-messages="formformation_thematique_agex.methodologie.$error"role="alert">
+                                <div ng-message="required">
+                                    <span>Méthologies de formations obligatoire.</span>
+                                </div>
                             </div>
-                            <div style="margin-top: 14px !important; font-size: 13px !important;" flex="100" flex-gt-xs="30">
-                              <label>Date de fin réalisation:</label>
-                              <md-datepicker  ng-model="vm.formation_thematique_agex.date_fin_realisation" md-placeholder="jj/mm/aaaa" ng-disabled="!vm.formation_thematique_agex.date_debut_realisation" md-min-date="vm.formation_thematique_agex.date_debut_realisation" flex="100">                       
-                              </md-datepicker>
-                            </div> 
+                          </md-input-container> 
                               
-                          </div>  
-                          <div layout="column" layout-gt-xs="row" flex>  
-                                   
-                            <md-input-container flex="100" flex-gt-xs="30">
-                              <label>Nombre des bénéficiaires ciblés</label>
-                              <input  type="number" name="nbr_beneficiaire_cible" ng-model="vm.formation_thematique_agex.nbr_beneficiaire_cible" required>
-                              <div ng-messages="formformation_thematique_agex.nbr_beneficiaire_cible.$error"role="alert">
-                                  <div ng-message="required">
-                                      <span>Nombre des bénéficiaires ciblés obligatoire.</span>
-                                  </div>
-                              </div>
-                            </md-input-container>                           
-                            <!--md-input-container flex="100" flex-gt-xs="25">
-                              <label>Nombre de participants</label>
-                              <input  type="text" name="nbr_participant" ng-model="vm.formation_thematique_agex.nbr_participant" ng-init="vm.formation_thematique_agex.nbr_participant=''" required>
-                              <div ng-messages="formformation_thematique_agex.nbr_participant.$error"role="alert">
-                                  <div ng-message="required">
-                                      <span>Nombre de participants obligatoire.</span>
-                                  </div>
-                              </div>
-                            </md-input-container>
-                                                              
-                            <md-input-container flex="100" flex-gt-xs="25">
-                              <label>Nombre de femmes</label>
-                              <input  type="text" name="nbr_femme" ng-model="vm.formation_thematique_agex.nbr_femme" ng-init="vm.formation_thematique_agex.nbr_femme=''" required>
-                              <div ng-messages="formformation_thematique_agex.nbr_femme.$error"role="alert">
-                                  <div ng-message="required">
-                                      <span>Nombre de femmes obligatoire.</span>
-                                  </div>
-                              </div>
-                            </md-input-container-->
-                                      
-                            <md-input-container flex="100" flex-gt-xs="25">
-                                <label>Formateur</label>
-                                  <input name="formateur" type="text" ng-model="vm.formation_thematique_agex.formateur" required md-select-on-focus>
-                                    <div ng-messages="formformation_thematique_agex.formateur.$error" role="alert">
-                                      <div ng-message="required">
-                                          <span>Formateur obligatoire.</span>
-                                      </div>
-                                    </div>
-                              </md-input-container>
-                                      
-                              <md-input-container flex="100" flex-gt-xs="25">
-                                  <label>Observation</label>
-                                    <textarea name="observation" type="text" ng-model="vm.formation_thematique_agex.observation" required md-select-on-focus></textarea>
-                                      <div ng-messages="formformation_thematique_agex.observation.$error" role="alert">
-                                        <div ng-message="required">
-                                            <span>Observation obligatoire.</span>
-                                        </div>
-                                      </div>
-                                </md-input-container>
-                   
-                          </div>
+                          <md-input-container flex="100" flex-gt-xs="30">
+                            <label>Matériels didactiques</label>
+                            <textarea  type="text" name="materiel" ng-model="vm.formation_thematique_agex.materiel" required md-select-on-focus></textarea>
+                            <div ng-messages="formformation_thematique_agex.materiel.$error"role="alert">
+                                <div ng-message="required">
+                                    <span>Matériels didactiques obligatoire.</span>
+                                </div>
+                            </div>
+                          </md-input-container>
+                           <div style="margin-top: 14px !important; font-size: 13px !important;" flex="100" flex-gt-xs="30">
+                                  <label>Date de formation</label>
+                                  <md-datepicker  ng-model="vm.formation_thematique_agex.date" md-placeholder="Date" required>                       
+                                  </md-datepicker>
+                              </div>   
+                          <md-input-container flex="100" flex-gt-xs="30">
+                            <label>Durée</label>
+                            <input type="number" name="duree" ng-model="vm.formation_thematique_agex.duree" required>
+                            <div ng-messages="formformation_thematique_agex.duree.$error"role="alert">
+                                <div ng-message="required">
+                                    <span>Durée obligatoire.</span>
+                                </div>
+                            </div>
+                          </md-input-container>   
+                              
+                          </div> 
 
                             <div>
                                 <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
@@ -192,21 +183,18 @@
                                 
                                 <td>{{contr.contrat_agex.numero_contrat}}</td>
                                 <td>{{contr.theme_sensibilisation.description}}</td>
-                                <td>{{contr.date_debut_prevu | date:'dd/MM/yyyy'}}</td>
-                                <td>{{contr.date_fin_prevu | date:'dd/MM/yyyy'}}</td>
-                                <td>{{contr.date_debut_realisation | date:'dd/MM/yyyy'}}</td>
-                                <td>{{contr.date_fin_realisation | date:'dd/MM/yyyy'}}</td>
-                                <td>{{contr.nbr_beneficiaire_cible}}</td>
-                                <td>{{contr.nbr_participant}}</td>
-                                <td>{{contr.nbr_femme}}</td>
-                                <td>{{contr.formateur}}</td> 
-                                <td>{{contr.observation}}</td>
+                                <td>{{contr.contenu}}</td>
+                                <td>{{contr.objectif}}</td>
+                                <td>{{contr.methodologie}}</td>
+                                <td>{{contr.materiel}}</td>
+                                <td>{{contr.date | date:'dd/MM/yyyy'}}</td>
+                                <td>{{contr.duree}} minutes</td>
                             </tr>
                           </tbody>
                         </table>
-                    </md-tab> 
+                    <!--/md-tab--> 
                    
-                    <md-tab label="Groupe ML/PL Bénéficiaire" ng-disabled="!vm.selectedItemFormation_thematique_agex.id">
+                    <!--md-tab label="Groupe ML/PL Bénéficiaire" ng-disabled="!vm.selectedItemFormation_thematique_agex.id">
                         <div class="price-table style-1 md-whiteframe-1dp" layout="column">
                           <form name="filtreform" class="md-inline-form" novalidate >
                             <div layout="column" layout-gt-xs="row" flex>
@@ -309,7 +297,11 @@
                                       <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
                                       <md-tooltip><span>Enregistrer</span></md-tooltip>
                                     </md-button>
-                                  </div>                
+                                  </div>                             
+                                  <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                    <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                    <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                                </div>                 
                                 </div>
                             </header>
                             
@@ -367,7 +359,7 @@
                                 </tbody>
                             </table>
                         </div>
-                    </md-tab>
+                    </md-tab-->
                     <!--md-tab label="ML/PL bénéficiaire" ng-click="vm.click_ml_pl_beneficiaire()" ng-disabled="!vm.selectedItemGroupe_beneficiaire.id"> 
                                            
                       <table class="dataTable row-border hover cell-border text-center" datatable="ng"
@@ -393,9 +385,9 @@
                         </tbody>
                       </table>
                   </md-tab-->  
-                    <md-tab>
+                    <!--md-tab>
                     </md-tab>
-                </md-tabs>
+                </md-tabs-->
             </div>
         </div>
     </div>

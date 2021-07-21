@@ -407,19 +407,19 @@
                                     
                                   <span class="md-headline">PARTICIPANT &nbsp</span>
                                 </div>
-                                  <div class="border-right" ng-if="!vm.selectedItemGroupe_participant_ebe.id && !vm.nouvelleItemGroupe_participant_ebe">
+                                  <!--div class="border-right" ng-if="!vm.selectedItemGroupe_participant_ebe.id && !vm.nouvelleItemGroupe_participant_ebe">
                                     <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouterGroupe_participant_ebe()">
                                       <md-icon md-font-icon="icon-plus-box"></md-icon>
                                       <md-tooltip><span>Ajouter</span></md-tooltip>
                                     </md-button>
-                                  </div> 
+                                  </div--> 
                                   <div class="border-right" ng-if="vm.selectedItemGroupe_participant_ebe.id_menage_prevu && !vm.selectedItemGroupe_participant_ebe.$edit">
                                     <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifierGroupe_participant_ebe()">
                                       <md-icon md-font-icon="icon-table-edit"></md-icon>
                                       <md-tooltip><span>Modifier</span></md-tooltip>
                                     </md-button>
                                   </div>    
-                                  <div class="border-right" ng-if="vm.selectedItemGroupe_participant_ebe.id_menage_prevu && !vm.selectedItemGroupe_participant_ebe.$edit">
+                                  <div class="border-right" ng-if="vm.selectedItemGroupe_participant_ebe.id && !vm.selectedItemGroupe_participant_ebe.$edit">
                                     <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimerGroupe_participant_ebe()">
                                       <md-icon md-font-icon="icon-delete"></md-icon>
                                       <md-tooltip><span>Supprimer</span></md-tooltip>

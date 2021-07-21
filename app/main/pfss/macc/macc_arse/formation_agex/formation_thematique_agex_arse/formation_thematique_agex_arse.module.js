@@ -14,8 +14,8 @@
             url      : '/arse/formation_thematique_agex',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/pfss/formation_thematique_agex/formation_thematique_agex.html',
-                    controller : 'Formation_thematique_agexController as vm'
+                    templateUrl: 'app/main/pfss/formation_thematique_agex_macc/formation_thematique_agex_macc.html',
+                    controller : 'Formation_thematique_agex_maccController as vm'
                 }
             },
             bodyClass: 'formation_thematique_agex_arse',
@@ -31,7 +31,7 @@
         // Navigation
         msNavigationServiceProvider.saveItem('pfss.macc.macc_arse.formation_agex.formation_thematique_agex_arse', {
             title: 'Thematique de Formation AGEX',
-            icon  : 'icon-data',
+            icon  : 'icon-lumx',
             state: 'app.pfss_macc_macc_arse_formation_agex_formation_thematique_agex_arse',
 			weight:1
         });
