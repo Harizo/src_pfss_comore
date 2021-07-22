@@ -147,7 +147,7 @@
 									<div layout="column" layout-gt-xs="row" flex  ng-show="vm.affichage_masque">
 										<md-input-container flex-gt-xs="10" ng-show="vm.affichage_masque">
 											<input type="text"  name="numero" ng-model="vm.filtre.numero"
-											placeholder="Numéro" required>
+											placeholder="Numéro" required readonly>
 											<div ng-messages="filtrepardateform.numero.$error"
 												role="alert">
 												<div ng-message="required">
@@ -181,7 +181,7 @@
 												</div>	
 											</fieldset>
 										<md-input-container flex-gt-xs="50" ng-show="vm.affichage_masque">
-											<textarea style="border:2px solid;" name="objet_visite" ng-model="vm.filtre.objet_visite"	placeholder="Objet de la visite" required matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5">
+											<textarea style="border:2px solid;" name="objet_visite" ng-model="vm.filtre.objet_visite"	placeholder="Objet de la visite" required matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" required>
 											</textarea>
 											<div ng-messages="filtrepardateform.objet_visite.$error"
 												role="alert">

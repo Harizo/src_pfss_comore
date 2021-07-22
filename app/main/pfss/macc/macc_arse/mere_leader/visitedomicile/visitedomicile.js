@@ -246,6 +246,12 @@
 			vm.selectedItem.$selected = true;
 		})
 		vm.ajouter_visite_domicile = function() {
+			apiFactory.getAPIgeneraliserREST("visite_domicile/index","cle_etrangere",vm.filtre.id_groupe_ml_pl, "visite_domicile",1).then(function(result) { 
+				vm.temp = result.data.response;
+				vm.temp.forEach(function(mng) {
+					vm.filtre.numero=mng.nombre;
+				});			
+			});			
 			vm.nouvelle_element = true ;
 			vm.affichage_masque = true ;
 			vm.selectedItem = {} ;
@@ -323,16 +329,6 @@
 						vm.filtre.nom_prenom_mlpl = mng.nom_prenom_ml_pl; 
 					}
 				});						
-				// apiFactory.getAPIgeneraliserREST("liste_mlpl/index","cle_etrangere",id_groupe).then(function(result) 	{ 
-					// vm.all_liste_mlpl =[];
-					// vm.all_liste_mlpl = result.data.response; 					
-					// vm.all_liste_mlpl.forEach(function(mng) {
-						// if(parseInt(mng.id_groupe_ml_pl)==parseInt(id_groupe)) {
-							// vm.filtre.nom_mere_leader = mng.nom_prenom; 
-							// vm.filtre.nom_prenom_mlpl = mng.nom_prenom; 
-						// }
-					// });			
-				// });
 			}
 		} 
 		// Fin Fonction Groupe ML/PL
