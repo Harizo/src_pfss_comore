@@ -24,6 +24,11 @@
 				<div ng-if="vm.affiche_load" style="position:relative;top: -30px;  left: 60px;color: #039be5">
 					Chargement en-cours,veuillez patienter s'il vous plait ...
 				</div> 
+				<div layout="column" layout-gt-xs="row" flex style="display:none;">
+					<md-button ng-if="!vm.affiche_load" ng-disabled="vm.affiche_load" type="submit" class="md-raised md-primary" aria-label="Enregistrer" ng-click="vm.export_excel(vm.filtre)"  style="height:40% !important;"> 
+						Exporter en Excel											 
+					</md-button>
+				</div>
                 <md-tabs md-dynamic-height layout="column" flex>
                     <md-tab label="Tableau de bord {{vm.titre}} (comores)" layout="column" flex>
                         <md-tab-body>
