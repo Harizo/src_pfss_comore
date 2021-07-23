@@ -4,12 +4,11 @@
 
     angular
         .module('app.pfss.reporting', [			
-         //  'app.pfss.reporting.nombrebeneficiaire',
-            'app.pfss.reporting.reporting',
-            //'app.pfss.reporting.carte'
-            //'app.pfss.reporting.systeme_protection_social',
+            // 'app.pfss.reporting.reporting',
+            'app.pfss.reporting.reporting_menage_beneficiaire',
+            'app.pfss.reporting.reporting_par_activite',
             ])
-         .run(testPermission)
+         // .run(testPermission)
         .config(config);
         var vs ;
 
@@ -19,7 +18,7 @@
         msNavigationServiceProvider.saveItem('pfss.reporting', {
             title : 'Reporting',
             icon  : 'icon-chart-bar',
-            weight: 19,
+            weight: 22,
             hidden: function()
             {
                     return vs;
