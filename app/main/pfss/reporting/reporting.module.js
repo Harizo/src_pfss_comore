@@ -7,6 +7,8 @@
             // 'app.pfss.reporting.reporting',
             'app.pfss.reporting.reporting_menage_beneficiaire',
             'app.pfss.reporting.reporting_par_activite',
+            'app.pfss.reporting.reporting_thematique_formation_arse',
+            'app.pfss.reporting.reporting_thematique_sensibilisation_macc',
             ])
          // .run(testPermission)
         .config(config);

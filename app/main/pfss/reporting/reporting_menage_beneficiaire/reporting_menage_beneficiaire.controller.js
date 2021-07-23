@@ -6,7 +6,7 @@
         .controller('ReportingmenagebeneficiaireController', ReportingmenagebeneficiaireController);
 
     /** @ngInject */
-    function ReportingmenagebeneficiaireController(apiFactory, $state, $mdDialog, $scope,$cookieStore,apiUrlExcel,apiUrlExcelimport,$location) {
+    function ReportingmenagebeneficiaireController(apiFactory, $state, $mdDialog, $scope,$cookieStore,apiUrlReporting,$location) {
 		var vm = this;
 	   vm.dtOptions =
       {
@@ -167,17 +167,14 @@
 						"id_sous_projet",vm.filtre.id_sous_projet).then(function(result) { 
 						vm.status =  result.data.status ;
 						if(vm.status)  {
-							var date_edition=result.data.date_edition;
-							var chemin=result.data.chemin;
-							var name_file=result.data.name_file;
-							// Ménage Apte
-							window.location = apiUrlExcel + chemin + name_file;  
+							var nom_file=result.data.nom_file;
+							window.location = apiUrlReporting + nom_file; 
 							vm.affiche_load =false; 
 						} else {
 							vm.erreur=true;
 							vm.affiche_load =false;
-							var message=result.data.message;
-							vm.showAlert('Export Fiche recepteru en excel',message);
+							var message="ERREUR";
+							vm.showAlert('Export ménage bénéficiaire en excel',message);
 						}                      
 			});
 		}

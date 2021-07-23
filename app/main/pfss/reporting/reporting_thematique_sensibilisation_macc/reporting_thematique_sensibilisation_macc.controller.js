@@ -2,11 +2,11 @@
 {
     'use strict';
     angular
-        .module('app.pfss.reporting.reporting_par_activite')
-        .controller('ReportingparactiviteController', ReportingparactiviteController);
+        .module('app.pfss.reporting.reporting_thematique_sensibilisation_macc')
+        .controller('ReportingthematiquesensibilisationmaccController', ReportingthematiquesensibilisationmaccController);
 
     /** @ngInject */
-    function ReportingparactiviteController(apiFactory, $state, $mdDialog, $scope,$cookieStore,apiUrlReporting,apiUrlExcelimport,$location) {
+    function ReportingthematiquesensibilisationmaccController(apiFactory, $state, $mdDialog, $scope,$cookieStore,apiUrlReporting,apiUrlExcelimport,$location) {
 		var vm = this;
 	   vm.dtOptions =
       {
@@ -16,7 +16,7 @@
         responsive: true
       };
 
-      vm.menage_column = [{titre:"Ile"},{titre:"Région"},{titre:"Commune"},{titre:"Village"},{titre:"Zip"},{titre:"Vague"},{titre:"Sous-projet"},{titre:"Activité"},{titre:"Ménage"},{titre:"Homme"},{titre:"Femme"}];
+      vm.menage_column = [{titre:"Ile"},{titre:"Région"},{titre:"Commune"},{titre:"Village"},{titre:"Vague"},{titre:"Zip"},{titre:"Thème sesibilisation"}];
       //initialisation variable
         vm.affiche_load = false ;
         vm.selectedItem = {} ;
@@ -33,7 +33,7 @@
 		vm.all_agep=[];
 		vm.all_vague=[];
 		vm.all_zip=[];
-		vm.all_theme_formation=[];
+		vm.all_theme_sensibilisation=[];
 
         vm.nouvelle_element = false ;
         vm.nouvelle_element_individu = false ;
@@ -71,8 +71,8 @@
 			apiFactory.getAll("zip/index").then(function(result) { 
 				vm.all_zip= result.data.response;    
 			});
-			apiFactory.getAll("theme_formation/index").then(function(result) { 
-				vm.all_theme_formation= result.data.response;    
+			apiFactory.getAll("theme_sensibilisation/index").then(function(result) { 
+				vm.all_theme_sensibilisation= result.data.response;    
 			});
 	  
 		});
@@ -125,19 +125,29 @@
           
         });
       }
+      vm.filtre_theme_formation_detail = function()
+      {
+        apiFactory.getAPIgeneraliserREST("theme_formation_detail/index","cle_etrangere",vm.filtre.id_theme_formation_detail).then(function(result)
+        { 
+          vm.all_village = result.data.response;    
+          vm.filtre.village_id = null ; 
+          
+          
+        });
+      }
+	  
 		vm.filtrer = function()	{
 			vm.affiche_load = true ;
-			apiFactory.getAPIgeneraliserREST("reporting/index","etat","menage_beneficiaire_par_activite",
+			apiFactory.getAPIgeneraliserREST("reporting/index","etat","thematique_sensibilisation_macc",
 						"etat_export_excel",99,
-						"titre_etat","MENAGE BENEFICIAIRE PAR ACTIVITE ET PAR SEXE",
+						"titre_etat","LISTE THEMATIQUE SENSIBILISATION MACC",
 						"village_id",vm.filtre.village_id,
 						"commune_id",vm.filtre.id_commune,
 						"region_id",vm.filtre.id_region,
 						"ile_id",vm.filtre.id_ile,
 						"vague",vm.filtre.vague,
 						"zip",vm.filtre.zip,
-						"id_theme_formation",vm.filtre.id_theme_formation,
-						"id_sous_projet",vm.filtre.id_sous_projet).then(function(result) { 
+						"id_theme_formation_detail",vm.filtre.id_theme_formation_detail).then(function(result) { 
 				if(result.data.response.length==0) {
 					$mdDialog.show(
 						$mdDialog.alert()
@@ -160,27 +170,27 @@
 			vm.erreur=false;
 			vm.erreur2=false;
 			var repertoire = "tableau_de_bord/" ;
-			apiFactory.getAPIgeneraliserREST("reporting/index","etat","menage_beneficiaire_par_activite",
+			apiFactory.getAPIgeneraliserREST("reporting/index","etat","thematique_sensibilisation_macc",
 						"etat_export_excel",1,
-						"titre_etat","MENAGE BENEFICIAIRE PAR ACTIVITE ET PAR SEXE",
+						"titre_etat","LISTE THEMATIQUE SENSIBILISATION MACC",
 						"village_id",vm.filtre.village_id,
 						"commune_id",vm.filtre.id_commune,
 						"region_id",vm.filtre.id_region,
 						"ile_id",vm.filtre.id_ile,
 						"vague",vm.filtre.vague,
 						"zip",vm.filtre.zip,
-						"id_theme_formation",vm.filtre.id_theme_formation,
-						"id_sous_projet",vm.filtre.id_sous_projet).then(function(result) { 
+						"id_theme_formation_detail",vm.filtre.id_theme_formation_detail).then(function(result) { 
 						vm.status =  result.data.status ;
 						if(vm.status)  {
 							var nom_file=result.data.nom_file;
+							// Ménage Apte
 							window.location = apiUrlReporting + nom_file; 
 							vm.affiche_load =false; 
 						} else {
 							vm.erreur=true;
 							vm.affiche_load =false;
 							var message="ERREUR";
-							vm.showAlert('Export bénéficiaire par activité/sexe en excel',message);
+							vm.showAlert('Export Fiche recepteru en excel',message);
 						}                      
 			});
 		}

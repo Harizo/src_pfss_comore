@@ -9,6 +9,7 @@
 		.constant("apiUrlbase", "http://localhost/2020/pfss_comores/")
 		.constant('apiUrlExcel', "http://localhost/2020/pfss_comores/exportexcel/")
 		.constant('apiUrlExcelimport', "http://localhost/2020/pfss_comores/importexcel/")
+		.constant('apiUrlReporting', "http://localhost/2020/pfss_comores/reporting/")
 		.constant("apiUrl_serve_central", "http://localhost/2020/pfss_comores/api/index.php/api/")//ip serveur cantrale si dans les ile pour l'envoi des données
 		.constant("serveur_central", true)
 

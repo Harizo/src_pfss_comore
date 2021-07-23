@@ -28,7 +28,7 @@
         });
         // Navigation
         msNavigationServiceProvider.saveItem('pfss.reporting.reporting_par_activite', {
-            title: 'Par Activité/Sexe',
+            title: 'Bénéficiaire par Activité/Sexe',
             icon  : 'icon-chart-line',
             state: 'app.pfss_reporting_reporting_par_activite',
             weight: 2
