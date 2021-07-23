@@ -118,7 +118,8 @@
       {
         apiFactory.getAPIgeneraliserREST("groupe_mlpl/index","cle_etrangere",vm.filtre.village_id).then(function(result)
         { 
-			vm.all_groupe_mlpl = result.data.response;    
+			vm.all_groupe_mlpl = result.data.response;
+			console.log(vm.all_groupe_mlpl);    
         });
       }
 		vm.filtrer = function()	{
@@ -133,20 +134,22 @@
 			});
 		}
 		vm.modifier_groupe_mlpl=function() {
-			vm.all_liste_mlpl = [];
+			/*vm.all_liste_mlpl = [];
 			vm.affiche_load = true ;
 			vm.all_groupe_mlpl.forEach(function(mng) {
-				if(parseInt(mng.id)==parseInt(vm.filtre.menage_id)) {
+				if(parseInt(mng.id)==parseInt(vm.filtre.id_groupe_ml_pl)) {
 					// Affectation direct et non pas par paramètre : DANGEREUX
-					vm.filtre.id_groupe_ml_pl = mng.id; 
+					vm.filtre.id_groupe_ml_pl = mng.id;
+					vm.filtre.menage_id = mng.id; 
 					vm.filtre.nom_groupe=mng.nom_groupe;
+					vm.filtre.nom_prenom_ml_pl=mng.nom_prenom_ml_pl;
 					vm.nontrouvee=false;
 				}
-			});			
-			apiFactory.getAPIgeneraliserREST("liste_mlpl/index","cle_etrangere",vm.filtre.id_groupe_ml_pl).then(function(result) { 				
+			});	*/		
+			/*apiFactory.getAPIgeneraliserREST("liste_mlpl/index","cle_etrangere",vm.filtre.id_groupe_ml_pl).then(function(result) { 				
 				vm.all_liste_mlpl = result.data.response; 				
 				vm.affiche_load = false ;
-			});
+			});*/
 		}
 		vm.charger_membre_mlpl=function() {
 			vm.all_liste_mlpl = [];
@@ -214,10 +217,11 @@
 					var mng={
 						id : data.response ,
 						id_groupe_ml_pl: groupe_mlpl.id_groupe_ml_pl,
-						date_rapport: vm.formatDateListe(groupe_mlpl.date_rapport),
+						date_rapport: formatDateBDD2(groupe_mlpl.date_rapport),
 						menage_id: groupe_mlpl.menage_id,
 						representant_cps: groupe_mlpl.representant_cps,
 						nom_groupe: groupe_mlpl.nom_groupe,
+						nom_prenom_ml_pl: groupe_mlpl.nom_prenom_ml_pl,
 						NumeroEnregistrement: groupe_mlpl.NumeroEnregistrement,
 						nomchefmenage: groupe_mlpl.nomchefmenage,
 						nom_conjoint: groupe_mlpl.nom_conjoint,
@@ -240,6 +244,7 @@
 						vm.selectedItem.menage_id = vm.filtre.menage_id  ;
 						vm.selectedItem.representant_cps = vm.filtre.representant_cps  ;
 						vm.selectedItem.nom_groupe = vm.filtre.nom_groupe  ;
+						vm.selectedItem.nom_prenom_ml_pl = vm.filtre.nom_prenom_ml_pl  ;
 						vm.selectedItem.NumeroEnregistrement = vm.filtre.NumeroEnregistrement  ;
 						vm.selectedItem.nomchefmenage = vm.filtre.nomchefmenage  ;
 						vm.selectedItem.nom_conjoint = vm.filtre.nom_conjoint  ;
@@ -274,7 +279,15 @@
 			vm.affichage_masque = true ;
 			vm.selectedItem = {} ;
 			vm.filtre.date_rapport = new Date();
-			vm.filtre.menage_id = "" ;
+			vm.all_groupe_mlpl.forEach(function(mng) {
+				if(parseInt(mng.id)==parseInt(vm.filtre.id_groupe_ml_pl))
+				{
+					vm.filtre.menage_id = mng.id_menage; 
+					vm.filtre.nom_groupe=mng.nom_groupe;
+					vm.filtre.nom_prenom_ml_pl=mng.nom_prenom_ml_pl;
+				}
+			});	
+			//vm.filtre.menage_id = "" ;
 			vm.filtre.representant_cps = "" ;
 			vm.filtre.nom_groupe = vm.filtre.nom_groupe ;
 		}
@@ -286,6 +299,7 @@
 			vm.filtre.menage_id = vm.selectedItem.menage_id ;
 			vm.filtre.representant_cps = vm.selectedItem.representant_cps ;
 			vm.filtre.nom_groupe = vm.selectedItem.nom_groupe ;
+			vm.filtre.nom_prenom_ml_pl = vm.selectedItem.nom_prenom_ml_pl ;
 			vm.filtre.NumeroEnregistrement = vm.selectedItem.NumeroEnregistrement ;
 			vm.filtre.nomchefmenage = vm.selectedItem.nomchefmenage ;
 			vm.filtre.nom_conjoint = vm.selectedItem.nom_conjoint ;
@@ -538,6 +552,23 @@
 				var date = new Date(dat);
 				var mois = date.getMonth()+1;
 				var dates = (date.getFullYear()+"-"+mois+"-"+date.getDate());
+				return dates;
+			}          
+		} 
+		function formatDateBDD2(dat) {
+			if (dat) {
+				var date = new Date(dat);
+				var jour  = date.getDate();
+				var mois = date.getMonth()+1;
+				if(mois <10)
+                {
+                    mois = '0' + mois;
+                }
+                if(jour <10)
+                {
+                        jour = '0' + jour;
+                }
+				var dates = (date.getFullYear()+"-"+mois+"-"+jour);
 				return dates;
 			}          
 		}

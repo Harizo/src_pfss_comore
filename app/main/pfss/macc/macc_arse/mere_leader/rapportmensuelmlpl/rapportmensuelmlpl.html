@@ -109,7 +109,7 @@
                                   <label>Groupe ML/PL</label>
                                     <md-select ng-model="vm.filtre.id_groupe_ml_pl" name="id_groupe_ml_pl"  ng-disabled="!vm.filtre.village_id" ng-change="vm.modifier_groupe_mlpl()" required>
                                       <md-option ng-repeat="grp in vm.all_groupe_mlpl" value="{{grp.id}}" >
-                                        {{grp.nom_groupe}}
+                                        {{grp.nom_groupe}} | {{grp.nom_prenom_ml_pl}}
                                       </md-option>
 
                                     </md-select>
@@ -130,9 +130,10 @@
 									</md-input-container>
 									<md-datepicker ng-model="vm.filtre.date_rapport"   md-placeholder="Entrer date rapport" >                       
 									</md-datepicker>
-									<md-input-container flex="100" flex-gt-xs="40">
-									  <label>ML/PL</label>
-										<md-select ng-model="vm.filtre.menage_id" name="menage_id" ng-change="vm.modifier_membre_mlpl(vm.filtre)" required>
+									<md-input-container flex="100" flex-gt-xs="40">									  
+									  <input type="text" ng-model="vm.filtre.nom_prenom_ml_pl" name="nom_prenom_ml_pl" placeholder="Nom et prénom ML/PL" readonly required>
+										 
+										<!--md-select ng-model="vm.filtre.menage_id" name="menage_id" ng-change="vm.modifier_membre_mlpl(vm.filtre)" required>
 										  <md-option ng-repeat="men in vm.all_liste_mlpl" value="{{men.menage_id}}" >
 											{{men.NumeroEnregistrement}} - {{men.nomchefmenage}}
 										  </md-option>
@@ -143,7 +144,7 @@
 										  <div ng-message="required">
 											<span>ML/PL obligatoire</span>
 										  </div>
-										</div>
+										</div-->
 									</md-input-container>
 									<md-input-container flex-gt-xs="40" ng-show="vm.affichage_masque">
 										<input type="text"  name="representant_cps" ng-model="vm.filtre.representant_cps"
@@ -192,7 +193,8 @@
 								<tr ng-repeat="rapport in vm.all_rapport_mensuelmlpl track by $index"  ng-class="{selected: rapport.$selected}" ng-click="vm.selection(rapport)">
 								  <td>{{rapport.date_rapport  | date:'dd/MM/yyyy'}}</td>
 								  <td>{{rapport.nom_groupe}}</td>
-								  <td>{{rapport.NumeroEnregistrement}} - {{rapport.nomchefmenage}} - {{rapport.nom_conjoint}}</td>
+								  <td>{{rapport.nom_prenom_ml_pl}}</td>
+								  <!--td>{{rapport.NumeroEnregistrement}} - {{rapport.nomchefmenage}} - {{rapport.nom_conjoint}}</td-->
 								  <td>{{rapport.representant_cps}}</td>
 								</tr>
 							  </tbody>
