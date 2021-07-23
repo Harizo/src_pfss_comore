@@ -32,9 +32,14 @@
 							<md-icon md-font-icon="icon-table-edit" class="s16" style="color: white;"></md-icon>
                               Modifier
                             </md-button>
+							
                             <md-button type="submit" ng-show="(vm.selectedItem.id) && !vm.affichage_masque" ng-disabled="vm.selectedItem.utilisateur_id!=vm.user_id" class="md-raised custum_button_del" aria-label="Supprimer" ng-click="vm.supprimerVisite_domicile()" style="width:10%;">
 							<md-icon md-font-icon="icon-close-circle-outline" class="s16" style="color: white;"></md-icon>
                               Supprimer
+                            </md-button>
+                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised custum_button" aria-label="deselection" ng-click="vm.annuler()" style="width:10%;">
+							<md-icon md-font-icon="icon-no" class="s16" style="color: white;"></md-icon>
+                              Désélectionner
                             </md-button>
                           
                         </div>
@@ -141,6 +146,7 @@
 								</div>	                               
                             </div>
                         </form>
+						<form name="formvisite" class="md-inline-form" novalidate >
 							<div layout="column" style="max-height:400px !important;overflow-y:auto;overflow-x:auto;max-width:100%;" ng-show="vm.affichage_masque">
 								<fieldset ng-if="vm.affichage_masque">
 									<label><b>Information concernant la visite</b></label>
@@ -168,7 +174,7 @@
 										<md-input-container>
 										<span>Date visite 1</span>
 										</md-input-container>
-										<md-datepicker ng-model="vm.filtre.date_visite1"   md-placeholder="Entrer date visite 1" >                       
+										<md-datepicker ng-model="vm.filtre.date_visite1"   md-placeholder="Entrer date visite 1" required>                       
 										</md-datepicker>
 									</div>
 									<div layout="column" layout-gt-xs="row" flex ng-show="vm.affichage_masque">
@@ -181,9 +187,9 @@
 												</div>	
 											</fieldset>
 										<md-input-container flex-gt-xs="50" ng-show="vm.affichage_masque">
-											<textarea style="border:2px solid;" name="objet_visite" ng-model="vm.filtre.objet_visite"	placeholder="Objet de la visite" required matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" required>
+											<textarea style="border:2px solid;" name="objet_visite" ng-model="vm.filtre.objet_visite"	placeholder="Objet de la visite" matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" required>
 											</textarea>
-											<div ng-messages="filtrepardateform.objet_visite.$error"
+											<div ng-messages="formvisite.objet_visite.$error"
 												role="alert">
 												<div ng-message="required">
 													<span>Objet de la visite obligatoire.</span>
@@ -202,14 +208,14 @@
 										</md-input-container>
 									</div>
 									<div layout="column" layout-gt-xs="row" flex ng-show="vm.affichage_masque">
-										<span>Date visite 2</span>
+										<!--span>Date visite 2</span>
 										<md-input-container>
 										</md-input-container>
 										<md-datepicker ng-model="vm.filtre.date_visite2"   md-placeholder="Entrer date visite 2" >                       
-										</md-datepicker>
+										</md-datepicker-->
 										<md-input-container flex-gt-xs="40" ng-show="vm.affichage_masque">
 											<input type="text"  name="resultat_visite" ng-model="vm.filtre.resultat_visite"
-											placeholder="Résultat de la visite" required>
+											placeholder="Résultat de la visite">
 											<div ng-messages="filtrepardateform.resultat_visite.$error"
 												role="alert">
 												<div ng-message="required">
@@ -219,7 +225,7 @@
 										</md-input-container>
 										<md-input-container flex-gt-xs="40" ng-show="vm.affichage_masque">
 											<input type="text"  name="recommandation" ng-model="vm.filtre.recommandation"
-											placeholder="Récommandation" required>
+											placeholder="Récommandation">
 											<div ng-messages="filtrepardateform.recommandation.$error"
 												role="alert">
 												<div ng-message="required">
@@ -237,7 +243,7 @@
 										  Actualiser
 									  </md-button-->
 									  <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
-										  ng-if="vm.affichage_masque" ng-disabled="(filtrepardateform.$invalid)||(vm.disable_button)" ng-click="vm.save_visite_domicile(vm.filtre,0)">
+										  ng-if="vm.affichage_masque" ng-disabled="(formvisite.$invalid)||(vm.disable_button) ||vm.tab_reponse_menage_visite.length==0" ng-click="vm.save_visite_domicile(vm.filtre,0)">
 										  Enregistrer
 									  </md-button>
 									  <md-button type="submit" class="md-raised md-primary" aria-label="Enregistrer"
@@ -247,6 +253,7 @@
 									  
 									</section>                         
 								</div>
+							</form>
 						<div layout="column" ng-show="!vm.affichage_masque">
                         
 							<table class="dataTable row-border hover cell-border text-center" datatable="ng"
@@ -263,7 +270,7 @@
 							  <tbody>
 								<tr ng-repeat="grp_mlpl in vm.all_visite_domicile track by $index"  ng-class="{selected: grp_mlpl.$selected}" ng-click="vm.selection(grp_mlpl)">
 								  <td>{{grp_mlpl.numero}}</td>
-								  <td>{{grp_mlpl.date_visite1  | date:'dd/MM/yyyy'}}</td>
+								  <td>{{grp_mlpl.date_visite1 | date:'dd/MM/yyyy'}}</td>
 								  <td>
 									<p style="text-align:left;" ng-repeat="det in grp_mlpl.raison_visite">- {{det.description}}</p>	
 								  </td>

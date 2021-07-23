@@ -143,7 +143,7 @@
                       date_visite1: formatDateBDD(groupe_mlpl.date_visite1),
                       objet_visite: groupe_mlpl.objet_visite,
                       nom_prenom_mlpl: groupe_mlpl.nom_prenom_mlpl,
-                      date_visite2: formatDateBDD(groupe_mlpl.date_visite2),
+                      //date_visite2: formatDateBDD(groupe_mlpl.date_visite2),
                       resultat_visite: groupe_mlpl.resultat_visite,
                       recommandation: groupe_mlpl.recommandation,
                     });
@@ -163,7 +163,7 @@
 				txtTmp += "date_visite1" +":\"" + formatDateBDD(vm.filtre.date_visite1) + "\",";
 				txtTmp += "objet_visite" +":\"" + vm.filtre.objet_visite + "\",";
 				txtTmp += "nom_prenom_mlpl" +":\"" + vm.filtre.nom_prenom_mlpl + "\",";
-				txtTmp += "date_visite2" +":\"" + formatDateBDD(vm.filtre.date_visite2) + "\",";
+				//txtTmp += "date_visite2" +":\"" + formatDateBDD(vm.filtre.date_visite2) + "\",";
 				txtTmp += "resultat_visite" +":\"" + vm.filtre.resultat_visite + "\",";
 				txtTmp += "recommandation" +":\"" + vm.filtre.recommandation + "\",";
 				// Fin  table visite domicile
@@ -188,10 +188,10 @@
 						id : data.response ,
 						id_groupe_ml_pl: groupe_mlpl.id_groupe_ml_pl,
 						numero: groupe_mlpl.numero,
-						date_visite1: vm.formatDateListe(groupe_mlpl.date_visite1),
+						date_visite1: formatDateBDD(groupe_mlpl.date_visite1),
 						objet_visite: groupe_mlpl.objet_visite,
 						nom_prenom_mlpl: groupe_mlpl.nom_prenom_mlpl,
-						date_visite2: vm.formatDateListe(groupe_mlpl.date_visite2),
+						//date_visite2: vm.formatDateListe(groupe_mlpl.date_visite2),
 						resultat_visite: groupe_mlpl.resultat_visite,
 						recommandation: groupe_mlpl.recommandation,
 						identifiant_menage: groupe_mlpl.identifiant_menage,
@@ -201,10 +201,10 @@
 					}
 					vm.all_visite_domicile.push(mng) ;
 				} else {
-					if(parseInt(suppression==1)) {
+					if(parseInt(suppression)==1) {
 						vm.all_visite_domicile = vm.all_visite_domicile.filter(function(obj) {
-							return obj.id !== vm.currentItem.id;
-						});						
+							return obj.id != groupe_mlpl.id;
+						});						 
 						vm.selectedItem={};
 					} else {
 						vm.affichage_masque_liste_mlpl = false ;
@@ -213,7 +213,7 @@
 						vm.selectedItem.numero = vm.filtre.numero  ;
 						vm.selectedItem.objet_visite = vm.filtre.objet_visite  ;
 						vm.selectedItem.nom_prenom_mlpl = vm.filtre.nom_prenom_mlpl  ;
-						vm.selectedItem.date_visite2 = vm.filtre.date_visite2  ;
+						//vm.selectedItem.date_visite2 = vm.filtre.date_visite2  ;
 						vm.selectedItem.resultat_visite = vm.filtre.resultat_visite  ;
 						vm.selectedItem.recommandation = vm.filtre.recommandation  ;
 						vm.selectedItem.identifiant_menage = vm.filtre.identifiant_menage  ;
@@ -229,14 +229,21 @@
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 			}); 
 		}
-		vm.selection= function (item)  {
-			if ((!vm.affiche_load)&&(!vm.affichage_masque))  {
+		vm.deselection= function (item)
+		{
+			item.$selected = false;
+			vm.selectedItem = {};
+		}
+		vm.selection= function (item)
+		{
+			if ((!vm.affiche_load)&&(!vm.affichage_masque))
+			{
 				vm.selectedItem = item;
 				apiFactory.getAPIgeneraliserREST("visite_domicile_raison/index","cle_etrangere",vm.selectedItem.id).then(function(result) {
 					vm.tab_reponse_visite=result.data.response.raison_visite;
 					vm.tab_reponse_menage_visite=result.data.response.menage_visite;
 				});					
-			}       
+			}  console.log(vm.selectedItem);     
 		}
 		$scope.$watch('vm.selectedItem', function() {
 			if (!vm.all_visite_domicile) return;
@@ -275,7 +282,7 @@
 			vm.filtre.menage_id = vm.selectedItem.menage_id ;
 			vm.filtre.objet_visite = vm.selectedItem.objet_visite ;
 			// vm.filtre.nom_prenom_mlpl = vm.selectedItem.nom_prenom_mlpl ;
-			vm.filtre.date_visite2 = new Date(vm.selectedItem.date_visite2) ;
+			//vm.filtre.date_visite2 = new Date(vm.selectedItem.date_visite2) ;
 			vm.filtre.resultat_visite = vm.selectedItem.resultat_visite ;
 			vm.filtre.recommandation = vm.selectedItem.recommandation ;
 			vm.filtre.identifiant_menage = vm.selectedItem.identifiant_menage ;
@@ -349,11 +356,22 @@
             .targetEvent()
           );
         } 
-		function formatDateBDD(dat) {
-			if (dat) {
+		function formatDateBDD(dat)
+		{
+			if (dat)
+			{
 				var date = new Date(dat);
+				var jour  = date.getDate();
 				var mois = date.getMonth()+1;
-				var dates = (date.getFullYear()+"-"+mois+"-"+date.getDate());
+				if(mois <10)
+                {
+                    mois = '0' + mois;
+                }
+                if(jour <10)
+                {
+                        jour = '0' + jour;
+                }
+				var dates = (date.getFullYear()+"-"+mois+"-"+jour);
 				return dates;
 			}          
 		}
