@@ -74,22 +74,27 @@
 			vm.type_tdb="ACT";
 			vm.titre =" ACT";
 			apiFactory.getAPIgeneraliserREST("tableau_de_bord/index","type_tdb",vm.type_tdb,"tableau_de_bord",1,"detail",1).then(function(result)	{ 
-					vm.all_tdb = result.data.response; 
-					vm.all_tdb_moheli = vm.all_tdb.filter(function(obj) {
-						return obj.ile_id == 1;
-					}); 
-					vm.all_tdb_moheli2 =angular.copy(vm.all_tdb_moheli);	
-					vm.all_tdb_moheli3 =angular.copy(vm.all_tdb_moheli);	
-					vm.all_tdb_grande_comores = vm.all_tdb.filter(function(obj) {
+					vm.all_tdb_m = result.data.response; 
+					vm.all_tdb_a = result.data.response; 
+					vm.all_tdb_gc = result.data.response; 
+					vm.all_tdb_m = vm.all_tdb_m.filter(function(obj) {
+						return parseInt(obj.ile_id) == 1;
+					});    
+					vm.all_tdb_moheli =angular.copy(vm.all_tdb_m);	
+					vm.all_tdb_moheli2 =angular.copy(vm.all_tdb_m);	
+					vm.all_tdb_moheli3 =angular.copy(vm.all_tdb_m);	
+					vm.all_tdb_gc = vm.all_tdb_gc.filter(function(obj) {
 						return obj.ile_id == 2;
 					});         
-					vm.all_tdb_grande_comores2 =angular.copy(vm.all_tdb_grande_comores);	
-					vm.all_tdb_grande_comores3 =angular.copy(vm.all_tdb_grande_comores);	
-					vm.all_tdb_anjouan = vm.all_tdb.filter(function(obj) {
+					vm.all_tdb_grande_comores =angular.copy(vm.all_tdb_gc);	
+					vm.all_tdb_grande_comores2 =angular.copy(vm.all_tdb_gc);	
+					vm.all_tdb_grande_comores3 =angular.copy(vm.all_tdb_gc);	
+					vm.all_tdb_a = vm.all_tdb_a.filter(function(obj) {
 						return obj.ile_id == 4;
-					});         				
-					vm.all_tdb_anjouan2 =angular.copy(vm.all_tdb_anjouan);
-					vm.all_tdb_anjouan3 =angular.copy(vm.all_tdb_anjouan);
+					});         
+					vm.all_tdb_anjouan =angular.copy(vm.all_tdb_a);
+					vm.all_tdb_anjouan2 =angular.copy(vm.all_tdb_a);
+					vm.all_tdb_anjouan3 =angular.copy(vm.all_tdb_a);
 				apiFactory.getAPIgeneraliserREST("tableau_de_bord/index","type_tdb",vm.type_tdb,"tableau_de_bord",1,"recap",1).then(function(result)	{ 
 					// ATTENTION :angular.copy utilisé sinon le même enregistrement sera selectionné en même temps dans les 3 vagues
 					vm.temporaire =result.data.response;
@@ -102,23 +107,28 @@
 		} else if(vm.url=='/tableaudebord/arse/tableau-de-bord') {
 			vm.type_tdb="ARSE";
 			vm.titre =" ARSE"
-			apiFactory.getAPIgeneraliserREST("tableau_de_bord/index","type_tdb",vm.type_tdb,"tableau_de_bord",1).then(function(result)	{ 
-					vm.all_tdb = result.data.response; 
-					vm.all_tdb_moheli = vm.all_tdb.filter(function(obj) {
-						return obj.ile_id == 1;
-					});         
-					vm.all_tdb_moheli2 =angular.copy(vm.all_tdb_moheli);	
-					vm.all_tdb_moheli3 =angular.copy(vm.all_tdb_moheli);	
-					vm.all_tdb_grande_comores = vm.all_tdb.filter(function(obj) {
+			apiFactory.getAPIgeneraliserREST("tableau_de_bord/index","type_tdb",vm.type_tdb,"tableau_de_bord",1,"detail",1).then(function(result)	{ 
+					vm.all_tdb_m = result.data.response; 
+					vm.all_tdb_a = result.data.response; 
+					vm.all_tdb_gc = result.data.response; 
+					vm.all_tdb_m = vm.all_tdb_m.filter(function(obj) {
+						return parseInt(obj.ile_id) == 1;
+					});    
+					vm.all_tdb_moheli =angular.copy(vm.all_tdb_m);	
+					vm.all_tdb_moheli2 =angular.copy(vm.all_tdb_m);	
+					vm.all_tdb_moheli3 =angular.copy(vm.all_tdb_m);	
+					vm.all_tdb_gc = vm.all_tdb_gc.filter(function(obj) {
 						return obj.ile_id == 2;
 					});         
-					vm.all_tdb_grande_comores2 =angular.copy(vm.all_tdb_grande_comores);	
-					vm.all_tdb_grande_comores3 =angular.copy(vm.all_tdb_grande_comores);	
-					vm.all_tdb_anjouan = vm.all_tdb.filter(function(obj) {
+					vm.all_tdb_grande_comores =angular.copy(vm.all_tdb_gc);	
+					vm.all_tdb_grande_comores2 =angular.copy(vm.all_tdb_gc);	
+					vm.all_tdb_grande_comores3 =angular.copy(vm.all_tdb_gc);	
+					vm.all_tdb_a = vm.all_tdb_a.filter(function(obj) {
 						return obj.ile_id == 4;
 					});         
-					vm.all_tdb_anjouan2 =angular.copy(vm.all_tdb_anjouan);
-					vm.all_tdb_anjouan3 =angular.copy(vm.all_tdb_anjouan);
+					vm.all_tdb_anjouan =angular.copy(vm.all_tdb_a);
+					vm.all_tdb_anjouan2 =angular.copy(vm.all_tdb_a);
+					vm.all_tdb_anjouan3 =angular.copy(vm.all_tdb_a);
 				apiFactory.getAPIgeneraliserREST("tableau_de_bord/index","type_tdb",vm.type_tdb,"tableau_de_bord",1,"recap",1).then(function(result)	{ 
 					vm.temporaire =result.data.response;
 					// ATTENTION :angular.copy utilisé sinon le même enregistrement sera selectionné en même temps dans les 3 vagues
@@ -131,23 +141,28 @@
 		} else if(vm.url=='/tableaudebord/macc/tableau-de-bord') {
 			vm.type_tdb="MACC";
 			vm.titre =" MACC";
-			apiFactory.getAPIgeneraliserREST("tableau_de_bord/index","type_tdb",vm.type_tdb,"tableau_de_bord",1).then(function(result)	{ 
-					vm.all_tdb = result.data.response; 
-					vm.all_tdb_moheli = vm.all_tdb.filter(function(obj) {
-						return obj.ile_id == 1;
-					});         
-					vm.all_tdb_moheli2 =angular.copy(vm.all_tdb_moheli);	
-					vm.all_tdb_moheli3 =angular.copy(vm.all_tdb_moheli);	
-					vm.all_tdb_grande_comores = vm.all_tdb.filter(function(obj) {
+			apiFactory.getAPIgeneraliserREST("tableau_de_bord/index","type_tdb",vm.type_tdb,"tableau_de_bord",1,"detail",1).then(function(result)	{ 
+					vm.all_tdb_m = result.data.response; 
+					vm.all_tdb_a = result.data.response; 
+					vm.all_tdb_gc = result.data.response; 
+					vm.all_tdb_m = vm.all_tdb_m.filter(function(obj) {
+						return parseInt(obj.ile_id) == 1;
+					});    
+					vm.all_tdb_moheli =angular.copy(vm.all_tdb_m);	
+					vm.all_tdb_moheli2 =angular.copy(vm.all_tdb_m);	
+					vm.all_tdb_moheli3 =angular.copy(vm.all_tdb_m);	
+					vm.all_tdb_gc = vm.all_tdb_gc.filter(function(obj) {
 						return obj.ile_id == 2;
 					});         
-					vm.all_tdb_grande_comores2 =angular.copy(vm.all_tdb_grande_comores);	
-					vm.all_tdb_grande_comores3 =angular.copy(vm.all_tdb_grande_comores);	
-					vm.all_tdb_anjouan = vm.all_tdb.filter(function(obj) {
+					vm.all_tdb_grande_comores =angular.copy(vm.all_tdb_gc);	
+					vm.all_tdb_grande_comores2 =angular.copy(vm.all_tdb_gc);	
+					vm.all_tdb_grande_comores3 =angular.copy(vm.all_tdb_gc);	
+					vm.all_tdb_a = vm.all_tdb_a.filter(function(obj) {
 						return obj.ile_id == 4;
 					});         
-					vm.all_tdb_anjouan2 =angular.copy(vm.all_tdb_anjouan);
-					vm.all_tdb_anjouan3 =angular.copy(vm.all_tdb_anjouan);
+					vm.all_tdb_anjouan =angular.copy(vm.all_tdb_a);
+					vm.all_tdb_anjouan2 =angular.copy(vm.all_tdb_a);
+					vm.all_tdb_anjouan3 =angular.copy(vm.all_tdb_a);
 				apiFactory.getAPIgeneraliserREST("tableau_de_bord/index","type_tdb",vm.type_tdb,"tableau_de_bord",1,"recap",1).then(function(result)	{ 
 					// ATTENTION :angular.copy utilisé sinon le même enregistrement sera selectionné en même temps dans les 3 vagues
 					vm.temporaire =result.data.response;
@@ -306,5 +321,33 @@
 			});
 			vm.selectedItemMoheli_vague3.$selected = true;
         });		
+		vm.export_excel = function() {
+			vm.affiche_load = true ;
+			vm.erreur=false;
+			vm.erreur2=false;
+			var repertoire = "tableau_de_bord/" ;
+			apiFactory.getAPIgeneraliserREST("reporting/index","etat","menage_beneficiaire",
+						"etat_export_excel",1,
+						"titre_etat","MENAGE BENEFICIAIRE",
+						"village_id",vm.filtre.village_id,
+						"commune_id",vm.filtre.id_commune,
+						"region_id",vm.filtre.id_region,
+						"ile_id",vm.filtre.id_ile,
+						"vague",vm.filtre.vague,
+						"zip",vm.filtre.zip,
+						"id_sous_projet",vm.filtre.id_sous_projet).then(function(result) { 
+						vm.status =  result.data.status ;
+						if(vm.status)  {
+							var nom_file=result.data.nom_file;
+							window.location = apiUrlReporting + nom_file; 
+							vm.affiche_load =false; 
+						} else {
+							vm.erreur=true;
+							vm.affiche_load =false;
+							var message="ERREUR";
+							vm.showAlert('Export ménage bénéficiaire en excel',message);
+						}                      
+			});
+		}
     }
   })();

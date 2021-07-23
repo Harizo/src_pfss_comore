@@ -930,8 +930,8 @@
                               </div>
                         </md-input-container> 
                         <md-input-container flex="100" flex-gt-xs="40">
-                            <label>Durée de la formation</label>
-                            <input  type="text" name="duree" ng-model="vm.fiche_profilage_besoin_formation.duree" required>
+                            <label>Durée de la formation (heure)</label>
+                            <input  type="number" name="duree" ng-model="vm.fiche_profilage_besoin_formation.duree" required>
                               <div ng-messages="formfiche_profilage_besoin_formation.duree.$error" role="alert">
                                 <div ng-message="required">
                                   <span>Durée de la formation Obligatoire.</span>
@@ -975,7 +975,7 @@
                              {{contr.objectif}}
                           </td>
                           <td>
-                             {{contr.duree}}
+                             {{contr.duree}} heure(s)
                           </td>
                         </tr>
                       </tbody>

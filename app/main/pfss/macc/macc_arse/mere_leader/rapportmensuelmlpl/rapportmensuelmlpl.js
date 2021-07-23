@@ -475,7 +475,7 @@
 			for (var i = 0; i < vm.tab_reponse_solution_prise.length; i++) {
 				txtTmp += "id_reponse_6_" + (i + 1) +":\"" + vm.tab_reponse_solution_prise[i] + "\",";	
 			}	
-			txtTmp += "nombre_reponse_theme_sensibilisation" +":\"" + vm.tab_reponse_theme_sensibilisation + "\",";	
+			txtTmp += "nombre_reponse_theme_sensibilisation" +":\"" + vm.tab_reponse_theme_sensibilisation.length + "\",";	
 			txtTmp += "nombre_reponse_projet_de_groupe" +":\"" + vm.tab_reponse_projet_de_groupe.length + "\",";	
 			txtTmp += "nombre_reponse_probleme_rencontre" +":\"" + vm.tab_reponse_probleme_rencontres.length + "\",";	
 			txtTmp += "nombre_reponse_resolution_mlpl" +":\"" + vm.tab_reponse_solution_prise.length + "\",";	

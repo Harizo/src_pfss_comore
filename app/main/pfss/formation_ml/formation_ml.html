@@ -618,7 +618,7 @@
                           </div>                                  
                             <md-input-container flex="100" flex-gt-xs="25">
                               <label>Nombre de ML pour la formation</label>
-                              <input  type="text" name="nbr_ml" ng-model="vm.formation_ml_repartition.nbr_ml" required>
+                              <input  type="number" name="nbr_ml" ng-model="vm.formation_ml_repartition.nbr_ml" required>
                               <div ng-messages="formformation_ml_repartition.nbr_ml.$error"role="alert">
                                   <div ng-message="required">
                                       <span>Nombre de ML pour la formation obligatoire.</span>

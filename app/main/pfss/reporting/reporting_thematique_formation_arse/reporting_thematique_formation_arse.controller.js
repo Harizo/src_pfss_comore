@@ -128,12 +128,9 @@
       }
       vm.filtre_theme_formation_detail = function()
       {
-        apiFactory.getAPIgeneraliserREST("theme_formation_detail/index","cle_etrangere",vm.filtre.id_theme_formation_detail).then(function(result)
+        apiFactory.getAPIgeneraliserREST("theme_formation_detail/index","cle_etrangere",vm.filtre.id_theme_formation).then(function(result)
         { 
-          vm.all_village = result.data.response;    
-          vm.filtre.village_id = null ; 
-          
-          
+          vm.all_theme_formation_detail = result.data.response;    
         });
       }
 	  
