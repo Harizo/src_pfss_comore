@@ -138,7 +138,7 @@
                                 </md-input-container>
                                 <md-input-container flex="100" flex-gt-xs="5">
                                   <label>Activité</label>
-                                    <md-select ng-model="vm.filtre.id_theme_formation" name="id_theme_formation">
+                                    <md-select ng-model="vm.filtre.id_theme_formation" name="id_theme_formation"  ng-change="vm.filtre_theme_formation_detail()">
                                       <md-option value="">&nbsp;</md-option>
                                       <md-option ng-repeat="z in vm.all_theme_formation" value="{{z.id}}">
                                         {{z.description}}
@@ -153,7 +153,7 @@
                                 </md-input-container>
                                 <md-input-container flex="100" flex-gt-xs="5">
                                   <label>Sous-Activité</label>
-                                    <md-select ng-model="vm.filtre.id_theme_formation_detail" name="id_theme_formation_detail">
+                                    <md-select ng-model="vm.filtre.id_theme_formation_detail" name="id_theme_formation_detail" ng-disabled="!vm.filtre.id_theme_formation">
                                       <md-option value="">&nbsp;</md-option>
                                       <md-option ng-repeat="z in vm.all_theme_formation_detail" value="{{z.id}}">
                                         {{z.description}}
