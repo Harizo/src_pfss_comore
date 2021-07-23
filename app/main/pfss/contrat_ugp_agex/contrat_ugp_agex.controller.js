@@ -22,6 +22,8 @@
             order:[] 
         };
 
+        vm.affiche_load = true ;
+
         //CLE ETRANGEERE
             apiFactory.getAll("Agent_ex/index").then(function(result)
             {
@@ -56,6 +58,7 @@
 
             apiFactory.getParamsDynamic("Contrat_ugp_agex/index?get_all=true").then(function(result)
             {
+                vm.affiche_load = false;
                 vm.all_contrat_ugp_agex = result.data.response;
             });
 
@@ -1662,9 +1665,10 @@
 
             vm.get_avenant = function()
             {
-                
+                vm.affiche_load = true;
                 apiFactory.getParamsDynamic("Contrat_ugp_agex_avenant/index?id_contrat_ugp_agex="+vm.selected_contrat_ugp_agex.id).then(function(result)
                 {
+                    vm.affiche_load = false;
                     vm.all_contrat_ugp_agex_avenant = result.data.response;
                 });
 
