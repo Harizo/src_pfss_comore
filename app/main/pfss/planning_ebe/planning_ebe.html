@@ -194,8 +194,8 @@
                             </div>
                                                               
                             <md-input-container flex="100" flex-gt-xs="25">
-                              <label>Durée</label>
-                              <input  type="text" name="duree" ng-model="vm.planning_ebe.duree" required>
+                              <label>Durée (heure)</label>
+                              <input  type="number" name="duree" ng-model="vm.planning_ebe.duree" required>
                               <div ng-messages="formplanning_ebe.duree.$error"role="alert">
                                   <div ng-message="required">
                                       <span>Durée obligatoire.</span>
@@ -261,7 +261,7 @@
                                   <span ><strong >Nombre menage membre</strong>: {{contr.groupe_ml_pl.nbr_menage_membre}}</span>
                                 </td>
                                 <td>{{contr.date_ebe | date:'dd/MM/yyyy'}}</td> 
-                                <td>{{contr.duree}}</td>
+                                <td>{{contr.duree}} heure(s)</td>
                                 <td>{{contr.lieu}}</td>
                                 <td>{{contr.theme_sensibilisation.description}}</td>
                             </tr>
