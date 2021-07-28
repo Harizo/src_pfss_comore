@@ -14,10 +14,23 @@
         pagingType: 'simple',
         autoWidth: false,
         responsive: true
+		
+      };
+	  vm.dtOptionsfils =
+      {
+        dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
+        pagingType: 'simple',
+        autoWidth: false,
+        responsive: true,
+		lengthMenu: [3, 5, 10, 15],
+		pageLength:3
+		
       };
 
       vm.visite_domicile_column = [{titre:"N°"},{titre:"Visite 1"},{titre:"Raison visite"},{titre:"Ménage visité"},{titre:"Objet"},{titre:"Nom ML/PL"},
-	  {titre:"Visite 2"},{titre:"Résultat"},{titre:"Récommandation"}];
+	  //{titre:"Visite 2"},
+	  {titre:"Résultat"},
+	  {titre:"Récommandation"}];
       //initialisation variable
 		vm.currentItem = {};
         vm.affiche_load = false ;
@@ -107,10 +120,16 @@
 			});			
         });
       }
-		vm.filtrer = function()	{
-			vm.all_visite_domicile = [];
+	  vm.Modifier_groupeMLPL=function(id_groupe) {
+		if(id_groupe) {
 			vm.affiche_load = true ;
-			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"statut","BENEFICIAIRE").then(function(result) { 				
+			vm.all_groupe_mlpl.forEach(function(mng) {
+				if(parseInt(mng.id)==parseInt(id_groupe)) {
+					vm.filtre.nom_mere_leader = mng.nom_prenom_ml_pl; 
+					vm.filtre.nom_prenom_mlpl = mng.nom_prenom_ml_pl; 
+				}
+			});	
+			apiFactory.getAPIgeneraliserREST("visite_domicile/index","menu","getliste_menagepargroupe","id_groupe_ml_pl",vm.filtre.id_groupe_ml_pl).then(function(result) { 				
 				vm.all_menages = result.data.response;    
 				apiFactory.getAPIgeneraliserREST("visite_domicile/index","cle_etrangere",vm.filtre.id_groupe_ml_pl).then(function(result) { 				
 					vm.all_visite_domicile = result.data.response;    
@@ -120,7 +139,21 @@
 						vm.showAlert("INFORMATION",msg);
 					}	
 				});
-			});
+			});					
+		}
+	}
+		vm.filtrer = function()	{
+			vm.all_visite_domicile = [];
+			vm.affiche_load = true ;   
+			apiFactory.getAPIgeneraliserREST("visite_domicile/index","cle_etrangere",vm.filtre.id_groupe_ml_pl).then(function(result) { 				
+				vm.all_visite_domicile = result.data.response;    
+				vm.affiche_load = false ;
+				var msg ="Aucune visite à domicile dans le village de  " +vm.filtre.village  + ". Merci !";	
+					if(result.data.response.length==0) {
+						vm.showAlert("INFORMATION",msg);
+					}	
+				});
+			
 		}
 		// Début Fonction Groupe ML/PL	
 		vm.save_visite_domicile = function(groupe_mlpl,suppression) {
@@ -199,7 +232,8 @@
 						menage_visite: data.donnees_retour.menage_visite,
 						raison_visite: data.donnees_retour.raison_visite,
 					}
-					vm.all_visite_domicile.push(mng) ;
+					vm.all_visite_domicile.push(mng) ;					
+					vm.nouvelle_element = false ;
 				} else {
 					if(parseInt(suppression)==1) {
 						vm.all_visite_domicile = vm.all_visite_domicile.filter(function(obj) {
@@ -253,12 +287,20 @@
 			vm.selectedItem.$selected = true;
 		})
 		vm.ajouter_visite_domicile = function() {
-			apiFactory.getAPIgeneraliserREST("visite_domicile/index","cle_etrangere",vm.filtre.id_groupe_ml_pl, "visite_domicile",1).then(function(result) { 
+			/*apiFactory.getAPIgeneraliserREST("visite_domicile/index","cle_etrangere",vm.filtre.id_groupe_ml_pl, "visite_domicile",1).then(function(result) { 
 				vm.temp = result.data.response;
 				vm.temp.forEach(function(mng) {
 					vm.filtre.numero=mng.nombre;
-				});			
-			});			
+				});
+							
+			});	*/
+			var max_numero = 1;
+			if (vm.all_visite_domicile.length !=0)
+			{
+				max_numero = Math.max.apply(Math, vm.all_visite_domicile.map(function(o){return o.numero;})) +1;
+			}			
+
+			vm.filtre.numero = max_numero ;		
 			vm.nouvelle_element = true ;
 			vm.affichage_masque = true ;
 			vm.selectedItem = {} ;
@@ -269,7 +311,7 @@
 			vm.filtre.date_visite2 = new Date() ;
 			vm.filtre.resultat_visite = "" ;
 			vm.filtre.recommandation = "" ;
-			vm.filtre.numero = null ;
+			//vm.filtre.numero = null ;
 			vm.tab_reponse_visite=[];
 			vm.tab_reponse_menage_visite=[];
 		}
@@ -328,16 +370,7 @@
 				}
 			});			
 		}
-		vm.Modifier_groupeMLPL=function(id_groupe) {
-			if(id_groupe) {
-				vm.all_groupe_mlpl.forEach(function(mng) {
-					if(parseInt(mng.id)==parseInt(id_groupe)) {
-						vm.filtre.nom_mere_leader = mng.nom_prenom_ml_pl; 
-						vm.filtre.nom_prenom_mlpl = mng.nom_prenom_ml_pl; 
-					}
-				});						
-			}
-		} 
+		 
 		// Fin Fonction Groupe ML/PL
 		
 		// Début Fonction filtre par découpage admin et detail par groupe ML/PM	
