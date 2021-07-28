@@ -33,8 +33,74 @@
             return $http.get(apiUrl+controller+"/"+valeur1+"/"+valeur2+"/"+valeur3);
           },
           getAPIgeneraliserREST: function(controller,champ1,valeur1,champ2,valeur2,champ3,valeur3,champ4,valeur4,champ5,valeur5,champ6,valeur6,champ7,valeur7,champ8,valeur8,champ9,valeur9,champ10,valeur10,champ11,valeur11,champ12,valeur12,champ13,valeur13) {
-            return $http.get(apiUrl+controller+"?"+champ1+"="+valeur1+"&"+champ2+"="+valeur2+"&"+champ3+"="+valeur3+"&"+champ4+"="+valeur4+"&"+champ5+"="+valeur5+"&"+champ6+"="+valeur6+"&"+champ7+"="+valeur7+"&"+champ8+"="+valeur8+"&"+champ9+"="+valeur9+"&"+champ10+"="+valeur10+"&"+champ11+"="+valeur11+"&"+champ12+"="+valeur12+"&"+champ13+"="+valeur13);
-          },
+            if (!champ2)
+            {
+              return $http.get(apiUrl+controller+"?"+champ1+"="+valeur1);         
+            }
+            else if (!champ3)
+            {
+              return $http.get(apiUrl+controller+"?"+champ1+"="+valeur1+"&"+champ2+"="+valeur2);
+         
+            }
+            else if (!champ4)
+            {
+              return $http.get(apiUrl+controller+"?"+champ1+"="+valeur1+"&"+champ2+"="+valeur2+"&"+champ3+"="+valeur3);
+         
+            }
+            else if (!champ5)
+            {
+              return $http.get(apiUrl+controller+"?"+champ1+"="+valeur1+"&"+champ2+"="+valeur2+"&"+champ3+"="+valeur3+"&"+champ4+"="+valeur4);
+         
+            }
+            else if (!champ6)
+            {
+              return $http.get(apiUrl+controller+"?"+champ1+"="+valeur1+"&"+champ2+"="+valeur2+"&"+champ3+"="+valeur3+"&"+champ4+"="+valeur4+"&"+champ5+"="+valeur5);
+         
+            }
+            else if (!champ7)
+            {
+              return $http.get(apiUrl+controller+"?"+champ1+"="+valeur1+"&"+champ2+"="+valeur2+"&"+champ3+"="+valeur3+"&"+champ4+"="+valeur4+"&"+champ5+"="+valeur5+"&"+champ6+"="+valeur6);
+         
+            }
+            else if (!champ8)
+            {
+              return $http.get(apiUrl+controller+"?"+champ1+"="+valeur1+"&"+champ2+"="+valeur2+"&"+champ3+"="+valeur3+"&"+champ4+"="+valeur4+"&"+champ5+"="+valeur5+"&"+champ6+"="+valeur6+"&"+champ7+"="+valeur7);
+         
+            }
+            else if (!champ9)
+            {
+              return $http.get(apiUrl+controller+"?"+champ1+"="+valeur1+"&"+champ2+"="+valeur2+"&"+champ3+"="+valeur3+"&"+champ4+"="+valeur4+"&"+champ5+"="+valeur5+"&"+champ6+"="+valeur6+"&"+champ7+"="+valeur7+"&"+champ8+"="+valeur8);
+         
+            }
+            else if (!champ10)
+            {
+              return $http.get(apiUrl+controller+"?"+champ1+"="+valeur1+"&"+champ2+"="+valeur2+"&"+champ3+"="+valeur3+"&"+champ4+"="+valeur4+"&"+champ5+"="+valeur5+"&"+champ6+"="+valeur6+"&"+champ7+"="+valeur7+"&"+champ8+"="+valeur8+"&"+champ9+"="+valeur9);
+         
+            }
+            else if (!champ11)
+            {
+              return $http.get(apiUrl+controller+"?"+champ1+"="+valeur1+"&"+champ2+"="+valeur2+"&"+champ3+"="+valeur3+"&"+champ4+"="+valeur4+"&"+champ5+"="+valeur5+"&"+champ6+"="+valeur6+"&"+champ7+"="+valeur7+"&"+champ8+"="+valeur8+"&"+champ9+"="+valeur9+"&"+champ10+"="+valeur10);
+         
+            }
+            else if (!champ12)
+            {
+              return $http.get(apiUrl+controller+"?"+champ1+"="+valeur1+"&"+champ2+"="+valeur2+"&"+champ3+"="+valeur3+"&"+champ4+"="+valeur4+"&"+champ5+"="+valeur5+"&"+champ6+"="+valeur6+"&"+champ7+"="+valeur7+"&"+champ8+"="+valeur8+"&"+champ9+"="+valeur9+"&"+champ10+"="+valeur10+"&"+champ11+"="+valeur11);
+         
+            }
+            else if(!champ13)
+            {
+              return $http.get(apiUrl+controller+"?"+champ1+"="+valeur1+"&"+champ2+"="+valeur2+"&"+champ3+"="+valeur3+"&"+champ4+"="+valeur4+"&"+champ5+"="+valeur5+"&"+champ6+"="+valeur6+"&"+champ7+"="+valeur7+"&"+champ8+"="+valeur8+"&"+champ9+"="+valeur9+"&"+champ10+"="+valeur10+"&"+champ11+"="+valeur11+"&"+champ12+"="+valeur12);
+         
+            }
+            else
+            {
+              return $http.get(apiUrl+controller+"?"+champ1+"="+valeur1+"&"+champ2+"="+valeur2+"&"+champ3+"="+valeur3+"&"+champ4+"="+valeur4+"&"+champ5+"="+valeur5+"&"+champ6+"="+valeur6+"&"+champ7+"="+valeur7+"&"+champ8+"="+valeur8+"&"+champ9+"="+valeur9+"&"+champ10+"="+valeur10+"&"+champ11+"="+valeur11+"&"+champ12+"="+valeur12+"&"+champ13+"="+valeur13);
+         
+            }
+            
+            //return $http.get(apiUrl+controller+"?"+champ1+"="+valeur1+"&"+champ2+"="+valeur2+"&"+champ3+"="+valeur3+"&"+champ4+"="+valeur4+"&"+champ5+"="+valeur5+"&"+champ6+"="+valeur6+"&"+champ7+"="+valeur7+"&"+champ8+"="+valeur8+"&"+champ9+"="+valeur9+"&"+champ10+"="+valeur10+"&"+champ11+"="+valeur11+"&"+champ12+"="+valeur12+"&"+champ13+"="+valeur13);
+         
+             },
           getAllNonFait: function(model,fait) {//DP
             return $http.get(apiUrl+model+"?fait='"+fait+"'");
           },
