@@ -6,7 +6,7 @@
         .module('app.pfss.macc.macc_arse.mere_leader.groupemlpl')
         .controller('GroupemlplController', GroupemlplController);
     /** @ngInject */
-    function GroupemlplController($mdDialog, $scope, apiFactory, $state,$cookieStore)  {
+    function GroupemlplController($mdDialog, $scope, apiFactory, $state,$cookieStore,apiUrlReporting)  {
 		var vm = this;
 	   vm.dtOptions =
       {
@@ -206,7 +206,7 @@
 					var mng={
 						id : data.response ,
 						village_id: groupe_mlpl.village_id,
-						date_creation: formatDateBDD(groupe_mlpl.date_creation),
+						date_creation: vm.formatDateListeJJMMYYYY(groupe_mlpl.date_creation),
 						chef_village: groupe_mlpl.chef_village,
 						id_menage: groupe_mlpl.id_menage,
 						nom_prenom_ml_pl: groupe_mlpl.nom_prenom_ml_pl,
@@ -220,11 +220,26 @@
 						lienparental: groupe_mlpl.lienparental,
 					}
 					vm.all_groupe_mlpl.push(mng) ;
+					// Nouveau => enlever de la liste de ménage le ménage selectionné élue ML/PL : pour éviter rafraichissement
+					vm.all_menages = vm.all_menages.filter(function(obj) {
+						return obj.id !== groupe_mlpl.id_menage;
+					});	
 				} else {
 					if(suppression==1) {
-						vm.all_groupe_mlpl = vm.all_groupe_mlpl.filter(function(obj) {
-							return obj.id !== vm.currentItem.id;
-						});	
+						vm.affiche_load=true;
+						// Réintégrer dans la liste des ménages à choisir le ménage supprimé tout à l'heure
+						apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"etat_statut","beneficiaire","id_sous_projet",vm.filtre.id_sous_projet,"beneficiaire",1,"groupe_ml_pl",1).then(function(result) { 
+							vm.all_menages = result.data.response; 
+							var msg ="Aucun ménage bénéficiaire dans le village de " +vm.filtre.village + ". Merci !";				
+							if(result.data.response.length==0) {
+								vm.showAlert("INFORMATION",msg);
+							}
+							// Suppression de l'enregistrement selectionné	de la liste
+							vm.all_groupe_mlpl = vm.all_groupe_mlpl.filter(function(obj) {
+								return obj.id !== vm.currentItem.id;
+							});	
+							vm.affiche_load = false ;
+						});
 						vm.selectedItem	={};
 					} else {
 						vm.affichage_masque_liste_mlpl = false ;
@@ -658,10 +673,16 @@
 				// vm.all_menages = result.data.response.menage;   
 				vm.all_menage_mlpl = result.data.response.menage; 
 				vm.tab_reponse_menage_ml_pl = result.data.response.tab_reponse_menage_ml_pl; 
-				console.log(vm.all_menage_mlpl);
-				apiFactory.getAPIgeneraliserREST("liste_menage_mlpl/index","cle_etrangere",id_groupe_ml_pl).then(function(resultat) 	{ 
-					vm.all_listemenage_mlpl = resultat.data.response; 
-					vm.affiche_load = false;
+				apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"etat_statut","beneficiaire","id_sous_projet",vm.filtre.id_sous_projet,"beneficiaire",1,"groupe_ml_pl",1,"id_menage",vm.selectedItem.id_menage).then(function(result) { 
+					vm.all_menages = result.data.response; 
+					var msg ="Aucun ménage bénéficiaire dans le village de " +vm.filtre.village + ". Merci !";				
+					if(result.data.response.length==0) {
+						vm.showAlert("INFORMATION",msg);
+					}
+					apiFactory.getAPIgeneraliserREST("liste_menage_mlpl/index","cle_etrangere",id_groupe_ml_pl).then(function(resultat) 	{ 
+						vm.all_listemenage_mlpl = resultat.data.response; 
+						vm.affiche_load = false;
+					});
 				});
 			});
 		}
@@ -1984,6 +2005,14 @@
 				return dates;
 			}          
 		}
+		vm.formatDateListeJJMMYYYY = function (dat) {
+			if (dat) {
+				var date = new Date(dat);
+				var mois = date.getMonth()+1;
+				var dates = (date.getDate()+"/"+mois+"/"+date.getFullYear());
+				return dates;
+			}          
+		}
 		vm.affichage_sexe_int = function(sexe_int) {      
 			switch (sexe_int) {
 				case '1':
@@ -1998,6 +2027,22 @@
 			}
 		}
 		// FIN FONCTION UTILITAIRE
+		vm.export_excel = function() {
+			vm.affiche_export_excel = true ;
+			apiFactory.getAPIgeneraliserREST("groupe_mlpl/index","cle_etrangere",vm.filtre.village_id,"export_excel",100).then(function(result) { 				
+				vm.status=result.data.status;
+				if(vm.status)  {
+					alert("tao a");
+					var nom_file=result.data.nom_file;
+					window.location = apiUrlReporting + nom_file; 
+					vm.affiche_export_excel =false; 
+				} else {
+					vm.msg=result.data.message;
+					vm.affiche_export_excel =false;
+					vm.showAlert('INFORMATION',vm.msg);
+				}                      
+			});
+		}
 
     }
 })();
