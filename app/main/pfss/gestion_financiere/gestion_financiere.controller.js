@@ -148,7 +148,7 @@
             [
                 {titre:"Code"},
                 {titre:"Libellé"},
-                {titre:"Montant"}
+                {titre:"Montant prévu"}
             ];
 
             vm.affiche_load = false ;

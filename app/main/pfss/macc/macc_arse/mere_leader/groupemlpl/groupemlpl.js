@@ -1945,7 +1945,7 @@
 					vm.nontrouvee=false;
 				}
 			});	
-			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"etat_statut","beneficiaire","id_sous_projet",vm.filtre.id_sous_projet,"beneficiaire",1).then(function(result) { 
+			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"etat_statut","beneficiaire","id_sous_projet",vm.filtre.id_sous_projet,"beneficiaire",1,"groupe_ml_pl",1).then(function(result) { 
 				vm.all_menages = result.data.response; 
 				var msg ="Aucun ménage bénéficiaire dans le village de " +vm.filtre.village + ". Merci !";				
 				if(result.data.response.length==0) {
