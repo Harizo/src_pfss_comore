@@ -37,7 +37,7 @@
 							<md-icon md-font-icon="icon-close-circle-outline" class="s16" style="color: white;"></md-icon>
                               Supprimer
                             </md-button>
-                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised custum_button" aria-label="deselection" ng-click="vm.annuler()" style="width:10%;">
+                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised md-primary" aria-label="deselection" ng-click="vm.annuler()" style="width:11%; font-size: 11px;">
 							<md-icon md-font-icon="icon-no" class="s16" style="color: white;"></md-icon>
                               Désélectionner
                             </md-button>
@@ -47,7 +47,7 @@
                              <div layout="column" layout-gt-xs="row" flex>
                                 <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Île</label>
-                                    <md-select ng-model="vm.filtre.id_ile" name="ile" ng-change="vm.filtre_region()" required ng-disabled="vm.affiche_load || vm.selectedItem.id">
+                                    <md-select ng-model="vm.filtre.id_ile" name="ile" ng-change="vm.filtre_region()" required ng-disabled="vm.affiche_load || vm.selectedItem.id || vm.nouvelle_element">
                                      
                                       <md-option ng-repeat="ile in vm.all_ile" value="{{ile.id}}" >
                                         {{ile.Ile}}
@@ -64,7 +64,7 @@
 
                                 <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Préfecture</label>
-                                    <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_ile || vm.selectedItem.id" required>
+                                    <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_ile || vm.selectedItem.id || vm.nouvelle_element" required>
                                       
                                       <md-option ng-repeat="region in vm.all_region" value="{{region.id}}" >
                                         {{region.Region}}
@@ -81,7 +81,7 @@
 
                                 <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Commune</label>
-                                    <md-select ng-model="vm.filtre.id_commune" name="commune" ng-change="vm.filtre_village()" ng-disabled="!vm.filtre.id_region || vm.selectedItem.id"  required>
+                                    <md-select ng-model="vm.filtre.id_commune" name="commune" ng-change="vm.filtre_village()" ng-disabled="!vm.filtre.id_region || vm.selectedItem.id || vm.nouvelle_element"  required>
                                      
                                       <md-option ng-repeat="commune in vm.all_commune" value="{{commune.id}}" >
                                         {{commune.Commune}}
@@ -98,7 +98,7 @@
 
                                 <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Village</label>
-                                    <md-select ng-model="vm.filtre.village_id" name="village" ng-change="vm.filtre_groupe_mlpl()" ng-disabled="!vm.filtre.id_commune || vm.selectedItem.id"  required>
+                                    <md-select ng-model="vm.filtre.village_id" name="village" ng-change="vm.filtre_groupe_mlpl()" ng-disabled="!vm.filtre.id_commune || vm.selectedItem.id || vm.nouvelle_element"  required>
                                       <md-option ng-repeat="village in vm.all_village" value="{{village.id}}" >
                                         {{village.Village}}
                                       </md-option>
@@ -121,7 +121,7 @@
                                 </md-input-container>
                                 <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Groupe ML/PL</label>
-                                    <md-select ng-model="vm.filtre.id_groupe_ml_pl" name="id_groupe_ml_pl"  ng-disabled="!vm.filtre.village_id || vm.selectedItem.id" required ng-change="vm.Modifier_groupeMLPL(vm.filtre.id_groupe_ml_pl)">
+                                    <md-select ng-model="vm.filtre.id_groupe_ml_pl" name="id_groupe_ml_pl"  ng-disabled="!vm.filtre.village_id || vm.selectedItem.id || vm.nouvelle_element" required ng-change="vm.Modifier_groupeMLPL(vm.filtre.id_groupe_ml_pl)">
                                       <md-option ng-repeat="grp in vm.all_groupe_mlpl" value="{{grp.id}}" >
                                         {{grp.nom_groupe}} | {{grp.nom_prenom_ml_pl}}
                                       </md-option>
@@ -177,17 +177,9 @@
 										<md-datepicker ng-model="vm.filtre.date_visite1"   md-placeholder="Entrer date visite 1" required>                       
 										</md-datepicker>
 									</div>
-									<div layout="column" layout-gt-xs="row" flex ng-show="vm.affichage_masque">
-											<fieldset class="standard" style="height:40%;overflow-y:auto;overflow-x:auto;">
-												<legend  class="md-grey-800-bg">Raison visite domicile</legend>
-												<div layout="column" >	
-													<md-checkbox ng-repeat='det in vm.all_raison_visite_domicile' ng-checked="exists(det.id, vm.tab_reponse_visite)" ng-click="vm.toggle(det.id, vm.tab_reponse_visite)">
-														{{det.description}}
-													</md-checkbox>
-												</div>	
-											</fieldset>
-										<md-input-container flex-gt-xs="50" ng-show="vm.affichage_masque">
-											<textarea style="border:2px solid;" name="objet_visite" ng-model="vm.filtre.objet_visite"	placeholder="Objet de la visite" matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" required>
+									<div layout="column" layout-gt-xs="row" flex  ng-show="vm.affichage_masque">
+										<md-input-container flex-gt-xs="100">
+											<textarea name="objet_visite" ng-model="vm.filtre.objet_visite"	placeholder="Objet de la visite" matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" required>
 											</textarea>
 											<div ng-messages="formvisite.objet_visite.$error"
 												role="alert">
@@ -196,17 +188,106 @@
 												</div>
 											</div>
 										</md-input-container>
-										<md-input-container flex="100" flex-gt-xs="35">
+									</div>
+									
+									<div layout="column" ng-show="vm.affichage_masque" style="font-size: 12px !important;">
+										
+										<fieldset class="standard" style="height:40%;overflow-y:auto;overflow-x:auto;">
+											<legend  class="md-grey-800-bg">Raison visite domicile</legend>
+											<table class="dataTable row-border hover cell-border text-center" datatable="ng" dt-options="vm.dtOptionsfils">
+												<thead>
+													<tr>
+													<th class="secondary-text">
+														<div class="table-header">
+														<span class="column-title text-center">Choix</span>
+														</div>
+													</th>
+													<th class="secondary-text">
+														<div class="table-header">
+														<span class="column-title text-center">Raison visite domicile</span>
+														</div>
+													</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat='det in vm.all_raison_visite_domicile'>
+													<td style=" padding: 0px !important;">
+														<md-checkbox aria-label="Raison visite domicile" ng-checked="exists(det.id, vm.tab_reponse_visite)" ng-click="vm.toggle(det.id, vm.tab_reponse_visite)">
+														
+														</md-checkbox>
+													</td>
+													<td class="text-left">{{det.description}}</td>
+													
+													</tr>
+												</tbody>
+											</table>
+										</fieldset>
+									</div><br>
+									
+									<div layout="column" ng-show="vm.affichage_masque" style="font-size: 12px !important;">
+										
+										<fieldset class="standard" style="height:40%;overflow-y:auto;overflow-x:auto;">
+											<legend  class="md-grey-800-bg">Ménage visité</legend>
+											<table class="dataTable row-border hover cell-border text-center" datatable="ng" dt-options="vm.dtOptionsfils">
+												<thead>
+													<tr>
+													<th class="secondary-text">
+														<div class="table-header">
+														<span class="column-title text-center">Choix</span>
+														</div>
+													</th>
+													<th class="secondary-text">
+														<div class="table-header">
+														<span class="column-title text-center">Ménage visité</span>
+														</div>
+													</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat='men in vm.all_menages'>
+													<td style=" padding: 0px !important;">
+														<md-checkbox aria-label="Menage visite" ng-checked="exists(men.id, vm.tab_reponse_menage_visite)" ng-click="vm.toggle(men.id, vm.tab_reponse_menage_visite)">
+															
+														</md-checkbox>
+													</td>
+													<td class="text-left">{{men.identifiant_menage}} - {{men.nomchefmenage}}</td>
+													
+													</tr>
+												</tbody>
+											</table>
+										</fieldset>
+									</div><br>
+									<!--div layout="column" layout-gt-xs="row" flex ng-show="vm.affichage_masque">
+											<fieldset class="standard" style="height:40%;overflow-y:auto;overflow-x:auto;">
+												<legend  class="md-grey-800-bg">Raison visite domicile</legend>
+												<div layout="column" >	
+													<md-checkbox ng-repeat='det in vm.all_raison_visite_domicile' ng-checked="exists(det.id, vm.tab_reponse_visite)" ng-click="vm.toggle(det.id, vm.tab_reponse_visite)">
+														{{det.description}}
+													</md-checkbox>
+												</div>	
+											</fieldset-->
+										<!--md-input-container flex-gt-xs="50" ng-show="vm.affichage_masque">
+											<textarea style="border:2px solid;" name="objet_visite" ng-model="vm.filtre.objet_visite"	placeholder="Objet de la visite" matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" required>
+											</textarea>
+											<div ng-messages="formvisite.objet_visite.$error"
+												role="alert">
+												<div ng-message="required">
+													<span>Objet de la visite obligatoire.</span>
+												</div>
+											</div>
+										</md-input-container-->
+										<!--md-input-container flex="100" flex-gt-xs="35">
 											<fieldset class="standard" style="height:40%;overflow-y:auto;overflow-x:auto;">
 												<legend  class="md-grey-800-bg">Ménage visité</legend>
 												<div layout="column" >	
 													<md-checkbox ng-repeat='men in vm.all_menages' ng-checked="exists(men.id, vm.tab_reponse_menage_visite)" ng-click="vm.toggle(men.id, vm.tab_reponse_menage_visite)">
 														{{men.identifiant_menage}} - {{men.nomchefmenage}}
 													</md-checkbox>
+												</div>
 											</fieldset>		
-											</div>	
+												
 										</md-input-container>
-									</div>
+									</div-->
 									<div layout="column" layout-gt-xs="row" flex ng-show="vm.affichage_masque">
 										<!--span>Date visite 2</span>
 										<md-input-container>
@@ -279,7 +360,7 @@
 								  </td>
 								  <td>{{grp_mlpl.objet_visite}}</td>
 								  <td>{{grp_mlpl.nom_prenom_mlpl}}</td>
-								  <td>{{grp_mlpl.date_visite2  | date:'dd/MM/yyyy'}}</td>
+								  <!--td>{{grp_mlpl.date_visite2  | date:'dd/MM/yyyy'}}</td-->
 								  <td>{{grp_mlpl.resultat_visite}}</td>
 								  <td>{{grp_mlpl.recommandation}}</td>
 								</tr>
