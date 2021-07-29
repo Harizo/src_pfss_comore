@@ -497,11 +497,9 @@
 								  <tbody>
 									<tr ng-repeat="mngpl in vm.all_listemenage_mlpl  track by $index"  ng-class="{selected: mngpl.$selected}" ng-click="vm.selection_presence_menage_bienetre(mngpl)">
 										<td class="text-left">
-											<!--div layout="column" -->	
 												<md-checkbox ng-checked="exists(mngpl.id, vm.tab_reponse_presence_bienetre)" ng-click="vm.toggle(mngpl.id, vm.tab_reponse_presence_bienetre)" style="margin: 2px 0 2px !important;">
 													{{mngpl.identifiant_menage}} - {{mngpl.nomchefmenage}}
 												</md-checkbox>
-											<!--/div-->
 										</td>
 										<td class="text-left">{{mngpl.nom_conjoint}}</td>
 										<td>{{mngpl.Addresse}}</td>
@@ -1141,8 +1139,6 @@
                         </table>
                     </div>
                 	</md-tab> --> 
-                    <md-tab> 
-                    </md-tab> 
                 </md-tabs>
             </div>
         </div>

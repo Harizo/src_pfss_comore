@@ -236,7 +236,7 @@
 							}
 							// Suppression de l'enregistrement selectionné	de la liste
 							vm.all_groupe_mlpl = vm.all_groupe_mlpl.filter(function(obj) {
-								return obj.id !== vm.currentItem.id;
+								return obj.id !== vm.selectedItem.id;
 							});	
 							vm.affiche_load = false ;
 						});
@@ -285,19 +285,28 @@
 		})
 		vm.ajouter_groupe_mlpl = function() {
 			vm.nouvelle_element = true ;
-			vm.affichage_masque = true ;
-			vm.selectedItem = {} ;
-			vm.filtre.date_creation = new Date();
-			vm.filtre.chef_village = "" ;
-			vm.filtre.nom_groupe = "" ;
-			vm.filtre.id_menage = null ;
-			vm.filtre.nom_prenom_ml_pl = null ;
-			vm.filtre.identifiant_menage = null ;
-			vm.filtre.nomchefmenage = null ;
-			vm.filtre.sexe = null ;
-			vm.filtre.age = null ;
-			vm.filtre.lien_de_parente = null ;
-			vm.filtre.telephone = null ;
+			vm.affiche_load = true ;
+			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"etat_statut","beneficiaire","id_sous_projet",vm.filtre.id_sous_projet,"beneficiaire",1,"groupe_ml_pl",1,"nouveau_groupe_ml_pl",1).then(function(result) { 
+				vm.all_menages = result.data.response; 
+				vm.affichage_masque = true ;
+				vm.selectedItem = {} ;
+				vm.filtre.date_creation = new Date();
+				vm.filtre.chef_village = "" ;
+				vm.filtre.nom_groupe = "" ;
+				vm.filtre.id_menage = null ;
+				vm.filtre.nom_prenom_ml_pl = null ;
+				vm.filtre.identifiant_menage = null ;
+				vm.filtre.nomchefmenage = null ;
+				vm.filtre.sexe = null ;
+				vm.filtre.age = null ;
+				vm.filtre.lien_de_parente = null ;
+				vm.filtre.telephone = null ;
+				var msg ="Aucun ménage bénéficiaire dans le village de " +vm.filtre.village + ". Merci !";				
+				if(result.data.response.length==0) {
+					vm.showAlert("INFORMATION",msg);
+				}
+				vm.affiche_load = false ;
+			});			
 		}
 		vm.modifier = function()  {
 			vm.nouvelle_element = false ;
@@ -1761,7 +1770,7 @@
 			vm.affiche_load = true ;
 			apiFactory.getAPIgeneraliserREST("livrable_mlpl/index","cle_etrangere",vm.selectedItem.id).then(function(result){
 				vm.allLivrable_mlpl= result.data.response;
-				console.log(vm.allLivrable_mlpl);
+				// console.log(vm.allLivrable_mlpl);
 				vm.affiche_load = false ;
 
 			});
@@ -2009,6 +2018,8 @@
 			if (dat) {
 				var date = new Date(dat);
 				var mois = date.getMonth()+1;
+				if(parseInt(mois) <10)
+					mois='0' + mois;
 				var dates = (date.getDate()+"/"+mois+"/"+date.getFullYear());
 				return dates;
 			}          
@@ -2029,10 +2040,9 @@
 		// FIN FONCTION UTILITAIRE
 		vm.export_excel = function() {
 			vm.affiche_export_excel = true ;
-			apiFactory.getAPIgeneraliserREST("groupe_mlpl/index","cle_etrangere",vm.filtre.village_id,"export_excel",100).then(function(result) { 				
+			apiFactory.getAPIgeneraliserREST("groupe_mlpl/index","cle_etrangere",vm.filtre.village_id,"export_excel",1).then(function(result) { 				
 				vm.status=result.data.status;
 				if(vm.status)  {
-					alert("tao a");
 					var nom_file=result.data.nom_file;
 					window.location = apiUrlReporting + nom_file; 
 					vm.affiche_export_excel =false; 
