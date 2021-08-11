@@ -190,8 +190,9 @@
 								</tr>
 							  </thead>
 							  <tbody>
-								<tr ng-repeat="rapport in vm.all_rapport_mensuelmlpl track by $index"  ng-class="{selected: rapport.$selected}" ng-click="vm.selection(rapport)">
-								  <td>{{rapport.date_rapport  | date:'dd/MM/yyyy'}}</td>
+								<tr ng-repeat="(index,rapport) in vm.all_rapport_mensuelmlpl"  ng-class="{selected: rapport.$selected}" ng-click="vm.selection(rapport)">
+								<td>{{(index+1)}}</td>
+								<td>{{rapport.date_rapport  | date:'dd/MM/yyyy'}}</td>
 								  <td>{{rapport.nom_groupe}}</td>
 								  <td>{{rapport.nom_prenom_ml_pl}}</td>
 								  <!--td>{{rapport.NumeroEnregistrement}} - {{rapport.nomchefmenage}} - {{rapport.nom_conjoint}}</td-->
@@ -202,14 +203,15 @@
 						</div>	
                     </md-tab>   
                     <md-tab label="Détail rapport" ng-disabled="!vm.selectedItem.id" ng-click="vm.charger_detail_reponse_menage(vm.selectedItem)">
-						<div style="clear:both;"></div>	
+						<div style="clear:both;"></div>	<br>
 						<fieldset>					
-							<div layout="column" flex-gt-xs="49"style="width:48%;display:inline-block">					
+							<!--div layout="column" flex-gt-xs="49"style="width:48%;display:inline-block"-->
+							<div>					
 								<fieldset class="standard">
 									<legend  class="md-grey-800-bg">Quelles sont les raisons des visites à domicile effectuées</legend>
 									<div layout="column">                       
 										<table class="dataTable row-border hover cell-border text-center" datatable="ng"
-										  dt-options="vm.dtOptions">
+										  dt-options="vm.dtOptionsfils">
 										  <thead>
 											<tr>
 											  <th class="secondary-text" ng-repeat="re in ::vm.rapport_detail_column">
@@ -221,12 +223,17 @@
 										  </thead>
 										  <tbody>
 											<tr ng-repeat="vsd in vm.allRecordsRaisonvisitedomicile track by $index"  ng-class="{selected: rapport.$selected}" style="">
-											  <td style="padding:0 !important;margin:0;text-align:left !important;"><span>{{vsd.description}}</span></td>
-											  <td style="padding:0 !important;margin:0;">
+											  <td style="padding:0 0 0 5px !important;margin:0;text-align:left !important;">
+												<md-checkbox aria-label="raison_visite" ng-checked="exists(vsd.id, vm.tab_reponse_raison_visite_domicile)" ng-click="vm.toggle(vsd.id, vm.tab_reponse_raison_visite_domicile)" ng-disabled="!vm.selectedItem.id">
+													
+												</md-checkbox>
+												<span>{{vsd.description}}</span>
+											</td>
+											  <td style="padding:0 0 0 5px !important;margin:0;">
                                                 <span>
                                                     <md-input-container style="width:100%;padding:0;margin:0;text-align:center !important;">
-                                                        <label>Ménage visité</label>
-                                                        <input name="menage_sensibilise" type="number" ng-model="vsd.menage_sensibilise"/>
+                                                        <!--label>Ménage visité</label-->
+                                                        <input aria-label="nbr_raison_visite" name="menage_sensibilise" type="number" ng-model="vsd.menage_sensibilise" ng-disabled="!exists(vsd.id, vm.tab_reponse_raison_visite_domicile)"/>
                                                     </md-input-container>	
                                                </span>
 											  </td>
@@ -235,13 +242,14 @@
 										</table>
 									</div>	
 								</fieldset>
-							</div>
-							<div layout="column" flex-gt-xs="49"style="width:48%;display:inline-block">					
+							</div><br>
+							<!--div layout="column" flex-gt-xs="49"style="width:48%;display:inline-block"-->
+							<div>					
 								<fieldset class="standard">
 									<legend  class="md-grey-800-bg">Quelles sont les résolutions de la visite à domicile effectuées</legend>
 									<div layout="column">                       
 										<table class="dataTable row-border hover cell-border text-center" datatable="ng"
-										  dt-options="vm.dtOptions">
+										  dt-options="vm.dtOptionsfils">
 										  <thead>
 											<tr>
 											  <th class="secondary-text" ng-repeat="re in ::vm.rapport_detail_column">
@@ -253,12 +261,17 @@
 										  </thead>
 										  <tbody>
 											<tr ng-repeat="vsd in vm.allRecordsResolutionvisitedomicile track by $index"  ng-class="{selected: rapport.$selected}" style="">
-											  <td style="padding:0 !important;margin:0;text-align:left !important;"><span>{{vsd.description}}</span></td>
-											  <td style="padding:0 !important;margin:0;">
+											  <td style="padding:0 0 0 5px !important;margin:0;text-align:left !important;">
+												<md-checkbox aria-label="resolution_visite" ng-checked="exists(vsd.id, vm.tab_reponse_resolution_visite_domicile)" ng-click="vm.toggle(vsd.id, vm.tab_reponse_resolution_visite_domicile)" ng-disabled="!vm.selectedItem.id">
+													
+												</md-checkbox>
+												<span>{{vsd.description}}</span>
+											</td>
+											  <td style="padding:0 0 0 5px !important;margin:0;">
                                                 <span>
                                                     <md-input-container style="width:100%;padding:0;margin:0;text-align:center !important;">
-                                                        <label>Ménage visité</label>
-                                                        <input name="menage_sensibilise2" type="number" ng-model="vsd.menage_sensibilise"/>
+                                                        <!--label>Ménage visité</label-->
+                                                        <input aria-label="nbr_resolution_visite" name="menage_sensibilise2" type="number" ng-model="vsd.menage_sensibilise" ng-disabled="!exists(vsd.id, vm.tab_reponse_resolution_visite_domicile)"/>
                                                     </md-input-container>	
                                                </span>
 											  </td>
@@ -267,8 +280,37 @@
 										</table>
 									</div>	
 								</fieldset>
+							</div><br>
+							<div>					
+								<fieldset class="standard">
+									<legend  class="md-grey-800-bg">Quelles sont les thèmes de sensibilisation effectués aucours de ce mois</legend>
+									<div layout="column">                       
+										<table class="dataTable row-border hover cell-border text-center" datatable="ng"
+										  dt-options="vm.dtOptionsfils">
+										  <thead>
+											<tr>
+											  <th class="secondary-text" ng-repeat="re in ::vm.standart_column">
+												<div class="table-header">
+												  <span class="column-title text-center">{{re.titre}}</span>
+												</div>
+											  </th>
+											</tr>
+										  </thead>
+										  <tbody>
+											<tr ng-repeat="det in vm.allRecordsThemesensibilisation" style="">
+											  <td style="padding:0 0 0 5px !important;margin:0;text-align:left !important;">
+												<md-checkbox aria-label="theme_sensibilisation" ng-checked="exists(det.id, vm.tab_reponse_theme_sensibilisation)" ng-click="vm.toggle(det.id, vm.tab_reponse_theme_sensibilisation)" ng-disabled="!vm.selectedItem.id">
+													
+												</md-checkbox>
+												<span>{{det.description}}</span>
+											</td>
+											</tr>
+										  </tbody>
+										</table>
+									</div>	
+								</fieldset>
 							</div>
-							<div layout="column" flex-gt-xs="49"style="width:48%;display:inline-block">		
+							<!--div layout="column" flex-gt-xs="49"style="width:48%;display:inline-block">		
 								<legend  class="md-grey-800-bg">Quelles sont les thèmes de sensibilisation effectués aucours de ce mois</legend>
 								<div layout="column" flex-gt-xs="49"  style="width:100%;display:inline-block">					
 									<fieldset class="standard">
@@ -278,8 +320,37 @@
 										</md-checkbox>
 									</fieldset>
 								</div>
+							</div--><br>
+							<div>					
+								<fieldset class="standard">
+									<legend  class="md-grey-800-bg">Quelles est le projet de votre groupe</legend>
+									<div layout="column">                       
+										<table class="dataTable row-border hover cell-border text-center" datatable="ng"
+										  dt-options="vm.dtOptionsfils">
+										  <thead>
+											<tr>
+											  <th class="secondary-text" ng-repeat="re in ::vm.standart_column">
+												<div class="table-header">
+												  <span class="column-title text-center">{{re.titre}}</span>
+												</div>
+											  </th>
+											</tr>
+										  </thead>
+										  <tbody>
+											<tr ng-repeat="det in vm.allRecordsProjetdugroupe" style="">
+											  <td style="padding:0 0 0 5px !important;margin:0;text-align:left !important;">
+												<md-checkbox aria-label="projet" ng-checked="exists(det.id, vm.tab_reponse_projet_de_groupe)" ng-click="vm.toggle(det.id, vm.tab_reponse_projet_de_groupe)" ng-disabled="!vm.selectedItem.id">
+													
+												</md-checkbox>
+												<span>{{det.description}}</span>
+											</td>
+											</tr>
+										  </tbody>
+										</table>
+									</div>	
+								</fieldset>
 							</div>
-							<div layout="column" flex-gt-xs="49"style="width:48%;display:inline-block">		
+							<!--div layout="column" flex-gt-xs="49"style="width:48%;display:inline-block">		
 								<legend  class="md-grey-800-bg">Quelles est le projet de votre groupe</legend>
 								<div layout="column" flex-gt-xs="49"  style="width:100%;display:inline-block">					
 									<fieldset class="standard">
@@ -289,8 +360,37 @@
 										</md-checkbox>
 									</fieldset>
 								</div>
+							</div--><br>
+							<div>					
+								<fieldset class="standard">
+									<legend  class="md-grey-800-bg">Quels sont les problèmes que vous avez rencontré</legend>
+									<div layout="column">                       
+										<table class="dataTable row-border hover cell-border text-center" datatable="ng"
+										  dt-options="vm.dtOptionsfils">
+										  <thead>
+											<tr>
+											  <th class="secondary-text" ng-repeat="re in ::vm.standart_column">
+												<div class="table-header">
+												  <span class="column-title text-center">{{re.titre}}</span>
+												</div>
+											  </th>
+											</tr>
+										  </thead>
+										  <tbody>
+											<tr ng-repeat="det in vm.allRecordsProblemerencontre" style="">
+											  <td style="padding:0 0 0 5px !important;margin:0;text-align:left !important;">
+												<md-checkbox aria-label="probleme" ng-checked="exists(det.id, vm.tab_reponse_probleme_rencontres)" ng-click="vm.toggle(det.id, vm.tab_reponse_probleme_rencontres)" ng-disabled="!vm.selectedItem.id">
+													
+												</md-checkbox>
+												<span>{{det.description}}</span>
+											</td>
+											</tr>
+										  </tbody>
+										</table>
+									</div>	
+								</fieldset>
 							</div>
-							<div layout="column" flex-gt-xs="49"style="width:48%;display:inline-block">		
+							<!--div layout="column" flex-gt-xs="49"style="width:48%;display:inline-block">		
 								<legend  class="md-grey-800-bg">Quels sont les problèmes que vous avez rencontré</legend>
 								<div layout="column" flex-gt-xs="49"  style="width:100%;display:inline-block">					
 									<fieldset class="standard">
@@ -300,8 +400,37 @@
 										</md-checkbox>
 									</fieldset>
 								</div>
+							</div--><br>
+							<div>					
+								<fieldset class="standard">
+									<legend  class="md-grey-800-bg">Quelles sont les solutions que vous avez pris ou suggéré</legend>
+									<div layout="column">                       
+										<table class="dataTable row-border hover cell-border text-center" datatable="ng"
+										  dt-options="vm.dtOptionsfils">
+										  <thead>
+											<tr>
+											  <th class="secondary-text" ng-repeat="re in ::vm.standart_column">
+												<div class="table-header">
+												  <span class="column-title text-center">{{re.titre}}</span>
+												</div>
+											  </th>
+											</tr>
+										  </thead>
+										  <tbody>
+											<tr ng-repeat="det in vm.allRecordsResolutionmlpl" style="">
+											  <td style="padding:0 0 0 5px !important;margin:0;text-align:left !important;">
+												<md-checkbox aria-label="resolution_mlpl" ng-checked="exists(det.id, vm.tab_reponse_solution_prise)" ng-click="vm.toggle(det.id, vm.tab_reponse_solution_prise)" ng-disabled="!vm.selectedItem.id">
+												
+												</md-checkbox>
+												<span>{{det.description}}</span>
+											</td>
+											</tr>
+										  </tbody>
+										</table>
+									</div>	
+								</fieldset>
 							</div>
-							<div layout="column" flex-gt-xs="49"style="width:48%;display:inline-block">		
+							<!--div layout="column" flex-gt-xs="49"style="width:48%;display:inline-block">		
 								<legend  class="md-grey-800-bg">Quelles sont les solutions que vous avez pris ou suggéré</legend>
 								<div layout="column" flex-gt-xs="49"  style="width:100%;display:inline-block">					
 									<fieldset class="standard">
@@ -311,7 +440,7 @@
 										</md-checkbox>
 									</fieldset>
 								</div>
-							</div>
+							</div-->
 							<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>						 
 							  <md-button class="md-raised md-primary" ng-disabled="!vm.selectedItem.id || vm.disable_button" ng-click="vm.save_reponse_visite_domicile()">Enregistrer</md-button>                         
 							</section>

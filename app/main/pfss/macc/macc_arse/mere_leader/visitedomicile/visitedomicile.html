@@ -151,7 +151,7 @@
 								<fieldset ng-if="vm.affichage_masque">
 									<label><b>Information concernant la visite</b></label>
 									<div layout="column" layout-gt-xs="row" flex  ng-show="vm.affichage_masque">
-										<md-input-container flex-gt-xs="10" ng-show="vm.affichage_masque">
+										<!--md-input-container flex-gt-xs="10" ng-show="vm.affichage_masque">
 											<input type="text"  name="numero" ng-model="vm.filtre.numero"
 											placeholder="Numéro" required readonly>
 											<div ng-messages="filtrepardateform.numero.$error"
@@ -160,7 +160,7 @@
 													<span>Numéro obligatoire.</span>
 												</div>
 											</div>
-										</md-input-container>
+										</md-input-container-->
 										<md-input-container flex-gt-xs="15" ng-show="vm.affichage_masque">
 											<input type="text"  name="nom_prenom_mlpl" ng-model="vm.filtre.nom_prenom_mlpl"
 											placeholder="Nom & prénom ML/PL" readonly>
@@ -172,9 +172,9 @@
 											</div>
 										</md-input-container>
 										<md-input-container>
-										<span>Date visite 1</span>
+										<span>Date visite</span>
 										</md-input-container>
-										<md-datepicker ng-model="vm.filtre.date_visite1"   md-placeholder="Entrer date visite 1" required>                       
+										<md-datepicker ng-model="vm.filtre.date_visite1"   md-placeholder="Entrer date visite 1" required ng-change="vm.change_date_visite1()">                       
 										</md-datepicker>
 									</div>
 									<div layout="column" layout-gt-xs="row" flex  ng-show="vm.affichage_masque">
@@ -244,7 +244,7 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr ng-repeat='men in vm.all_menages'>
+													<tr ng-repeat='men in vm.all_menages_temporaire'>
 													<td style=" padding: 0px !important;">
 														<md-checkbox aria-label="Menage visite" ng-checked="exists(men.id, vm.tab_reponse_menage_visite)" ng-click="vm.toggle(men.id, vm.tab_reponse_menage_visite)">
 															
@@ -349,8 +349,8 @@
 								</tr>
 							  </thead>
 							  <tbody>
-								<tr ng-repeat="grp_mlpl in vm.all_visite_domicile track by $index"  ng-class="{selected: grp_mlpl.$selected}" ng-click="vm.selection(grp_mlpl)">
-								  <td>{{grp_mlpl.numero}}</td>
+								<tr ng-repeat="(index,grp_mlpl) in vm.all_visite_domicile"  ng-class="{selected: grp_mlpl.$selected}" ng-click="vm.selection(grp_mlpl)">
+								  <td>{{(index+1)}}</td>
 								  <td>{{grp_mlpl.date_visite1 | date:'dd/MM/yyyy'}}</td>
 								  <td>
 									<p style="text-align:left;" ng-repeat="det in grp_mlpl.raison_visite">- {{det.description}}</p>	

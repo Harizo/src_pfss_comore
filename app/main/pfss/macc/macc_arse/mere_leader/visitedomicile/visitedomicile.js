@@ -13,7 +13,8 @@
         dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
         pagingType: 'simple',
         autoWidth: false,
-        responsive: true
+        responsive: true,
+		order:[]
 		
       };
 	  vm.dtOptionsfils =
@@ -27,7 +28,7 @@
 		
       };
 
-      vm.visite_domicile_column = [{titre:"N°"},{titre:"Visite 1"},{titre:"Raison visite"},{titre:"Ménage visité"},{titre:"Objet"},{titre:"Nom ML/PL"},
+      vm.visite_domicile_column = [{titre:"N°"},{titre:"Visite"},{titre:"Raison visite"},{titre:"Ménage visité"},{titre:"Objet"},{titre:"Nom ML/PL"},
 	  //{titre:"Visite 2"},
 	  {titre:"Résultat"},
 	  {titre:"Récommandation"}];
@@ -37,6 +38,7 @@
         vm.selectedItem = {} ;
  		
 		vm.all_menages =[];
+		vm.all_menages_temporaire =[];
 		vm.all_groupe_mlpl =[];
         vm.all_visite_domicile = [] ;
 		vm.all_raison_visite_domicile=[];
@@ -66,12 +68,13 @@
         vm.toggle = function (item, list) {
           var idx = list.indexOf(item);
           if (idx > -1) list.splice(idx, 1);
-          else list.push(item);        
+          else list.push(item);       
         };
         $scope.exists = function (item, list) {
           if (list) {
             return list.indexOf(item) > -1;
-          }         
+          } 
+		  console.log(list);        
         };
       	// utilitaire
      vm.filtre_region = function()
@@ -130,7 +133,9 @@
 				}
 			});	
 			apiFactory.getAPIgeneraliserREST("visite_domicile/index","menu","getliste_menagepargroupe","id_groupe_ml_pl",vm.filtre.id_groupe_ml_pl).then(function(result) { 				
-				vm.all_menages = result.data.response;    
+				vm.all_menages = result.data.response;
+				console.log(vm.all_menages);
+				vm.all_menages_temporaire = result.data.response;   
 				apiFactory.getAPIgeneraliserREST("visite_domicile/index","cle_etrangere",vm.filtre.id_groupe_ml_pl).then(function(result) { 				
 					vm.all_visite_domicile = result.data.response;    
 					vm.affiche_load = false ;
@@ -151,7 +156,8 @@
 				var msg ="Aucune visite à domicile dans le village de  " +vm.filtre.village  + ". Merci !";	
 					if(result.data.response.length==0) {
 						vm.showAlert("INFORMATION",msg);
-					}	
+					}
+					console.log(vm.all_visite_domicile);
 				});
 			
 		}
@@ -172,7 +178,7 @@
                       supprimer:suppression,
                       id: id_mng ,
                       id_groupe_ml_pl: groupe_mlpl.id_groupe_ml_pl,
-                      numero: groupe_mlpl.numero,
+                     // numero: groupe_mlpl.numero,
                       date_visite1: formatDateBDD(groupe_mlpl.date_visite1),
                       objet_visite: groupe_mlpl.objet_visite,
                       nom_prenom_mlpl: groupe_mlpl.nom_prenom_mlpl,
@@ -192,7 +198,7 @@
 				txtTmp += "supprimer" +":\"" + suppression + "\",";
 				txtTmp += "id" +":\"" + id_mng + "\",";
 				txtTmp += "id_groupe_ml_pl" +":\"" + vm.filtre.id_groupe_ml_pl + "\",";
-				txtTmp += "numero" +":\"" + vm.filtre.numero + "\",";
+				//txtTmp += "numero" +":\"" + vm.filtre.numero + "\",";
 				txtTmp += "date_visite1" +":\"" + formatDateBDD(vm.filtre.date_visite1) + "\",";
 				txtTmp += "objet_visite" +":\"" + vm.filtre.objet_visite + "\",";
 				txtTmp += "nom_prenom_mlpl" +":\"" + vm.filtre.nom_prenom_mlpl + "\",";
@@ -220,7 +226,7 @@
 					var mng={
 						id : data.response ,
 						id_groupe_ml_pl: groupe_mlpl.id_groupe_ml_pl,
-						numero: groupe_mlpl.numero,
+						//numero: groupe_mlpl.numero,
 						date_visite1: formatDateBDD(groupe_mlpl.date_visite1),
 						objet_visite: groupe_mlpl.objet_visite,
 						nom_prenom_mlpl: groupe_mlpl.nom_prenom_mlpl,
@@ -242,9 +248,9 @@
 						vm.selectedItem={};
 					} else {
 						vm.affichage_masque_liste_mlpl = false ;
-						vm.selectedItem.date_visite1 =  vm.filtre.date_visite1 ;
+						vm.selectedItem.date_visite1 =  formatDateBDD(vm.filtre.date_visite1) ;
 						vm.selectedItem.id_groupe_ml_pl = vm.filtre.id_groupe_ml_pl  ;
-						vm.selectedItem.numero = vm.filtre.numero  ;
+						//vm.selectedItem.numero = vm.filtre.numero  ;
 						vm.selectedItem.objet_visite = vm.filtre.objet_visite  ;
 						vm.selectedItem.nom_prenom_mlpl = vm.filtre.nom_prenom_mlpl  ;
 						//vm.selectedItem.date_visite2 = vm.filtre.date_visite2  ;
@@ -256,18 +262,16 @@
 						vm.selectedItem.raison_visite = data.donnees_retour.raison_visite  ;
 						vm.selectedItem={};
 					}	
-  				}      
+  				}
+				  vm.all_menages_temporaire = vm.all_menages;
+				  //console.log(vm.all_visite_domicile);      
 			}).error(function (data) {
 				vm.disable_button = false ;
 				console.log('erreur '+data);
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 			}); 
 		}
-		vm.deselection= function (item)
-		{
-			item.$selected = false;
-			vm.selectedItem = {};
-		}
+
 		vm.selection= function (item)
 		{
 			if ((!vm.affiche_load)&&(!vm.affichage_masque))
@@ -294,13 +298,13 @@
 				});
 							
 			});	*/
-			var max_numero = 1;
+			/*var max_numero = 1;
 			if (vm.all_visite_domicile.length !=0)
 			{
 				max_numero = Math.max.apply(Math, vm.all_visite_domicile.map(function(o){return o.numero;})) +1;
 			}			
 
-			vm.filtre.numero = max_numero ;		
+			vm.filtre.numero = max_numero ;*/		
 			vm.nouvelle_element = true ;
 			vm.affichage_masque = true ;
 			vm.selectedItem = {} ;
@@ -311,16 +315,51 @@
 			vm.filtre.date_visite2 = new Date() ;
 			vm.filtre.resultat_visite = "" ;
 			vm.filtre.recommandation = "" ;
-			//vm.filtre.numero = null ;
+			//vm.filtre.numero = null ;vm.all_menages_temporaire formatDateBDD(groupe_mlpl.date_visite1)
 			vm.tab_reponse_visite=[];
 			vm.tab_reponse_menage_visite=[];
+			if (vm.all_visite_domicile.length!=0)
+			{
+				var visite_date_now = vm.all_visite_domicile.filter(function(obj)
+				{
+					return obj.date_visite1 == formatDateBDD(new Date());
+				});
+				var mena_now=[];
+				if (visite_date_now.length!=0)
+				{	
+					/*var myArray = visite_date_now.map(function(obj){
+						console.log(obj.menage_visite);	
+					var me=obj.menage_visite.map(function(a){
+						return a
+					});
+					return me
+				  	});*/
+
+					visite_date_now.forEach(function(mng)
+					{
+						mng.menage_visite.forEach(function(men)
+						{
+							mena_now.push(men)
+						});
+					});
+					  mena_now.forEach(function(mng)
+					{
+						vm.all_menages_temporaire = vm.all_menages_temporaire.filter(function(obj)
+						{
+							return obj.id != mng.id_menage;
+						});	
+					});
+				}
+				
+			}	
+			
 		}
 		vm.modifier = function()  {
 			vm.nouvelle_element = false ;
 			vm.essai={};
 			vm.filtre.date_visite1 = new Date(vm.selectedItem.date_visite1);
 			vm.filtre.id_groupe_ml_pl = vm.selectedItem.id_groupe_ml_pl ;
-			vm.filtre.numero = vm.selectedItem.numero ;
+			//vm.filtre.numero = vm.selectedItem.numero ;
 			vm.filtre.menage_id = vm.selectedItem.menage_id ;
 			vm.filtre.objet_visite = vm.selectedItem.objet_visite ;
 			// vm.filtre.nom_prenom_mlpl = vm.selectedItem.nom_prenom_mlpl ;
@@ -330,11 +369,47 @@
 			vm.filtre.identifiant_menage = vm.selectedItem.identifiant_menage ;
 			vm.filtre.nomchefmenage = vm.selectedItem.nomchefmenage ;
 			vm.affichage_masque = true ;
+			vm.all_menages_temporaire = vm.all_menages;
+			
+			var visite_sans_selected = vm.all_visite_domicile.filter(function(obj)
+					{
+						return obj.id != vm.selectedItem.id;
+					});
+					if (visite_sans_selected.length!=0)
+					{
+						var visite_date_now = visite_sans_selected.filter(function(obj)
+						{
+							return obj.date_visite1 == vm.selectedItem.date_visite1;
+						});
+						var mena_now=[];
+						if (visite_date_now.length!=0)
+						{	
+							visite_date_now.forEach(function(mng)
+							{
+								mng.menage_visite.forEach(function(men)
+								{
+									mena_now.push(men)
+								});
+							});
+							mena_now.forEach(function(mng2)
+							{
+								vm.all_menages_temporaire = vm.all_menages_temporaire.filter(function(obj)
+								{
+									return obj.id != mng2.id_menage;
+								});	
+							});
+						}
+						/*else
+						{
+							vm.all_menages_temporaire = vm.all_menages;
+						}*/
+					}
 		}
 		vm.annuler = function () {
 			vm.nouvelle_element = false ;
 			vm.affichage_masque = false ;
 			vm.selectedItem={};
+			vm.all_menages_temporaire = vm.all_menages;
 		}
 		vm.supprimerVisite_domicile = function() {
 			vm.nouvelle_element = false ;
@@ -369,6 +444,83 @@
 					vm.nontrouvee=false;
 				}
 			});			
+		}
+		vm.change_date_visite1 = function ()
+		{
+			
+			if (vm.nouvelle_element == false)
+			{	vm.all_menages_temporaire = vm.all_menages;		
+					var visite_sans_selected = vm.all_visite_domicile.filter(function(obj)
+					{
+						return obj.id != vm.selectedItem.id;
+					});
+					if (visite_sans_selected.length!=0)
+					{
+						var visite_date_now = visite_sans_selected.filter(function(obj)
+						{
+							return obj.date_visite1 == formatDateBDD(vm.filtre.date_visite1);
+						});
+						var mena_now=[];
+						if (visite_date_now.length!=0)
+						{	
+							visite_date_now.forEach(function(mng)
+							{
+								mng.menage_visite.forEach(function(men)
+								{
+									mena_now.push(men)
+								});
+							});
+							mena_now.forEach(function(mng)
+							{
+								vm.all_menages_temporaire = vm.all_menages_temporaire.filter(function(obj)
+								{
+									return obj.id != mng.id_menage;
+								});	
+							});
+						}
+						/*else
+						{
+							vm.all_menages_temporaire = vm.all_menages;
+						}*/
+					}
+									
+				
+			}
+			else
+			{
+				vm.all_menages_temporaire = vm.all_menages;
+				if (vm.all_visite_domicile.length!=0)
+				{
+					var visite_date_now = vm.all_visite_domicile.filter(function(obj)
+					{
+						return obj.date_visite1 == formatDateBDD(vm.filtre.date_visite1);
+					});
+					var mena_now=[];
+					if (visite_date_now.length!=0)
+					{	
+						visite_date_now.forEach(function(mng)
+						{
+							mng.menage_visite.forEach(function(men)
+							{
+								mena_now.push(men)
+							});
+						});
+						mena_now.forEach(function(mng2)
+						{
+							vm.all_menages_temporaire = vm.all_menages_temporaire.filter(function(obj)
+							{
+								return obj.id != mng2.id_menage;
+							});	
+						});
+					}
+					/*else
+					{
+						vm.all_menages_temporaire = vm.all_menages;
+					}*/
+					
+				}
+			}
+			
 		}
 		 
 		// Fin Fonction Groupe ML/PL

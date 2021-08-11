@@ -393,6 +393,7 @@ vm.pac_column =[
                     vm.allPac = vm.allPac.filter(function(obj) {
                       return obj.id !== vm.selectedItemPac.id;
                     });
+                    vm.selectedItemPac ={};
                   }
                 } 
                 else
@@ -567,7 +568,7 @@ vm.pac_column =[
     vm.click_pac_detail = function()
     { 
       vm.affiche_load = true;
-      apiFactory.getAPIgeneraliserREST("pac_detail/index","menu","getpac_derailbypac","id_pac",vm.selectedItemPac.id).then(function(result)
+      apiFactory.getAPIgeneraliserREST("pac_detail/index","menu","getpac_detailbypac","id_pac",vm.selectedItemPac.id).then(function(result)
       {
           vm.allPac_detail= result.data.response ;
           vm.affiche_load = false;
@@ -608,7 +609,7 @@ vm.pac_column =[
               NouvelItemPac_detail = true ;
               //vm.pac.supprimer          = 0,
               vm.pac_detail.id                 = 0,
-              vm.pac_detail.numero    = parseInt(vm.selectedItemPac.identi_prio_arse);
+              vm.pac_detail.identi_prio_arse    = parseInt(vm.selectedItemPac.identi_prio_arse);
               vm.pac_detail.besoin= null;
               vm.pac_detail.duree    = null;
               vm.pac_detail.cout      = null;
@@ -628,7 +629,7 @@ vm.pac_column =[
           {
             NouvelItemPac_detail = false ;			
             currentItemPac_detail = angular.copy(vm.selectedItemPac_detail);
-            vm.pac_detail.numero  = parseInt(vm.selectedItemPac_detail.numero);
+            vm.pac_detail.identi_prio_arse  = parseInt(vm.selectedItemPac_detail.identi_prio_arse);
             vm.pac_detail.besoin  = vm.selectedItemPac_detail.besoin;
             vm.pac_detail.duree   = parseFloat(vm.selectedItemPac_detail.duree);      
             vm.pac_detail.cout    = parseFloat(vm.selectedItemPac_detail.cout);      
@@ -670,7 +671,7 @@ vm.pac_column =[
                 var datas = $.param({
                   supprimer:suppression,
                   id:getId,      
-                  numero: entite.numero,      
+                  //numero: entite.numero,      
                   besoin: entite.besoin,      
                   duree: entite.duree,     
                   cout: entite.cout,
@@ -687,7 +688,7 @@ vm.pac_column =[
                     // Update or delete: id exclu                   
                     if(suppression==0)
                     {  
-                      vm.selectedItemPac_detail.numero           = entite.numero,      
+                      vm.selectedItemPac_detail.identi_prio_arse           = entite.identi_prio_arse,      
                       vm.selectedItemPac_detail.besoin      = entite.besoin,      
                       vm.selectedItemPac_detail.duree           = entite.duree,
                       vm.selectedItemPac_detail.cout             = entite.cout,      
@@ -698,6 +699,7 @@ vm.pac_column =[
                       vm.allPac_detail = vm.allPac_detail.filter(function(obj) {
                         return obj.id !== vm.selectedItemPac_detail.id;
                       });
+                      vm.selectedItemPac_detail ={};
                     }
                   } 
                   else
@@ -705,7 +707,7 @@ vm.pac_column =[
                     var item =
                     {
                       id: data.response,      
-                      numero: entite.numero,      
+                      identi_prio_arse: entite.identi_prio_arse,      
                       besoin: entite.besoin,      
                       duree: entite.duree,
                       cout: entite.cout,      
@@ -726,7 +728,7 @@ vm.pac_column =[
           {
             if (suppression!=1) 
             {  
-                    if((item.numero    !=currentItemPac_detail.numero)
+                    if((item.identi_prio_arse    !=currentItemPac_detail.identi_prio_arse)
                         ||(item.besoin !=currentItemPac_detail.besoin)
                         ||(item.duree  !=currentItemPac_detail.duree)
                         ||(item.cout   !=currentItemPac_detail.cout)

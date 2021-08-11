@@ -390,8 +390,8 @@
                                 
                                 <md-input-container flex="100" flex-gt-xs="40">
                                     <label>Numéro d'ordre</label>
-                                    <input  type="text" name="numero" ng-model="vm.pac_detail.numero"  aria-label="numero" required disabled>
-                                    <div ng-messages="formpac_detail.numero.$error"role="alert">
+                                    <input  type="text" name="identi_prio_arse" ng-model="vm.pac_detail.identi_prio_arse"  aria-label="identi_prio_arse" required disabled>
+                                    <div ng-messages="formpac_detail.identi_prio_arse.$error"role="alert">
                                         <div ng-message="required">
                                             <span>numéro AGR obligatoire.</span>
                                         </div>
@@ -459,7 +459,7 @@
                                             <tbody>
                                                 <tr ng-repeat="tabl in vm.allPac_detail"  ng-class="{selected: tabl.$selected}" ng-click="vm.selectionPac_detail(tabl)">                                       
                                                 
-                                                    <td >{{tabl.numero}}</td>
+                                                    <td >{{tabl.identi_prio_arse}}</td>
                                                     <td >{{tabl.besoin}}</td>
                                                     <td >{{tabl.duree}}</td>
                                                     <td >{{tabl.cout}}</td>

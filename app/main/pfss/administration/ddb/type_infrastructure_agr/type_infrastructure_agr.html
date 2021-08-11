@@ -326,7 +326,105 @@
                         </md-tab-body>
                     </md-tab>
 
-                     <md-tab label="TMNC-COVID" ng-click="vm.get_all_activite_act()" layout="column" flex ng-disabled='!vm.selected_type_activite_act.id'> 
+                    <md-tab label="TMNC-COVID"  layout="column" flex>
+                      <md-tab-body>
+
+
+                          <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                              <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                  <div layout="row" layout-align="start center">
+                                  <div class="border-right">
+
+                                      
+                                    <span class="md-headline">TMNC-COVID</span>
+                                  </div>
+                                    <div class="border-right" ng-if="!vm.selected_tmnccovid.id&&!vm.nouvelle_tmnccovid">
+                                      <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_tmnccovid()">
+                                        <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                        <md-tooltip><span>Ajouter</span></md-tooltip>
+                                      </md-button>
+                                    </div> 
+                                    <div class="border-right" ng-if="vm.selected_tmnccovid.id&&!vm.selected_tmnccovid.$edit">
+                                      <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_tmnccovid()">
+                                        <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                        <md-tooltip><span>Modifier</span></md-tooltip>
+                                      </md-button>
+                                    </div>    
+                                    <div class="border-right" ng-if="vm.selected_tmnccovid.id&&!vm.selected_tmnccovid.$edit">
+                                      <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_tmnccovid()">
+                                        <md-icon md-font-icon="icon-delete"></md-icon>
+                                        <md-tooltip><span>Supprimer</span></md-tooltip>
+                                      </md-button>
+                                    </div>  
+
+                                    <div class="border-right" ng-if="vm.selected_tmnccovid.id">
+                                      <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_tmnccovid()">
+                                        <md-icon md-font-icon="icon-cancel"></md-icon>
+                                        <md-tooltip><span>Annuler</span></md-tooltip>
+                                      </md-button>
+                                    </div>   
+
+                                    <div ng-if="vm.selected_tmnccovid.$edit">
+                                      <md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_tmnccovid(0)">
+                                        <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                        <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                      </md-button>
+                                    </div>
+                                    <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                      <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                      <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                                  </div>                 
+                                  </div>
+                              </header>
+
+
+                              <table ng-table="tmnccovid" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                                  <thead>
+                                      <tr>
+                                          <th class="secondary-text" ng-repeat="c in ::vm.tmnccovid_column">
+                                              <div class="table-header">
+                                                  <span class="column-title text-center">{{c.titre}}</span>
+                                              </div>
+                                          </th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr ng-repeat="cm in vm.all_tmnccovid"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_tmnccovid(cm)">  
+                                                                          
+                                          
+                                          <td>                                                    
+                                              <span ng-if="cm.$edit">
+                                                  <md-input-container style="width:100%;display: flex !important;">
+                                                    <label>Code</label>
+                                                    <input type="text" name="code"  ng-model="cm.code"/>
+                                                  </md-input-container>   
+                                                  
+                                              </span>
+                                              <span ng-if="!cm.$edit">
+                                                  {{cm.code}}
+                                              </span>
+                                          </td>
+                                          <td>
+
+                                              <span ng-if="cm.$edit">
+                                                  <md-input-container style="width:100%;display: flex !important;">
+                                                    <label>Libelle</label>
+                                                    <input type="text" name="libelle" ng-model="cm.libelle"/>
+                                                </md-input-container>
+
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.libelle}}
+                                            </span>
+                                          </td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </md-tab-body>
+                  </md-tab>
+
+                     <!--md-tab label="TMNC-COVID" ng-click="vm.get_all_activite_act()" layout="column" flex ng-disabled='!vm.selected_type_activite_act.id'> 
                         <md-tab-body>
 
 
@@ -423,9 +521,12 @@
                                 </table>
                             </div>
                         </md-tab-body>
-                    </md-tab>
-
-
+                    </md-tab-->
+                  </md-tabs>
+                </div>
+          </div>
+                          
+</div>
                                 
 
                                             
