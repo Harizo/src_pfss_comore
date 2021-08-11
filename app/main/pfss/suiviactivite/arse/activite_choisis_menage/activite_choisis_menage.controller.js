@@ -768,6 +768,9 @@
 	function DialogController($scope, $mdDialog,$rootScope) 
     {
     	$scope.tab_menage = [];
+        $scope.selected_identification = {};
+
+        console.log($scope.tab_menage);
     	
     	$scope.selected_item = {};
 		  $scope.hide = function() {
