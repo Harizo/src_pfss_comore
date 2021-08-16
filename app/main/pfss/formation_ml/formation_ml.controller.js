@@ -118,14 +118,15 @@
                 {titre:"Contrat ONG N°"},
                 {titre:"Formation N°"},
                 {titre:"Présentation du thème"},
-                {titre:"Date d'édition'"},
-                {titre:"Date de debut"},
-                {titre:"Date de fin"},
+                {titre:"Date de debut prévu"},
+                {titre:"Date de fin prévu"},
+                {titre:"Date réalisation"},
                 {titre:"Formateur"},
                 {titre:"Outils didactiques"},
                 {titre:"Lieu"},
                 {titre:"Problèmes rencontrés"},
                 {titre:"Solutions adoptées"},
+                {titre:"Statut"},
             ];                       
 
             vm.selection = function (item) 
@@ -160,16 +161,17 @@
                 vm.formation_ml.supprimer=0;
                 vm.formation_ml.id=0;
                 vm.formation_ml.numero=null;
-                vm.formation_ml.date_debut=null;
+                vm.formation_ml.date_debut_prevu=null;
                 vm.formation_ml.id_contrat_agex=null;
                 vm.formation_ml.id_commune= vm.filtre.id_commune;
-                vm.formation_ml.date_fin=null;
+                vm.formation_ml.date_fin_prevu=null;
                 vm.formation_ml.lieu=null;
-                vm.formation_ml.date_edition=null;
+                vm.formation_ml.date_realisation=null;
                 vm.formation_ml.formateur=null;
                 vm.formation_ml.outils_didactique=null;
                 vm.formation_ml.probleme=null;
                 vm.formation_ml.solution=null;
+                vm.formation_ml.statut=null;
                 vm.affichage_masque=true;
                 vm.selectedItemFormation_ml = {};
             }
@@ -195,13 +197,14 @@
                 vm.formation_ml.id_commune  = vm.selectedItemFormation_ml.id_commune ;
                 vm.formation_ml.description   = vm.selectedItemFormation_ml.description ;
                 vm.formation_ml.lieu = vm.selectedItemFormation_ml.lieu ;
-                vm.formation_ml.date_debut  = new Date(vm.selectedItemFormation_ml.date_debut) ;
-                vm.formation_ml.date_fin  = new Date(vm.selectedItemFormation_ml.date_fin) ;
-                vm.formation_ml.date_edition  = new Date(vm.selectedItemFormation_ml.date_edition) ;
+                vm.formation_ml.date_debut_prevu  = new Date(vm.selectedItemFormation_ml.date_debut_prevu) ;
+                vm.formation_ml.date_fin_prevu  = new Date(vm.selectedItemFormation_ml.date_fin_prevu) ;
+                vm.formation_ml.date_realisation  = new Date(vm.selectedItemFormation_ml.date_realisation) ;
                 vm.formation_ml.outils_didactique = vm.selectedItemFormation_ml.outils_didactique ;
                 vm.formation_ml.probleme = vm.selectedItemFormation_ml.probleme ;
                 vm.formation_ml.solution = vm.selectedItemFormation_ml.solution ;
                 vm.formation_ml.formateur = vm.selectedItemFormation_ml.formateur ;
+                vm.formation_ml.statut = vm.selectedItemFormation_ml.statut ;
 
                 var contrat = vm.allContrat_agex.filter(function(obj)
                 {
@@ -258,13 +261,14 @@
                         id_contrat_agex:formation_ml.id_contrat_agex,
                         id_commune:formation_ml.id_commune,
                         lieu:formation_ml.lieu,
-                        date_debut:convert_date(formation_ml.date_debut),
-                        date_fin:convert_date(formation_ml.date_fin),
-                        date_edition:convert_date(formation_ml.date_edition),
+                        date_debut_prevu:convert_date(formation_ml.date_debut_prevu),
+                        date_fin_prevu:convert_date(formation_ml.date_fin_prevu),
+                        date_realisation:convert_date(formation_ml.date_realisation),
                         outils_didactique:formation_ml.outils_didactique ,
                         probleme:formation_ml.probleme ,
                         solution:formation_ml.solution ,
-                        formateur:formation_ml.formateur            
+                        formateur:formation_ml.formateur,
+                        statut:formation_ml.statut            
                         
                     });
 
@@ -286,13 +290,14 @@
                                 vm.selectedItemFormation_ml.numero = formation_ml.numero ;
                                 vm.selectedItemFormation_ml.description = formation_ml.description ;
                                 vm.selectedItemFormation_ml.lieu = formation_ml.lieu ;
-                                vm.selectedItemFormation_ml.date_debut = new Date(formation_ml.date_debut) ;
-                                vm.selectedItemFormation_ml.date_fin = new Date(formation_ml.date_fin) ; 
-                                vm.selectedItemFormation_ml.date_edition = new Date(formation_ml.date_edition) ; 
+                                vm.selectedItemFormation_ml.date_debut_prevu = formation_ml.date_debut_prevu ;
+                                vm.selectedItemFormation_ml.date_fin_prevu = formation_ml.date_fin_prevu ; 
+                                vm.selectedItemFormation_ml.date_realisation = formation_ml.date_realisation ; 
                                 vm.selectedItemFormation_ml.formateur = formation_ml.formateur ;
                                 vm.selectedItemFormation_ml.outils_didactique = formation_ml.outils_didactique ;
                                 vm.selectedItemFormation_ml.probleme = formation_ml.probleme ;
-                                vm.selectedItemFormation_ml.solution = formation_ml.solution ;                            
+                                vm.selectedItemFormation_ml.solution = formation_ml.solution ;
+                                vm.selectedItemFormation_ml.statut = formation_ml.statut ;                             
                             }
                             else
                             {
@@ -321,13 +326,14 @@
                             numero : formation_ml.numero ,
                             description : formation_ml.description ,
                             lieu : formation_ml.lieu ,
-                            date_debut : new Date(formation_ml.date_debut) ,
-                            date_fin : new Date(formation_ml.date_fin) ,
-                            date_edition : new Date(formation_ml.date_edition),
+                            date_debut_prevu : formation_ml.date_debut_prevu ,
+                            date_fin_prevu : formation_ml.date_fin_prevu ,
+                            date_realisation : formation_ml.date_realisation,
                             formateur : formation_ml.formateur,
                             outils_didactique : formation_ml.outils_didactique,
                             probleme : formation_ml.probleme,
-                            solution : formation_ml.solution
+                            solution : formation_ml.solution,
+                            statut : formation_ml.statut
                             }
                             vm.allFormation_ml.unshift(item) ;
 					        
@@ -349,14 +355,15 @@
                     if((currentItemFormation_ml.numero   != item.numero )
                         ||(currentItemFormation_ml.description    != item.description )
                         ||(currentItemFormation_ml.lieu != item.lieu )
-                        ||(currentItemFormation_ml.date_debut   != convert_date(item.date_debut) )
-                        ||(currentItemFormation_ml.date_fin   != convert_date(item.date_fin))
+                        ||(currentItemFormation_ml.date_debut_prevu   != convert_date(item.date_debut_prevu) )
+                        ||(currentItemFormation_ml.date_fin_prevu   != convert_date(item.date_fin_prevu))
                         ||(currentItemFormation_ml.contrat_agex.id   != item.id_contrat_agex )
-                        ||(currentItemFormation_ml.date_edition   != convert_date(item.date_edition))
+                        ||(currentItemFormation_ml.date_realisation   != convert_date(item.date_realisation))
                         ||(currentItemFormation_ml.formateur != item.formateur )
                         ||(currentItemFormation_ml.outils_didactique != item.outils_didactique )
                         ||(currentItemFormation_ml.probleme != item.probleme )
                         ||(currentItemFormation_ml.solution != item.solution )
+                        ||(currentItemFormation_ml.statut != item.statut )
                         )                    
                     { 
                             insert_in_baseFormation_ml(item,suppression);                      

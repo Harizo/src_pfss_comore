@@ -112,13 +112,12 @@
                                     <span>Objectifs de formations obligatoire.</span>
                                 </div>
                             </div>
-                          </md-input-container> 
-                            
+                          </md-input-container>  
                           </div>
                             
-                          <div layout="column" layout-gt-xs="row" flex>
+                          <div layout="column" layout-gt-xs="row" flex>                             
+                               
                              
-                                
                           <md-input-container flex="100" flex-gt-xs="30">
                             <label>Méthologies de formations</label>
                             <textarea  type="text" name="methodologie" ng-model="vm.formation_thematique_agex.methodologie" required md-select-on-focus></textarea>
@@ -127,7 +126,7 @@
                                     <span>Méthologies de formations obligatoire.</span>
                                 </div>
                             </div>
-                          </md-input-container> 
+                          </md-input-container>
                               
                           <md-input-container flex="100" flex-gt-xs="30">
                             <label>Matériels didactiques</label>
@@ -138,11 +137,24 @@
                                 </div>
                             </div>
                           </md-input-container>
+                          <div style="margin-top: 14px !important; font-size: 13px !important;" flex="100" flex-gt-xs="30">
+                                 <label>Date debut prévu</label>
+                                 <md-datepicker  ng-model="vm.formation_thematique_agex.date_debut_prevu" md-placeholder="Date" required>                       
+                                 </md-datepicker>
+                             </div> 
+                             
                            <div style="margin-top: 14px !important; font-size: 13px !important;" flex="100" flex-gt-xs="30">
-                                  <label>Date de formation</label>
-                                  <md-datepicker  ng-model="vm.formation_thematique_agex.date" md-placeholder="Date" required>                       
+                                  <label>Date fin prévu</label>
+                                  <md-datepicker  ng-model="vm.formation_thematique_agex.date_fin_prevu" md-placeholder="Date" md-min-date="vm.formation_thematique_agex.date_debut_prevu" required>                       
                                   </md-datepicker>
-                              </div>   
+                              </div> 
+                            </div>                            
+                            <div layout="column" layout-gt-xs="row" flex>  
+                              <div style="margin-top: 14px !important; font-size: 13px !important;" flex="100" flex-gt-xs="30">
+                                     <label>Date réalisation</label>
+                                     <md-datepicker  ng-model="vm.formation_thematique_agex.date_realisation" md-placeholder="Date" required>                       
+                                     </md-datepicker>
+                                 </div>  
                           <md-input-container flex="100" flex-gt-xs="30">
                             <label>Durée</label>
                             <input type="number" name="duree" ng-model="vm.formation_thematique_agex.duree" required>
@@ -152,7 +164,20 @@
                                 </div>
                             </div>
                           </md-input-container>   
-                              
+                          <md-input-container flex="100" flex-gt-xs="30">
+                            <label>Statut</label>
+                            <md-select ng-model="vm.formation_thematique_agex.statut" name="statut">
+                                <md-option value="EN-COURS">EN-COURS</md-option>  
+                                <md-option value="REALISE">REALISE</md-option> 
+                                <md-option value="NON REALISE">NON REALISE</md-option> 
+                                <md-option value="SUSPENDU">SUSPENDU</md-option>                                             
+                              </md-select>
+                              <div ng-messages="formformation_thematique_agex.statut.$error" role="alert">
+                                <div ng-message="required">
+                                  <span>Statut Obligatoire.</span>
+                                </div>
+                              </div>
+                        </md-input-container>   
                           </div> 
 
                             <div>
@@ -187,8 +212,11 @@
                                 <td>{{contr.objectif}}</td>
                                 <td>{{contr.methodologie}}</td>
                                 <td>{{contr.materiel}}</td>
-                                <td>{{contr.date | date:'dd/MM/yyyy'}}</td>
+                                <td>{{contr.date_debut_prevu | date:'dd/MM/yyyy'}}</td>
+                                <td>{{contr.date_fin_prevu | date:'dd/MM/yyyy'}}</td>
+                                <td>{{contr.date_realisation | date:'dd/MM/yyyy'}}</td>
                                 <td>{{contr.duree}} minutes</td>
+                                <td>{{contr.statut}}</td>
                             </tr>
                           </tbody>
                         </table>

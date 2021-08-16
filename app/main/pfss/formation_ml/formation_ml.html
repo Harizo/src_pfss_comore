@@ -151,28 +151,28 @@
                                       <span>Présentation du thème obligatoire.</span>
                                   </div>
                               </div>
-                            </md-input-container>
+                            </md-input-container> 
                             <div style="margin-top: 14px !important; font-size: 13px !important;" flex="100" flex-gt-xs="25">
-                              <label>Date de d'édition':</label>
-                              <md-datepicker  ng-model="vm.formation_ml.date_edition" md-placeholder="jj/mm/aaaa" md-max-date="vm.date_now" required>                       
-                              </md-datepicker>
-                            </div>   
+                                <label>Date de debut prévu:</label>
+                                <md-datepicker  ng-model="vm.formation_ml.date_debut_prevu" md-placeholder="jj/mm/aaaa" required>                       
+                                </md-datepicker>
+                            </div>  
                           </div>
 
                           <div layout="column" layout-gt-xs="row" flex>
                               
-                              <div style="margin-top: 14px !important; font-size: 13px !important;" flex="100" flex-gt-xs="25">
-                                  <label>Date de debut formation:</label>
-                                  <md-datepicker  ng-model="vm.formation_ml.date_debut" md-placeholder="jj/mm/aaaa" md-max-date="vm.date_now" required>                       
-                                  </md-datepicker>
-                              </div>
                               
                               <div style="margin-top: 14px !important; font-size: 13px !important;" flex="100" flex-gt-xs="25">
-                                  <label>Date de fin formation:</label>
-                                  <md-datepicker  ng-model="vm.formation_ml.date_fin" md-placeholder="jj/mm/aaaa" ng-disabled="!vm.formation_ml.date_debut" md-min-date="vm.formation_ml.date_debut">                       
+                                  <label>Date de fin prévu:</label>
+                                  <md-datepicker  ng-model="vm.formation_ml.date_fin_prevu" md-placeholder="jj/mm/aaaa" ng-disabled="!vm.formation_ml.date_debut_prevu" md-min-date="vm.formation_ml.date_debut_prevu">                       
                                   </md-datepicker>
                               </div>
-                                    
+                                 
+                            <div style="margin-top: 14px !important; font-size: 13px !important;" flex="100" flex-gt-xs="25">
+                              <label>Date de réalisation:</label>
+                              <md-datepicker  ng-model="vm.formation_ml.date_realisation" md-placeholder="jj/mm/aaaa" required>                       
+                              </md-datepicker>
+                            </div>   
                             <md-input-container flex="100" flex-gt-xs="25">
                               <label>Formateur</label>
                                 <input name="formateur" type="text" ng-model="vm.formation_ml.formateur" required md-select-on-focus>
@@ -222,7 +222,21 @@
                                     </div>
                                   </div>
                             </md-input-container>
-                 
+                               
+                          <md-input-container flex="100" flex-gt-xs="30">
+                            <label>Statut</label>
+                            <md-select ng-model="vm.formation_ml.statut" name="statut">
+                                <md-option value="EN-COURS">EN-COURS</md-option>  
+                                <md-option value="REALISE">REALISE</md-option> 
+                                <md-option value="NON REALISE">NON REALISE</md-option> 
+                                <md-option value="SUSPENDU">SUSPENDU</md-option>                                             
+                              </md-select>
+                              <div ng-messages="formformation_ml.statut.$error" role="alert">
+                                <div ng-message="required">
+                                  <span>Statut Obligatoire.</span>
+                                </div>
+                              </div>
+                        </md-input-container> 
                             </div>
 
                             <div>
@@ -257,14 +271,15 @@
                                 </td>
                                 <td>{{contr.numero}}</td>
                                 <td>{{contr.description}}</td> 
-                                <td>{{contr.date_edition | date:'dd/MM/yyyy'}}</td>
-                                <td>{{contr.date_debut | date:'dd/MM/yyyy'}}</td>
-                                <td>{{contr.date_fin | date:'dd/MM/yyyy'}}</td>
+                                <td>{{contr.date_debut_prevu | date:'dd/MM/yyyy'}}</td>
+                                <td>{{contr.date_fin_prevu | date:'dd/MM/yyyy'}}</td>
+                                <td>{{contr.date_realisation | date:'dd/MM/yyyy'}}</td>
                                 <td>{{contr.formateur}}</td>
                                 <td>{{contr.outils_didactique}}</td>
                                 <td>{{contr.lieu}}</td>
                                 <td>{{contr.probleme}}</td>
                                 <td>{{contr.solution}}</td>
+                                <td>{{contr.statut}}</td>
                             </tr>
                           </tbody>
                         </table>
