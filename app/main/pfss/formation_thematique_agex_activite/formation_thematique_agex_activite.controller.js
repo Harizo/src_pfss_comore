@@ -66,8 +66,11 @@
                 {titre:"Objectifs de formations"},
                 {titre:"Méthodologies de formation"},
                 {titre:"Matériels didactiques"},
-                {titre:"Date de formation"},
-                {titre:"Durées"}
+                {titre:"Date de debut prévu"},
+                {titre:"Date de fin prévu"},
+                {titre:"Date réalisation"},
+                {titre:"Durées"},
+                {titre:"Statut"}
             ];                       
 
             vm.selection = function (item) 
@@ -108,8 +111,11 @@
                 vm.formation_thematique_agex.objectif=null;
                 vm.formation_thematique_agex.methodologie=null;
                 vm.formation_thematique_agex.materiel=null;
-                vm.formation_thematique_agex.date=null;
+                vm.formation_thematique_agex.date_debut_prevu=null;
+                vm.formation_thematique_agex.date_fin_prevu=null;
+                vm.formation_thematique_agex.date_realisation=null;
                 vm.formation_thematique_agex.duree=null;
+                vm.formation_thematique_agex.statut=null;
                 vm.formation_thematique_agex.id_contrat_agex=null;
                 //vm.formation_thematique_agex.id_commune=null;		
                 vm.affichage_masque=true;
@@ -139,16 +145,20 @@
                 vm.formation_thematique_agex.objectif             = vm.selectedItemFormation_thematique_agex.objectif ;
                 vm.formation_thematique_agex.methodologie     = vm.selectedItemFormation_thematique_agex.methodologie ;
                 vm.formation_thematique_agex.materiel       =vm.selectedItemFormation_thematique_agex.materiel ;
-                vm.formation_thematique_agex.date = null;
+               /* vm.formation_thematique_agex.date = null;
                 if (vm.selectedItemFormation_thematique_agex.date)
                 {                    
                     vm.formation_thematique_agex.date     = new Date(vm.selectedItemFormation_thematique_agex.date) ;
-                }
+                }*/
+                vm.formation_thematique_agex.date_debut_prevu           = new Date(vm.selectedItemFormation_thematique_agex.date_debut_prevu);
+                vm.formation_thematique_agex.date_fin_prevu           = new Date(vm.selectedItemFormation_thematique_agex.date_fin_prevu);
+                vm.formation_thematique_agex.date_realisation           = new Date(vm.selectedItemFormation_thematique_agex.date_realisation);
                 vm.formation_thematique_agex.duree           = parseFloat(vm.selectedItemFormation_thematique_agex.duree) ;
                 vm.formation_thematique_agex.id_contrat_agex = vm.selectedItemFormation_thematique_agex.contrat_agex.id ;                     
                 apiFactory.getAPIgeneraliserREST("formation_thematique_agex_activite/index","menu","gettheme_formation_datailBytheme","id_theme_formation",vm.selectedItemFormation_thematique_agex.theme_formation.id).then(function(result) { 
                     vm.allTheme_formation_detail = result.data.response;
                 });
+                vm.formation_thematique_agex.statut       =vm.selectedItemFormation_thematique_agex.statut ;
                 vm.affichage_masque=true;
             }
 
@@ -198,8 +208,11 @@
                         methodologie:     formation_thematique_agex.methodologie,
                         materiel:       formation_thematique_agex.materiel,
                         id_contrat_agex:            formation_thematique_agex.id_contrat_agex,
-                        date:    convert_date(formation_thematique_agex.date), 
-                        duree:     formation_thematique_agex.duree             
+                        date_debut_prevu:          convert_date(formation_thematique_agex.date_debut_prevu),
+                        date_fin_prevu:          convert_date(formation_thematique_agex.date_fin_prevu),
+                        date_realisation:          convert_date(formation_thematique_agex.date_realisation),
+                        duree:     formation_thematique_agex.duree,  
+                        statut:     formation_thematique_agex.statut             
                         
                     });
 
@@ -238,8 +251,13 @@
                                 vm.selectedItemFormation_thematique_agex.objectif         = formation_thematique_agex.objectif ;
                                 vm.selectedItemFormation_thematique_agex.methodologie = formation_thematique_agex.methodologie ;
                                 vm.selectedItemFormation_thematique_agex.materiel   = formation_thematique_agex.materiel ;
-                                vm.selectedItemFormation_thematique_agex.date = new Date(formation_thematique_agex.date) ; 
-                                vm.selectedItemFormation_thematique_agex.duree = formation_thematique_agex.duree ;                             
+                                //vm.selectedItemFormation_thematique_agex.date = new Date(formation_thematique_agex.date) ; 
+                                
+                                vm.selectedItemFormation_thematique_agex.date_debut_prevu       = formation_thematique_agex.date_debut_prevu ;
+                                vm.selectedItemFormation_thematique_agex.date_fin_prevu       = formation_thematique_agex.date_fin_prevu ;
+                                vm.selectedItemFormation_thematique_agex.date_realisation       = formation_thematique_agex.date_realisation ;
+                                vm.selectedItemFormation_thematique_agex.duree = formation_thematique_agex.duree ;
+                                vm.selectedItemFormation_thematique_agex.statut = formation_thematique_agex.statut ;                              
                             }
                             else
                             {
@@ -287,8 +305,11 @@
                             objectif          : formation_thematique_agex.objectif,
                             methodologie  : formation_thematique_agex.methodologie ,
                             materiel    : formation_thematique_agex.materiel,
-                            date  : new Date(formation_thematique_agex.date),
-                            duree  : formation_thematique_agex.duree
+                            date_debut_prevu        : formation_thematique_agex.date_debut_prevu ,
+                            date_fin_prevu        : formation_thematique_agex.date_fin_prevu ,
+                            date_realisation : formation_thematique_agex.date_realisation ,
+                            duree  : formation_thematique_agex.duree,
+                            statut  : formation_thematique_agex.statut
                             }
                             vm.allFormation_thematique_agex.unshift(item) ;
 					        
@@ -313,8 +334,12 @@
                         ||(currentItemFormation_thematique_agex.objectif          != item.objectif)
                         ||(currentItemFormation_thematique_agex.methodologie  != item.methodologie) 
                         ||(currentItemFormation_thematique_agex.materiel    != item.materiel)
-                        ||(currentItemFormation_thematique_agex.date  != convert_date(item.date))
+                        ||(currentItemFormation_thematique_agex.date_debut_prevu    != item.date_debut_prevu) 
+                        ||(currentItemFormation_thematique_agex.date_fin_prevu      != item.date_fin_prevu)
+                        ||(currentItemFormation_thematique_agex.date_realisation != item.date_realisation) 
+                        //||(currentItemFormation_thematique_agex.date  != convert_date(item.date))
                         ||(currentItemFormation_thematique_agex.duree  != item.duree )
+                        ||(currentItemFormation_thematique_agex.statut  != item.statut )
                         )                    
                     { 
                             insert_in_baseFormation_thematique_agex(item,suppression);                      

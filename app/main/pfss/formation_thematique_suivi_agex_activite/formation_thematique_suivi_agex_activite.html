@@ -91,7 +91,17 @@
                                   </div>
                                 </div>
                           </md-input-container>
-                          <md-input-container flex="100" flex-gt-xs="30">
+                          <div style="font-size: 13px !important;" flex="100" flex-gt-xs="30">
+                            <label>Date de debut prévue</label>
+                            <md-datepicker  ng-model="vm.formation_thematique_suivi_agex_activite.date_debut_prevu" md-placeholder="Date" required>                       
+                            </md-datepicker>
+                          </div>
+                          <div style="font-size: 13px !important;" flex="100" flex-gt-xs="30">
+                            <label>Date de fin prévue</label>
+                            <md-datepicker  ng-model="vm.formation_thematique_suivi_agex_activite.date_fin_prevu" md-placeholder="Date" md-min-date="vm.formation_thematique_suivi_agex_activite.date_debut_prevu" required>                       
+                            </md-datepicker>
+                          </div>
+                          <!--md-input-container flex="100" flex-gt-xs="30">
                             <label>Période prévue</label>
                             <input  type="text" name="periode_prevu" ng-model="vm.formation_thematique_suivi_agex_activite.periode_prevu" required>
                             <div ng-messages="formformation_thematique_suivi_agex_activite.periode_prevu.$error"role="alert">
@@ -108,11 +118,20 @@
                                     <span>Période réalisation ciblés obligatoire.</span>
                                 </div>
                             </div>
-                          </md-input-container>
+                          </md-input-container-->
                             
                           </div>  
                           <div layout="column" layout-gt-xs="row" flex>  
-                                   
+                            <div style="font-size: 13px !important;" flex="100" flex-gt-xs="30">
+                              <label>Date de debut réalisation</label>
+                              <md-datepicker  ng-model="vm.formation_thematique_suivi_agex_activite.date_debut_realisation" md-placeholder="Date" required>                       
+                              </md-datepicker>
+                            </div>
+                            <div style="font-size: 13px !important;" flex="100" flex-gt-xs="30">
+                              <label>Date de fin réalisation</label>
+                              <md-datepicker  ng-model="vm.formation_thematique_suivi_agex_activite.date_fin_realisation" md-placeholder="Date" md-min-date="vm.formation_thematique_suivi_agex_activite.date_debut_realisation" required>                       
+                              </md-datepicker>
+                            </div>        
                             <md-input-container flex="100" flex-gt-xs="30">
                               <label>Bénéficiaires</label>
                               <input  type="text" name="beneficiaire" ng-model="vm.formation_thematique_suivi_agex_activite.beneficiaire" required>
@@ -130,10 +149,12 @@
                                       <span>Nombre des bénéficiaires ciblés obligatoire.</span>
                                   </div>
                               </div>
-                            </md-input-container>                           
+                            </md-input-container> 
+                          </div> 
+                          <div layout="column" layout-gt-xs="row" flex>                           
                             <md-input-container flex="100" flex-gt-xs="25">
                               <label>Nombre de participants</label>
-                              <input  type="text" name="nbr_participant" ng-model="vm.formation_thematique_suivi_agex_activite.nbr_participant" ng-init="vm.formation_thematique_suivi_agex_activite.nbr_participant=''" required>
+                              <input  type="number" name="nbr_participant" ng-model="vm.formation_thematique_suivi_agex_activite.nbr_participant" ng-init="vm.formation_thematique_suivi_agex_activite.nbr_participant=''" required>
                               <div ng-messages="formformation_thematique_suivi_agex_activite.nbr_participant.$error"role="alert">
                                   <div ng-message="required">
                                       <span>Nombre de participants obligatoire.</span>
@@ -143,7 +164,7 @@
                                                               
                             <md-input-container flex="100" flex-gt-xs="25">
                               <label>Nombre de femmes</label>
-                              <input  type="text" name="nbr_femme" ng-model="vm.formation_thematique_suivi_agex_activite.nbr_femme" ng-init="vm.formation_thematique_suivi_agex_activite.nbr_femme=''" required>
+                              <input  type="number" name="nbr_femme" ng-model="vm.formation_thematique_suivi_agex_activite.nbr_femme" ng-init="vm.formation_thematique_suivi_agex_activite.nbr_femme=''" required>
                               <div ng-messages="formformation_thematique_suivi_agex_activite.nbr_femme.$error"role="alert">
                                   <div ng-message="required">
                                       <span>Nombre de femmes obligatoire.</span>
@@ -201,8 +222,10 @@
                                 
                                 <td>{{contr.contrat_agex.numero_contrat}}</td>
                                 <td>{{contr.theme_formation.description}}</td>
-                                <td>{{contr.periode_prevu}}</td>
-                                <td>{{contr.periode_realisation}}</td>
+                                <td>{{contr.date_debut_prevu | date:'dd/MM/yyyy'}}</td>
+                                <td>{{contr.date_fin_prevu | date:'dd/MM/yyyy'}}</td>
+                                <td>{{contr.date_debut_realisation | date:'dd/MM/yyyy'}}</td>
+                                <td>{{contr.date_fin_realisation | date:'dd/MM/yyyy'}}</td>
                                 <td>{{contr.beneficiaire}}</td>
                                 <td>{{contr.nbr_beneficiaire_cible}}</td>
                                 <td>{{contr.nbr_participant}}</td>

@@ -54,8 +54,10 @@
             [   
                 {titre:"Contrat AGEX N°"},
                 {titre:"Thème de la formation"},
-                {titre:"Période prévu"},
-                {titre:"Période réalisation"},
+                {titre:"Date de debut prévu"},
+                {titre:"Date de fin prévu"},
+                {titre:"Date debut réalisation"},
+                {titre:"Date fin réalisation"},
                 {titre:"Bénéficiaires"},
                 {titre:"Nombre des bénéficiaires ciblés"},
                 {titre:"Nombre des participants"},
@@ -97,8 +99,10 @@
                 vm.formation_thematique_suivi_agex_macc.supprimer=0;
                 vm.formation_thematique_suivi_agex_macc.id=0;
                 vm.formation_thematique_suivi_agex_macc.id_theme_sensibilisation=null;
-                vm.formation_thematique_suivi_agex_macc.periode_prevu=null;
-                vm.formation_thematique_suivi_agex_macc.periode_realisation=null;
+                vm.formation_thematique_suivi_agex_macc.date_debut_prevu=null;
+                vm.formation_thematique_suivi_agex_macc.date_fin_prevu=null;
+                vm.formation_thematique_suivi_agex_macc.date_debut_realisation=null;
+                vm.formation_thematique_suivi_agex_macc.date_fin_realisation=null;
                 vm.formation_thematique_suivi_agex_macc.beneficiaire=null;
                 vm.formation_thematique_suivi_agex_macc.nbr_beneficiaire_cible=null;
                 vm.formation_thematique_suivi_agex_macc.nbr_participant=null;
@@ -130,8 +134,10 @@
                 currentItemFormation_thematique_suivi_agex_macc = JSON.parse(JSON.stringify(vm.selectedItemFormation_thematique_suivi_agex_macc));
                 vm.formation_thematique_suivi_agex_macc.id_theme_sensibilisation   = vm.selectedItemFormation_thematique_suivi_agex_macc.theme_sensibilisation.id ;
                 vm.formation_thematique_suivi_agex_macc.lieu                       = vm.selectedItemFormation_thematique_suivi_agex_macc.lieu ;
-                vm.formation_thematique_suivi_agex_macc.periode_prevu           = vm.selectedItemFormation_thematique_suivi_agex_macc.periode_prevu ;
-                vm.formation_thematique_suivi_agex_macc.periode_realisation     = vm.selectedItemFormation_thematique_suivi_agex_macc.periode_realisation ;
+                vm.formation_thematique_suivi_agex_macc.date_debut_prevu           = new Date(vm.selectedItemFormation_thematique_suivi_agex_macc.date_debut_prevu);
+                vm.formation_thematique_suivi_agex_macc.date_fin_prevu           = new Date(vm.selectedItemFormation_thematique_suivi_agex_macc.date_fin_prevu);
+                vm.formation_thematique_suivi_agex_macc.date_debut_realisation           = new Date(vm.selectedItemFormation_thematique_suivi_agex_macc.date_debut_realisation);
+                vm.formation_thematique_suivi_agex_macc.date_fin_realisation           = new Date(vm.selectedItemFormation_thematique_suivi_agex_macc.date_fin_realisation);
                 vm.formation_thematique_suivi_agex_macc.beneficiaire       = vm.selectedItemFormation_thematique_suivi_agex_macc.beneficiaire ;
                 vm.formation_thematique_suivi_agex_macc.nbr_beneficiaire_cible     = parseInt(vm.selectedItemFormation_thematique_suivi_agex_macc.nbr_beneficiaire_cible) ;
                 vm.formation_thematique_suivi_agex_macc.nbr_participant     = parseInt(vm.selectedItemFormation_thematique_suivi_agex_macc.nbr_participant) ;
@@ -183,8 +189,10 @@
                         id:id,      
                         supprimer:etat_suppression,
                         id_theme_sensibilisation:   formation_thematique_suivi_agex_macc.id_theme_sensibilisation,
-                        periode_prevu:           formation_thematique_suivi_agex_macc.periode_prevu,
-                        periode_realisation:     formation_thematique_suivi_agex_macc.periode_realisation,
+                        date_debut_prevu:          convert_date(formation_thematique_suivi_agex_macc.date_debut_prevu),
+                        date_fin_prevu:          convert_date(formation_thematique_suivi_agex_macc.date_fin_prevu),
+                        date_debut_realisation:          convert_date(formation_thematique_suivi_agex_macc.date_debut_realisation),
+                        date_fin_realisation:          convert_date(formation_thematique_suivi_agex_macc.date_fin_realisation),
                         beneficiaire:       formation_thematique_suivi_agex_macc.beneficiaire,
                         id_contrat_agex:            formation_thematique_suivi_agex_macc.id_contrat_agex,
                         nbr_beneficiaire_cible:     formation_thematique_suivi_agex_macc.nbr_beneficiaire_cible,
@@ -217,8 +225,11 @@
                                 {                                  
                                     vm.selectedItemFormation_thematique_suivi_agex_macc.theme_sensibilisation = them[0] ;  
                                 }
-                                vm.selectedItemFormation_thematique_suivi_agex_macc.periode_prevu       = formation_thematique_suivi_agex_macc.periode_prevu ;
-                                vm.selectedItemFormation_thematique_suivi_agex_macc.periode_realisation = formation_thematique_suivi_agex_macc.periode_realisation ;
+                                vm.selectedItemFormation_thematique_suivi_agex_macc.date_debut_prevu       = formation_thematique_suivi_agex_macc.date_debut_prevu ;
+                                vm.selectedItemFormation_thematique_suivi_agex_macc.date_fin_prevu       = formation_thematique_suivi_agex_macc.date_fin_prevu ;
+                                vm.selectedItemFormation_thematique_suivi_agex_macc.date_debut_realisation       = formation_thematique_suivi_agex_macc.date_debut_realisation ;
+                                vm.selectedItemFormation_thematique_suivi_agex_macc.date_fin_realisation       = formation_thematique_suivi_agex_macc.date_fin_realisation ;
+                                //vm.selectedItemFormation_thematique_suivi_agex_macc.periode_realisation = formation_thematique_suivi_agex_macc.periode_realisation ;
                                 vm.selectedItemFormation_thematique_suivi_agex_macc.beneficiaire   = formation_thematique_suivi_agex_macc.beneficiaire ;
                                 vm.selectedItemFormation_thematique_suivi_agex_macc.nbr_beneficiaire_cible = formation_thematique_suivi_agex_macc.nbr_beneficiaire_cible ;
                                 vm.selectedItemFormation_thematique_suivi_agex_macc.nbr_participant = formation_thematique_suivi_agex_macc.nbr_participant ;
@@ -258,8 +269,10 @@
                             id : String(data.response) ,
                             contrat_agex            : contrat[0] ,
                             theme_sensibilisation   : them[0] ,
-                            periode_prevu        : formation_thematique_suivi_agex_macc.periode_prevu ,
-                            periode_realisation  : formation_thematique_suivi_agex_macc.periode_realisation ,
+                            date_debut_prevu        : formation_thematique_suivi_agex_macc.date_debut_prevu ,
+                            date_fin_prevu        : formation_thematique_suivi_agex_macc.date_fin_prevu ,
+                            date_debut_realisation : formation_thematique_suivi_agex_macc.date_debut_realisation ,
+                            date_fin_realisation   : formation_thematique_suivi_agex_macc.date_fin_realisation ,
                             beneficiaire    : formation_thematique_suivi_agex_macc.beneficiaire,
                             nbr_beneficiaire_cible  : formation_thematique_suivi_agex_macc.nbr_beneficiaire_cible ,
                             nbr_participant  : formation_thematique_suivi_agex_macc.nbr_participant ,
@@ -285,8 +298,10 @@
                 if (suppression!=1) 
                 {                    
                     if((currentItemFormation_thematique_suivi_agex_macc.theme_sensibilisation.id   != item.id_theme_sensibilisation )
-                        ||(currentItemFormation_thematique_suivi_agex_macc.periode_prevu        != item.periode_prevu) 
-                        ||(currentItemFormation_thematique_suivi_agex_macc.periode_realisation  != item.periode_realisation) 
+                        ||(currentItemFormation_thematique_suivi_agex_macc.date_debut_prevu        != item.date_debut_prevu) 
+                        ||(currentItemFormation_thematique_suivi_agex_macc.date_fin_prevu        != item.date_fin_prevu)
+                        ||(currentItemFormation_thematique_suivi_agex_macc.date_debut_realisation        != item.date_debut_realisation) 
+                        ||(currentItemFormation_thematique_suivi_agex_macc.date_fin_realisation        != item.date_fin_realisation) 
                         ||(currentItemFormation_thematique_suivi_agex_macc.beneficiaire    != item.beneficiaire)
                         ||(currentItemFormation_thematique_suivi_agex_macc.nbr_beneficiaire_cible  != item.nbr_beneficiaire_cible )
                         ||(currentItemFormation_thematique_suivi_agex_macc.nbr_participant  != item.nbr_participant )

@@ -189,12 +189,16 @@
             vm.realisation_ebe_column = 
             [   
                 {titre:"Contrat ONG N°"},
-                {titre:"Date d'édition"},
+                //{titre:"Date d'édition"},
+                {titre:"Date de debut prévu"},
+                {titre:"Date de fin prévu"},
+                {titre:"Date réalisation"},
                 {titre:"Espace bien être"},
                 {titre:"But regroupement"},
-                {titre:"Date regroupement"},
+               // {titre:"Date regroupement"},
                 {titre:"Matériels"},
-                {titre:"Lieu"}
+                {titre:"Lieu"},
+                {titre:"Statut"}
             ];                       
 
             vm.selection = function (item) 
@@ -231,8 +235,10 @@
                 //vm.realisation_ebe.numero=null;
                 vm.realisation_ebe.id_espace_bien_etre=null;
                 vm.realisation_ebe.but_regroupement=null;
-                vm.realisation_ebe.date_regroupement=null;
-                vm.realisation_ebe.date_edition=null;
+                vm.realisation_ebe.date_debut_prevu=null;
+                vm.realisation_ebe.date_fin_prevu=null;
+                vm.realisation_ebe.date_realisation=null;
+                vm.realisation_ebe.statut=null;
                 vm.realisation_ebe.materiel=null;
                 vm.realisation_ebe.lieu=null;
                 vm.realisation_ebe.id_contrat_agex=null;
@@ -261,10 +267,12 @@
                 currentItemRealisation_ebe = JSON.parse(JSON.stringify(vm.selectedItemRealisation_ebe));
                 vm.realisation_ebe.numero  = parseInt(vm.selectedItemRealisation_ebe.numero) ;
                 vm.realisation_ebe.but_regroupement   = vm.selectedItemRealisation_ebe.but_regroupement ;
-                vm.realisation_ebe.date_regroupement   = new Date(vm.selectedItemRealisation_ebe.date_regroupement) ;
-                vm.realisation_ebe.date_edition   = new Date(vm.selectedItemRealisation_ebe.date_edition) ;
+                vm.realisation_ebe.date_debut_prevu   = new Date(vm.selectedItemRealisation_ebe.date_debut_prevu) ;
+                vm.realisation_ebe.date_fin_prevu   = new Date(vm.selectedItemRealisation_ebe.date_fin_prevu) ;
+                vm.realisation_ebe.date_realisation   = new Date(vm.selectedItemRealisation_ebe.date_realisation) ;
                 vm.realisation_ebe.materiel = vm.selectedItemRealisation_ebe.materiel ;
                 vm.realisation_ebe.lieu = vm.selectedItemRealisation_ebe.lieu ;
+                vm.realisation_ebe.statut = vm.selectedItemRealisation_ebe.statut ;
                 vm.realisation_ebe.id_groupe_ml_pl  = vm.selectedItemRealisation_ebe.id_groupe_ml_pl ;
 
                 var contrat = vm.allContrat_agex.filter(function(obj)
@@ -327,10 +335,12 @@
                         supprimer:          etat_suppression,
                         numero:             realisation_ebe.numero,
                         but_regroupement:   realisation_ebe.but_regroupement,
-                        date_regroupement:  convert_date(realisation_ebe.date_regroupement),
-                        date_edition:  convert_date(realisation_ebe.date_edition),
+                        date_debut_prevu:  convert_date(realisation_ebe.date_debut_prevu),
+                        date_fin_prevu:  convert_date(realisation_ebe.date_fin_prevu),
+                        date_realisation:  convert_date(realisation_ebe.date_realisation),
                         materiel:           realisation_ebe.materiel,
                         lieu:               realisation_ebe.lieu,
+                        statut:               realisation_ebe.statut,
                         id_espace_bien_etre:  realisation_ebe.id_espace_bien_etre,
                         id_contrat_agex:  realisation_ebe.id_contrat_agex,
                         id_groupe_ml_pl:           vm.filtre.id_groupe_ml_pl            
@@ -363,10 +373,12 @@
                                 vm.selectedItemRealisation_ebe.id_groupe_ml_pl         = realisation_ebe.id_groupe_ml_pl ;
                                 vm.selectedItemRealisation_ebe.numero           = realisation_ebe.numero ;
                                 vm.selectedItemRealisation_ebe.but_regroupement = realisation_ebe.but_regroupement ;
-                                vm.selectedItemRealisation_ebe.date_regroupement = new Date(realisation_ebe.date_regroupement) ;
-                                vm.selectedItemRealisation_ebe.date_edition = new Date(realisation_ebe.date_edition) ;
+                                vm.selectedItemRealisation_ebe.date_debut_prevu = realisation_ebe.date_debut_prevu ;
+                                vm.selectedItemRealisation_ebe.date_fin_prevu = realisation_ebe.date_fin_prevu ;
+                                vm.selectedItemRealisation_ebe.date_realisation = realisation_ebe.date_realisation ;
                                 vm.selectedItemRealisation_ebe.materiel         = realisation_ebe.materiel ;
-                                vm.selectedItemRealisation_ebe.lieu             = realisation_ebe.lieu ;                              
+                                vm.selectedItemRealisation_ebe.lieu             = realisation_ebe.lieu ;
+                                vm.selectedItemRealisation_ebe.statut             = realisation_ebe.statut ;                               
                             }
                             else
                             {
@@ -405,10 +417,12 @@
                             id_commune :                realisation_ebe.id_commune ,
                             numero :                    realisation_ebe.numero ,
                             but_regroupement :          realisation_ebe.but_regroupement ,
-                            date_regroupement :         new Date(realisation_ebe.date_regroupement) ,
-                            date_edition :         new Date(realisation_ebe.date_edition) ,
+                            date_debut_prevu :         realisation_ebe.date_debut_prevu ,
+                            date_fin_prevu :         realisation_ebe.date_fin_prevu ,
+                            date_realisation :         realisation_ebe.date_realisation ,
                             materiel :                  realisation_ebe.materiel ,
                             lieu :                      realisation_ebe.lieu ,
+                            statut :                      realisation_ebe.statut ,
                             id_groupe_ml_pl :                  realisation_ebe.id_groupe_ml_pl 
                             }
                             vm.allRealisation_ebe.unshift(item) ;
@@ -428,10 +442,12 @@
                 {                    
                     if((currentItemRealisation_ebe.numero                 != item.numero )
                         ||(currentItemRealisation_ebe.but_regroupement    != item.but_regroupement )
-                        ||(currentItemRealisation_ebe.date_regroupement   != convert_date(item.date_regroupement) )
-                        ||(currentItemRealisation_ebe.date_edition   != convert_date(item.date_edition) )
+                        ||(currentItemRealisation_ebe.date_debut_prevu   != convert_date(item.date_debut_prevu) )
+                        ||(currentItemRealisation_ebe.date_fin_prevu   != convert_date(item.date_fin_prevu) )
+                        ||(currentItemRealisation_ebe.date_realisation   != convert_date(item.date_realisation) )
                         ||(currentItemRealisation_ebe.materiel            != item.materiel )
                         ||(currentItemRealisation_ebe.lieu                != item.lieu )
+                        ||(currentItemRealisation_ebe.statut                != item.statut )
                         ||(currentItemRealisation_ebe.contrat_agex.id   != item.id_contrat_agex ) 
                         ||(currentItemRealisation_ebe.espace_bien_etre.id   != item.id_espace_bien_etre )
                         )                    
