@@ -218,7 +218,7 @@
 
                  // $location.path("/accueil");//si n'est pas packeT
                   
-                      $window.location.href = '/';
+                      $window.location.href = '/mis';
                     }
                   }
                   else

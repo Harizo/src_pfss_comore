@@ -31,7 +31,7 @@
         });
         // Navigation
         msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.acteurs', {
-            title: "Sous-projet/Acteurs/Type transfert",
+            title: "AGEX / AGEP / CPS",
             icon  : 'icon-swap-horizontal',
             state: 'app.pfss_ddb_acteurs',
 			weight: 2

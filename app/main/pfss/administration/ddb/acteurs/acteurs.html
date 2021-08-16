@@ -17,13 +17,13 @@
         <div class="content" layout="column">
             <div class="form-wrapper">
                 <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
-                    <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                    <md-progress-circular ng-if="vm.affiche_load" class=" md-primary"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
                     
-                    <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                    <span style="color: #5C935C">Chargement,veuillez patienter s'il vous plait ...</span>
                 </div>
                 <div style="clear:both;"></div>
                 <md-tabs md-dynamic-height layout="column" flex>
-                    <md-tab label="Consultant/ONG" ng-click="vm.Select_table(1)" layout="column" flex>
+                    <!-- <md-tab label="Consultant/ONG" ng-click="vm.Select_table(1)" layout="column" flex>
                         <md-tab-body>
                             <fieldset style="width: 100%">
                                 <legend>
@@ -134,7 +134,7 @@
                                 </table>
                             </fieldset>
                         </md-tab-body>
-                    </md-tab>       
+                    </md-tab> -->       
                     <md-tab label="Agence d'execution" ng-click="vm.get_all_agex()" layout="column" flex>
                         <md-tab-body>
                             
@@ -545,10 +545,10 @@
                     </md-tab-->       
                     <md-tab label="Cellule de protection sociale" ng-click="vm.Select_table(3)">
                         <md-tab-body>
-                            <fieldset layout="column" layout-gt-xs="row">
-                                <legend>
-                                        Cellule de protection sociale
-                                    <md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterProtection_sociale()">
+                            <!-- <fieldset layout="column" layout-gt-xs="row">
+                                <legend> -->
+                                       <!--  Cellule de protection sociale -->
+                                    <md-button class="md-fab md-mini " ng-show="vm.affichage_bouton_plus" aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterProtection_sociale()">
                                       <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
                                     </md-button>
 
@@ -557,8 +557,8 @@
                                     </md-button>
 
 
-                                </legend>
-                                <table ng-table="tablePrestatairePsociale" id="tablePrestatairePsociale" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+                               <!--  </legend> -->
+                                <table ng-table="tablePrestatairePsociale" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
                                     <thead>
                                         <tr>
                                             <th class="secondary-text" ng-repeat="c in ::vm.protection_sociale_column">
@@ -698,10 +698,10 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </fieldset>
+                            <!-- </fieldset> -->
                         </md-tab-body>
 					</md-tab>
-                    <md-tab label="Unité de mésure">
+                    <!-- <md-tab label="Unité de mésure">
                         <md-tab-body>
                             <fieldset layout="column" layout-gt-xs="row">
                                 <legend>
@@ -763,10 +763,10 @@
                                 </table>
                             </fieldset>
                         </md-tab-body>
-                    </md-tab>		
+                    </md-tab> -->		
 					<!-- Fin Saisie unité de mesure-->
 					<!-- Début Saisie type de transfert-->
-                    <md-tab label="Type de transfert">
+                    <!-- <md-tab label="Type de transfert">
                         <md-tab-body>
 							<div layout="row">
 								<div flex="45">
@@ -910,10 +910,10 @@
 								</div>
 							</div>						
                         </md-tab-body>
-                    </md-tab>		
+                    </md-tab> -->		
 					<!-- Fin Saisie type de transfert-->
 					<!-- Début Saisie fréquence de transfert-->
-                    <md-tab label="Fréquence de transfert">
+                    <!-- <md-tab label="Fréquence de transfert">
                         <md-tab-body>
 							<fieldset>
 								<legend>
@@ -975,7 +975,7 @@
 								</table>
 							</fieldset>
                         </md-tab-body>
-                    </md-tab>						
+                    </md-tab> -->						
 
                     <md-tab>
                     </md-tab>

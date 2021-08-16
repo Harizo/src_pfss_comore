@@ -26,6 +26,14 @@
         
       ];
 
+      vm.dtOptions_new =
+      {
+          dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
+          pagingType: 'simple_numbers',
+          retrieve:'true',
+          order:[] 
+      };
+
       vm.formatMillier = function (nombre) 
       {
           if (typeof nombre != 'undefined' && parseInt(nombre) >= 0) {
