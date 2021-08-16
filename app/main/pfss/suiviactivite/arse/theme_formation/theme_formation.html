@@ -1,34 +1,239 @@
 <div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
-        <!-- HEADER -->
-        <div class="header md-accent-bg" layout="row" layout-align="space-between">
-            <div layout="column" layout-align="space-between">
-                <div class="breadcrumb" layout="row" layout-align="start center">
-                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
-                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
-                    <span class="parent">Suivi activité</span>
-                    <span class="parent"> </span>
-                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
-                    <span class="parent" href="javascript:;">ARSE</span>
-                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
-                    <span class="parent" href="javascript:;">Thème formation</span>
-                </div>
-    
-                <div class="title">Thème formation</div>
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Suivi activité</span>
+                <span class="parent"> </span>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent" href="javascript:;">ARSE</span>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent" href="javascript:;">Thème formation</span>
             </div>
-        </div>
-        <div class="content" layout="column"  >
-            <div class="form-wrapper md-whiteframe-1dp" >
-                <div style="clear:both;"></div>
-                
-                <div>                                    
-                    <kendo-grid options="vm.mainGridOptions">
-                        <div k-detail-template>
-                        <kendo-grid k-options="vm.all_theme_formation_detail({{dataItem.id}})">
-                        </kendo-grid>
-                        </div>
-                    </kendo-grid>
-                </div>
-            </div>
+
         </div>
     </div>
-    
+    <div class="content" layout="column">
+        <div class="form-wrapper">
+            <!--div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+            </div-->
+            <div style="clear:both;"></div>
+            <md-tabs md-dynamic-height layout="column" flex>
+                
+                   <md-tab label="Thème formation" layout="column" flex>
+                    <md-tab-body>
+
+
+                        <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                            <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                                <div layout="row" layout-align="start center">
+                                <div class="border-right">
+
+                                    
+                                  <span class="md-headline">Thème formation</span>
+                                </div>
+                                  <div class="border-right" ng-if="!vm.selectedItem_theme_formation.id&&!vm.nouvelleItem_theme_formation">
+                                    <md-button class="md-icon-button" aria-label="ajout" ng-click="vm.ajouter_theme_formation()">
+                                      <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                      <md-tooltip><span>Ajouter</span></md-tooltip>
+                                    </md-button>
+                                  </div> 
+                                  <div class="border-right" ng-if="vm.selectedItem_theme_formation.id&&!vm.selectedItem_theme_formation.$edit">
+                                    <md-button class="md-icon-button" aria-label="modification" ng-click="vm.modifier_theme_formation()">
+                                      <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                      <md-tooltip><span>Modifier</span></md-tooltip>
+                                    </md-button>
+                                  </div>    
+                                  <div class="border-right" ng-if="vm.selectedItem_theme_formation.id&&!vm.selectedItem_theme_formation.$edit">
+                                    <md-button class="md-icon-button" aria-label="Suppression" ng-click="vm.supprimer_theme_formation()">
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Supprimer</span></md-tooltip>
+                                    </md-button>
+                                  </div>  
+
+                                  <div class="border-right" ng-if="vm.selectedItem_theme_formation.id">
+                                    <md-button class="md-icon-button" aria-label="annulation" ng-click="vm.annuler_theme_formation()">
+                                      <md-icon md-font-icon="icon-cancel"></md-icon>
+                                      <md-tooltip><span>Annuler</span></md-tooltip>
+                                    </md-button>
+                                  </div>   
+
+                                  <div ng-if="vm.selectedItem_theme_formation.$edit && vm.selectedItem_theme_formation.description.length>=4">
+                                    <md-button class="md-icon-button" aria-label="enregistrement" ng-click="vm.enregistrer_theme_formation(0)">
+                                      <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                      <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                    </md-button>
+                                  </div>
+             
+                                  <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                    <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                    <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                                </div>               
+                                </div>
+                            </header>
+
+
+                            <table ng-table="theme_formation" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                                <thead>
+                                    <tr>
+                                        <th class="secondary-text" ng-repeat="c in ::vm.theme_formation_column">
+                                            <div class="table-header">
+                                                <span class="column-title text-center">{{c.titre}}</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="cm in vm.allTheme_formation"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_theme_formation(cm)">  
+                                                                             
+                                        
+                                        <td>                                                
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Code</label>
+                                                  <input type="text" name="code"  ng-model="cm.code" readonly/>
+                                                </md-input-container>   
+                                                
+                                            </span>
+                                            <span ng-if="!cm.$edit">
+                                                {{cm.code}}
+                                            </span>
+                                        </td>
+                                        <td>
+
+                                            <span ng-if="cm.$edit">
+                                                <md-input-container style="width:100%;display: flex !important;">
+                                                  <label>Description</label>
+                                                  <input type="text" name="description" ng-model="cm.description" ng-change="vm.change_description(cm)" minlength="4"/>
+                                              </md-input-container>
+
+                                          </span>
+                                          <span ng-if="!cm.$edit">
+                                              {{cm.description}}
+                                          
+
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+
+                <md-tab label="Sous-thème" layout="column" flex ng-disabled="!vm.selectedItem_theme_formation.id" ng-click="vm.get_theme_formation_detail()">
+                  <md-tab-body>
+
+
+                      <div class="price-table style-1 md-whiteframe-1dp" layout="column">
+                          <header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+                              <div layout="row" layout-align="start center">
+                              <div class="border-right">
+
+                                  
+                                <span class="md-headline">Sous-thème</span>
+                              </div>
+                                <div class="border-right" ng-if="!vm.selectedItem_theme_formation_detail.id&&!vm.nouvelleItem_theme_formation_detail">
+                                  <md-button class="md-icon-button" aria-label="ajout" ng-click="vm.ajouter_theme_formation_detail()">
+                                    <md-icon md-font-icon="icon-plus-box"></md-icon>
+                                    <md-tooltip><span>Ajouter</span></md-tooltip>
+                                  </md-button>
+                                </div> 
+                                <div class="border-right" ng-if="vm.selectedItem_theme_formation_detail.id&&!vm.selectedItem_theme_formation_detail.$edit">
+                                  <md-button class="md-icon-button" aria-label="modification" ng-click="vm.modifier_theme_formation_detail()">
+                                    <md-icon md-font-icon="icon-table-edit"></md-icon>
+                                    <md-tooltip><span>Modifier</span></md-tooltip>
+                                  </md-button>
+                                </div>    
+                                <div class="border-right" ng-if="vm.selectedItem_theme_formation_detail.id&&!vm.selectedItem_theme_formation_detail.$edit">
+                                  <md-button class="md-icon-button" aria-label="Suppression" ng-click="vm.supprimer_theme_formation_detail()">
+                                    <md-icon md-font-icon="icon-delete"></md-icon>
+                                    <md-tooltip><span>Supprimer</span></md-tooltip>
+                                  </md-button>
+                                </div>  
+
+                                <div class="border-right" ng-if="vm.selectedItem_theme_formation_detail.id">
+                                  <md-button class="md-icon-button" aria-label="annulation" ng-click="vm.annuler_theme_formation_detail()">
+                                    <md-icon md-font-icon="icon-cancel"></md-icon>
+                                    <md-tooltip><span>Annuler</span></md-tooltip>
+                                  </md-button>
+                                </div>   
+
+                                <div ng-if="vm.selectedItem_theme_formation_detail.$edit && vm.selectedItem_theme_formation_detail.description.length>=4">
+                                  <md-button class="md-icon-button" aria-label="enregistrement" ng-click="vm.enregistrer_theme_formation_detail(0)">
+                                    <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+                                    <md-tooltip><span>Enregistrer</span></md-tooltip>
+                                  </md-button>
+                                </div>
+           
+                                <div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+                                  <md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+                                  <span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+                              </div>               
+                              </div>
+                          </header>
+
+
+                          <table ng-table="theme_formation_detail" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+                              <thead>
+                                  <tr>
+                                      <th class="secondary-text" ng-repeat="c in ::vm.theme_formation_detail_column">
+                                          <div class="table-header">
+                                              <span class="column-title text-center">{{c.titre}}</span>
+                                          </div>
+                                      </th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr ng-repeat="cm in vm.allTheme_formation_detail"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_theme_formation_detail(cm)">  
+                                                                           
+                                      
+                                      <td>                                                
+                                          <span ng-if="cm.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Code</label>
+                                                <input type="text" name="code"  ng-model="cm.code" readonly/>
+                                              </md-input-container>   
+                                              
+                                          </span>
+                                          <span ng-if="!cm.$edit">
+                                              {{cm.code}}
+                                          </span>
+                                      </td>
+                                      <td>
+
+                                          <span ng-if="cm.$edit">
+                                              <md-input-container style="width:100%;display: flex !important;">
+                                                <label>Description</label>
+                                                <input type="text" name="description" ng-model="cm.description" ng-change="vm.change_description_detail(cm)" minlength="4"/>
+                                            </md-input-container>
+
+                                        </span>
+                                        <span ng-if="!cm.$edit">
+                                            {{cm.description}}
+                                        
+
+                                          </span>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </md-tab-body>
+              </md-tab>
+
+
+            </md-tabs>
+        </div>
+  </div>
+                  
+</div>
+                            
+
+                                        
+
+                    

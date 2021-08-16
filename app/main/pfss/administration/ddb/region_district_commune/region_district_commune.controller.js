@@ -267,7 +267,7 @@
                           Region:       e.data.models[0].Region,
                           ile_id: e.data.models[0].ile.id               
                       });
-                  apiFactory.add("district/index",datas, config).success(function (data)
+                  apiFactory.add("region/index",datas, config).success(function (data)
                   {                
                     e.success(e.data.models);
 
@@ -307,12 +307,12 @@
 							  supprimer: 1,
 							  id:        e.data.models[0].id               
 						});                 
-						apiFactory.add("district/index",datas, config).success(function (data) {                
+						apiFactory.add("region/index",datas, config).success(function (data) {                
 							e.success(e.data.models);
 							/***********Debut add historique***********/
 							var config = {headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}};
 							var datas = $.param({
-									action:"Suppression : District de nom de " + e.data.models[0].nom,
+									action:"Suppression : Region de nom de " + e.data.models[0].nom,
 									id_utilisateur:vm.id_utilisateur
 							});                             
 							apiFactory.add("historique_utilisateur/index",datas, config).success(function (data) {
@@ -339,7 +339,7 @@
                           ile_id: ile_id               
                       });
                   
-                  apiFactory.add("district/index",datas, config).success(function (data)
+                  apiFactory.add("region/index",datas, config).success(function (data)
                   { 
                     
                       e.data.models[0].id = String(data.response);                    

@@ -31,6 +31,11 @@
       vm.selected_agr = {} ;
       var current_selected_agr = {} ;
       vm.nouvelle_agr = false; 
+      
+      vm.all_tmnccovid = [] ;
+      vm.selected_tmnccovid = {} ;
+      var current_selected_tmnccovid = {} ;
+      vm.nouvelle_tmnccovid = false ;
 
 
      vm.dtOptions = {
@@ -62,7 +67,12 @@
             apiFactory.getAll("type_activite_act/index").then(function(result)
             {
               vm.all_type_activite_act = result.data.response;
-              vm.affiche_load = false ;
+              //vm.affiche_load = false ;
+              apiFactory.getAll("tmnccovid/index").then(function(result)
+              {
+                vm.all_tmnccovid = result.data.response;
+                vm.affiche_load = false ;
+              });
             });
   
           });
@@ -173,8 +183,8 @@
             {
               vm.selected_type_infrastructure_agr.$selected = false;
               vm.selected_type_infrastructure_agr.$edit = false;              
-              vm.selected_type_infrastructure_agr.Code = current_selected_type_infrastructure_agr.Code ;
-              vm.selected_type_infrastructure_agr.Libelle = current_selected_type_infrastructure_agr.Libelle ;             
+              vm.selected_type_infrastructure_agr.code = current_selected_type_infrastructure_agr.code ;
+              vm.selected_type_infrastructure_agr.libelle = current_selected_type_infrastructure_agr.libelle ;             
               vm.selected_type_infrastructure_agr = {};
             }
 
@@ -605,7 +615,186 @@
               .error(function (data) {alert("Une erreur s'est produit");});
         }
 
-        //activite_act NEW CODE       
+        //activite_act NEW CODE 
+        
+        
+      //Tmnccovid     
+
+      vm.tmnccovid_column =
+      [
+        {titre:"Code "},
+        {titre:"Libelle "}
+      ];
+        
+        vm.selection_tmnccovid = function(item)
+        {
+          vm.selected_tmnccovid= item ;
+
+          if (!vm.selected_tmnccovid.$edit) //si simple selection
+          {
+            vm.nouvelle_tmnccovid = false ;  
+
+          }
+
+        }
+
+        $scope.$watch('vm.selected_tmnccovid', function()
+        {
+          if (!vm.all_tmnccovid) return;
+          vm.all_tmnccovid.forEach(function(item)
+          {
+            item.$selected = false;
+          });
+          vm.selected_tmnccovid.$selected = true;
+
+        });
+
+        vm.ajouter_tmnccovid = function()
+        {
+          vm.nouvelle_tmnccovid = true ;
+          var item = 
+            {
+              
+              $edit: true,
+              $selected: true,
+                      id:'0',
+                      code:'',                      
+                      libelle:''
+                      
+            } ;
+
+          vm.all_tmnccovid.unshift(item);
+                vm.all_tmnccovid.forEach(function(af)
+                {
+                  if(af.$selected == true)
+                  {
+                    vm.selected_tmnccovid = af;
+                    
+                  }
+                });
+        }
+
+        vm.modifier_tmnccovid= function()
+        {
+          vm.nouvelle_tmnccovid = false ;
+          vm.selected_tmnccovid.$edit = true;
+        
+          current_selected_tmnccovid = angular.copy(vm.selected_tmnccovid);
+        }
+
+        
+
+        vm.supprimer_tmnccovid= function()
+        {
+
+          
+          var confirm = $mdDialog.confirm()
+            .title('Etes-vous sûr de supprimer cet enregistrement ?')
+            .textContent('Cliquer sur OK pour confirmer')
+            .ariaLabel('Lucky day')
+            .clickOutsideToClose(true)
+            .parent(angular.element(document.body))
+            .ok('OK')
+            .cancel('Annuler');
+          $mdDialog.show(confirm).then(function() {
+
+          vm.enregistrer_tmnccovid(1);
+          }, function() {
+          //alert('rien');
+          });
+        }
+
+        vm.annuler_tmnccovid = function()
+        {
+          if (vm.nouvelle_tmnccovid) 
+          {
+            
+            vm.all_tmnccovid.shift();
+            vm.selected_tmnccovid = {} ;
+            vm.nouvelle_tmnccovid = false ;
+          }
+          else
+          {
+            
+
+            if (!vm.selected_tmnccovid.$edit) //annuler selection
+            {
+              vm.selected_tmnccovid.$selected = false;
+              vm.selected_tmnccovid = {};
+            }
+            else
+            {
+              vm.selected_tmnccovid.$selected = false;
+              vm.selected_tmnccovid.$edit = false;
+              vm.selected_tmnccovid.code = current_selected_tmnccovid.code ;
+              vm.selected_tmnccovid.libelle = current_selected_tmnccovid.libelle ;
+              
+              
+              vm.selected_tmnccovid = {};
+            }
+
+            
+
+          }
+        }
+
+        vm.enregistrer_tmnccovid = function(etat_suppression)
+        {
+          vm.affiche_load = true ;
+          var config = {
+                    headers : {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                    }
+                };
+
+
+                var datas = $.param(
+                {
+                  
+                    supprimer:etat_suppression,
+                    id:vm.selected_tmnccovid.id,                   
+                    code : vm.selected_tmnccovid.code ,
+                    libelle : vm.selected_tmnccovid.libelle                     
+                    
+                });
+
+                apiFactory.add("tmnccovid/index",datas, config).success(function (data)
+              {
+                vm.affiche_load = false ;
+                if (!vm.nouvelle_tmnccovid) 
+                {
+                  if (etat_suppression == 0) 
+                  {
+                    vm.selected_tmnccovid.$edit = false ;
+                    vm.selected_tmnccovid.$selected = false ;
+                    vm.selected_tmnccovid = {} ;
+                  }
+                  else
+                  {
+                    vm.all_tmnccovid = vm.all_tmnccovid.filter(function(obj)
+                {
+                  return obj.id !== vm.selected_tmnccovid.id;
+                });
+
+                vm.selected_tmnccovid = {} ;
+                  }
+
+                }
+                else
+                {
+                  vm.selected_tmnccovid.$edit = false ;
+                  vm.selected_tmnccovid.$selected = false ;
+                  vm.selected_tmnccovid.id = String(data.response) ;
+
+                  vm.nouvelle_tmnccovid = false ;
+                  vm.selected_tmnccovid = {};
+
+                }
+              })
+              .error(function (data) {alert("Une erreur s'est produit");});
+        }
+
+        //tmnccovid 
 
       vm.activite_act_column =
       [

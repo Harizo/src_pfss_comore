@@ -15,8 +15,18 @@
         autoWidth: false,
         responsive: true
       };
+	  vm.dtOptionsfils =
+      {
+        dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
+        pagingType: 'simple',
+        autoWidth: false,
+        responsive: true,
+		lengthMenu: [3, 5, 10, 15],
+		pageLength:3
+		
+      };
 
-      vm.rapport_mensuel_column = [{titre:"Date rapport"},{titre:"Groupe ML/PL"},{titre:"ML/PL"},{titre:"Réprésentant CPS"}];
+      vm.rapport_mensuel_column = [{titre:"Numero"},{titre:"Date rapport"},{titre:"Groupe ML/PL"},{titre:"ML/PL"},{titre:"Réprésentant CPS"}];
       vm.rapport_detail_column = [{titre:"Description"},{titre:"Ménage visité"}];
       //initialisation variable
 		vm.currentItem = {};
@@ -45,6 +55,9 @@
 		vm.tab_reponse_projet_de_groupe = [] ;
 		vm.tab_reponse_probleme_rencontres = [] ;
 		vm.tab_reponse_solution_prise = [] ;
+		
+		vm.tab_reponse_raison_visite_domicile = [] ;		
+		vm.tab_reponse_resolution_visite_domicile = [] ;
       //initialisation variable
 
       //chargement clé etrangère et données de bases
@@ -133,7 +146,17 @@
 				});
 			});
 		}
-		vm.modifier_groupe_mlpl=function() {
+		vm.modifier_groupe_mlpl=function()
+		{
+			vm.all_rapport_mensuelmlpl = [];
+			vm.affiche_load = true ;
+			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"statut","BENEFICIAIRE").then(function(result) { 				
+				vm.all_menages = result.data.response;    
+				apiFactory.getAPIgeneraliserREST("rapport_mensuel_mlpl/index","cle_etrangere",vm.filtre.id_groupe_ml_pl).then(function(result) { 				
+					vm.all_rapport_mensuelmlpl = result.data.response;    
+					vm.affiche_load = false ;
+				});
+			});
 			/*vm.all_liste_mlpl = [];
 			vm.affiche_load = true ;
 			vm.all_groupe_mlpl.forEach(function(mng) {
@@ -330,7 +353,9 @@
 			}, function() {
             //alert('rien');
 			});
-        };	  
+        };	
+		vm.standart_column = [{titre:"Description"}];
+        
 		// Fin Fonction Groupe ML/PL
 		vm.charger_detail_questionnaires= function() {
 				vm.affiche_load=true;
@@ -344,17 +369,26 @@
 				vm.tab_reponse_projet_de_groupe = [] ;
 				vm.tab_reponse_probleme_rencontres = [] ;
 				vm.tab_reponse_solution_prise = [] ;
+				
+				vm.tab_reponse_raison_visite_domicile = [] ;
+				
+				vm.tab_reponse_resolution_visite_domicile = [] ;
 				apiFactory.getAPIgeneraliserREST("ddb_mlpl/index","nom_table","resolution_visite_domicile","nom_table_rapport","rapport_resolution_visite_domicile","nom_cle_etrangere","id_resolution_visite_domicile","id_rapport",vm.id_rapport).then(function(result){
 					vm.allRecordsResolutionvisitedomicile = [];
-					vm.temporaire = result.data.response;					
+					vm.temporaire = result.data.response.liste_choix;
+					vm.tab_reponse_resolution_visite_domicile = result.data.response.tab_reponse;				
 					if(vm.temporaire.length >0) {
 						angular.forEach(vm.temporaire, function(value, key)  { 
 							if(parseInt(value.menage_sensibilise) >0) {
 								value.menage_sensibilise=parseInt(value.menage_sensibilise);
+							}
+							else
+							{
+								value.menage_sensibilise =0;
 							}	
 						});
 					}
-					vm.allRecordsResolutionvisitedomicile = vm.temporaire;	
+					vm.allRecordsResolutionvisitedomicile = vm.temporaire;console.log(vm.allRecordsResolutionvisitedomicile);		
 					apiFactory.getAPIgeneraliserREST("ddb_mlpl/index","nom_table","probleme_rencontres","nom_table_rapport","rapport_probleme_rencontres","nom_cle_etrangere","id_probleme_rencontres","id_rapport",vm.id_rapport).then(function(result){
 						vm.allRecordsProblemerencontre =[];
 						vm.allRecordsProblemerencontre = result.data.response.liste_choix;
@@ -373,15 +407,21 @@
 									vm.tab_reponse_solution_prise= result.data.response.tab_reponse;
 									apiFactory.getAPIgeneraliserREST("ddb_mlpl/index","nom_table","raison_visite_domicile","nom_table_rapport","rapport_raison_visite_domicile","nom_cle_etrangere","id_raison_visite_domicile","id_rapport",vm.id_rapport).then(function(result){
 										vm.allRecordsRaisonvisitedomicile =[]; 
-										vm.temporaire = result.data.response;
-										if(vm.temporaire.length >0) {
-											angular.forEach(vm.temporaire, function(value, key)  { 
+										vm.temporaire1 = result.data.response.liste_choix;
+										
+										vm.tab_reponse_raison_visite_domicile = result.data.response.tab_reponse;
+										if(vm.temporaire1.length >0) {
+											angular.forEach(vm.temporaire1, function(value, key)  { 
 												if(parseInt(value.menage_sensibilise) >0) {
 													value.menage_sensibilise=parseInt(value.menage_sensibilise);
+												}
+												else
+												{
+													value.menage_sensibilise =0;
 												}	
 											});												
 										}
-										vm.allRecordsRaisonvisitedomicile =vm.temporaire; 
+										vm.allRecordsRaisonvisitedomicile =vm.temporaire1; 
 										vm.affiche_load=false;
 									});    
 								});    
@@ -415,7 +455,7 @@
 				txtTmp += "id_rapport_1_" + iteration +":\"" + value.id_rapport + "\",";	
 				txtTmp += "id_raison_visite_domicile_1_" + iteration +":\"" + value.id_raison_visite_domicile + "\",";	
 				txtTmp += "id_table_fille_1_" + iteration +":\"" + value.id_table_fille + "\",";	
-				txtTmp += "menage_sensibilise_1_" + iteration +":\"" + value.menage_sensibilise + "\",";	
+				//txtTmp += "menage_sensibilise_1_" + iteration +":\"" + value.menage_sensibilise + "\",";	
 				iteration=iteration + 1;	
 			});	
 			var iteration=1;
@@ -424,7 +464,7 @@
 				txtTmp += "id_rapport_2_" + iteration +":\"" + value.id_rapport + "\",";	
 				txtTmp += "id_resolution_visite_domicile_2_" + iteration +":\"" + value.id_resolution_visite_domicile + "\",";	
 				txtTmp += "id_table_fille_2_" + iteration +":\"" + value.id_table_fille + "\",";	
-				txtTmp += "menage_sensibilise_2_" + iteration +":\"" + value.menage_sensibilise + "\",";	
+				//txtTmp += "menage_sensibilise_2_" + iteration +":\"" + value.menage_sensibilise + "\",";	
 				iteration=iteration + 1;	
 			});	
 			var iteration=1;
@@ -474,17 +514,41 @@
 			}	
 			for (var i = 0; i < vm.tab_reponse_solution_prise.length; i++) {
 				txtTmp += "id_reponse_6_" + (i + 1) +":\"" + vm.tab_reponse_solution_prise[i] + "\",";	
+			}
+			
+				
+			for (var i = 0; i < vm.tab_reponse_raison_visite_domicile.length; i++) {
+				txtTmp += "id_reponse_1_" + (i + 1) +":\"" + vm.tab_reponse_raison_visite_domicile[i] + "\",";
+				var nbr = vm.allRecordsRaisonvisitedomicile.filter(function(obj) {
+					return obj.id == vm.tab_reponse_raison_visite_domicile[i];
+				});	
+				txtTmp += "menage_sensibilise_1_" + (i + 1) +":\"" + nbr[0].menage_sensibilise + "\",";
+
 			}	
+			for (var i = 0; i < vm.tab_reponse_resolution_visite_domicile.length; i++) {
+				txtTmp += "id_reponse_2_" + (i + 1) +":\"" + vm.tab_reponse_resolution_visite_domicile[i] + "\",";
+				var nbr = vm.allRecordsResolutionvisitedomicile.filter(function(obj) {
+					return obj.id == vm.tab_reponse_resolution_visite_domicile[i];
+				});	
+				txtTmp += "menage_sensibilise_2_" + (i + 1) +":\"" + nbr[0].menage_sensibilise + "\",";
+
+			}
 			txtTmp += "nombre_reponse_theme_sensibilisation" +":\"" + vm.tab_reponse_theme_sensibilisation.length + "\",";	
 			txtTmp += "nombre_reponse_projet_de_groupe" +":\"" + vm.tab_reponse_projet_de_groupe.length + "\",";	
 			txtTmp += "nombre_reponse_probleme_rencontre" +":\"" + vm.tab_reponse_probleme_rencontres.length + "\",";	
-			txtTmp += "nombre_reponse_resolution_mlpl" +":\"" + vm.tab_reponse_solution_prise.length + "\",";	
+			txtTmp += "nombre_reponse_resolution_mlpl" +":\"" + vm.tab_reponse_solution_prise.length + "\",";			
+			
+			txtTmp += "nombre_reponse_raison_visite_domicile" +":\"" + vm.tab_reponse_raison_visite_domicile.length + "\",";
+			txtTmp += "nombre_reponse_resolution_visite_domicile" +":\"" + vm.tab_reponse_resolution_visite_domicile.length + "\",";
 			txtTmp = txtTmp.replace(new RegExp('\'', 'g'),'\\\'');
 			txtTmp = txtTmp.replace(new RegExp('(\r\n|\r|\n)', 'g'),'');
 			var donnees = $.param(eval('({' + txtTmp + '})'));
+			console.log(donnees);
+			console.log(vm.allRecordsRaisonvisitedomicile);
+			console.log(vm.tab_reponse_raison_visite_domicile);
 			apiFactory.add("ddb_mlpl/index",donnees, config).success(function (data)  {
 				// Sauvegarde les <> id 
-				vm.allRecordsRaisonvisitedomicile =[];
+				vm.allRecordsRaisonvisitedomicile =[];console.log(data);
 				vm.allRecordsResolutionvisitedomicile = [];
 				vm.allRecordsThemesensibilisation = [];
 				vm.allRecordsProjetdugroupe = [];
@@ -495,6 +559,10 @@
 				vm.tab_reponse_projet_de_groupe = [] ;
 				vm.tab_reponse_probleme_rencontres = [] ;
 				vm.tab_reponse_solution_prise = [] ;
+				
+				vm.tab_reponse_raison_visite_domicile = [] ;
+				vm.tab_reponse_resolution_visite_domicile = [] ;
+
 				vm.temporaire1= data.response.rapport_raison_visite_domicile;
 				vm.temporaire= data.response.rapport_resolution_visite_domicile;
 				vm.allRecordsThemesensibilisation= data.response.rapport_theme_sensibilisation;
@@ -503,25 +571,36 @@
 				vm.allRecordsResolutionmlpl= data.response.rapport_resolution_ml_pl;
 				
 				vm.tab_reponse_theme_sensibilisation= data.response.tab_reponse_theme_sensibilisation;
+				vm.tab_reponse_raison_visite_domicile= data.response.tab_reponse_raison_visite_domicile;
+				vm.tab_reponse_resolution_visite_domicile= data.response.tab_reponse_resolution_visite_domicile;
+
 				vm.tab_reponse_projet_de_groupe= data.response.tab_reponse_projet_de_groupe;
 				vm.tab_reponse_probleme_rencontres= data.response.tab_reponse_probleme_rencontres;
 				vm.tab_reponse_solution_prise= data.response.tab_reponse_solution_prise;
-				if(vm.temporaire.length >0) {
-					angular.forEach(vm.temporaire, function(value, key)  { 
-						if(parseInt(value.menage_sensibilise) >0) {
-							value.menage_sensibilise=parseInt(value.menage_sensibilise);
-						}	
-					});												
-				}
-				vm.allRecordsResolutionvisitedomicile= vm.temporaire;
 				if(vm.temporaire1.length >0) {
 					angular.forEach(vm.temporaire1, function(value, key)  { 
 						if(parseInt(value.menage_sensibilise) >0) {
 							value.menage_sensibilise=parseInt(value.menage_sensibilise);
+						}
+						else
+						{
+							value.menage_sensibilise =0;
 						}	
 					});												
 				}
-				vm.allRecordsRaisonvisitedomicile=vm.temporaire1;
+				vm.allRecordsResolutionvisitedomicile= vm.temporaire;
+				if(vm.temporaire.length >0) {
+					angular.forEach(vm.temporaire, function(value, key)  { 
+						if(parseInt(value.menage_sensibilise) >0) {
+							value.menage_sensibilise=parseInt(value.menage_sensibilise);
+						}
+						else
+						{
+							value.menage_sensibilise =0;
+						}	
+					});												
+				}
+				vm.allRecordsRaisonvisitedomicile=vm.temporaire1;console.log(data.response.rapport_raison_visite_domicile);
 				angular.element('#tab_rapport').triggerHandler('click');	
 				vm.disable_button = false ;
 				vm.showAlert("Information",'Enregistrement réussi!');
