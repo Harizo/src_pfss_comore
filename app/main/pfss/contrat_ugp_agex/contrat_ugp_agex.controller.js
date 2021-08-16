@@ -320,7 +320,7 @@
                 {titre:"Titre"}
             ];
 
-            vm.affiche_load = false ;
+            
 
             vm.get_all_contrat_ugp_agex_signataires = function () 
             {
@@ -526,7 +526,7 @@
                 {titre:"Valeur"}
             ];
 
-            vm.affiche_load = false ;
+            
 
             vm.affichage_tranche = function (int) 
             {
@@ -795,7 +795,7 @@
                 {titre:"Montant catégorie 2"}
             ];
 
-            vm.affiche_load = false ;
+            
 
             vm.get_all_depense_agex = function () 
             {
@@ -1014,7 +1014,7 @@
                 {titre:"Reliquat"}
             ];
 
-            vm.affiche_load = false ;
+    
 
             vm.get_all_etat_paiement_depense = function () 
             {
@@ -1238,7 +1238,7 @@
                 {titre:"Nom représentant CPS"}
             ];
 
-            vm.affiche_load = false ;
+            
 
             vm.get_all_contrat_ugp_agex_pv_remise = function () 
             {
@@ -1444,7 +1444,7 @@
                 {titre:"Observation"}
             ];
 
-            vm.affiche_load = false ;
+    
 
             vm.get_all_contrat_ugp_agex_pv_remise_details = function () 
             {

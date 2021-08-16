@@ -66,10 +66,10 @@
 		//variable cache masque de saisie
 		//style
 		vm.dtOptions = {
-		dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
-		pagingType: 'simple',
-		autoWidth: false,
-		responsive: true
+			dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
+			pagingType: 'simple_numbers',
+			retrieve:'true',
+			order:[] 
 		};
 		//col table
 		vm.consultant_ong_column =[
@@ -689,6 +689,8 @@
 
 			vm.affiche_load = false ;
 
+			
+
 			vm.get_all_agex = function () 
 			{
 				vm.affiche_load = true ;
@@ -699,6 +701,8 @@
 
 				});  
 			}
+
+			vm.get_all_agex();
 
 			//AGEX..
 				
@@ -1088,6 +1092,8 @@
 		
 		//FIN AGEP
 	// ACTEURS REGIONAL	
+
+		vm.affichage_bouton_plus = true ;
 		function ajoutProtection_sociale(entite,suppression) {
            
             if (NouvelItemProtection_sociale==false) 
@@ -1126,6 +1132,7 @@
 			//factory
 			apiFactory.add("protection_sociale/index",datas, config).success(function (data)
 			{	
+				vm.affichage_bouton_plus = true ;
 				var prog = vm.allprogramme.filter(function(obj)
                 {
                     return obj.id == entite.programme_id;
@@ -1183,8 +1190,10 @@
 			vm.selectedItemProtection_sociale.$selected = true;
         });
         //function cache masque de saisie
-        vm.ajouterProtection_sociale = function () {
-            vm.selectedItemProtection_sociale.$selected = false;
+        vm.ajouterProtection_sociale = function () 
+        {
+            //vm.selectedItemProtection_sociale.$selected = false;
+            vm.affichage_bouton_plus = false ;
             NouvelItemProtection_sociale = true ;
 		    var items = {
 				$edit: true,
@@ -1199,7 +1208,7 @@
                 village_id: '',
                 programme_id: ''
 			};
-			vm.allProtection_sociale.push(items);
+			vm.allProtection_sociale.unshift(items);
 		    vm.allProtection_sociale.forEach(function(it) {
 				if(it.$selected==true) {
 					vm.selectedItemProtection_sociale = it;
@@ -1208,7 +1217,8 @@
         };
         vm.annulerProtection_sociale = function(item) {
 			if (!item.id) {
-				vm.allProtection_sociale.pop();
+				vm.allProtection_sociale.shift();
+				vm.affichage_bouton_plus = true ;
 				return;
 			}          
 			item.$selected=false;
@@ -1227,6 +1237,7 @@
 			vm.ileSelected=false;
        };
         vm.modifierProtection_sociale = function(item) {
+        	vm.affichage_bouton_plus = false ;
 			NouvelItemProtection_sociale = false ;
 			vm.selectedItemProtection_sociale = item;
 			currentItemProtection_sociale = angular.copy(vm.selectedItemProtection_sociale);

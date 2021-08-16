@@ -242,7 +242,7 @@
                 });
             }
 
-            $scope.$watch('vm.identification.id_menage', function() 
+            /*$scope.$watch('vm.identification.id_menage', function() 
             {
                 if (!vm.identification.id_menage) return;
                 else
@@ -257,7 +257,7 @@
                  
                 }
                 
-            })
+            })*/
 
             $scope.$watch('vm.identification.id_agex', function() 
             {

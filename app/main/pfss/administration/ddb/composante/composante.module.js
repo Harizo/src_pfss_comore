@@ -31,7 +31,7 @@
         });
         // Navigation
         msNavigationServiceProvider.saveItem('pfss.administration.ddb_adm.composante', {
-            title: "composante",
+            title: "Composante",
             icon  : 'icon-swap-horizontal',
             state: 'app.pfss_ddb_composante',
             // hidden: function()

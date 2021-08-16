@@ -263,9 +263,11 @@
 
 
                               <md-input-container flex="100" flex-gt-xs="20">
-                                <input  type="text" name="composition_menage" ng-model="vm.identification.composition_menage"
+                                <!-- <input  type="text" name="composition_menage" ng-model="vm.identification.composition_menage"
                                   placeholder="Composition du ménage"    ng-init="vm.identification.composition_menage=''"
-                                  required readonly>
+                                  required > -->
+                                  <label> Composition du ménage</label>
+                                  <textarea name="composition_menage" ng-model="vm.identification.composition_menage" required md-select-on-focus></textarea>
                                   <div ng-messages="form_identification.composition_menage.$error"
                                     role="alert">
                                     <div ng-message="required">

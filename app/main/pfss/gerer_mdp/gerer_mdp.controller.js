@@ -49,7 +49,7 @@
             [
                 {titre:"Type"},
                 {titre:"Intitulé micro-projet"},
-                {titre:"N° vague ZIP"},
+                {titre:"ZIP"},
                 {titre:"Coût total sous-projet"},
                 {titre:"Coût total AGR"},
                 {titre:"Rénumération ENEX"},
