@@ -238,6 +238,10 @@
                         <div ng-if="vm.affiche_load" style="position:relative;top: -30px;  left: 60px;color: #039be5">
                             Chargement,veuillez patienter s'il vous plait ...
                         </div>
+                        <md-progress-circular ng-if="vm.affiche_save" class="md-accent" aria-label="Rating" md-mode="indeterminate" md-diameter="64"></md-progress-circular> 
+                        <div ng-if="vm.affiche_save" style="position:relative;top: -30px;  left: 60px;color: #039be5">
+                            Enregistrement en-cours,veuillez patienter s'il vous plait ...
+                        </div>
                         <div style="widht:100%;">    
                             <md-button type="submit" ng-show="(vm.filtre.id_region)&&(vm.filtre.id_region)&&(vm.filtre.id_commune)&&(vm.filtre.village_id)  && !vm.affichage_masque" class="md-raised custum_button_new" aria-label="Nouveau" ng-click="vm.ajouter_groupe_mlpl()" style="width:10%;">
 							<md-icon md-font-icon="icon-plus" class="s16 center" style="color: white;"></md-icon>

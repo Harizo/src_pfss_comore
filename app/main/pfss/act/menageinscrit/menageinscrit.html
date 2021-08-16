@@ -40,14 +40,12 @@
 							<md-icon md-font-icon="icon-account-check" class="s16" style="color: white;"></md-icon>
                               Faire bénéficier
                             </md-button>
-                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque"  ng-disabled="vm.selectedItem.utilisateur_id!=vm.user_id" class="md-raised custum_button_del" aria-label="Supprimer" ng-click="vm.supprimer()" style="width:10%;">
+                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque"  class="md-raised custum_button_del" aria-label="Supprimer" ng-click="vm.supprimer()" style="width:10%;">
 							<md-icon md-font-icon="icon-close-circle-outline" class="s16" style="color: white;"></md-icon>
                               Supprimer
-                            </md-button>
-                          
+                            </md-button>                          
                         </div>
                         <form name="filtrepardateform" class="md-inline-form" novalidate >
-
                             <div layout="column" layout-gt-xs="row" ng-show="vm.affichage_masque">
                                 <md-input-container>
                                 <span>Date d'inscription</span>
@@ -58,12 +56,10 @@
                             <div layout="column" layout-gt-xs="row" flex>
                                 <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Île</label>
-                                    <md-select ng-model="vm.filtre.id_ile" name="ile" ng-change="vm.filtre_region()" required>
-                                     
+                                    <md-select ng-model="vm.filtre.id_ile" name="ile" ng-change="vm.filtre_region()" required>                                    
                                       <md-option ng-repeat="ile in vm.all_ile" value="{{ile.id}}" >
                                         {{ile.Ile}}
                                       </md-option>
-
                                     </md-select>
                                     <div ng-messages="filtrepardateform.ile.$error"
                                       role="alert">
@@ -72,15 +68,12 @@
                                       </div>
                                     </div>
                                 </md-input-container>
-
                                 <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Préfecture</label>
-                                    <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_ile" required>
-                                      
+                                    <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_ile" required>                                     
                                       <md-option ng-repeat="region in vm.all_region" value="{{region.id}}" >
                                         {{region.Region}}
                                       </md-option>
-
                                     </md-select>
                                     <div ng-messages="filtrepardateform.ile.$error"
                                       role="alert">
@@ -89,7 +82,6 @@
                                       </div>
                                     </div>
                                 </md-input-container>
-
                                 <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Commune</label>
                                     <md-select ng-model="vm.filtre.id_commune" name="commune" ng-change="vm.filtre_village()" ng-disabled="!vm.filtre.id_region"  required>
@@ -97,7 +89,6 @@
                                       <md-option ng-repeat="commune in vm.all_commune" value="{{commune.id}}" >
                                         {{commune.Commune}}
                                       </md-option>
-
                                     </md-select>
                                     <div ng-messages="filtrepardateform.ile.$error"
                                       role="alert">
@@ -106,14 +97,12 @@
                                       </div>
                                     </div>
                                 </md-input-container>
-
                                 <md-input-container flex="100" flex-gt-xs="15">
                                   <label>Village</label>
                                     <md-select ng-model="vm.filtre.village_id" name="village" ng-change="vm.modifierVillage()" ng-disabled="!vm.filtre.id_commune"  required>
                                       <md-option ng-repeat="village in vm.all_village" value="{{village.id}}" >
                                         {{village.Village}}
                                       </md-option>
-
                                     </md-select>
                                     <div ng-messages="filtrepardateform.ile.$error"
                                       role="alert">
@@ -750,7 +739,7 @@
 									  </md-button>
 									  
 									</section>                         
-                            </div>
+								</div>
                         </form>
                         <div ng-if="!vm.affichage_masque">
 							<table id='Table_menage' class="dataTable row-border hover cell-border text-center" datatable="ng"
@@ -784,6 +773,9 @@
                     </md-tab>   
                     <md-tab label="Informations saisies lors de l’inscription" ng-disabled="!vm.selectedItem.id">
 						<fieldset>
+							<div layout="column" layout-gt-xs="row" flex style="padding-bottom: 15px;">
+								<legend><b>Identifiant ménage :</b></legend>  {{vm.selectedItem.identifiant_menage}}   <legend><b>Chef ménage :</b> </legend>  {{vm.selectedItem.nomchefmenage}}
+							</div>
 							<div layout="column" layout-gt-xs="row" flex>
 								<md-input-container flex-gt-xs="15">
 									<input type="number"  name="taille_menage" ng-model="vm.filtre.taille_menage"
@@ -1033,9 +1025,15 @@
 									</div>
 								</md-input-container>
 							</div>
+									<section layout="row" layout-sm="column" layout-align="left" layout-wrap>
+									  <md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+										  ng-if="vm.selectedItem.id"  ng-click="vm.save_menage(vm.filtre,0)">
+										  Enregistrer
+									  </md-button>
+									</section>
 						</fieldset>
 						<div style="clear:both;"></div>	
-						<fieldset>					
+						<!--fieldset>					
 							<div layout="column" flex-gt-xs="25" ng-repeat='item in vm.allRecordsListevariable' style="width:25%;display:inline-block">					
 								<fieldset class="standard" ng-if="item.choix_unique==0">
 									<legend  class="md-grey-800-bg">{{item.description}}</legend>
@@ -1055,7 +1053,7 @@
 							<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>						 
 							  <md-button class="md-raised md-primary" ng-disabled="!vm.selectedItem.id" ng-click="vm.sauvegarder_reponse_menage(vm.selectedItem.id)">Enregistrer</md-button>                         
 							</section>
-						</fieldset>
+						</fieldset-->
 					</md-tab>
  					<!-- Fin Onglet variable intervention-->
                         <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>

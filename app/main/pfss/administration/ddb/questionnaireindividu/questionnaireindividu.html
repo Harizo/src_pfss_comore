@@ -1,0 +1,95 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Administration</span>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">DDB</span>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Questionnaire individu</span>
+            </div>
+        </div>
+    </div>
+    <!-- / HEADER -->    
+    <!-- CONTENT -->
+    <div class="content" layout="column">
+		<div class="form-wrapper md-whiteframe-1dp" >
+			<md-tabs md-dynamic-height>
+				<md-tab label="Questionnaires">
+					<kendo-grid options="vm.mainGridOptions">
+						<div k-detail-template>
+							<kendo-grid k-options="vm.alldetailvariable({{dataItem.id}})">
+							</kendo-grid>
+						</div>
+					</kendo-grid>
+				</md-tab>	
+				<!--md-tab label="Questionnaire avec réponse quantifiée">	
+					<fieldset style="width: 100%">
+						<legend>
+								Questionnaire avec réponse quantifiée
+							<md-button class="md-fab md-mini " aria-label="Use Android" ng-if="vm.serveur_central" ng-click="vm.ajouterQuestion_quantifie()">
+							  <md-icon md-svg-src="assets/icons/svg/add.svg" style="color: greenyellow;"></md-icon>
+							</md-button>
+
+							<md-button class="md-fab md-mini " aria-label="Use Android" ng-if="!vm.serveur_central" ng-click="vm.download_ddb('quest_quant/index','see_typeplainte')">
+							  <md-icon md-svg-src="assets/icons/svg/down.svg" style="color: greenyellow;"></md-icon>
+							</md-button>
+						</legend>
+						<table ng-table="tablePrestataireQuestion_quantifie" class="dataTable row-border hover"  datatable="ng" dt-options="vm.dtOptions">
+							<thead>
+								<tr>
+									<th class="secondary-text" ng-repeat="age in ::vm.quest_quantifie_column">
+										<div class="table-header">
+											<span class="column-title">{{age.titre}}</span>
+										</div>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="quest_quant in vm.allRecordsQuestion_quantifie"  ng-class="{selected: quest_quant.$selected}" ng-click="vm.selectionQuestion_quantifie(quest_quant)">           
+									<td>
+										<span ng-if="quest_quant.$edit">
+											<md-input-container style="width:100%;display: flex !important;">
+												<label>Code</label>
+												<input name="Code" type="text" ng-model="quest_quant.code"/>
+											</md-input-container>   
+										</span>
+										<span ng-if="!quest_quant.$edit">{{quest_quant.code}}</span>
+									</td>
+									<td>
+										<span ng-if="quest_quant.$edit">
+											<md-input-container style="width:100%;display: flex !important;">
+												<label>Description</label>
+												<input name="description" type="text" ng-model="quest_quant.description"/>
+											</md-input-container>   
+										</span>
+										<span ng-if="!quest_quant.$edit">{{quest_quant.description}}</span>
+									</td>
+									<td>
+										<a ng-if="!quest_quant.$edit" ng-click="vm.modifierQuestion_quantifie(quest_quant)" title="Modifier">
+											<span class="icon-table-edit"></span>
+										</a>
+										<a ng-if="!quest_quant.$edit" ng-click="vm.supprimerQuestion_quantifie(quest_quant)" title="Supprimer">
+											<span class="icon-delete"></span>
+										</a>
+										<a ng-if="quest_quant.$edit" ng-click="vm.annulerQuestion_quantifie(quest_quant)" title="Annuler modification">
+											<span class="icon-cancel"></span>
+										</a>
+										<a ng-if="quest_quant.$edit && quest_quant.code && quest_quant.description>''" ng-click="vm.ajout(quest_quant,0)" title="Sauvegarder">
+											<span class="icon-content-save"></span>
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</fieldset>
+				</md-tab-->	
+			</md-tabs>	
+		</div>
+    </div>
+    <!-- CONTENT -->
+</div>

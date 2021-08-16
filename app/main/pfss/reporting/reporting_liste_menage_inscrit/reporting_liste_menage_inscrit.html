@@ -1,0 +1,170 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Reporting</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;"> Ménage inscrit</span>
+                </div>
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>
+                <md-tabs md-dynamic-height>
+                    <md-tab label="Reporting Liste Ménage{{vm.titre_onglet}}">
+                        <md-progress-circular ng-if="vm.affiche_load" class="md-accent" aria-label="Rating" md-mode="indeterminate" md-diameter="64"></md-progress-circular> 
+                        <div ng-if="vm.affiche_load" style="position:relative;top: -30px;  left: 60px;color: #039be5">
+                            Chargement,veuillez patienter s'il vous plait ...
+                        </div>
+                        <md-progress-circular ng-if="vm.affiche_export" class="md-accent" aria-label="Rating" md-mode="indeterminate" md-diameter="64"></md-progress-circular> 
+                        <div ng-if="vm.affiche_export" style="position:relative;top: -30px;  left: 60px;color: #039be5">
+                            Export en Excel en-cours,veuillez patienter s'il vous plait ...
+                        </div>
+                            <div layout="column" layout-gt-xs="row" flex>
+								<md-button ng-if="!vm.affiche_load" ng-disabled="vm.affiche_load || vm.affiche_export" type="submit" class="md-raised md-primary" aria-label="Enregistrer" ng-click="vm.export_excel(vm.filtre)"  style="height:40% !important;"> 
+									Exporter en Excel											 
+								</md-button>
+                            </div>
+                        <form name="filtrepardateform" class="md-inline-form" novalidate >
+                            <div layout="column" layout-gt-xs="row" flex>
+                                <md-input-container flex="100" flex-gt-xs="15">
+                                  <label>Île</label>
+                                    <md-select ng-model="vm.filtre.id_ile" name="ile" ng-change="vm.filtre_region()">                                    
+									  <md-option  value="">&nbsp;</md-option>
+                                      <md-option ng-repeat="ile in vm.all_ile" value="{{ile.id}}" >
+                                        {{ile.Ile}}
+                                      </md-option>
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.ile.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Île obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="15">
+                                  <label>Préfecture</label>
+                                    <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_ile">                                     
+									  <md-option  value="">&nbsp;</md-option>
+                                      <md-option ng-repeat="region in vm.all_region" value="{{region.id}}" >
+                                        {{region.Region}}
+                                      </md-option>
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.ile.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Préfecture  obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="15">
+                                  <label>Commune</label>
+                                    <md-select ng-model="vm.filtre.id_commune" name="commune" ng-change="vm.filtre_village()" ng-disabled="!vm.filtre.id_region">                                    
+									  <md-option  value="">&nbsp;</md-option>
+                                      <md-option ng-repeat="commune in vm.all_commune" value="{{commune.id}}" >
+                                        {{commune.Commune}}
+                                      </md-option>
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.ile.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Commune obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="15">
+                                  <label>Village</label>
+                                    <md-select ng-model="vm.filtre.village_id" name="village" ng-change="vm.modifierVillage()" ng-disabled="!vm.filtre.id_commune">
+									  <md-option  value="">&nbsp;</md-option>
+                                      <md-option ng-repeat="village in vm.all_village" value="{{village.id}}" >
+                                        {{village.Village}}
+                                      </md-option>
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.ile.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Village obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="5">
+                                  <label>Vague</label>
+									<md-select ng-model="vm.filtre.vague" name="vague">
+									  <md-option  value="">&nbsp;</md-option>
+									  <md-option  value="1">1</md-option>
+									  <md-option  value="2">2</md-option>
+									  <md-option  value="3">3</md-option>
+									</md-select>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="5">
+                                  <label>ZIP</label>
+									<md-select ng-model="vm.filtre.zip" name="zip">
+									  <md-option  value="">&nbsp;</md-option>
+									  <md-option ng-repeat="z in vm.all_zip" value="{{z.id}}" >
+										{{z.id}}
+									  </md-option>
+									</md-select>
+                                </md-input-container>
+								<md-input-container flex="100" flex-gt-xs="20">
+								  <label>Activité/Sous-projet</label>
+									<md-select ng-model="vm.filtre.id_sous_projet" name="id_sous_projet" ng-change="vm.modifierSousProjet(vm.filtre)">
+									  <md-option  value="">&nbsp;</md-option>
+									  <md-option ng-repeat="ssp in vm.all_sous_projet" value="{{ssp.id}}" ng-if="ssp.id!=3">
+										{{ssp.description}}
+									  </md-option>
+									</md-select>
+									<div ng-messages="filtrepardateform.id_sous_projet.$error"
+									  role="alert">
+									  <div ng-message="required">
+										<span>Activité/Sous-projet obligatoire</span>
+									  </div>
+									</div>
+								</md-input-container>                               
+								<div layout="column" layout-gt-xs="col" flex flex-gt-xs="10">
+									<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+										  ng-if="!vm.affichage_masque" ng-disabled="filtrepardateform.$invalid||vm.affiche_load || vm.selectedItem.id" ng-click="vm.filtrer(vm.filtre)"  style="height:50% !important;">
+										  Actualiser
+									</md-button>
+								</div>	
+                            </div>
+                        </form>
+                        <div>
+							<table id='Table_menage' class="dataTable row-border hover cell-border text-center" datatable="ng"
+							  dt-options="vm.dtOptions" ng-if="!vm.affichage_masque" ms-responsive-table>
+							  <thead>
+								<tr>
+								  <th class="secondary-text" ng-repeat="re in ::vm.menage_column">
+									<div class="table-header">
+									  <span class="column-title text-center">{{re.titre}}</span>
+									</div>
+								  </th>
+								</tr>
+							  </thead>
+							  <tbody>
+								<tr ng-repeat="menage in vm.all_menages  track by $index"  ng-class="{selected: menage.$selected}" ng-click="vm.selection(menage)">
+								  <td>{{menage.ile}}</td>
+								  <td>{{menage.region}}</td>
+								  <td>{{menage.commune}}</td>
+								  <td>{{menage.village}}</td>
+								  <td>{{menage.code_sous_projet}}</td>
+								  <td>{{menage.identifiant_menage}}</td>
+								  <td>{{menage.nomchefmenage}}</td>
+								  <td>{{menage.SexeChefMenage}}</td>
+								  <td>{{menage.nom_conjoint}}</td>
+								  <td>{{menage.sexe_conjoint}}</td>
+								  <td>{{menage.adresse}}</td>
+								</tr>
+							  </tbody>
+							</table>
+						</div>	
+                    </md-tab>   
+                </md-tabs>
+            </div>
+        </div>
+    </div>
+    

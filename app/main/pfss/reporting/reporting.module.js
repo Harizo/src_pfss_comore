@@ -9,6 +9,11 @@
             'app.pfss.reporting.reporting_par_activite',
             'app.pfss.reporting.reporting_thematique_formation_arse',
             'app.pfss.reporting.reporting_thematique_sensibilisation_macc',
+            'app.pfss.reporting.reporting_liste_menage_inscrit',
+            'app.pfss.reporting.reporting_liste_menage_preselectionne',
+            'app.pfss.reporting.reporting_liste_menage_beneficiaire',
+            'app.pfss.reporting.reporting_liste_menage_sorti',
+            'app.pfss.reporting.reporting_liste_menage_inapte',
             ])
          // .run(testPermission)
         .config(config);

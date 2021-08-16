@@ -3,14 +3,13 @@
     'use strict';
 
     var tab = [         
-            'app.pfss.ddb_adm.variable_individu',
             'app.pfss.ddb_adm.acteurs',
 
             // 'app.pfss.ddb_adm.projet',
 
 
             'app.pfss.ddb_adm.decoup_admin',
-            'app.pfss.ddb_adm.variable',
+            // 'app.pfss.ddb_adm.variable', titre : "reponse ménage" enlevé dans onglet info lord de l'inscription ménage
             'app.pfss.ddb_adm.nomenclatureintervention',
             'app.pfss.ddb_adm.typeplainte',
             //'app.pfss.ddb_adm.planactionreinstallation',
@@ -25,10 +24,12 @@
             'app.pfss.ddb_adm.composante',
 
             'app.pfss.ddb_adm.liendeparente',
-            'app.pfss.ddb_adm.variableindividu',
+            'app.pfss.ddb_adm.questionnaireindividu',
 
             //'app.pfss.ddb_adm.communaute.inscription',
             'app.pfss.ddb_adm.type_infrastructure_agr',
+            'app.pfss.ddb_adm.questionnairemenage',
+            'app.pfss.ddb_adm.variable_individu',
             ] ;
 
     angular

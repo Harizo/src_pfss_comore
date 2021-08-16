@@ -11,7 +11,7 @@
         var NouvelItem =false;
         vm.id_utilisateur = $cookieStore.get('id'); 
 		vm.ajout = ajout ;
-		vm.allReponse=[{id:1,libelle:"Oui"},{id:0,libelle:"Non"}];
+		vm.allReponse=[{id:1,libelle:"Unique"},{id:0,libelle:"Multiple"},{id:2,libelle:"Quantifiée"},{id:3,libelle:"Texte libre"}];
 		var NouvelItemQuestionquantifie=false;
 		vm.selectedItemQuestion_quantifie={};
 		vm.allRecordsQuestion_quantifie=[];
@@ -46,10 +46,10 @@
               //recuperation liste variable
                 read: function (e)
                 {
-                    apiFactory.getAll("liste_variable_mere_leader/index").then(function success(response)
-                    {console.log(response.data.response);
-                        e.success(response.data.response);
-                    }, function error(response)
+					apiFactory.getAPIgeneraliserREST("liste_variable_mere_leader/index","choix_multiple",1).then(function(result) 
+                    { //console.log(result.data.response);
+                        e.success(result.data.response);
+                    }, function error(result)
                         {
                           vm.showAlert('Erreur','Erreur de lecture');
                         });
@@ -221,7 +221,7 @@
             },
             {
               field: "liste_reponse",
-              title: "Choix unique",
+              title: "Type de réponse",
               template: "{{dataItem.liste_reponse.libelle}}",
               editor: ChoixuniqueDropDownEditor,
               width: "Auto"
@@ -560,7 +560,7 @@
 			item.description = vm.selectedItemQuestion_quantifie.description;
 			item.nombre = vm.selectedItemQuestion_quantifie.nombre;
 			item.$edit = true;
-			console.log(vm.allRecordsQuestion_quantifie);	
+			// console.log(vm.allRecordsQuestion_quantifie);	
         };
         vm.supprimerQuestion_quantifie = function() {
 			var confirm = $mdDialog.confirm()

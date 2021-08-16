@@ -6,7 +6,7 @@
         .controller('ExportficheetatpresenceController', ExportficheetatpresenceController);
 
     /** @ngInject */
-    function ExportficheetatpresenceController(apiFactory, $state, $mdDialog, $scope,$cookieStore,apiUrlExcel,apiUrlExcelimport) {
+    function ExportficheetatpresenceController(apiFactory, $state, $mdDialog, $scope,$cookieStore,apiUrlExcel,apiUrlExcelimport,$location) {
 		var vm = this;
 	   vm.dtOptions =
       {
@@ -70,6 +70,15 @@
           vm.all_ile = result.data.response;    
           
         });
+		
+		vm.loc = $location ;
+		vm.url=vm.loc.path();
+		if(vm.url=='/suivi-activite/act/premier-paiement/export-fiche-de-presence') {
+			vm.filtre.etape_id=4;
+		}		
+		if(vm.url=='/suivi-activite/act/deuxieme-paiement/export-fiche-de-presence') {
+			vm.filtre.etape_id=5;
+		}		
 		// utilitaire
 		vm.affiche_sexe = function(parametre) {
 			if(parametre==0) {

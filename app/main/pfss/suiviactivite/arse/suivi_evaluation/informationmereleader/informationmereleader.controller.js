@@ -114,10 +114,10 @@
 				vm.affiche_load = false ;
 			});
 		}
-		apiFactory.getAPIgeneraliserREST("liste_variable_mere_leader/index","choix_multiple",1).then(function(result){
+		apiFactory.getAPIgeneraliserREST("liste_variable_menage/index","choix_multiple",1).then(function(result){
 			vm.allRecordsListevariable = result.data.response;
 		});    
-		apiFactory.getAPIgeneraliserREST("variable_mere_leader/index","quantifie",1).then(function(result){
+		apiFactory.getAPIgeneraliserREST("variable_menage/index","quantifie",1).then(function(result){
 			vm.all_reponse_quantifiee = result.data.response;
 			console.log(vm.all_reponse_quantifiee);
 		});    

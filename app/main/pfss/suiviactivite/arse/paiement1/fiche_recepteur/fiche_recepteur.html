@@ -123,7 +123,7 @@
                                 </md-input-container>
 								<md-input-container flex-gt-xs="25" ng-disabled="!vm.filtre.village_id">
 									<input type="number"  name="pourcentage" ng-model="vm.filtre.pourcentage"
-									placeholder="Pourcentage à payer"  required>
+									placeholder="Pourcentage à payer"  readonly>
 									<div ng-messages="filtrepardateform.pourcentage.$error"
 										role="alert">
 										<div ng-message="required">
@@ -133,7 +133,7 @@
 								</md-input-container>								
 								<md-input-container flex-gt-xs="25" ng-disabled="!vm.filtre.pourcentage">
 									<input type="number"  name="montant_a_payer" ng-model="vm.filtre.montant_a_payer"
-									placeholder="Montant à payer"  required>
+									placeholder="Montant à payer"  readonly>
 									<div ng-messages="filtrepardateform.montant_a_payer.$error"
 										role="alert">
 										<div ng-message="required">
