@@ -49,18 +49,18 @@
 			vm.filtre.titre ="Premier paiement";
 			vm.filtre.etape_id = 4;
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",4).then(function(result) {
-				vm.filtre.indemnite = parseInt(result.data.response.indemnite);
-				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
-				vm.filtre.tranche= result.data.response.Phase;
+				vm.filtre.indemnite = parseInt(result.data.response[0].indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response[0].pourcentage);
+				vm.filtre.tranche= result.data.response[0].Phase;
 			});
 		} 
 		if(vm.url=='/suivi-activite/act/deuxieme-paiement/export-fiche-etat-de-paiement') {
 			vm.filtre.titre ="Deuxième paiement";
 			vm.filtre.etape_id = 5;
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",5).then(function(result) {
-				vm.filtre.indemnite = parseInt(result.data.response.indemnite);
-				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
-				vm.filtre.tranche= result.data.response.Phase;
+				vm.filtre.indemnite = parseInt(result.data.response[0].indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response[0].pourcentage);
+				vm.filtre.tranche= result.data.response[0].Phase;
 			});
 		}
       //initialisation variable

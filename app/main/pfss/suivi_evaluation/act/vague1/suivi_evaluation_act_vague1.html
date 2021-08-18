@@ -1,0 +1,751 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Suiv évaluation</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;">{{vm.titre_sous_projet}}</span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;">{{vm.titre_vague}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>
+                <md-tabs md-dynamic-height>
+                    <md-tab label="Suivi évaluation {{vm.titre_sous_projet}}  {{vm.titre_vague}}">
+                        <md-progress-circular ng-if="vm.affiche_load" class="md-accent" aria-label="Rating" md-mode="indeterminate" md-diameter="64"></md-progress-circular> 
+                        <div ng-if="vm.affiche_load" style="position:relative;top: -30px;  left: 60px;color: #039be5">
+                            Chargement,veuillez patienter s'il vous plait ...
+                        </div>
+                        <md-progress-circular ng-if="vm.affiche_export" class="md-accent" aria-label="Rating" md-mode="indeterminate" md-diameter="64"></md-progress-circular> 
+                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised custum_button" aria-label="Modifier" ng-click="vm.modifier()">
+							<md-icon md-font-icon="icon-table-edit" class="s16" style="color: white;"></md-icon>
+                              Modifier
+                            </md-button>
+							<md-button ng-if="vm.selectedItem.id && !vm.affichage_masque" type="submit" class="md-raised md-primary" aria-label="Annuler"
+								  ng-click="vm.annuler()">
+								Annuler
+							</md-button>
+                        <div ng-if="vm.affiche_export" style="position:relative;top: -30px;  left: 60px;color: #039be5">
+                            Export en Excel en-cours,veuillez patienter s'il vous plait ...
+                        </div>
+                            <!--div layout="column" layout-gt-xs="row" flex>
+								<md-button ng-if="!vm.affiche_load" ng-disabled="vm.affiche_load || vm.affiche_export" type="submit" class="md-raised md-primary" aria-label="Enregistrer" ng-click="vm.export_excel(vm.filtre)"  style="height:40% !important;"> 
+									Exporter en Excel											 
+								</md-button>
+                            </div-->
+                        <form name="filtrepardateform" class="md-inline-form" novalidate >
+                            <div layout="column" layout-gt-xs="row" flex>
+                                <md-input-container flex="100" flex-gt-xs="15">
+                                  <label>Île</label>
+                                    <md-select ng-model="vm.filtre.id_ile" name="ile" ng-change="vm.filtre_region()" ng-disabled="vm.selectedItem.id">                                    
+									  <md-option  value="">&nbsp;</md-option>
+                                      <md-option ng-repeat="ile in vm.all_ile" value="{{ile.id}}" >
+                                        {{ile.Ile}}
+                                      </md-option>
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.ile.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Île obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="15">
+                                  <label>Préfecture</label>
+                                    <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_ile">                                     
+									  <md-option  value="">&nbsp;</md-option>
+                                      <md-option ng-repeat="region in vm.all_region" value="{{region.id}}" >
+                                        {{region.Region}}
+                                      </md-option>
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.ile.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Préfecture  obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="15">
+                                  <label>Commune</label>
+                                    <md-select ng-model="vm.filtre.id_commune" name="commune" ng-change="vm.filtre_village()" ng-disabled="!vm.filtre.id_region">                                    
+									  <md-option  value="">&nbsp;</md-option>
+                                      <md-option ng-repeat="commune in vm.all_commune" value="{{commune.id}}" >
+                                        {{commune.Commune}}
+                                      </md-option>
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.ile.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Commune obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="15">
+                                  <label>Village</label>
+                                    <md-select ng-model="vm.filtre.village_id" name="village" ng-change="vm.modifierVillage()" ng-disabled="!vm.filtre.id_commune">
+									  <md-option  value="">&nbsp;</md-option>
+                                      <md-option ng-repeat="village in vm.all_village" value="{{village.id}}" >
+                                        {{village.Village}}
+                                      </md-option>
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.ile.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Village obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="5" style="display:none;">
+                                  <label>Vague</label>
+									<md-select ng-model="vm.filtre.vague" name="vague">
+									  <md-option  value="">&nbsp;</md-option>
+									  <md-option  value="1">1</md-option>
+									  <md-option  value="2">2</md-option>
+									  <md-option  value="3">3</md-option>
+									</md-select>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="5" >
+                                  <label>ZIP</label>
+									<md-select ng-model="vm.filtre.zip" name="zip" ng-disabled="vm.selectedItem.id">
+									  <md-option  value="">&nbsp;</md-option>
+									  <md-option ng-repeat="z in vm.all_zip" value="{{z.id}}" >
+										{{z.id}}
+									  </md-option>
+									</md-select>
+                                </md-input-container>
+								<md-input-container flex="100" flex-gt-xs="20" style="display:none;">
+								  <label>Activité/Sous-projet</label>
+									<md-select ng-model="vm.filtre.id_sous_projet" name="id_sous_projet" ng-change="vm.modifierSousProjet(vm.filtre)">
+									  <md-option  value="">&nbsp;</md-option>
+									  <md-option ng-repeat="ssp in vm.all_sous_projet" value="{{ssp.id}}" ng-if="ssp.id!=3">
+										{{ssp.description}}
+									  </md-option>
+									</md-select>
+									<div ng-messages="filtrepardateform.id_sous_projet.$error"
+									  role="alert">
+									  <div ng-message="required">
+										<span>Activité/Sous-projet obligatoire</span>
+									  </div>
+									</div>
+								</md-input-container>                               
+								<div layout="column" layout-gt-xs="col" flex flex-gt-xs="10">
+									<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+										  ng-if="!vm.affichage_masque" ng-disabled="filtrepardateform.$invalid||vm.affiche_load || vm.selectedItem.id" ng-click="vm.filtrer(vm.filtre)"  style="height:50% !important;">
+										  Actualiser
+									</md-button>
+								</div>	
+                            </div>
+                        </form>
+						<div ng-if="vm.affichage_masque">
+							<fieldset>
+								<div layout="column" layout-gt-xs="row" flex style="padding-bottom: 15px;">
+									<legend><b>Ile :</b></legend>  {{vm.selectedItem.ile}}   <legend><b>Préfecture :</b> </legend>  {{vm.selectedItem.region}}
+									<legend><b>Commune :</b> </legend>  {{vm.selectedItem.commune}}
+									<legend><b>Village :</b> </legend>  {{vm.selectedItem.village}}
+								</div>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex-gt-xs="10">
+										<input type="number"  name="population_rpgh_2017" ng-model="vm.filtre.population_rpgh_2017"
+										placeholder="Popula° RPGH 2017">
+									</md-input-container>
+									<md-input-container flex-gt-xs="10">
+										<input type="number"  name="menage_beneficiaire" ng-model="vm.filtre.menage_beneficiaire"
+										placeholder="Bénéficiaire" readonly>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Début affichage préselectionné</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.debut_affichage_menage_preselectionne" md-max-date="vm.date_now"  md-placeholder="Début affichage préselectionné">                       
+										</md-datepicker>
+									</div>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Fin affichage préselectionné</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.fin_affichage_menage_preselectionne" md-max-date="vm.date_now"  md-placeholder="Fin affichage préselectionné">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex="100" flex-gt-xs="10" >
+										<label>Statut affichage liste</label>
+										  <md-select ng-model="vm.filtre.statut_affichage_menage_preselectionne" name="statut_affichage_menage_preselectionne">
+											  <md-option value="">&nbsp;</md-option>											  
+											  <md-option ng-repeat="sp in vm.statut_evaluation" value="{{sp.statut}}"> {{sp.titre}}</md-option>											  
+										  </md-select>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date réalisation</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_realistaion_affichage_menage_preselectionne" md-max-date="vm.date_now"  md-placeholder="Date réalisation">                       
+										</md-datepicker>
+									</div>
+								</div>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex-gt-xs="10">
+										<input type="number"  name="menage_preselectionne" ng-model="vm.filtre.menage_preselectionne"
+										placeholder="Ménage Préselectionné" readonly>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date rétard</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_retard_affichage_menage_preselectionne" md-max-date="vm.date_now"  md-placeholder="Date réalisation">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="45">
+										<input type="text"  name="cause_retard_affichage_menage_preselectionne" ng-model="vm.filtre.cause_retard_affichage_menage_preselectionne"
+										placeholder="Cause rétard affichage liste préselectionné">
+									</md-input-container>
+								</div>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex-gt-xs="10">
+										<input type="text"  name="date_debut_depot_plainte" ng-model="vm.filtre.date_debut_depot_plainte"
+										placeholder="Début dépot plainte" readonly>
+									</md-input-container>
+									<md-input-container flex-gt-xs="10">
+										<input type="text"  name="date_fin_depot_plainte" ng-model="vm.filtre.date_fin_depot_plainte"
+										placeholder="Fin dépot plainte" readonly>
+									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="10" >
+										<label>Statut dépot plainte</label>
+										  <md-select ng-model="vm.filtre.statut_reception_enregitrement_plainte" name="statut_reception_enregitrement_plainte">
+											  <md-option value="">&nbsp;</md-option>											  
+											  <md-option ng-repeat="sp in vm.statut_evaluation" value="{{sp.statut}}"> {{sp.titre}}</md-option>											  
+										  </md-select>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Réalisa° dépot plainte</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_realisation_enregitrement_plainte" md-max-date="vm.date_now"  md-placeholder="Date réalisa° dépot plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="5">
+										<input type="number"  name="nombre_plainte" ng-model="vm.filtre.nombre_plainte"
+										placeholder="Nb plainte" readonly>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date rétard</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_retard_enregitrement_plainte" md-max-date="vm.date_now"  md-placeholder="Date rétard enreg plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="15">
+										<input type="text"  name="cause_retard_enregitrement_plainte" ng-model="vm.filtre.cause_retard_enregitrement_plainte"
+										placeholder="Cause rétard dépot plainte">
+									</md-input-container>
+								</div>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex-gt-xs="10">
+										<input type="text"  name="date_debut_traitement_plainte" ng-model="vm.filtre.date_debut_traitement_plainte"
+										placeholder="Début traitement plainte" readonly>
+									</md-input-container>
+									<md-input-container flex-gt-xs="10">
+										<input type="text"  name="date_fin_traitement_plainte" ng-model="vm.filtre.date_fin_traitement_plainte"
+										placeholder="Fin traitement plainte" readonly>
+									</md-input-container>
+	
+									<md-input-container flex="100" flex-gt-xs="10" >
+										<label>Statut traitement plainte</label>
+										  <md-select ng-model="vm.filtre.statut_traitement_plainte" name="statut_traitement_plainte">
+											  <md-option value="">&nbsp;</md-option>											  
+											  <md-option ng-repeat="sp in vm.statut_evaluation" value="{{sp.statut}}"> {{sp.titre}}</md-option>											  
+										  </md-select>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Réalisa° traitement plainte</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_realisation_traitement_plainte" md-max-date="vm.date_now"  md-placeholder="Date réalisa° dépot plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="5">
+										<input type="number"  name="nombre_plainte_traite" ng-model="vm.filtre.nombre_plainte_traite"
+										placeholder="Nb plainte traité" readonly>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date rétard</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_retard_traitement_plainte" md-max-date="vm.date_now"  md-placeholder="Date rétard enreg plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="15">
+										<input type="text"  name="cause_retard_traitement_plainte" ng-model="vm.filtre.cause_retard_traitement_plainte"
+										placeholder="Cause rétard traitement plainte">
+									</md-input-container>
+								</div>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex-gt-xs="10">
+										<input type="text"  name="debut_ag_validation_communautaire" ng-model="vm.filtre.debut_ag_validation_communautaire"
+										placeholder="Début valida° communautaire" readonly>
+									</md-input-container>
+									<md-input-container flex-gt-xs="10">
+										<input type="text"  name="fin_ag_validation_communautaire" ng-model="vm.filtre.fin_ag_validation_communautaire"
+										placeholder="Fin valida° communautaire" readonly>
+									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="10" >
+										<label>Statut AG Valida° comm</label>
+										  <md-select ng-model="vm.filtre.statut_validation_ag_communautaire" name="statut_validation_ag_communautaire">
+											  <md-option value="">&nbsp;</md-option>											  
+											  <md-option ng-repeat="sp in vm.statut_evaluation" value="{{sp.statut}}"> {{sp.titre}}</md-option>											  
+										  </md-select>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Réalisa° AG Valida° comm</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_realisation_validation_ag_communautaire" md-max-date="vm.date_now"  md-placeholder="Date réalisa° dépot plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="5">
+										<input type="number"  name="nombre_ag_tenue" ng-model="vm.filtre.nombre_ag_tenue"
+										placeholder="Nb AG tenue" readonly>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date rétard</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_retard_validation_ag_communautaire" md-max-date="vm.date_now"  md-placeholder="Date rétard enreg plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="15">
+										<input type="text"  name="cause_retard_traitement_plainte" ng-model="vm.filtre.cause_retard_traitement_plainte"
+										placeholder="Cause rétard traitement plainte">
+									</md-input-container>
+								</div>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex-gt-xs="10">
+										<input type="text"  name="date_debut_liste_officielle_beneficiaire" ng-model="vm.filtre.date_debut_liste_officielle_beneficiaire"
+										placeholder="Début liste officielle bénéf" readonly>
+									</md-input-container>
+									<md-input-container flex-gt-xs="10">
+										<input type="text"  name="date_fin_liste_officielle_beneficiaire" ng-model="vm.filtre.date_fin_liste_officielle_beneficiaire"
+										placeholder="Fin liste officielle bénéf" readonly>
+									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="10" >
+										<label>Statut Liste bénéf</label>
+										  <md-select ng-model="vm.filtre.statut_liste_officielle_beneficiaire" name="statut_liste_officielle_beneficiaire">
+											  <md-option value="">&nbsp;</md-option>											  
+											  <md-option ng-repeat="sp in vm.statut_evaluation" value="{{sp.statut}}"> {{sp.titre}}</md-option>											  
+										  </md-select>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Réalisa° Liste bénéf</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_realisaion_liste_officielle_beneficiaire" md-max-date="vm.date_now"  md-placeholder="Date réalisa° dépot plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="5">
+										<input type="number"  name="nombre_menage_beneficiaire_enregistre" ng-model="vm.filtre.nombre_menage_beneficiaire_enregistre"
+										placeholder="Bénéf enregistré">
+									</md-input-container>
+									<md-input-container flex-gt-xs="5">
+										<input type="number"  name="nombre_menage_exclus" ng-model="vm.filtre.nombre_menage_exclus"
+										placeholder="Ménage exclus">
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date rétard</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_retard_liste_officielle_beneficiaire" md-max-date="vm.date_now"  md-placeholder="Date rétard enreg plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="15">
+										<input type="text"  name="cause_retard_liste_officielle_beneficiaire" ng-model="vm.filtre.cause_retard_liste_officielle_beneficiaire"
+										placeholder="Cause rétard liste bénéf">
+									</md-input-container>
+								</div>
+								<div layout="column" layout-gt-xs="row" flex>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Début établissement Liste travailleur</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_debut_liste_tavailleur" md-max-date="vm.date_now"  md-placeholder="Date réalisa° dépot plainte">                       
+										</md-datepicker>
+									</div>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Fin établissement Liste travailleur</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_fin_liste_tavailleur" md-max-date="vm.date_now"  md-placeholder="Date réalisa° dépot plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex="100" flex-gt-xs="10" >
+										<label>Statut Liste travailleur</label>
+										  <md-select ng-model="vm.filtre.statut_liste_travailleur" name="statut_liste_travailleur">
+											  <md-option value="">&nbsp;</md-option>											  
+											  <md-option ng-repeat="sp in vm.statut_evaluation" value="{{sp.statut}}"> {{sp.titre}}</md-option>											  
+										  </md-select>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Réalisa° Liste trav</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_realisation_liste_travailleur" md-max-date="vm.date_now"  md-placeholder="Date réalisa° dépot plainte">                       
+										</md-datepicker>
+									</div>
+								</div>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex-gt-xs="10">
+										<input type="number"  name="menage_avec_travailleur" ng-model="vm.filtre.menage_avec_travailleur"
+										placeholder="Nb ménage avec travailleur">
+									</md-input-container>
+									<md-input-container flex-gt-xs="10">
+										<input type="number"  name="menage_inapte" ng-model="vm.filtre.menage_inapte"
+										placeholder="Nb ménage inapte">
+									</md-input-container>
+									<md-input-container flex-gt-xs="10">
+										<input type="number"  name="menage_exclus" ng-model="vm.filtre.menage_exclus"
+										placeholder="Nb ménage exclus">
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date rétard établissement liste</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_retard_etablissement_liste_travailleur" md-max-date="vm.date_now"  md-placeholder="Date rétard enreg plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="15">
+										<input type="text"  name="cause_retard_etablissement_liste_travailleur" ng-model="vm.filtre.cause_retard_etablissement_liste_travailleur"
+										placeholder="Cause rétard établissement liste trav">
+									</md-input-container>
+								</div>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex-gt-xs="10">
+										<input type="text"  name="debut_recrutement_agex" ng-model="vm.filtre.debut_recrutement_agex"
+										placeholder="Début récrutement AGEX" readonly>
+									</md-input-container>
+									<md-input-container flex-gt-xs="10">
+										<input type="text"  name="fin_recrutement_agex" ng-model="vm.filtre.fin_recrutement_agex"
+										placeholder="Fin récrutement AGEX" readonly>
+									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="10" >
+										<label>Statut récrutement AGEX</label>
+										  <md-select ng-model="vm.filtre.statut_recrutement_agex" name="statut_recrutement_agex">
+											  <md-option value="">&nbsp;</md-option>											  
+											  <md-option ng-repeat="sp in vm.statut_evaluation" value="{{sp.statut}}"> {{sp.titre}}</md-option>											  
+										  </md-select>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Réalisa° réctutement AGEX</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_realisation_recrutement_agex" md-max-date="vm.date_now"  md-placeholder="Date réalisa° dépot plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="10">
+										<input type="number"  name="nombre_agex_recrute" ng-model="vm.filtre.nombre_agex_recrute"
+										placeholder="AGEX récruté" readonly>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date rétard récrutement AGEX</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_retard_recrutement_agex" md-max-date="vm.date_now"  md-placeholder="Date rétard enreg plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="15">
+										<input type="text"  name="cause_retard_recrutement_agex" ng-model="vm.filtre.cause_retard_recrutement_agex"
+										placeholder="Cause rétard récrutement AGEX">
+									</md-input-container>
+								</div>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex-gt-xs="10">
+										<input type="text"  name="debut_elaboration_mdp" ng-model="vm.filtre.debut_elaboration_mdp"
+										placeholder="Début élaboration MDP" readonly>
+									</md-input-container>
+									<md-input-container flex-gt-xs="10">
+										<input type="text"  name="fin_elaboration_mdp" ng-model="vm.filtre.fin_elaboration_mdp"
+										placeholder="Fin élaboration MDP" readonly>
+									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="10" >
+										<label>Statut élaboration MDP</label>
+										  <md-select ng-model="vm.filtre.statut_elaboration_mdp" name="statut_elaboration_mdp">
+											  <md-option value="">&nbsp;</md-option>											  
+											  <md-option ng-repeat="sp in vm.statut_evaluation" value="{{sp.statut}}"> {{sp.titre}}</md-option>											  
+										  </md-select>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Réalisa° élaboration MDP</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_realisation_elaboration_mdp" md-max-date="vm.date_now"  md-placeholder="Date réalisa° dépot plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="10">
+										<input type="number"  name="nombre_mdp_elabore" ng-model="vm.filtre.nombre_mdp_elabore"
+										placeholder="MDP élaboré" readonly>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date rétard récrutement AGEX</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_retard_elaboration_mdp" md-max-date="vm.date_now"  md-placeholder="Date rétard enreg plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="15">
+										<input type="text"  name="cause_retard_elaboration_mdp" ng-model="vm.filtre.cause_retard_elaboration_mdp"
+										placeholder="Cause rétard récrutement AGEX">
+									</md-input-container>
+								</div>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex-gt-xs="10">
+										<input type="text"  name="debut_premier_paiement" ng-model="vm.filtre.debut_premier_paiement"
+										placeholder="Début premier paiement" readonly>
+									</md-input-container>
+									<md-input-container flex-gt-xs="10">
+										<input type="text"  name="fin_premier_paiement" ng-model="vm.filtre.fin_premier_paiement"
+										placeholder="Fin premier paiementP" readonly>
+									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="10" >
+										<label>Statut 1er paiement</label>
+										  <md-select ng-model="vm.filtre.statut_premier_paiement" name="statut_premier_paiement">
+											  <md-option value="">&nbsp;</md-option>											  
+											  <md-option ng-repeat="sp in vm.statut_evaluation" value="{{sp.statut}}"> {{sp.titre}}</md-option>											  
+										  </md-select>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Réalisa° 1er paiement</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_realisation_premier_paiement" md-max-date="vm.date_now"  md-placeholder="Date réalisa° dépot plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="10">
+										<input type="number"  name="nombre_menage_premier_paiement" ng-model="vm.filtre.nombre_menage_premier_paiement"
+										placeholder="Ménage payé" readonly>
+									</md-input-container>
+									<md-input-container flex-gt-xs="10">
+										<input type="number"  name="menage_exclus_premier_paiement" ng-model="vm.filtre.menage_exclus_premier_paiement"
+										placeholder="Ménage exclus" readonly>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date rétard 1er paiement</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_retard_premier_paiement" md-max-date="vm.date_now"  md-placeholder="Date rétard enreg plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="15">
+										<input type="text"  name="cause_retard_premier_paiement" ng-model="vm.filtre.cause_retard_premier_paiement"
+										placeholder="Cause rétard 1er paiement">
+									</md-input-container>
+								</div>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex-gt-xs="10">
+										<input type="text"  name="debut_deuxieme_paiement" ng-model="vm.filtre.debut_deuxieme_paiement"
+										placeholder="Début 2ème paiement" readonly>
+									</md-input-container>
+									<md-input-container flex-gt-xs="10">
+										<input type="text"  name="fin_deuxieme_paiement" ng-model="vm.filtre.fin_deuxieme_paiement"
+										placeholder="Fin 2ème paiementP" readonly>
+									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="10" >
+										<label>Statut 2ème paiement</label>
+										  <md-select ng-model="vm.filtre.statut_deuxieme_paiement" name="statut_deuxieme_paiement">
+											  <md-option value="">&nbsp;</md-option>											  
+											  <md-option ng-repeat="sp in vm.statut_evaluation" value="{{sp.statut}}"> {{sp.titre}}</md-option>											  
+										  </md-select>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Réalisa° 2ème paiement</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_realisation_deuxieme_paiement" md-max-date="vm.date_now"  md-placeholder="Date réalisa° dépot plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="10">
+										<input type="number"  name="nombre_menage_deuxieme_paiement" ng-model="vm.filtre.nombre_menage_deuxieme_paiement"
+										placeholder="Ménage payé" readonly>
+									</md-input-container>
+									<md-input-container flex-gt-xs="10">
+										<input type="number"  name="menage_exclus_deuxieme_paiement" ng-model="vm.filtre.menage_exclus_deuxieme_paiement"
+										placeholder="Ménage exclus" readonly>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date rétard 2ème paiement</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_retard_deuxieme_paiement" md-max-date="vm.date_now"  md-placeholder="Date rétard enreg plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="15">
+										<input type="text"  name="cause_retard_deuxieme_paiement" ng-model="vm.filtre.cause_retard_deuxieme_paiement"
+										placeholder="Cause rétard 2ème paiement">
+									</md-input-container>
+								</div>
+								<div layout="column" layout-gt-xs="row" flex ng-if="vm.filtre.id_sous_projet==2 || vm.filtre.id_sous_projet==4">
+									<md-input-container flex-gt-xs="10">
+										<input type="text"  name="debut_troisieme_paiement" ng-model="vm.filtre.debut_troisieme_paiement"
+										placeholder="Début troisième paiement" readonly>
+									</md-input-container>
+									<md-input-container flex-gt-xs="10">
+										<input type="text"  name="fin_troisieme_paiement" ng-model="vm.filtre.fin_troisieme_paiement"
+										placeholder="Fin troisième paiementP" readonly>
+									</md-input-container>
+									<md-input-container flex="100" flex-gt-xs="10" >
+										<label>Statut 3ème paiement</label>
+										  <md-select ng-model="vm.filtre.statut_troisieme_paiement" name="statut_troisieme_paiement">
+											  <md-option value="">&nbsp;</md-option>											  
+											  <md-option ng-repeat="sp in vm.statut_evaluation" value="{{sp.statut}}"> {{sp.titre}}</md-option>											  
+										  </md-select>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Réalisa° 3ème paiement</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_realisation_troisieme_paiement" md-max-date="vm.date_now"  md-placeholder="Date réalisa° dépot plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="10">
+										<input type="number"  name="nombre_menage_troisieme_paiement" ng-model="vm.filtre.nombre_menage_troisieme_paiement"
+										placeholder="Ménage payé" readonly>
+									</md-input-container>
+									<md-input-container flex-gt-xs="10">
+										<input type="number"  name="menage_exclus_troisieme_paiement" ng-model="vm.filtre.menage_exclus_troisieme_paiement"
+										placeholder="Ménage exclus" readonly>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date rétard 3ème paiement</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_retard_troisieme_paiement" md-max-date="vm.date_now"  md-placeholder="Date rétard enreg plainte">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex-gt-xs="15">
+										<input type="text"  name="cause_retard_troisieme_paiement" ng-model="vm.filtre.cause_retard_troisieme_paiement"
+										placeholder="Cause rétard 3ème paiement">
+									</md-input-container>
+								</div>
+									<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+										<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+											ng-if="vm.selectedItem.id"  ng-click="vm.save_suivi_evaluation(vm.filtre)">
+											Enregistrer
+										</md-button>
+										<md-button type="submit" class="md-raised md-primary" aria-label="Enregistrer"
+											  ng-click="vm.annuler()">
+											Annuler
+										</md-button>
+									</section>
+							</fieldset>					
+						</div>
+                        <div ng-if="!vm.affichage_masque">
+							<table  id='Table_suivi_evaluation' class="dataTable row-border hover cell-border text-center" datatable="ng"
+							dt-options="vm.dtOptions_new" ng-show="!vm.affichage_masque" ms-responsive-table>
+							  <thead>
+								<tr>
+								  <th class="secondary-text" ng-repeat="re in ::vm.suivi_column">
+									<div class="table-header">
+									  <span class="column-title text-center">{{re.titre}}</span>
+									</div>
+								  </th>
+								  <th class="secondary-text" ng-repeat="re in ::vm.suivi_column_arse" ng-if="vm.filtre.id_sous_projet==2 || vm.filtre.id_sous_projet==4">
+									<div class="table-header">
+									  <span class="column-title text-center">{{re.titre}}</span>
+									</div>
+								  </th>
+								</tr>
+							  </thead>
+							  <tbody>
+								<tr ng-repeat="suiv in vm.all_suivi  track by $index"  ng-class="{selected: suiv.$selected}" ng-click="vm.selection(suiv)">
+								  <td style="text-align:left !important">{{suiv.ile}}</td>
+								  <td style="text-align:left !important">{{suiv.region}}</td> 
+								  <td style="text-align:left !important">{{suiv.commune}}</td>
+								  <td>{{suiv.zip}}</td>
+								  <td style="text-align:left !important">{{suiv.village}}</td>
+								  <td>{{suiv.population_rpgh_2017}}</td>
+								  <td>{{suiv.menage_beneficiaire}}</td>
+								  <td><label ng-if="suiv.debut_affichage_menage_preselectionne">Du : {{suiv.debut_affichage_menage_preselectionne}}</label></br><label ng-if="suiv.fin_affichage_menage_preselectionne">Au : {{suiv.fin_affichage_menage_preselectionne}}</label></td>
+								  <td>{{suiv.statut_affichage_menage_preselectionne}}</td>
+								  <td>{{suiv.date_realistaion_affichage_menage_preselectionne}}</td>
+								  <td>{{suiv.menage_preselectionne}}</td>
+								  <td>{{suiv.date_retard_affichage_menage_preselectionne}}</td>
+								  <td>{{suiv.cause_retard_affichage_menage_preselectionne}}</td>
+								  <td><label ng-if="suiv.date_debut_depot_plainte">Du : {{suiv.date_debut_depot_plainte}}</label></br><label ng-if="suiv.date_fin_depot_plainte">Au : {{suiv.date_fin_depot_plainte}}</label></td>
+								  <td>{{suiv.statut_reception_enregitrement_plainte}}</td>
+								  <td>{{suiv.date_realisation_enregitrement_plainte}}</td>
+								  <td>{{suiv.nombre_plainte}}</td>
+								  <td>{{suiv.date_retard_enregitrement_plainte}}</td>
+								  <td>{{suiv.cause_retard_enregitrement_plainte}}</td>
+								  <td><label ng-if="suiv.date_debut_traitement_plainte">Du : {{suiv.date_debut_traitement_plainte}}</label></br><label ng-if="suiv.date_fin_traitement_plainte">Au : {{suiv.date_fin_traitement_plainte}}</label></td>
+								  <td>{{suiv.statut_traitement_plainte}}</td>
+								  <td>{{suiv.date_realisation_traitement_plainte}}</td>
+								  <td>{{suiv.nombre_plainte_traite}}</td>
+								  <td>{{suiv.date_retard_traitement_plainte}}</td>
+								  <td>{{suiv.cause_retard_traitement_plainte}}</td>
+								  <td><label ng-if="suiv.debut_ag_validation_communautaire">Du : {{suiv.debut_ag_validation_communautaire}}</label></br><label ng-if="suiv.debut_ag_validation_communautaire">Au : {{suiv.fin_ag_validation_communautaire}}</label></td>
+								  <td>{{suiv.statut_validation_ag_communautaire}}</td>
+								  <td>{{suiv.date_realisation_validation_ag_communautaire}}</td>
+								  <td>{{suiv.nombre_ag_tenue}}</td>
+								  <td>{{suiv.date_retard_validation_ag_communautaire}}</td>
+								  <td>{{suiv.cause_retard_traitement_plainte}}</td>
+								  <td><label ng-if="suiv.date_debut_liste_officielle_beneficiaire">Du : {{suiv.date_debut_liste_officielle_beneficiaire}}</label></br><label ng-if="suiv.date_fin_liste_officielle_beneficiaire">Au : {{suiv.date_fin_liste_officielle_beneficiaire}}</label></td>
+								  <td>{{suiv.statut_liste_officielle_beneficiaire}}</td>
+								  <td>{{suiv.date_realisaion_liste_officielle_beneficiaire}}</td>
+								  <td>{{suiv.nombre_menage_beneficiaire_enregistre}}</td>
+								  <td>{{suiv.nombre_menage_exclus}}</td>
+								  <td>{{suiv.date_retard_liste_officielle_beneficiaire}}</td>
+								  <td>{{suiv.cause_retard_liste_officielle_beneficiaire}}</td>
+								  <td><label ng-if="suiv.date_debut_liste_tavailleur">Du : {{suiv.date_debut_liste_tavailleur}}</label></br><label ng-if="suiv.date_fin_liste_tavailleur">Au : {{suiv.date_fin_liste_tavailleur}}</label></td>
+								  <td>{{suiv.statut_liste_travailleur}}</td>
+								  <td>{{suiv.date_realisation_liste_travailleur}}</td>
+								  <td>{{suiv.menage_avec_travailleur}}</td>
+								  <td>{{suiv.menage_inapte}}</td>
+								  <td>{{suiv.menage_exclus}}</td>
+								  <td>{{suiv.date_retard_etablissement_liste_travailleur}}</td>
+								  <td>{{suiv.cause_retard_etablissement_liste_travailleur}}</td>
+								  <td><label ng-if="suiv.debut_recrutement_agex">Du : {{suiv.debut_recrutement_agex}}</label></br><label ng-if="suiv.fin_recrutement_agex">Au : {{suiv.fin_recrutement_agex}}</label></td>
+								  <td>{{suiv.statut_recrutement_agex}}</td>
+								  <td>{{suiv.date_realisation_recrutement_agex}}</td>
+								  <td>{{suiv.nombre_agex_recrute}}</td>
+								  <td>{{suiv.date_retard_recrutement_agex}}</td>
+								  <td>{{suiv.cause_retard_recrutement_agex}}</td>
+								  <td><label ng-if="suiv.debut_elaboration_mdp">Du : {{suiv.debut_elaboration_mdp}}</label></br><label ng-if="suiv.fin_elaboration_mdp">Au : {{suiv.fin_elaboration_mdp}}</label></td>
+								  <td>{{suiv.statut_elaboration_mdp}}</td>
+								  <td>{{suiv.date_realisation_elaboration_mdp}}</td>
+								  <td>{{suiv.nombre_mdp_elabore}}</td>
+								  <td>{{suiv.date_retard_elaboration_mdp}}</td>
+								  <td>{{suiv.cause_retard_elaboration_mdp}}</td>								  
+								  <td><label ng-if="suiv.debut_premier_paiement">Du : {{suiv.debut_premier_paiement}}</label></br><label ng-if="suiv.fin_premier_paiement">Au : {{suiv.fin_premier_paiement}}</label></td>
+								  <td>{{suiv.statut_premier_paiement}}</td>
+								  <td>{{suiv.date_realisation_premier_paiement}}</td>
+								  <td>{{suiv.nombre_menage_premier_paiement}}</td>
+								  <td>{{suiv.menage_exclus_premier_paiement}}</td>
+								  <td>{{suiv.date_retard_premier_paiement}}</td>
+								  <td>{{suiv.cause_retard_premier_paiement}}</td>
+								  <td><label ng-if="suiv.debut_deuxieme_paiement">Du : {{suiv.debut_deuxieme_paiement}}</label></br><label ng-if="suiv.fin_deuxieme_paiement">Au : {{suiv.fin_deuxieme_paiement}}</label></td>
+								  <td>{{suiv.statut_deuxieme_paiement}}</td>
+								  <td>{{suiv.date_realisation_deuxieme_paiement}}</td>
+								  <td>{{suiv.nombre_menage_deuxieme_paiement}}</td>
+								  <td>{{suiv.menage_exclus_deuxieme_paiement}}</td>
+								  <td>{{suiv.date_retard_deuxieme_paiement}}</td>
+								  <td>{{suiv.cause_retard_deuxieme_paiement}}</td>
+								  <!-- Colonnes spéciaux pour ARSE ou COVID s'il y en a après -->
+								  <td ng-if="vm.filtre.id_sous_projet==2 || vm.filtre.id_sous_projet==4"><label ng-if="suiv.debut_troisieme_paiement">Du : {{suiv.debut_troisieme_paiement}}</label></br><label ng-if="suiv.fin_troisieme_paiement">Au : {{suiv.fin_troisieme_paiement}}</label></td>
+								  <td ng-if="vm.filtre.id_sous_projet==2 || vm.filtre.id_sous_projet==4">{{suiv.statut_troisieme_paiement}}</td>
+								  <td ng-if="vm.filtre.id_sous_projet==2 || vm.filtre.id_sous_projet==4">{{suiv.date_realisation_troisieme_paiement}}</td>
+								  <td ng-if="vm.filtre.id_sous_projet==2 || vm.filtre.id_sous_projet==4">{{suiv.nombre_menage_troisieme_paiement}}</td>
+								  <td ng-if="vm.filtre.id_sous_projet==2 || vm.filtre.id_sous_projet==4">{{suiv.menage_exclus_troisieme_paiement}}</td>
+								  <td ng-if="vm.filtre.id_sous_projet==2 || vm.filtre.id_sous_projet==4">{{suiv.date_retard_troisieme_paiement}}</td>
+								  <td ng-if="vm.filtre.id_sous_projet==2 || vm.filtre.id_sous_projet==4">{{suiv.cause_retard_troisieme_paiement}}</td>
+								</tr>
+							  </tbody>
+							</table>
+						</div>	
+                    </md-tab>   
+                </md-tabs>
+            </div>
+        </div>
+    </div>
+    

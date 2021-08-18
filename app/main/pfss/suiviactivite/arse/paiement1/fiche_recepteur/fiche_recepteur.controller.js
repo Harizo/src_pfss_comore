@@ -50,9 +50,9 @@
 			vm.filtre.etape_id=1;
 			vm.filtre.id_sous_projet=2; //ARSE
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",1).then(function(result) {
-				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
-				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
-				vm.filtre.tranche= result.data.response.Phase;
+				vm.filtre.montant_a_payer = parseInt(result.data.response[0].indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response[0].pourcentage);
+				vm.filtre.tranche= result.data.response[0].Phase;
 			});
 		}
 		if(vm.url=='/suivi-activite/arse/deuxieme-fiche-recepteur/fiche-recepteur-2') {
@@ -62,9 +62,9 @@
 			vm.filtre.etape_id=1;
 			vm.filtre.id_sous_projet=2; //ARSE
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",2).then(function(result) {
-				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
-				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
-				vm.filtre.tranche= result.data.response.Phase;
+				vm.filtre.montant_a_payer = parseInt(result.data.response[0].indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response[0].pourcentage);
+				vm.filtre.tranche= result.data.response[0].Phase;
 			});
 		}
 		if(vm.url=='/suivi-activite/arse/troisieme-fiche-recepteur/fiche-recepteur-3') {
@@ -74,9 +74,9 @@
 			vm.filtre.etape_id=1;
 			vm.filtre.id_sous_projet=2; //ARSE
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",3).then(function(result) {
-				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
-				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
-				vm.filtre.tranche= result.data.response.Phase;
+				vm.filtre.montant_a_payer = parseInt(result.data.response[0].indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response[0].pourcentage);
+				vm.filtre.tranche= result.data.response[0].Phase;
 			});
 		}
 		if(vm.url=='/suivi-activite/covid/premier-fiche-recepteur/fiche-recepteur-1') {
@@ -86,9 +86,9 @@
 			vm.filtre.etape_id=6;
 			vm.filtre.id_sous_projet=4; //COVID
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",6).then(function(result) {
-				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
-				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
-				vm.filtre.tranche= result.data.response.Phase;
+				vm.filtre.montant_a_payer = parseInt(result.data.response[0].indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response[0].pourcentage);
+				vm.filtre.tranche= result.data.response[0].Phase;
 			});
 		}
 		if(vm.url=='/suivi-activite/covid/deuxieme-fiche-recepteur/fiche-recepteur-2') {
@@ -98,9 +98,9 @@
 			vm.filtre.etape_id=7;
 			vm.filtre.id_sous_projet=4; //COVID
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",7).then(function(result) {
-				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
-				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
-				vm.filtre.tranche= result.data.response.Phase;
+				vm.filtre.montant_a_payer = parseInt(result.data.response[0].indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response[0].pourcentage);
+				vm.filtre.tranche= result.data.response[0].Phase;
 			});
 		}
 		if(vm.url=='/suivi-activite/covid/troisieme-fiche-recepteur/fiche-recepteur-3') {
@@ -110,9 +110,9 @@
 			vm.filtre.etape_id=8;
 			vm.filtre.id_sous_projet=4; //COVID
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",8).then(function(result) {
-				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
-				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
-				vm.filtre.tranche= result.data.response.Phase;
+				vm.filtre.montant_a_payer = parseInt(result.data.response[0].indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response[0].pourcentage);
+				vm.filtre.tranche= result.data.response[0].Phase;
 			});
 		}
         vm.id_user_cookies = $cookieStore.get('id');

@@ -36,6 +36,7 @@
         vm.nouvelle_element_liste_mlpl = false ;
         vm.nouvelle_element_listemenage_mlpl = false ;
         vm.affichage_masque = false ;
+		vm.affiche_save = false ;
         vm.affichage_masque_liste_mlpl = false ;
         vm.affichage_masque_listemenage_mlpl = false ;
         vm.affichage_masque_fiche_presence = false ;
@@ -174,6 +175,7 @@
 		// Début Fonction Groupe ML/PL	
 		vm.save_groupe_mlpl = function(groupe_mlpl,suppression) {
 			vm.disable_button = true ;
+			vm.affiche_save = true ;
 			var config =  {
                         headers : {
                           'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
@@ -224,9 +226,10 @@
 					vm.all_menages = vm.all_menages.filter(function(obj) {
 						return obj.id !== groupe_mlpl.id_menage;
 					});	
+					vm.affiche_save = false ;
 				} else {
 					if(suppression==1) {
-						vm.affiche_load=true;
+						vm.affiche_save=true;
 						// Réintégrer dans la liste des ménages à choisir le ménage supprimé tout à l'heure
 						apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"etat_statut","beneficiaire","id_sous_projet",vm.filtre.id_sous_projet,"beneficiaire",1,"groupe_ml_pl",1).then(function(result) { 
 							vm.all_menages = result.data.response; 
@@ -238,7 +241,7 @@
 							vm.all_groupe_mlpl = vm.all_groupe_mlpl.filter(function(obj) {
 								return obj.id !== vm.selectedItem.id;
 							});	
-							vm.affiche_load = false ;
+							vm.affiche_save = false ;
 						});
 						vm.selectedItem	={};
 					} else {
@@ -256,6 +259,7 @@
 						vm.selectedItem.lien_de_parente = vm.filtre.lien_de_parente  ;
 						vm.selectedItem.telephone = vm.filtre.telephone  ;
 						vm.selectedItem.lienparental = vm.filtre.lienparental  ;
+						vm.affiche_save = false ;
 					}      
   				}      
 			}).error(function (data) {
@@ -378,6 +382,7 @@
 		// Début Fonction Liste ML/PL	
 		vm.save_liste_mlpl = function(liste_mlpl,suppression) {
 			vm.disable_button = true ;
+			vm.affiche_save = true ;
 			var config =  {
                         headers : {
                           'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
@@ -404,6 +409,7 @@
                     });
 			apiFactory.add("liste_mlpl/index",datas, config).success(function (data) {
 				vm.disable_button = false ;
+				vm.affiche_save = false ;
 				vm.affichage_masque_liste_mlpl = false ;
 				vm.showAlert("Information",'Enregistrement réussi!');
 				if (vm.nouvelle_element_liste_mlpl) {
@@ -529,6 +535,7 @@
 		// Début Fonction Liste ménage ML/PL	
 		vm.save_listemenage_mlpl = function() {
 			vm.disable_button = true ;
+			vm.affiche_save = true ;
 			var config =  {
                         headers : {
                           'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
@@ -560,18 +567,9 @@
 			var donnees = $.param(eval('({' + txtTmp + '})'));										
 			apiFactory.add("liste_menage_mlpl/index",donnees, config).success(function (data) {
 				vm.disable_button = false ;
+				vm.affiche_save = false ;
 				vm.affichage_masque_listemenage_mlpl = false ;
 				vm.showAlert("Information",'Enregistrement réussi!');
-				// if (vm.nouvelle_element_listemenage_mlpl) {
-					// vm.selectedItem_listemenage_mlpl.id_groupe_ml_pl =vm.selectedItem.id;
-					// vm.selectedItem_listemenage_mlpl.menage_id = menage_mlpl.menage_id;
-					// vm.selectedItem_listemenage_mlpl.$selected = false;
-					// vm.selectedItem_listemenage_mlpl.$edit = false;
-					// vm.selectedItem_listemenage_mlpl ={};
-				// } else {
-					// menage_mlpl.id=data.response;	
-					// vm.selectedItem_listemenage_mlpl= {}  ;
-				// }       
 			}).error(function (data) {
 				vm.disable_button = false ;
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
@@ -609,9 +607,6 @@
 			});						
 		}
 		vm.modifier_listemenage_mlpl = function(item)  {
-			// vm.affichage_masque_listemenage_mlpl = true ;
-			// vm.menage_mlpl_masque={};
-			// vm.menage_mlpl_masque.menage_id = vm.selectedItem_listemenage_mlpl.menage_id ;
 			vm.nouvelle_element_listemenage_mlpl= false ;
 			vm.selectedItem_listemenage_mlpl = item;
 			vm.currentItem = angular.copy(vm.selectedItem_listemenage_mlpl);
@@ -656,7 +651,6 @@
 		// Fin Fonction Liste ménage ML/PL			
 		// Début Fonction filtre par découpage admin et detail par groupe ML/PM	
 		vm.filtrer = function()	{
-			vm.all_groupe_mlpl = [];
 			vm.affiche_load = true ;
 			apiFactory.getAPIgeneraliserREST("groupe_mlpl/index","cle_etrangere",vm.filtre.village_id).then(function(result) { 				
 				vm.all_groupe_mlpl = result.data.response;    
@@ -670,7 +664,6 @@
 		vm.get_liste_mlpl_by_groupe = function(id_groupe_ml_pl) {
 			vm.affiche_load = true ;
 			apiFactory.getAPIgeneraliserREST("liste_mlpl/index","cle_etrangere",id_groupe_ml_pl).then(function(result) 	{ 
-				// vm.all_liste_mlpl =[];
 				vm.all_liste_mlpl = result.data.response; 
 				vm.affiche_load = false ;
 			});
@@ -679,7 +672,6 @@
 			vm.affiche_load = true ;
 			// Liste ménage par village et liste ménage par groupe ML/PL
 			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"id_groupe_ml_pl",id_groupe_ml_pl).then(function(result) { 
-				// vm.all_menages = result.data.response.menage;   
 				vm.all_menage_mlpl = result.data.response.menage; 
 				vm.tab_reponse_menage_ml_pl = result.data.response.tab_reponse_menage_ml_pl; 
 				apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"etat_statut","beneficiaire","id_sous_projet",vm.filtre.id_sous_projet,"beneficiaire",1,"groupe_ml_pl",1,"id_menage",vm.selectedItem.id_menage).then(function(result) { 
@@ -734,9 +726,7 @@
 			});			
 		}
 		// Fin Fonction filtre par découpage admin et detail par groupe ML/PM
-
 		//DEBUT FICHE PRESENCE BIEN ETRE
-
 		vm.fichepresencebienetre_column = 
 		[
 			{titre:"Numero ligne"},
@@ -744,7 +734,6 @@
 			{titre:"Espace bien-être"},
 			{titre:"Nombre ménage présent"},
 		]; 
-
 		vm.selectionFichepresencebienetre = function(item) {
 			vm.affiche_load=true;
 			apiFactory.getAPIgeneraliserREST("fichepresence_bienetre_menage/index","cle_etrangere",item.id,"id_seulement",100).then(function(result)	{ 
@@ -911,9 +900,7 @@
 			
 		}
 		//FIN FICHE PRESENCE BIEN ETRE
-
 		//DEBUT FICHE SUPERVISION MLPL
-
 		vm.fiche_supervision_mlpl_column = 
 		[
 			{titre:"Consultant ONG"},
@@ -951,7 +938,6 @@
 			}
 
 		}
-
 		$scope.$watch('vm.selectedItemFiche_supervision_mlpl', function()
 		{
 			if (!vm.allFiche_supervision_mlpl) return;
@@ -962,7 +948,6 @@
 			vm.selectedItemFiche_supervision_mlpl.$selected = true;
 
 		});
-
 		vm.ajouterFiche_supervision_mlpl = function()
 		{
 			vm.nouvelItemFiche_supervision_mlpl = true ;
@@ -995,7 +980,6 @@
 			  }
 			});
 		}
-
 		vm.modifierFiche_supervision_mlpl = function()
 		{
 			vm.nouvelItemFiche_supervision_mlpl = false ;
@@ -1015,11 +999,8 @@
 			vm.selectedItemFiche_supervision_mlpl.nom_representant_mlpl = vm.selectedItemFiche_supervision_mlpl.nom_representant_mlpl;
 			vm.selectedItemFiche_supervision_mlpl.id_groupemlpl = vm.selectedItemFiche_supervision_mlpl.id_groupemlpl;
 		}
-
 		vm.supprimerFiche_supervision_mlpl = function()
-		{
-
-			
+		{			
 			var confirm = $mdDialog.confirm()
 			  .title('Etes-vous sûr de supprimer cet enregistrement ?')
 			  .textContent('Cliquer sur OK pour confirmer')
@@ -1035,7 +1016,6 @@
 			//alert('rien');
 			});
 		}
-
 		vm.annulerFiche_supervision_mlpl = function()
 		{
 			if (vm.nouvelItemFiche_supervision_mlpl) 
@@ -1046,9 +1026,7 @@
 				vm.nouvelItemFiche_supervision_mlpl = false ;
 			}
 			else
-			{
-				
-
+			{				
 				if (!vm.selectedItemFiche_supervision_mlpl.$edit) //annuler selection
 				{
 					vm.selectedItemFiche_supervision_mlpl.$selected = false;
@@ -1072,13 +1050,9 @@
 					vm.selectedItemFiche_supervision_mlpl.id_groupemlpl = current_selectedItemFiche_supervision_mlpl.id_groupemlpl;
 					
 					vm.selectedItemFiche_supervision_mlpl = {};
-				}
-
-				
-
+				}				
 			}
 		}
-
 		vm.enregistrerFiche_supervision_mlpl = function(etat_suppression)
 		{
 			vm.affiche_load = true ;
@@ -1087,8 +1061,6 @@
 					'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
 				}
 			};
-
-
 			var datas = $.param(
 			{                        
 				supprimer        :etat_suppression,
@@ -1104,9 +1076,7 @@
 				date_prevue_fin 		: formatDateBDD(vm.selectedItemFiche_supervision_mlpl.date_prevue_fin),
 				nom_representant_mlpl : vm.selectedItemFiche_supervision_mlpl.nom_representant_mlpl,
 				id_groupemlpl  		: vm.selectedItem.id
-
 			});
-
 			apiFactory.add("fiche_supervision_mlpl/index",datas, config).success(function (data)
 			{
 				vm.affiche_load = false ;
@@ -1128,10 +1098,8 @@
 						{
 							return obj.id !== vm.selectedItemFiche_supervision_mlpl.id;
 						});
-
 						vm.selectedItemFiche_supervision_mlpl = {} ;
 					}
-
 				}
 				else
 				{   
@@ -1143,15 +1111,12 @@
 					vm.selectedItemFiche_supervision_mlpl.$edit = false ;
 					vm.selectedItemFiche_supervision_mlpl.$selected = false ;
 					vm.selectedItemFiche_supervision_mlpl.id = String(data.response) ;
-
 					vm.nouvelItemFiche_supervision_mlpl = false ;
 					vm.selectedItemFiche_supervision_mlpl = {};
-
 				}
 			})
 			.error(function (data) {alert("Une erreur s'est produit");});
 		}
-
 		vm.click_tab_fiche_supervision_mlpl = function()
 		{
 			vm.affiche_load = true ;
@@ -1164,9 +1129,7 @@
 			vm.selectedItemFiche_supervision_mlpl = {};
 		}
 		//FIN FICHE SUPERVISION MLPL
-
 		//DEBUT POINT A VERIFIER MLPL
-
 		vm.point_a_verifier_mlpl_column = 
 		[
 			{titre:"Intitulé du point à vérifier"},
@@ -1183,9 +1146,7 @@
 			{
 				vm.nouvelItemPoint_a_verifier_mlpl = false ;
 			}
-
 		}
-
 		$scope.$watch('vm.selectedItemPoint_a_verifier_mlpl', function()
 		{
 			if (!vm.allPoint_a_verifier_mlpl) return;
@@ -1194,9 +1155,7 @@
 				item.$selected = false;
 			});
 			vm.selectedItemPoint_a_verifier_mlpl.$selected = true;
-
 		});
-
 		vm.ajouterPoint_a_verifier_mlpl = function()
 		{
 			vm.nouvelItemPoint_a_verifier_mlpl = true ;
@@ -1211,36 +1170,28 @@
 					observation: '' 
 					
 				} ;
-
 			vm.allPoint_a_verifier_mlpl.unshift(item);
 			vm.allPoint_a_verifier_mlpl.forEach(function(af)
 			{
 			  if(af.$selected == true)
 			  {
-				vm.selectedItemPoint_a_verifier_mlpl = af;
-				
+				vm.selectedItemPoint_a_verifier_mlpl = af;				
 			  }
 			});
 		}
-
 		vm.modifierPoint_a_verifier_mlpl = function()
 		{
 			vm.nouvelItemPoint_a_verifier_mlpl = false ;
-			vm.selectedItemPoint_a_verifier_mlpl.$edit = true;
-		
-			current_selectedItemPoint_a_verifier_mlpl = angular.copy(vm.selectedItemPoint_a_verifier_mlpl);
-			
+			vm.selectedItemPoint_a_verifier_mlpl.$edit = true;		
+			current_selectedItemPoint_a_verifier_mlpl = angular.copy(vm.selectedItemPoint_a_verifier_mlpl);			
 			/*vm.selectedItemPoint_a_verifier_mlpl.id_fiche_supervision_mlpl 	= vm.selectedItemPoint_a_verifier_mlpl.fiche_supervision_mlpl.id;
 			vm.selectedItemPoint_a_verifier_mlpl.intitule_verifie 		= vm.selectedItemPoint_a_verifier_mlpl.intitule_verifie;
 			vm.selectedItemPoint_a_verifier_mlpl.appreciation 	= vm.selectedItemPoint_a_verifier_mlpl.appreciation;
 			vm.selectedItemPoint_a_verifier_mlpl.solution = vm.selectedItemPoint_a_verifier_mlpl.solution;
 			vm.selectedItemPoint_a_verifier_mlpl.observation = vm.selectedItemPoint_a_verifier_mlpl.observation;*/
 		}
-
 		vm.supprimerPoint_a_verifier_mlpl = function()
-		{
-
-			
+		{			
 			var confirm = $mdDialog.confirm()
 			  .title('Etes-vous sûr de supprimer cet enregistrement ?')
 			  .textContent('Cliquer sur OK pour confirmer')
@@ -1256,7 +1207,6 @@
 			//alert('rien');
 			});
 		}
-
 		vm.annulerPoint_a_verifier_mlpl = function()
 		{
 			if (vm.nouvelItemPoint_a_verifier_mlpl) 
@@ -1267,9 +1217,7 @@
 				vm.nouvelItemPoint_a_verifier_mlpl = false ;
 			}
 			else
-			{
-				
-
+			{				
 				if (!vm.selectedItemPoint_a_verifier_mlpl.$edit) //annuler selection
 				{
 					vm.selectedItemPoint_a_verifier_mlpl.$selected = false;
@@ -1286,13 +1234,9 @@
 					vm.selectedItemPoint_a_verifier_mlpl.observation = current_selectedItemPoint_a_verifier_mlpl.observation;
 					
 					vm.selectedItemPoint_a_verifier_mlpl = {};
-				}
-
-				
-
+				}				
 			}
 		}
-
 		vm.enregistrerPoint_a_verifier_mlpl = function(etat_suppression)
 		{
 			vm.affiche_load = true ;
@@ -1301,8 +1245,6 @@
 					'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
 				}
 			};
-
-
 			var datas = $.param(
 			{                        
 				supprimer        :etat_suppression,
@@ -1312,9 +1254,7 @@
 				solution 					: vm.selectedItemPoint_a_verifier_mlpl.solution,
 				observation 				: vm.selectedItemPoint_a_verifier_mlpl.observation,
 				id_fiche_supervision_mlpl  	: vm.selectedItemFiche_supervision_mlpl.id
-
 			});
-
 			apiFactory.add("point_a_verifier_mlpl/index",datas, config).success(function (data)
 			{
 				vm.affiche_load = false ;
@@ -1332,20 +1272,16 @@
 						{
 							return obj.id !== vm.selectedItemPoint_a_verifier_mlpl.id;
 						});
-
 						vm.selectedItemPoint_a_verifier_mlpl = {} ;
 					}
-
 				}
 				else
 				{  
 					vm.selectedItemPoint_a_verifier_mlpl.$edit = false ;
 					vm.selectedItemPoint_a_verifier_mlpl.$selected = false ;
 					vm.selectedItemPoint_a_verifier_mlpl.id = String(data.response) ;
-
 					vm.nouvelItemPoint_a_verifier_mlpl = false ;
 					vm.selectedItemPoint_a_verifier_mlpl = {};
-
 				}
 			})
 			.error(function (data) {alert("Une erreur s'est produit");});
@@ -1358,19 +1294,15 @@
 				vm.allPoint_a_verifier_mlpl= result.data.response;
 				console.log(vm.allPoint_a_verifier_mlpl);
 				vm.affiche_load = false ;
-
 			});
 		}
-		//FIN POINT A VERIFIER MLPL
-		
+		//FIN POINT A VERIFIER MLPL		
 		//DEBUT PROBLEME SOLUTION MLPL
-
 		vm.probleme_solution_mlpl_column = 
 		[
 			{titre:"Problème"},
 			{titre:"Solution"}
 		]; 
-
 		vm.selectionProbleme_solution_mlpl = function(item)
 		{
 			vm.selectedItemProbleme_solution_mlpl = item ;
@@ -1379,9 +1311,7 @@
 			{
 				vm.nouvelItemProbleme_solution_mlpl = false ;
 			}
-
 		}
-
 		$scope.$watch('vm.selectedItemProbleme_solution_mlpl', function()
 		{
 			if (!vm.allProbleme_solution_mlpl) return;
@@ -1390,9 +1320,7 @@
 				item.$selected = false;
 			});
 			vm.selectedItemProbleme_solution_mlpl.$selected = true;
-
 		});
-
 		vm.ajouterProbleme_solution_mlpl = function()
 		{
 			vm.nouvelItemProbleme_solution_mlpl = true ;
@@ -1405,30 +1333,23 @@
 					solution: ''
 					
 				} ;
-
 			vm.allProbleme_solution_mlpl.unshift(item);
 			vm.allProbleme_solution_mlpl.forEach(function(af)
 			{
 			  if(af.$selected == true)
 			  {
-				vm.selectedItemProbleme_solution_mlpl = af;
-				
+				vm.selectedItemProbleme_solution_mlpl = af;				
 			  }
 			});
 		}
-
 		vm.modifierProbleme_solution_mlpl = function()
 		{
 			vm.nouvelItemProbleme_solution_mlpl = false ;
-			vm.selectedItemProbleme_solution_mlpl.$edit = true;
-		
+			vm.selectedItemProbleme_solution_mlpl.$edit = true;		
 			current_selectedItemProbleme_solution_mlpl = angular.copy(vm.selectedItemProbleme_solution_mlpl);
 		}
-
 		vm.supprimerProbleme_solution_mlpl = function()
-		{
-
-			
+		{			
 			var confirm = $mdDialog.confirm()
 			  .title('Etes-vous sûr de supprimer cet enregistrement ?')
 			  .textContent('Cliquer sur OK pour confirmer')
@@ -1444,7 +1365,6 @@
 			//alert('rien');
 			});
 		}
-
 		vm.annulerProbleme_solution_mlpl = function()
 		{
 			if (vm.nouvelItemProbleme_solution_mlpl) 
@@ -1455,9 +1375,7 @@
 				vm.nouvelItemProbleme_solution_mlpl = false ;
 			}
 			else
-			{
-				
-
+			{				
 				if (!vm.selectedItemProbleme_solution_mlpl.$edit) //annuler selection
 				{
 					vm.selectedItemProbleme_solution_mlpl.$selected = false;
@@ -1467,18 +1385,12 @@
 				{
 					vm.selectedItemProbleme_solution_mlpl.$selected = false;
 					vm.selectedItemProbleme_solution_mlpl.$edit = false;
-
 					vm.selectedItemProbleme_solution_mlpl.probleme 		= current_selectedItemProbleme_solution_mlpl.probleme;
-					vm.selectedItemProbleme_solution_mlpl.solution = current_selectedItemProbleme_solution_mlpl.solution;
-					
+					vm.selectedItemProbleme_solution_mlpl.solution = current_selectedItemProbleme_solution_mlpl.solution;					
 					vm.selectedItemProbleme_solution_mlpl = {};
-				}
-
-				
-
+				}				
 			}
 		}
-
 		vm.enregistrerProbleme_solution_mlpl = function(etat_suppression)
 		{
 			vm.affiche_load = true ;
@@ -1487,8 +1399,6 @@
 					'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
 				}
 			};
-
-
 			var datas = $.param(
 			{                        
 				supprimer        :etat_suppression,
@@ -1496,9 +1406,7 @@
 				probleme 			: vm.selectedItemProbleme_solution_mlpl.probleme,
 				solution 					: vm.selectedItemProbleme_solution_mlpl.solution,
 				id_fiche_supervision_mlpl  	: vm.selectedItemFiche_supervision_mlpl.id
-
 			});
-
 			apiFactory.add("probleme_solution_mlpl/index",datas, config).success(function (data)
 			{
 				vm.affiche_load = false ;
@@ -1516,25 +1424,20 @@
 						{
 							return obj.id !== vm.selectedItemProbleme_solution_mlpl.id;
 						});
-
 						vm.selectedItemProbleme_solution_mlpl = {} ;
 					}
-
 				}
 				else
 				{  
 					vm.selectedItemProbleme_solution_mlpl.$edit = false ;
 					vm.selectedItemProbleme_solution_mlpl.$selected = false ;
 					vm.selectedItemProbleme_solution_mlpl.id = String(data.response) ;
-
 					vm.nouvelItemProbleme_solution_mlpl = false ;
 					vm.selectedItemProbleme_solution_mlpl = {};
-
 				}
 			})
 			.error(function (data) {alert("Une erreur s'est produit");});
 		}
-
 		vm.click_tab_probleme_solution_mlpl = function()
 		{
 			vm.affiche_load = true ;
@@ -1542,11 +1445,9 @@
 				vm.allProbleme_solution_mlpl= result.data.response;
 				console.log(vm.allProbleme_solution_mlpl);
 				vm.affiche_load = false ;
-
 			});
 		}
 		//FIN PROBLEME ET SOLUTION MLPL
-
 		//DEBUT LIVRABLE MLPL
 		vm.livrable_mlpl_column = 
 		[			
@@ -1560,7 +1461,6 @@
 			{titre:"Nombre de village touchée"},
 			{titre:"Observation"}
 		]; 
-
 		vm.selectionLivrable_mlpl = function(item)
 		{
 			vm.selectedItemLivrable_mlpl = item ;
@@ -1569,9 +1469,7 @@
 			{
 				vm.nouvelItemLivrable_mlpl = false ;
 			}
-
 		}
-
 		$scope.$watch('vm.selectedItemLivrable_mlpl', function()
 		{
 			if (!vm.allLivrable_mlpl) return;
@@ -1580,7 +1478,6 @@
 				item.$selected = false;
 			});
 			vm.selectedItemLivrable_mlpl.$selected = true;
-
 		});
 
 		vm.ajouterLivrable_mlpl = function()
@@ -1599,28 +1496,22 @@
 					intervenant: '',
 					nbr_commune_touchee: '',
 					nbr_village_touchee: '',
-					observation: '' 
-					
+					observation: '' 					
 				} ;
-
 			vm.allLivrable_mlpl.unshift(item);
 			vm.allLivrable_mlpl.forEach(function(af)
 			{
 			  if(af.$selected == true)
 			  {
-				vm.selectedItemLivrable_mlpl = af;
-				
+				vm.selectedItemLivrable_mlpl = af;				
 			  }
 			});
 		}
-
 		vm.modifierLivrable_mlpl = function()
 		{
 			vm.nouvelItemLivrable_mlpl = false ;
-			vm.selectedItemLivrable_mlpl.$edit = true;
-		
-			current_selectedItemLivrable_mlpl = angular.copy(vm.selectedItemLivrable_mlpl);
-			
+			vm.selectedItemLivrable_mlpl.$edit = true;		
+			current_selectedItemLivrable_mlpl = angular.copy(vm.selectedItemLivrable_mlpl);			
 			vm.selectedItemLivrable_mlpl.id_contrat_consultant 	= vm.selectedItemLivrable_mlpl.contrat_consultant.id;
 			//vm.selectedItemLivrable_mlpl.activite_concernee 	= vm.selectedItemLivrable_mlpl.activite_concernee;
 			//vm.selectedItemLivrable_mlpl.intitule_livrable 		= vm.selectedItemLivrable_mlpl.intitule_livrable;
@@ -1633,9 +1524,7 @@
 		}
 
 		vm.supprimerLivrable_mlpl = function()
-		{
-
-			
+		{			
 			var confirm = $mdDialog.confirm()
 			  .title('Etes-vous sûr de supprimer cet enregistrement ?')
 			  .textContent('Cliquer sur OK pour confirmer')
@@ -1651,20 +1540,16 @@
 			//alert('rien');
 			});
 		}
-
 		vm.annulerLivrable_mlpl = function()
 		{
 			if (vm.nouvelItemLivrable_mlpl) 
-			{
-				
+			{				
 				vm.allLivrable_mlpl.shift();
 				vm.selectedItemLivrable_mlpl = {} ;
 				vm.nouvelItemLivrable_mlpl = false ;
 			}
 			else
-			{
-				
-
+			{				
 				if (!vm.selectedItemLivrable_mlpl.$edit) //annuler selection
 				{
 					vm.selectedItemLivrable_mlpl.$selected = false;
@@ -1674,7 +1559,6 @@
 				{
 					vm.selectedItemLivrable_mlpl.$selected = false;
 					vm.selectedItemLivrable_mlpl.$edit = false;
-
 					vm.selectedItemLivrable_mlpl.id_contrat_consultant 	= current_selectedItemLivrable_mlp.contrat_consultant.id;
 					vm.selectedItemLivrable_mlpl.activite_concernee 	= current_selectedItemLivrable_mlp.activite_concernee;
 					vm.selectedItemLivrable_mlpl.intitule_livrable 		= current_selectedItemLivrable_mlp.intitule_livrable;
@@ -1683,16 +1567,11 @@
 					vm.selectedItemLivrable_mlpl.intervenant 			= current_selectedItemLivrable_mlp.intervenant;
 					vm.selectedItemLivrable_mlpl.nbr_commune_touchee 	= current_selectedItemLivrable_mlpl.nbr_commune_touchee;
 					vm.selectedItemLivrable_mlpl.nbr_village_touchee 	= current_selectedItemLivrable_mlpl.nbr_village_touchee;
-					vm.selectedItemLivrable_mlpl.observation 			= current_selectedItemLivrable_mlp.observation;
-					
+					vm.selectedItemLivrable_mlpl.observation 			= current_selectedItemLivrable_mlp.observation;				
 					vm.selectedItemLivrable_mlpl = {};
-				}
-
-				
-
+				}				
 			}
 		}
-
 		vm.enregistrerLivrable_mlpl = function(etat_suppression)
 		{
 			vm.affiche_load = true ;
@@ -1701,8 +1580,6 @@
 					'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
 				}
 			};
-
-
 			var datas = $.param(
 			{                        
 				supprimer        :etat_suppression,
@@ -1717,9 +1594,7 @@
 				nbr_village_touchee 	: vm.selectedItemLivrable_mlpl.nbr_village_touchee,
 				observation 			: vm.selectedItemLivrable_mlpl.observation,
 				id_groupemlpl  			: vm.selectedItem.id
-
 			});
-
 			apiFactory.add("livrable_mlpl/index",datas, config).success(function (data)
 			{
 				vm.affiche_load = false ;
@@ -1741,10 +1616,8 @@
 						{
 							return obj.id !== vm.selectedItemLivrable_mlpl.id;
 						});
-
 						vm.selectedItemLivrable_mlpl = {} ;
 					}
-
 				}
 				else
 				{   
@@ -1756,10 +1629,8 @@
 					vm.selectedItemLivrable_mlpl.$edit = false ;
 					vm.selectedItemLivrable_mlpl.$selected = false ;
 					vm.selectedItemLivrable_mlpl.id = String(data.response) ;
-
 					vm.nouvelItemLivrable_mlpl = false ;
 					vm.selectedItemLivrable_mlpl = {};
-
 				}
 			})
 			.error(function (data) {alert("Une erreur s'est produit");});
@@ -1772,20 +1643,16 @@
 				vm.allLivrable_mlpl= result.data.response;
 				// console.log(vm.allLivrable_mlpl);
 				vm.affiche_load = false ;
-
 			});
 			vm.selectedItemLivrable_mlpl = {};
 		}
 		//FIN LIVRABLE MLPL
-
 		//DEBUT POINT DE CONTROLE MLPL
-
 		vm.point_controle_mlpl_column = 
 		[
 			{titre:"Intitulé"},
 			{titre:"Resultat"}
 		]; 
-
 		vm.selectionPoint_controle_mlpl = function(item)
 		{
 			vm.selectedItemPoint_controle_mlpl = item ;
@@ -1794,9 +1661,7 @@
 			{
 				vm.nouvelItemPoint_controle_mlpl = false ;
 			}
-
 		}
-
 		$scope.$watch('vm.selectedItemPoint_controle_mlpl', function()
 		{
 			if (!vm.allPoint_controle_mlpl) return;
@@ -1807,7 +1672,6 @@
 			vm.selectedItemPoint_controle_mlpl.$selected = true;
 
 		});
-
 		vm.ajouterPoint_controle_mlpl = function()
 		{
 			vm.nouvelItemPoint_controle_mlpl = true ;
@@ -1817,33 +1681,25 @@
 					$selected: true,
 					id:'0',
 					intitule: '',
-					resultat: ''
-					
+					resultat: ''					
 				} ;
-
 			vm.allPoint_controle_mlpl.unshift(item);
 			vm.allPoint_controle_mlpl.forEach(function(af)
 			{
 			  if(af.$selected == true)
 			  {
-				vm.selectedItemPoint_controle_mlpl = af;
-				
+				vm.selectedItemPoint_controle_mlpl = af;				
 			  }
 			});
 		}
-
 		vm.modifierPoint_controle_mlpl = function()
 		{
 			vm.nouvelItemPoint_controle_mlpl = false ;
-			vm.selectedItemPoint_controle_mlpl.$edit = true;
-		
+			vm.selectedItemPoint_controle_mlpl.$edit = true;		
 			current_selectedItemPoint_controle_mlpl = angular.copy(vm.selectedItemPoint_controle_mlpl);
 		}
-
 		vm.supprimerPoint_controle_mlpl = function()
-		{
-
-			
+		{			
 			var confirm = $mdDialog.confirm()
 			  .title('Etes-vous sûr de supprimer cet enregistrement ?')
 			  .textContent('Cliquer sur OK pour confirmer')
@@ -1859,20 +1715,16 @@
 			//alert('rien');
 			});
 		}
-
 		vm.annulerPoint_controle_mlpl = function()
 		{
 			if (vm.nouvelItemPoint_controle_mlpl) 
-			{
-				
+			{				
 				vm.allPoint_controle_mlpl.shift();
 				vm.selectedItemPoint_controle_mlpl = {} ;
 				vm.nouvelItemPoint_controle_mlpl = false ;
 			}
 			else
-			{
-				
-
+			{				
 				if (!vm.selectedItemPoint_controle_mlpl.$edit) //annuler selection
 				{
 					vm.selectedItemPoint_controle_mlpl.$selected = false;
@@ -1882,18 +1734,12 @@
 				{
 					vm.selectedItemPoint_controle_mlpl.$selected = false;
 					vm.selectedItemPoint_controle_mlpl.$edit = false;
-
 					vm.selectedItemPoint_controle_mlpl.intitule 		= current_selectedItemPoint_controle_mlpl.intitule;
-					vm.selectedItemPoint_controle_mlpl.resultat = current_selectedItemPoint_controle_mlpl.resultat;
-					
+					vm.selectedItemPoint_controle_mlpl.resultat = current_selectedItemPoint_controle_mlpl.resultat;					
 					vm.selectedItemPoint_controle_mlpl = {};
-				}
-
-				
-
+				}				
 			}
 		}
-
 		vm.enregistrerPoint_controle_mlpl = function(etat_suppression)
 		{
 			vm.affiche_load = true ;
@@ -1902,8 +1748,6 @@
 					'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
 				}
 			};
-
-
 			var datas = $.param(
 			{                        
 				supprimer        	:etat_suppression,
@@ -1911,9 +1755,7 @@
 				intitule 			: vm.selectedItemPoint_controle_mlpl.intitule,
 				resultat 			: vm.selectedItemPoint_controle_mlpl.resultat,
 				id_livrable_mlpl  	: vm.selectedItemLivrable_mlpl.id
-
 			});
-
 			apiFactory.add("point_controle_mlpl/index",datas, config).success(function (data)
 			{
 				vm.affiche_load = false ;
@@ -1931,25 +1773,20 @@
 						{
 							return obj.id !== vm.selectedItemPoint_controle_mlpl.id;
 						});
-
 						vm.selectedItemPoint_controle_mlpl = {} ;
 					}
-
 				}
 				else
 				{  
 					vm.selectedItemPoint_controle_mlpl.$edit = false ;
 					vm.selectedItemPoint_controle_mlpl.$selected = false ;
 					vm.selectedItemPoint_controle_mlpl.id = String(data.response) ;
-
 					vm.nouvelItemPoint_controle_mlpl = false ;
 					vm.selectedItemPoint_controle_mlpl = {};
-
 				}
 			})
 			.error(function (data) {alert("Une erreur s'est produit");});
 		}
-
 		vm.click_tab_point_controle_mlpl = function()
 		{
 			vm.affiche_load = true ;
@@ -1957,11 +1794,9 @@
 				vm.allPoint_controle_mlpl= result.data.response;
 				console.log(vm.allPoint_controle_mlpl);
 				vm.affiche_load = false ;
-
 			});
 		}
 		//FIN PROBLEME ET SOLUTION
-
 		// DEBUT FONCTION UTILITAIRE
 		vm.modifierVillage = function(filtre) {
 			vm.affiche_load = true ;
@@ -2053,6 +1888,5 @@
 				}                      
 			});
 		}
-
     }
 })();

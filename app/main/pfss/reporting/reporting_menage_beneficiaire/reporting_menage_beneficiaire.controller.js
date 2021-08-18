@@ -134,17 +134,7 @@
 						"zip",vm.filtre.zip,
 						"id_sous_projet",vm.filtre.id_sous_projet).then(function(result) { 
 				if(result.data.response.length==0) {
-					$mdDialog.show(
-						$mdDialog.alert()
-						.parent(angular.element(document.querySelector('#popupContainer')))
-						.clickOutsideToClose(false)
-						.parent(angular.element(document.body))
-						.title("INFORMATION")
-						.textContent('Aucun ménage bénéficiaire pour le filtre choisi !.')
-						.ariaLabel('Information')
-						.ok('Fermer')
-						.targetEvent()					
-					);
+					vm.showAlert("INFORMATION",'Aucun ménage bénéficiaire pour le filtre choisi !.');  
 				}
 					vm.all_beneficiaires = result.data.response;    
 					vm.affiche_load = false ;

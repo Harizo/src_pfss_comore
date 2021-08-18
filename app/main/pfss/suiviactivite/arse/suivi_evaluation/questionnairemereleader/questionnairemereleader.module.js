@@ -16,8 +16,10 @@
             url      : '/suiviactivite/arse/suivi-evaluation/questionnaire-mere-leader',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/pfss/suiviactivite/arse/suivi_evaluation/questionnairemereleader/questionnairemereleader.html',
-                    controller : 'QuestionnairemereleaderController as vm'
+                    // templateUrl: 'app/main/pfss/suiviactivite/arse/suivi_evaluation/questionnairemereleader/questionnairemereleader.html',
+                    templateUrl: 'app/main/pfss/administration/ddb/questionnairemenage/questionnairemenage.html',
+                    // controller : 'QuestionnairemereleaderController as vm'
+                    controller : 'QuestionnairemenageController as vm'
                 }
             },
             bodyClass: 'questionnaire_mere_leader',

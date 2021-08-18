@@ -136,26 +136,35 @@
 								</table>
 							</div>
 					</md-tab>
-					<md-tab label="Réponse mère leader (multiple ou unique)" ng-disabled="!vm.selectedItem.id">							
+					<md-tab label="Réponse mère leader" ng-disabled="!vm.selectedItem.id">							
 						<div style="clear:both;"></div>	
 						<legend><b>Menage : {{vm.selectedItem.identifiant_menage}}  ML/PL : {{vm.selectedItem.nom_prenom_ml_pl}} </b></legend>
 						<div style="clear:both;"></div>	
 						<div layout="column" layout-gt-xs="row" flex>
 							<fieldset style="width:100%">					
+								<div style="clear:both;"></div>	
 								<div layout="column" flex-gt-xs="25" ng-repeat='item in vm.allRecordsListevariable' style="width:25%;display:inline-block">					
 									<fieldset class="standard" ng-if="item.choix_unique==0">
-										<legend  class="md-grey-800-bg">{{item.description}}</legend>
+										<legend  class="md-grey-800-bg">{{item.code}}-{{item.description}}</legend>
 										<md-checkbox ng-repeat='det in item.detail_variable' ng-checked="exists(det.id, vm.tab_reponse_variable)" ng-click="vm.toggle(det.id, vm.tab_reponse_variable)" ng-disabled="!vm.selectedItem.id">
 											{{det.code}}-{{det.description}}
 										</md-checkbox>
 									</fieldset>
 									<fieldset class="standard" ng-if="item.choix_unique==1">
-										<legend  class="md-grey-800-bg">{{item.description}}</legend>
+										<legend  class="md-grey-800-bg">{{item.code}}-{{item.description}}</legend>
 											<md-radio-group ng-model="vm.choix_unique[item.id]" ng-change="vm.ModifierChoixUnique()">
 											   <div ng-repeat='detail in item.detail_variable' class="row">
 												  <md-radio-button   ng-value="detail.id">{{detail.code}}-{{detail.description}}</md-radio-button>
 											  </div>
 										   </md-radio-group>
+									</fieldset>
+									<fieldset class="standard" ng-if="item.choix_unique==2">
+										<p><label><b>{{item.code}}-{{item.description}} : </b></label></p>
+										<p><input type="number" ng-model="vm.tab_quantifie[item.id]"></p>
+									</fieldset>
+									<fieldset class="standard" ng-if="item.choix_unique==3">
+										<p><label><b>{{item.code}}-{{item.description}} : </b></label></p>
+										<p><input type="text" ng-model="vm.tab_texte[item.id]"></p>
 									</fieldset>
 								</div>
 								<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>						 
@@ -163,36 +172,6 @@
 								</section>
 							</fieldset>
 						</div>	
-					</md-tab>
-					<md-tab label="Réponse mère leader quantifiée" ng-disabled="!vm.selectedItem.id">							
-						<div style="clear:both;"></div>	
-						<legend><b>Menage : {{vm.selectedItem.identifiant_menage}}  ML/PL : {{vm.selectedItem.nom_prenom_ml_pl}} </b></legend>
-						<div style="clear:both;"></div>	
-							<div style="width:100%">
-								<table class="dataTable row-border hover cell-border text-center" datatable="ng"
-								  dt-options="vm.dtOptions" ng-if="!vm.affichage_masque">
-								  <thead>
-									<tr>
-									  <th class="secondary-text" ng-repeat="re in ::vm.rep_quantifiee_column">
-										<div class="table-header">
-										  <span class="column-title text-center">{{re.titre}}</span>
-										</div>
-									  </th>
-									</tr>
-								  </thead>
-								  <tbody>
-									<tr ng-repeat="rep in vm.all_reponse_quantifiee track by $index"  ng-class="{selected: rep.$selected}" ng-click="vm.selectionReponseQuantifie(rep)">
-										<td>{{rep.code}}-{{rep.description}}</td>
-										<td>
-										<input type="number" ng-model="vm.tab[rep.id]">
-										</td>
-									</tr>
-								  </tbody>
-								</table>
-							</div>
-								<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>						 
-								  <md-button class="md-raised md-primary" ng-disabled="!vm.selectedItem.id" ng-click="vm.sauvegarder_reponse_mereleader(vm.selectedItem.id)">Enregistrer</md-button>                         
-								</section>
 					</md-tab>
                 </md-tabs>
             </div>

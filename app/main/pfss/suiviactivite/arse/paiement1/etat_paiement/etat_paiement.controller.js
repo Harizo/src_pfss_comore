@@ -93,9 +93,9 @@
 			vm.filtre.sous_projet=" ARSE";
 			vm.filtre.etape_id=1;
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",1).then(function(result) {
-				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
-				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
-				vm.filtre.tranche= result.data.response.Phase;
+				vm.filtre.montant_a_payer = parseInt(result.data.response[0].indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response[0].pourcentage);
+				vm.filtre.tranche= result.data.response[0].Phase;
 				vm.filtre.affiche_titre=" Premier Tranche de " + result.data.response.pourcentage + "%";
 			});
 		}
@@ -106,9 +106,9 @@
 			vm.filtre.sous_projet=" ARSE";
 			vm.filtre.etape_id=2;
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",2).then(function(result) {
-				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
-				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
-				vm.filtre.tranche= result.data.response.Phase;
+				vm.filtre.montant_a_payer = parseInt(result.data.response[0].indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response[0].pourcentage);
+				vm.filtre.tranche= result.data.response[0].Phase;
 				vm.filtre.affiche_titre=" Deuxième Tranche de " + result.data.response.pourcentage + "%";
 			});
 		}
@@ -119,9 +119,9 @@
 			vm.filtre.sous_projet=" ARSE";
 			vm.filtre.etape_id=3;
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",3).then(function(result) {
-				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
-				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
-				vm.filtre.tranche= result.data.response.Phase;
+				vm.filtre.montant_a_payer = parseInt(result.data.response[0].indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response[0].pourcentage);
+				vm.filtre.tranche= result.data.response[0].Phase;
 				vm.filtre.affiche_titre=" Troisième Tranche de " + result.data.response.pourcentage + "%";
 			});
 		}		
@@ -133,9 +133,9 @@
 			vm.filtre.sous_projet=" COVID-19";
 			vm.filtre.etape_id=6;
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",6).then(function(result) {
-				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
-				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
-				vm.filtre.tranche= result.data.response.Phase;
+				vm.filtre.montant_a_payer = parseInt(result.data.response[0].indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response[0].pourcentage);
+				vm.filtre.tranche= result.data.response[0].Phase;
 			});
 		}
 		if(vm.url=='/suivi-activite/covid/deuxieme-paiement/etat-paiement-2') {
@@ -146,9 +146,9 @@
 			vm.filtre.sous_projet=" COVID-19";
 			vm.filtre.etape_id=7;
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",7).then(function(result) {
-				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
-				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
-				vm.filtre.tranche= result.data.response.Phase;
+				vm.filtre.montant_a_payer = parseInt(result.data.response[0].indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response[0].pourcentage);
+				vm.filtre.tranche= result.data.response[0].Phase;
 			});
 		}
 		if(vm.url=='/suivi-activite/covid/troisieme-paiement/etat-paiement-3') {
@@ -159,9 +159,9 @@
 			vm.filtre.sous_projet=" COVID-19";
 			vm.filtre.etape_id=8;
 			apiFactory.getAPIgeneraliserREST("phaseexecution/index","id",8).then(function(result) {
-				vm.filtre.montant_a_payer = parseInt(result.data.response.indemnite);
-				vm.filtre.pourcentage= parseInt(result.data.response.pourcentage);
-				vm.filtre.tranche= result.data.response.Phase;
+				vm.filtre.montant_a_payer = parseInt(result.data.response[0].indemnite);
+				vm.filtre.pourcentage= parseInt(result.data.response[0].pourcentage);
+				vm.filtre.tranche= result.data.response[0].Phase;
 			});
 		}		
   		// Upload fichier excel bénéficiaire
