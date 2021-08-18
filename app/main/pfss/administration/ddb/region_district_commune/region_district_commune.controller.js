@@ -670,7 +670,8 @@
                           Village:       e.data.models[0].Village,
                           commune_id: e.data.models[0].commune_id,
                           id_zip:   e.data.models[0].zip.id,
-                          vague: e.data.models[0].vague               
+                          vague: e.data.models[0].vague,
+                          population_rgph_2017: e.data.models[0].population_rgph_2017                
                       });
                       //console.log(datas); 
                   apiFactory.add("village/index",datas, config).success(function (data)
@@ -742,7 +743,8 @@
                           Village:       e.data.models[0].Village,
                           commune_id: commune_id,                          
                           id_zip:   e.data.models[0].zip,
-                          vague:       e.data.models[0].vague              
+                          vague:       e.data.models[0].vague,
+                          population_rgph_2017:       e.data.models[0].population_rgph_2017              
                       });
                   apiFactory.add("village/index",datas, config).success(function (data)
                   { 
@@ -786,7 +788,8 @@
                         Code: {type: "string",validation: {required: true}},
                         Village: {type: "string", validation: {required: true}},
                         vague: {type: "number", validation: {required: true}},
-                        zip: {validation: {required: true}}
+                        zip: {validation: {required: true}},
+                        population_rgph_2017: {type: "number", validation: {required: true}}
 
                     }
                 }
@@ -850,6 +853,12 @@
               template: "{{dataItem.zip.libelle}}",
               editor: zipDropDownEditor,
               width: "Auto"
+            },
+            {
+              field: "population_rgph_2017",
+              title: "Population RGPH 2017",
+              width: "Auto",
+              format: "{0:n0}"
             },
             { 
               title: "Action",
