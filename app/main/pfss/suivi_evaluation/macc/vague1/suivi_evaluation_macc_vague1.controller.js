@@ -219,9 +219,16 @@
 				vm.all_titre_affiche_ong = result1.data.response.titre_et_valeur_ong; 
 				vm.all_titre_affiche_ml = result1.data.response.titre_et_valeur_ml; 
 				vm.all_titre_affiche_realisation_ebe = result1.data.response.titre_et_valeur_realisation_ebe; 
-				console.log(vm.all_titre_affiche_ong);
-				console.log(vm.all_titre_affiche_ml);
-				apiFactory.getAPIgeneraliserREST("suivi_evaluation/index","vague",vm.filtre.vague,"type_suivi",vm.filtre.type_suivi).then(function(result) { 
+				// console.log(vm.all_titre_affiche_ong);
+				// console.log(vm.all_titre_affiche_ml);
+				apiFactory.getAPIgeneraliserREST("suivi_evaluation/index",
+				"vague",vm.filtre.vague,				
+				"ile_id",vm.filtre.id_ile,   
+				"region_id",vm.filtre.id_region,
+				"commune_id",vm.filtre.id_commune,
+				"village_id",vm.filtre.village_id,
+				"zip",vm.filtre.zip,   		
+				"type_suivi",vm.filtre.type_suivi).then(function(result) { 
 					if(result.data.response.length==0) {
 						$mdDialog.show(
 							$mdDialog.alert()

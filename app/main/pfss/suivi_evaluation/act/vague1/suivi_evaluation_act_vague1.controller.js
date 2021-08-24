@@ -201,7 +201,13 @@
       }
 		vm.filtrer = function()	{
 			vm.affiche_load = true ;
-			apiFactory.getAPIgeneraliserREST("suivi_evaluation/index","id_sous_projet",vm.filtre.id_sous_projet,"vague",vm.filtre.vague).then(function(result) { 
+			apiFactory.getAPIgeneraliserREST("suivi_evaluation/index","id_sous_projet",vm.filtre.id_sous_projet,
+				"ile_id",vm.filtre.id_ile,   
+				"region_id",vm.filtre.id_region,
+				"commune_id",vm.filtre.id_commune,
+				"village_id",vm.filtre.village_id,
+				"zip",vm.filtre.zip,   		
+				"vague",vm.filtre.vague).then(function(result) { 
 				if(result.data.response.length==0) {
 					$mdDialog.show(
 						$mdDialog.alert()
