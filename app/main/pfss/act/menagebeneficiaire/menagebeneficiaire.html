@@ -32,11 +32,11 @@
 							<md-icon md-font-icon="icon-plus" class="s16 center" style="color: white;"></md-icon>
                               Nouveau
                             </md-button-->
-                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised custum_button" aria-label="Modifier" ng-click="vm.modifier()">
+                            <md-button type="submit"  ng-if="vm.affiche_onglet_et_bouton" ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised custum_button" aria-label="Modifier" ng-click="vm.modifier()">
 							<md-icon md-font-icon="icon-table-edit" class="s16" style="color: white;"></md-icon>
                               Modifier
                             </md-button>
-                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised bouton_preselectionne" aria-label="Modifier" ng-click="vm.modifier_statut('PRESELECTIONNE')" style="color: white !important; background-color: #33C7FF  !important;width: auto !important; font-size: 10px;font-weight: bold;;width:11%;">
+                            <md-button type="submit"  ng-if="vm.affiche_onglet_et_bouton" ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised bouton_preselectionne" aria-label="Modifier" ng-click="vm.modifier_statut('PRESELECTIONNE')" style="color: white !important; background-color: #33C7FF  !important;width: auto !important; font-size: 10px;font-weight: bold;;width:11%;">
 							<md-icon md-font-icon="icon-select" class="s16" style="color: white;"></md-icon>
                               Retour présélectionné
                             </md-button>
@@ -44,11 +44,11 @@
 							  ng-if="!vm.affichage_masque" ng-disabled="filtrepardateform.$invalid||vm.affiche_load || vm.affiche_export_carte" ng-click="vm.export_carte_beneficiaire(vm.filtre)">
 							  Carte bénéficiaire
 							</md-button>
-                            <md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque"   class="md-raised custum_button_del" aria-label="Sortir" ng-click="vm.showTabDialog(vm.selectedItem.id)" style="width:10%;">
+                            <md-button type="submit"  ng-if="vm.affiche_onglet_et_bouton"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque"   class="md-raised custum_button_del" aria-label="Sortir" ng-click="vm.showTabDialog(vm.selectedItem.id)" style="width:10%;">
 							<md-icon md-font-icon="icon-logout" class="s16" style="color: white;"></md-icon>
                               Sorti programme
                             </md-button>
-                            <md-button type="submit" class="md-raised custum_button_del" ng-show="(vm.selectedItem.id) && !vm.affichage_masque" aria-label="Supprimer" ng-click="vm.supprimer()" style="width:10%;">
+                            <md-button type="submit" class="md-raised custum_button_del" ng-if="vm.affiche_onglet_et_bouton" ng-show="(vm.selectedItem.id) && !vm.affichage_masque" aria-label="Supprimer" ng-click="vm.supprimer()" style="width:10%;">
                                 <md-icon md-font-icon="icon-close-circle-outline" class="s16" style="color: white;"></md-icon>
                               Supprimer
                             </md-button>
@@ -869,7 +869,7 @@
 							</table>
 						</div>	
                     </md-tab>   
-                    <md-tab label="Informations lors de l’inscription" ng-disabled="!vm.selectedItem.id">
+                    <md-tab label="Informations lors de l’inscription" ng-disabled="!vm.selectedItem.id"  ng-if="vm.affiche_onglet_et_bouton">
 						<div style="clear:both;"></div>	
 						<legend><b>Menage : {{vm.selectedItem.identifiant_menage}}  Chef ménage : {{vm.selectedItem.nomchefmenage}} </b></legend>
 						<fieldset>
@@ -1124,7 +1124,7 @@
 							</div>
 						</fieldset>
 					</md-tab>
-                    <md-tab label="Informations après enquête" ng-disabled="!vm.selectedItem.id">
+                    <md-tab label="Informations après enquête" ng-disabled="!vm.selectedItem.id"  ng-if="vm.affiche_onglet_et_bouton">
 						<div style="clear:both;"></div>	
 						<legend><b>Menage : {{vm.selectedItem.identifiant_menage}}  Chef ménage : {{vm.selectedItem.nomchefmenage}} </b></legend>
 						<fieldset>
@@ -1393,7 +1393,7 @@
 							  <md-button class="md-raised md-primary" ng-disabled="!vm.selectedItem.id" ng-click="vm.sauvegarder_reponse_menage(vm.selectedItem.id)">Enregistrer</md-button>                         
 							</section>
 					</md-tab>
-                    <md-tab label="Comparaison" ng-disabled="!vm.selectedItem.id">
+                    <md-tab label="Comparaison" ng-disabled="!vm.selectedItem.id" ng-if="vm.affiche_onglet_et_bouton">
 						<div style="clear:both;"></div>	
 						<legend><b>Menage : {{vm.selectedItem.identifiant_menage}}  Chef ménage : {{vm.selectedItem.nomchefmenage}} </b></legend>
 						<fieldset>
@@ -1564,7 +1564,7 @@
                           <md-button class="md-raised md-primary" ng-disabled="vm.disable_button" ng-if="vm.id_enquete_menage != 0" ng-click="vm.save_reponse_menage()">Mettre à jour</md-button>
                           <md-button class="md-raised md-primary" ng-disabled="vm.disable_button" ng-if="vm.id_enquete_menage == 0" ng-click="vm.save_reponse_menage()">Enregistrer</md-button>                         
                         </section>
-                    <md-tab label="Menbre ménage" ng-disabled="!vm.selectedItem.id">
+                    <md-tab label="Menbre ménage" ng-disabled="!vm.selectedItem.id" ng-if="vm.affiche_onglet_et_bouton">
 						<div style="clear:both;"></div>	
 						<legend><b>Menage : {{vm.selectedItem.identifiant_menage}}  Chef ménage : {{vm.selectedItem.nomchefmenage}} </b></legend>
                         <div style="widht:100%;">    

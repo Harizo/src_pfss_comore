@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pfss.suiviactivite.suivi_arse.activite_choisis_menage', [])
+        .module('app.pfss.suiviactivite.suivi_arse.carte_beneficiaire', [])
         .run(testPermission)
         .config(config);
         var vs ;
@@ -13,28 +13,28 @@
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.pfss_suiviactivite_suivi_arse_activite_choisis_menage', {
-            url      : '/suivi-activite/arse/activite-choisi-menage',
+        $stateProvider.state('app.pfss_suiviactivite_suivi_arse_carte_beneficiaire', {
+            url      : '/suivi-activite/arse/carte-beneficiaire',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/pfss/suiviactivite/arse/activite_choisis_menage/activite_choisis_menage.html',
-                    controller : 'actchoisisController as vm'
+                    templateUrl: 'app/main/pfss/act/menagebeneficiaire/menagebeneficiaire.html',
+                    controller : 'MenagebeneficiaireController as vm'
                 }
             },
-            bodyClass: 'indicateur',
+            bodyClass: 'suiviactivite_suivi_arse_carte_beneficiaire',
             data : {
               authorizer : true,
               permitted : ["USER","PERSONNEL","ADMIN"],
-              page: "Activités choisis"
+              page: "Carte bénéficiaire"
             }
 
         });
         // Navigation
-        msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_arse.activite_choisis_menage', {
-            title: "Activités ménages",
+        msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_arse.theme_formation', {
+            title: "Carte bénéficiaire",
             icon  : 'icon-square-inc',
-            state: 'app.pfss_suiviactivite_suivi_arse_activite_choisis_menage',
-            weight: 5
+            state: 'app.pfss_suiviactivite_suivi_arse_carte_beneficiaire',
+            weight: 8
             // hidden: function()
             // {
                     // return vs;

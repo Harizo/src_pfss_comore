@@ -31,7 +31,7 @@
             title: 'Fiche profilage orientation',
             icon  : 'icon-swap-horizontal',
             state: 'app.pfss_suivi_arse_profilage_orientation_fiche_profilage_orientation',
-			weight: 1
+			weight: 3
         });
     }
 

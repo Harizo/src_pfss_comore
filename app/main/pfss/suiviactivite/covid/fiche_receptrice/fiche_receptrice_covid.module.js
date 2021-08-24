@@ -2,10 +2,11 @@
 {
     'use strict';
     angular
-        .module('app.pfss.suiviactivite.suivi_covid', [	
-				'app.pfss.suiviactivite.suivi_covid.fiche_receptrice',
-				'app.pfss.suiviactivite.suivi_covid.paiement_covid',
-            ])
+        .module('app.pfss.suiviactivite.suivi_covid.fiche_receptrice', [			
+			'app.pfss.suiviactivite.suivi_covid.fiche_receptrice.fiche_receptrice_1',
+			'app.pfss.suiviactivite.suivi_covid.fiche_receptrice.fiche_receptrice_2',
+			'app.pfss.suiviactivite.suivi_covid.fiche_receptrice.fiche_receptrice_3',
+		])
         // .run(testPermission)
         .config(config);
         var vs ;
@@ -13,10 +14,10 @@
     /** @ngInject */
     function config(msNavigationServiceProvider)
     {
-        msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_covid', {
-            title : 'TMNC-COVID',
+        msNavigationServiceProvider.saveItem('pfss.suiviactivite.suivi_covid.fiche_receptrice', {
+            title : 'Fiches réceptrices',
             icon  : 'icon-data',
-            weight: 3,
+            weight: 1,
         });
     }
     function testPermission(loginService,$cookieStore,apiFactory)

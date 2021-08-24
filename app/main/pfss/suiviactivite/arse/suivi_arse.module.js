@@ -4,15 +4,15 @@
     angular
         .module('app.pfss.suiviactivite.suivi_arse', [	
             'app.pfss.suiviactivite.suivi_arse.activite_choisis_menage'	,
-			'app.pfss.suiviactivite.suivi_arse.paiement1',
+			'app.pfss.suiviactivite.suivi_arse.paiement_arse',
 			'app.pfss.suiviactivite.suivi_arse.profilage_orientation',
 			'app.pfss.suiviactivite.suivi_arse.plan_relevement',
 			'app.pfss.suiviactivite.suivi_arse.formation_technique',
-			'app.pfss.suiviactivite.suivi_arse.paiement2',
 			'app.pfss.suiviactivite.suivi_arse.suivi_technique',
-			'app.pfss.suiviactivite.suivi_arse.paiement3',
+			'app.pfss.suiviactivite.suivi_arse.fiche_receptrice',
 			'app.pfss.suiviactivite.suivi_arse.suivi_evaluation',
 			'app.pfss.suiviactivite.suivi_arse.theme_formation',
+			'app.pfss.suiviactivite.suivi_arse.carte_beneficiaire',
             ])
         // .run(testPermission)
         .config(config);

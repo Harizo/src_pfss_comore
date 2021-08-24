@@ -34,7 +34,7 @@
             title: "Thème-Formation",
             icon  : 'icon-square-inc',
             state: 'app.pfss_suiviactivite_suivi_arse_theme_formation',
-            weight: 1
+            weight: 6
             // hidden: function()
             // {
                     // return vs;

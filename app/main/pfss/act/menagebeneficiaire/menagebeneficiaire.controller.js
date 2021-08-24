@@ -98,19 +98,29 @@
 			vm.titre =" ACT";
 			vm.filtre.sous_projet="ACT";
 			vm.placeholder_nom_travailleur="Travailleur.";
-			vm.placeholder_nom_suppleant="Travailleur suppléant.";			
+			vm.placeholder_nom_suppleant="Travailleur suppléant.";	
+			vm.affiche_onglet_et_bouton=true;	
 		} else if(vm.url=='/arse/menage-beneficiaire-arse') {
 			vm.filtre.id_sous_projet=2;
 			vm.titre =" ARSE"
 			vm.filtre.sous_projet="ARSE";
 			vm.placeholder_nom_travailleur="Recepteur.";
 			vm.placeholder_nom_suppleant="Recepteur suppléant.";
+			vm.affiche_onglet_et_bouton=true;
 		} else if(vm.url=='/covid/menage-beneficiaire-covid-19') {
 			vm.filtre.id_sous_projet=4;
 			vm.titre =" COVID-19";
 			vm.filtre.sous_projet="COVID-19";
 			vm.placeholder_nom_travailleur="Recepteur.";
 			vm.placeholder_nom_suppleant="Recepteur suppléant.";
+			vm.affiche_onglet_et_bouton=true;
+		} else if(vm.url=='/suivi-activite/arse/carte-beneficiaire') {
+			vm.filtre.id_sous_projet=2;
+			vm.titre =" ARSE"
+			vm.filtre.sous_projet="ARSE";
+			vm.placeholder_nom_travailleur="Recepteur.";
+			vm.placeholder_nom_suppleant="Recepteur suppléant.";
+			vm.affiche_onglet_et_bouton=false;
 		}
       //initialisation variable
 
