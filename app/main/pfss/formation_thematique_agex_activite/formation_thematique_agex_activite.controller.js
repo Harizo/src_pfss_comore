@@ -144,7 +144,7 @@
                 vm.formation_thematique_agex.contenu           = vm.selectedItemFormation_thematique_agex.contenu ;
                 vm.formation_thematique_agex.objectif             = vm.selectedItemFormation_thematique_agex.objectif ;
                 vm.formation_thematique_agex.methodologie     = vm.selectedItemFormation_thematique_agex.methodologie ;
-                vm.formation_thematique_agex.materiel       =vm.selectedItemFormation_thematique_agex.materiel ;
+                vm.formation_thematique_agex.materiel       =vm.selectedItemFormation_thematique_agex.materiel;
                /* vm.formation_thematique_agex.date = null;
                 if (vm.selectedItemFormation_thematique_agex.date)
                 {                    
