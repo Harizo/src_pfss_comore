@@ -113,6 +113,7 @@
 						});
 					}, function() {
 						// Aucune action = sans suppression
+            vm.mainGridOptions.dataSource.read();
 					});               
                 },
                 //creation ile
@@ -265,7 +266,7 @@
                           id:        e.data.models[0].id,      
                           Code:      e.data.models[0].Code,
                           Region:       e.data.models[0].Region,
-                          ile_id: e.data.models[0].ile.id               
+                          ile_id: ile_id               
                       });
                   apiFactory.add("region/index",datas, config).success(function (data)
                   {                
@@ -323,6 +324,7 @@
 						}); 
 					}, function() {
 						// Aucune action = sans suppression
+            vm.mainGridOptions.dataSource.read();
 					});					
               },
               //creation district
@@ -467,7 +469,7 @@
                           id:        e.data.models[0].id,      
                           Code:      e.data.models[0].Code,
                           Commune:       e.data.models[0].Commune,
-                          region_id: e.data.models[0].region.id               
+                          region_id: region_id              
                       });
                   apiFactory.add("commune/index",datas, config).success(function (data)
                   {                
@@ -523,6 +525,7 @@
 						});
 					}, function() {
 						// Aucune action = sans suppression
+            vm.mainGridOptions.dataSource.read();
 					});               
               },
               //creation commune
@@ -668,7 +671,7 @@
                           id:        e.data.models[0].id,      
                           Code:      e.data.models[0].Code,
                           Village:       e.data.models[0].Village,
-                          commune_id: e.data.models[0].commune_id,
+                          commune_id: commune_id,
                           id_zip:   e.data.models[0].zip.id,
                           vague: e.data.models[0].vague,
                           population_rgph_2017: e.data.models[0].population_rgph_2017                
@@ -728,6 +731,7 @@
 						});     
 					}, function() {
 						// Aucune action = sans suppression
+            vm.mainGridOptions.dataSource.read();
 					});					
               },
               //creation village
