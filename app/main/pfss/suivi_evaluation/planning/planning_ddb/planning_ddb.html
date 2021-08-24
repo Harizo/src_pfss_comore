@@ -1,0 +1,153 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+	<div class="header md-accent-bg" layout="row" layout-align="space-between">
+		<div layout="column" layout-align="space-between">
+			<div class="breadcrumb" layout="row" layout-align="start center">
+				<md-icon md-font-icon="icon-home" class="s16"></md-icon>
+				<md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+				<span class="parent"></span>
+				<span class="parent"> </span>
+				<md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+				<span class="parent" href="javascript:;"> Suivi-évaluation</span>
+				<md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+				<span class="parent" href="javascript:;">DDB Planning</span>
+			</div>   
+		</div>
+	</div>
+	<div class="content" layout="column">
+		<div class="form-wrapper">
+			<div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+				<md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+				<span style="color: #039be5">Chargement,veuillez patienter s'il vous plait ...</span>
+			</div>
+			<div style="clear:both;"></div>
+			<md-tabs md-dynamic-height layout="column" flex>                  
+				<md-tab label="Données référentielles Planning" ng-click="vm.get_all_planning_ddb()" layout="column" flex>
+					<md-tab-body>
+						<div class="price-table style-1 md-whiteframe-1dp" layout="column">
+							<header layout="row" layout-align="none center" style=" margin-bottom: 10px;margin-top: 10px;" class="border-top border-bottom">
+								<div layout="row" layout-align="start center">
+								<div class="border-right">								
+								  <span class="md-headline">Données de base planning</span>
+								</div>
+								  <div class="border-right" ng-if="!vm.selected_planning_ddb.id&&!vm.nouvelle_planning_ddb">
+									<md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.ajouter_planning_ddb()">
+									  <md-icon md-font-icon="icon-plus-box"></md-icon>
+									  <md-tooltip><span>Ajouter</span></md-tooltip>
+									</md-button>
+								  </div> 
+								  <div class="border-right" ng-if="vm.selected_planning_ddb.id&&!vm.selected_planning_ddb.$edit">
+									<md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.modifier_planning_ddb()">
+									  <md-icon md-font-icon="icon-table-edit"></md-icon>
+									  <md-tooltip><span>Modifier</span></md-tooltip>
+									</md-button>
+								  </div>    
+								  <div class="border-right" ng-if="vm.selected_planning_ddb.id&&!vm.selected_planning_ddb.$edit">
+									<md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.supprimer_planning_ddb()">
+									  <md-icon md-font-icon="icon-delete"></md-icon>
+									  <md-tooltip><span>Supprimer</span></md-tooltip>
+									</md-button>
+								  </div>  
+
+								  <div class="border-right" ng-if="vm.selected_planning_ddb.id">
+									<md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.annuler_planning_ddb()">
+									  <md-icon md-font-icon="icon-cancel"></md-icon>
+									  <md-tooltip><span>Annuler</span></md-tooltip>
+									</md-button>
+								  </div>   
+
+								  <div ng-if="vm.selected_planning_ddb.$edit">
+									<md-button class="md-icon-button" aria-label="add Type coût divers" ng-click="vm.enregistrer_planning_ddb(0)">
+									  <md-icon md-font-icon="icon-checkbox-marked"></md-icon>
+									  <md-tooltip><span>Enregistrer</span></md-tooltip>
+									</md-button>
+								  </div>                
+								</div>
+							</header>
+							<table ng-table="composante" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions" ms-responsive-table>
+								<thead>
+									<tr>
+										<th class="secondary-text" ng-repeat="c in ::vm.planning_ddb_column">
+											<div class="table-header">
+												<span class="column-title text-center">{{c.titre}}</span>
+											</div>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="cm in vm.all_planning_ddb"  ng-class="{selected: cm.$selected}" ng-click="vm.selection_planning_ddb(cm)">  
+										<td>
+											<span ng-if="cm.$edit">
+												<md-input-container style="width:100%;display: flex !important;">
+												  <label>Description</label>
+												  <input type="text" name="description" ng-model="cm.description"/>
+												</md-input-container>
+											</span>
+											<span ng-if="!cm.$edit">
+											  {{cm.description}}
+											</span>
+										</td>
+										<td>
+											<span ng-if="cm.$edit">
+												<md-input-container style="width:100%;display: flex !important;">
+												  <label>Vague</label>
+												</md-input-container>   
+												<md-select ng-model="cm.vague" name="vague"  >
+												  <md-option  value="1">Oui</md-option>
+												  <md-option  value="0">Non</md-option>                                      
+												</md-select>
+														   
+											</span>
+											<span ng-if="!cm.$edit">
+												{{vm.affiche_reponse(cm.vague)}}
+											</span>
+										</td>
+										<td>
+											<span ng-if="cm.$edit">
+												<md-input-container style="width:100%;display: flex !important;">
+												  <label>Responsable exécution</label>
+												  <input type="text" name="responsable_execution"  ng-model="cm.responsable_execution"/>
+												</md-input-container>   
+												
+											</span>
+											<span ng-if="!cm.$edit">
+												{{cm.responsable_execution}}
+											</span>
+										</td>
+										<td>
+											<span ng-if="cm.$edit">
+												<md-input-container style="width:100%;display: flex !important;">
+												  <label>Responsable supervision</label>
+												  <input type="text" name="responsable_supervision"  ng-model="cm.responsable_supervision"/>
+												</md-input-container>   
+												
+											</span>
+											<span ng-if="!cm.$edit">
+												{{cm.responsable_supervision}}
+											</span>
+										</td>
+										<td style="Background-Color:{{cm.couleur}}; Color:Black">
+											<span ng-if="cm.$edit">
+												<md-input-container flex="100" flex-gt-xs="15">
+												  <label>Couleur</label>
+												</md-input-container>                                                    
+													<md-select ng-model="cm.couleur" name="couleur">                                    
+													  <md-option ng-repeat="c in vm.code_couleur" value="{{c.valeur}}" >
+														{{c.valeur_affiche}}
+													  </md-option>
+													</md-select>
+											</span>
+											<span ng-if="!cm.$edit">
+												{{vm.affiche_couleur(cm.couleur)}}
+											</span>
+										</td>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</md-tab-body>
+				</md-tab>
+			</md-tabs>
+		</div>				
+	</div>				
+</div>				

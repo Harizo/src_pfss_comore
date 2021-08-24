@@ -1,0 +1,273 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+        <!-- HEADER -->
+        <div class="header md-accent-bg" layout="row" layout-align="space-between">
+            <div layout="column" layout-align="space-between">
+                <div class="breadcrumb" layout="row" layout-align="start center">
+                    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent">Suiv évaluation</span>
+                    <span class="parent"> </span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;">{{vm.titre_sous_projet}}</span>
+                    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                    <span class="parent" href="javascript:;">{{vm.titre_vague}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="content" layout="column">
+            <div class="form-wrapper">
+                <div style="clear:both;"></div>
+                <md-tabs md-dynamic-height>
+                    <md-tab label="Suivi évaluation {{vm.titre_sous_projet}}  {{vm.titre_vague}}">
+                        <md-progress-circular ng-if="vm.affiche_load" class="md-accent" aria-label="Rating" md-mode="indeterminate" md-diameter="64"></md-progress-circular> 
+                        <div ng-if="vm.affiche_load" style="position:relative;top: -30px;  left: 60px;color: #039be5">
+                            Chargement,veuillez patienter s'il vous plait ...
+                        </div>
+                        <md-progress-circular ng-if="vm.affiche_export" class="md-accent" aria-label="Rating" md-mode="indeterminate" md-diameter="64"></md-progress-circular> 
+                            <!--md-button type="submit"  ng-show="(vm.selectedItem.id) && !vm.affichage_masque" class="md-raised custum_button" aria-label="Modifier" ng-click="vm.modifier()">
+							<md-icon md-font-icon="icon-table-edit" class="s16" style="color: white;"></md-icon>
+                              Modifier
+                            </md-button-->
+							<md-button ng-if="vm.selectedItem.id && !vm.affichage_masque" type="submit" class="md-raised md-primary" aria-label="Annuler"
+								  ng-click="vm.annuler()">
+								Annuler
+							</md-button>
+                        <div ng-if="vm.affiche_export" style="position:relative;top: -30px;  left: 60px;color: #039be5">
+                            Export en Excel en-cours,veuillez patienter s'il vous plait ...
+                        </div>
+                            <!--div layout="column" layout-gt-xs="row" flex>
+								<md-button ng-if="!vm.affiche_load" ng-disabled="vm.affiche_load || vm.affiche_export" type="submit" class="md-raised md-primary" aria-label="Enregistrer" ng-click="vm.export_excel(vm.filtre)"  style="height:40% !important;"> 
+									Exporter en Excel											 
+								</md-button>
+                            </div-->
+                        <form name="filtrepardateform" class="md-inline-form" novalidate >
+                            <div layout="column" layout-gt-xs="row" flex>
+                                <md-input-container flex="100" flex-gt-xs="15">
+                                  <label>Île</label>
+                                    <md-select ng-model="vm.filtre.id_ile" name="ile" ng-change="vm.filtre_region()" ng-disabled="vm.selectedItem.id">                                    
+									  <md-option  value="">&nbsp;</md-option>
+                                      <md-option ng-repeat="ile in vm.all_ile" value="{{ile.id}}" >
+                                        {{ile.Ile}}
+                                      </md-option>
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.ile.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Île obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="15">
+                                  <label>Préfecture</label>
+                                    <md-select ng-model="vm.filtre.id_region" name="region" ng-change="vm.filtre_commune()" ng-disabled="!vm.filtre.id_ile">                                     
+									  <md-option  value="">&nbsp;</md-option>
+                                      <md-option ng-repeat="region in vm.all_region" value="{{region.id}}" >
+                                        {{region.Region}}
+                                      </md-option>
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.ile.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Préfecture  obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="15">
+                                  <label>Commune</label>
+                                    <md-select ng-model="vm.filtre.id_commune" name="commune" ng-change="vm.filtre_village()" ng-disabled="!vm.filtre.id_region">                                    
+									  <md-option  value="">&nbsp;</md-option>
+                                      <md-option ng-repeat="commune in vm.all_commune" value="{{commune.id}}" >
+                                        {{commune.Commune}}
+                                      </md-option>
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.ile.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Commune obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="15">
+                                  <label>Village</label>
+                                    <md-select ng-model="vm.filtre.village_id" name="village" ng-change="vm.modifierVillage()" ng-disabled="!vm.filtre.id_commune">
+									  <md-option  value="">&nbsp;</md-option>
+                                      <md-option ng-repeat="village in vm.all_village" value="{{village.id}}" >
+                                        {{village.Village}}
+                                      </md-option>
+                                    </md-select>
+                                    <div ng-messages="filtrepardateform.ile.$error"
+                                      role="alert">
+                                      <div ng-message="required">
+                                        <span>Village obligatoire</span>
+                                      </div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="5" style="display:none;">
+                                  <label>Vague</label>
+									<md-select ng-model="vm.filtre.vague" name="vague">
+									  <md-option  value="">&nbsp;</md-option>
+									  <md-option  value="1">1</md-option>
+									  <md-option  value="2">2</md-option>
+									  <md-option  value="3">3</md-option>
+									</md-select>
+                                </md-input-container>
+                                <md-input-container flex="100" flex-gt-xs="5" >
+                                  <label>ZIP</label>
+									<md-select ng-model="vm.filtre.zip" name="zip" ng-disabled="vm.selectedItem.id">
+									  <md-option  value="">&nbsp;</md-option>
+									  <md-option ng-repeat="z in vm.all_zip" value="{{z.id}}" >
+										{{z.id}}
+									  </md-option>
+									</md-select>
+                                </md-input-container>
+								<md-input-container flex="100" flex-gt-xs="20" style="display:none;">
+								  <label>Activité/Sous-projet</label>
+									<md-select ng-model="vm.filtre.id_sous_projet" name="id_sous_projet" ng-change="vm.modifierSousProjet(vm.filtre)">
+									  <md-option  value="">&nbsp;</md-option>
+									  <md-option ng-repeat="ssp in vm.all_sous_projet" value="{{ssp.id}}" ng-if="ssp.id!=3">
+										{{ssp.description}}
+									  </md-option>
+									</md-select>
+									<div ng-messages="filtrepardateform.id_sous_projet.$error"
+									  role="alert">
+									  <div ng-message="required">
+										<span>Activité/Sous-projet obligatoire</span>
+									  </div>
+									</div>
+								</md-input-container>                               
+								<div layout="column" layout-gt-xs="col" flex flex-gt-xs="10">
+									<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+										  ng-if="!vm.affichage_masque" ng-disabled="filtrepardateform.$invalid||vm.affiche_load || vm.selectedItem.id" ng-click="vm.filtrer(vm.filtre)"  style="height:50% !important;">
+										  Actualiser
+									</md-button>
+								</div>	
+                            </div>
+                        </form>
+						<div ng-if="vm.affichage_masque">
+							<fieldset>
+								<div layout="column" layout-gt-xs="row" flex style="padding-bottom: 15px;">
+									<legend><b>Ile :</b></legend>  {{vm.selectedItem.ile}}   <legend><b>Préfecture :</b> </legend>  {{vm.selectedItem.region}}
+									<legend><b>Commune :</b> </legend>  {{vm.selectedItem.commune}}
+									<legend><b>Village :</b> </legend>  {{vm.selectedItem.village}}
+								</div>
+								<div layout="column" layout-gt-xs="row" flex>
+									<md-input-container flex-gt-xs="10">
+										<input type="number"  name="population_rgph_2017" ng-model="vm.filtre.population_rgph_2017"
+										placeholder="Popula° RPGH 2017" readonly>
+									</md-input-container>
+									<md-input-container flex-gt-xs="10">
+										<input type="number"  name="menage_beneficiaire" ng-model="vm.filtre.menage_beneficiaire"
+										placeholder="Bénéficiaire" readonly>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Début mise en place ML</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.debut_mise_en_place_mere_leader" md-max-date="vm.date_now"  md-placeholder="Début affichage préselectionné">                       
+										</md-datepicker>
+									</div>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Fin mise en place ML</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.fin_mise_en_place_mere_leader" md-max-date="vm.date_now"  md-placeholder="Fin affichage préselectionné">                       
+										</md-datepicker>
+									</div>
+									<md-input-container flex="100" flex-gt-xs="10" >
+										<label>Statut mise en place ML</label>
+										  <md-select ng-model="vm.filtre.statut_mise_en_place_ml" name="statut_affichage_menage_preselectionne">
+											  <md-option value="">&nbsp;</md-option>											  
+											  <md-option ng-repeat="sp in vm.statut_evaluation" value="{{sp.statut}}"> {{sp.titre}}</md-option>											  
+										  </md-select>
+									</md-input-container>
+									<div layout="column" layout-gt-xs="row">
+										<md-input-container>
+										<span>Date réalisation</span>
+										</md-input-container>
+										<md-datepicker ng-model="vm.filtre.date_realisation_mise_en_place_ml" md-max-date="vm.date_now"  md-placeholder="Date réalisation">                       
+										</md-datepicker>
+									</div> 
+									<md-input-container flex-gt-xs="10">
+										<input type="number"  name="nombre_mere_leader_elu" ng-model="vm.filtre.nombre_mere_leader_elu"
+										placeholder="Nb ML élu" readonly>
+									</md-input-container>
+								</div>
+									<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+										<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+											ng-if="vm.selectedItem.id"  ng-click="vm.save_suivi_evaluation(vm.filtre)">
+											Enregistrer
+										</md-button>
+										<md-button type="submit" class="md-raised md-primary" aria-label="Enregistrer"
+											  ng-click="vm.annuler()">
+											Annuler
+										</md-button>
+									</section>
+							</fieldset>					
+						</div>
+                        <div ng-if="!vm.affichage_masque">
+							<table  id='Table_suivi_evaluation' class="dataTable row-border hover cell-border text-center" datatable="ng"
+							dt-options="vm.dtOptions_new" ng-show="!vm.affichage_masque" ms-responsive-table>
+							  <thead>
+								<tr>
+								  <th class="secondary-text" ng-repeat="re in ::vm.suivi_column">
+									<div class="table-header">
+									  <span class="column-title text-center">{{re.titre}}</span>
+									</div>
+								  </th>
+								  <th class="secondary-text" ng-repeat="tit in ::vm.all_titre_affiche_ong track by $index">
+									<div class="table-header">
+									  <span class="column-title text-center">{{tit.titre}}</span>
+									</div>
+								  </th>
+								  <th class="secondary-text" ng-repeat="tit in ::vm.all_titre_affiche_ml track by $index">
+									<div class="table-header">
+									  <span class="column-title text-center">{{tit.titre}}</span>
+									</div>
+								  </th>
+								  <th class="secondary-text" ng-repeat="tit in ::vm.all_titre_affiche_realisation_ebe track by $index">
+									<div class="table-header">
+									  <span class="column-title text-center">{{tit.titre}}</span>
+									</div>
+								  </th>
+								</tr>
+							  </thead>
+							  <tbody>
+								<tr ng-repeat="suiv in vm.all_suivi  track by $index"  ng-class="{selected: suiv.$selected}" ng-click="vm.selection(suiv)">
+								  <td style="text-align:left !important">{{suiv.ile}}</td>
+								  <td style="text-align:left !important">{{suiv.region}}</td> 
+								  <td style="text-align:left !important">{{suiv.commune}}</td>
+								  <td>{{suiv.zip}}</td>
+								  <td style="text-align:left !important">{{suiv.village}}</td>
+								  <td>{{suiv.population_rgph_2017}}</td>
+								  <td>{{suiv.menage_beneficiaire}}</td>
+								  <td><label ng-if="suiv.debut_mise_en_place_mere_leader">Du : {{suiv.debut_mise_en_place_mere_leader}}</label></br><label ng-if="suiv.fin_mise_en_place_mere_leader">Au : {{suiv.fin_mise_en_place_mere_leader}}</label></td>
+								  <td>{{suiv.statut_mise_en_place_ml}}</td>
+								  <td>{{suiv.date_realisation_mise_en_place_ml}}</td>
+								  <td><label ng-if="suiv.nombre_mere_leader_elu >0">{{suiv.nombre_mere_leader_elu}}</label></td>
+								  <td>{{suiv.date_retard_mise_en_place_ml}}</td>
+								  <td>{{suiv.cause_retard_mise_en_place_ml}}</td>
+								  <!-- Début formation ONG-->
+ 								  <td ng-repeat="val in ::suiv.detail_formation_ong">
+									{{val[vm.all_titre_affiche_ong[$index].valeur_a_afficher]}}
+								  </td>
+								  <!-- Fin formation ONG-->
+								  <!-- Début formation ML/PL-->
+ 								  <td ng-repeat="val in ::suiv.detail_formation_ml">
+									{{val[vm.all_titre_affiche_ml[$index].valeur_a_afficher]}}
+								  </td>
+								  <!-- FIN formation ML/PL-->
+								  <!-- Début formation Réalisation EBE-->
+ 								  <td ng-repeat="val in ::suiv.detail_realisation_ebe">
+									{{val[vm.all_titre_affiche_realisation_ebe[$index].valeur_a_afficher]}}
+								  </td>
+								  <!-- FIN formation Réalisation EBE-->
+								</tr>
+							  </tbody>
+							</table>
+						</div>	
+                    </md-tab>   
+                </md-tabs>
+            </div>
+        </div>
+    </div>
+    

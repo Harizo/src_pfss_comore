@@ -1,0 +1,36 @@
+#forms {
+    
+        .content {
+    
+            .form-wrapper {
+    
+            }
+            
+            .form-data-wrapper {
+                margin-left: 16px;
+    
+                .json-data-wrapper {
+                    overflow: hidden;
+    
+                    pre {
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+		#tableSousProjet {
+			width:100%;
+		}
+		#tableSousProjet_wrapper {
+			width:100%;
+		}
+		#tablePrestatairePsociale_wrapper,#tableUnitemesure_wrapper,#tableTypetransfert_wrapper,#tableDetailtypetransfert,#tableFrequencetransfert {
+			width:100%;
+		}
+    }
+#table_planning th {
+	border-left: solid 1px #cccccc !important;
+	border-bottom: solid 1px #cccccc !important;
+	border-top: solid 1px #cccccc !important;
+	border-collapse:collapse !important;
+}

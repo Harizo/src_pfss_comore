@@ -152,8 +152,8 @@
 								</div>
 								<div layout="column" layout-gt-xs="row" flex>
 									<md-input-container flex-gt-xs="10">
-										<input type="number"  name="population_rpgh_2017" ng-model="vm.filtre.population_rpgh_2017"
-										placeholder="Popula° RPGH 2017">
+										<input type="number"  name="population_rgph_2017" ng-model="vm.filtre.population_rgph_2017"
+										placeholder="Popula° RPGH 2017" readonly>
 									</md-input-container>
 									<md-input-container flex-gt-xs="10">
 										<input type="number"  name="menage_beneficiaire" ng-model="vm.filtre.menage_beneficiaire"
@@ -664,7 +664,7 @@
 								  <td style="text-align:left !important">{{suiv.commune}}</td>
 								  <td>{{suiv.zip}}</td>
 								  <td style="text-align:left !important">{{suiv.village}}</td>
-								  <td>{{suiv.population_rpgh_2017}}</td>
+								  <td>{{suiv.population_rgph_2017}}</td>
 								  <td>{{suiv.menage_beneficiaire}}</td>
 								  <td><label ng-if="suiv.debut_affichage_menage_preselectionne">Du : {{suiv.debut_affichage_menage_preselectionne}}</label></br><label ng-if="suiv.fin_affichage_menage_preselectionne">Au : {{suiv.fin_affichage_menage_preselectionne}}</label></td>
 								  <td>{{suiv.statut_affichage_menage_preselectionne}}</td>

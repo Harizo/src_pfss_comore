@@ -62,7 +62,8 @@
             'app.pfss.planning_ebe',
             'app.pfss.formation_thematique_suivi_agex_macc',
             'app.pfss.formation_thematique_agex_activite',
-            'app.pfss.formation_thematique_suivi_agex_activite'
+            'app.pfss.formation_thematique_suivi_agex_activite',
+            'app.pfss.suivi_evaluation'
 
 
  

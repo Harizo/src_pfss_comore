@@ -281,7 +281,7 @@
 		})
 		vm.modifier = function()  {
 			vm.affiche_load=true; 
-			vm.filtre.population_rpgh_2017 = parseInt(vm.selectedItem.population_rpgh_2017);
+			vm.filtre.population_rgph_2017 = parseInt(vm.selectedItem.population_rgph_2017);
 			vm.filtre.menage_beneficiaire = parseInt(vm.selectedItem.menage_beneficiaire);
 			if(vm.selectedItem.debut_affichage_menage_preselectionne)
 			vm.filtre.debut_affichage_menage_preselectionne = new Date(vm.selectedItem.debut_affichage_menage_preselectionne);
@@ -414,7 +414,8 @@
                     {    
 						supprimer:0,
 						id: item.id ,
-						population_rpgh_2017: item.population_rpgh_2017,
+						type_suivi: vm.filtre.type_suivi,
+						population_rgph_2017: item.population_rgph_2017,
 						debut_affichage_menage_preselectionne: item.debut_affichage_menage_preselectionne,                                                 
 						fin_affichage_menage_preselectionne: item.fin_affichage_menage_preselectionne,                                                 
 						statut_affichage_menage_preselectionne: item.statut_affichage_menage_preselectionne,                                                 

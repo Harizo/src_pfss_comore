@@ -1,0 +1,173 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+	<div class="header md-accent-bg" layout="row" layout-align="space-between">
+		<div layout="column" layout-align="space-between">
+			<div class="breadcrumb" layout="row" layout-align="start center">
+				<md-icon md-font-icon="icon-home" class="s16"></md-icon>
+				<md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+				<span class="parent"></span>
+				<span class="parent"> </span>
+				<md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+				<span class="parent" href="javascript:;"> Suivi-évaluation</span>
+				<md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+				<span class="parent" href="javascript:;">DDB Planning</span>
+			</div>   
+		</div>
+	</div>
+	<div class="content" layout="column">
+		<div class="form-wrapper">
+			<div style="clear:both;"></div>
+			<md-tabs md-dynamic-height layout="column" flex>                  
+				<md-tab label="Planning général" layout="column" flex>
+					<div style="widht:100%;">  
+						<div ng-if="vm.affiche_load" layout="row" layout-align="center center">
+							<md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+							<span style="color: #039be5">Chargement planning en-cours veuillez patienter s'il vous plait ...Merci !</span>
+						</div>
+						<div ng-if="vm.affiche_creation" layout="row" layout-align="center center">
+							<md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+							<span style="color: #039be5">Création planning en-cours veuillez patienter s'il vous plait ...Merci !</span>
+						</div>
+						<div ng-if="vm.affiche_enregistrer" layout="row" layout-align="center center">
+							<md-progress-circular ng-if="vm.affiche_load" class=" md-accent"  aria-label="Rating" md-mode="indeterminate" md-diameter="30"></md-progress-circular> 
+							<span style="color: #039be5">Enregistrement planning en-cours veuillez patienter s'il vous plait ...Merci !</span>
+						</div>
+						<div layout="row" class="ng-scope layout-row">
+							<div flex="" class="flex">
+								<div  style="display:inline-block !important;">
+									<md-input-container  flex="100" flex-gt-xs="50">
+									  <input type="number" min='2020'  name="annee_debut" ng-model="vm.filtre.annee_debut"
+									  placeholder="Année planning" >
+									</md-input-container>								  
+								</div>
+								<div  style="display:inline-block !important;">
+									<md-button type="submit" ng-disabled="vm.affiche_load || vm.affiche_creation || !vm.filtre.annee_debut || vm.affiche_enregistrer" class="md-raised custum_button_new" aria-label="Nouveau" ng-click="vm.creer_planning()" ng-show="!vm.affiche_load" style="width:10%;">
+									<md-icon md-font-icon="icon-plus" class="s16 center" style="color: white;"></md-icon>
+									  Crér planning
+									</md-button>
+								</div>
+							</div>
+							<div flex="" class="flex">
+                                <md-input-container flex="100" flex-gt-xs="15">
+                                  <label>Année</label>
+                                    <md-select ng-model="vm.filtre.annee_fin" name="annee_fin" required>                                
+                                      <md-option ng-repeat="a in vm.all_annee" value="{{a.annee}}" >
+                                        {{a.annee}}
+                                      </md-option>
+                                    </md-select>
+                                </md-input-container>
+								<md-button type="submit" class="md-raised md-accent" aria-label="Enregistrer"
+									  ng-if="!vm.affichage_masque" ng-disabled="vm.affiche_load || vm.affiche_creation || vm.affiche_enregistrer || !vm.filtre.annee_fin" ng-click="vm.filtrer(vm.filtre)"  style="height:40% !important;">
+									  Actualiser
+								</md-button>
+								<md-button type="submit" ng-show="vm.all_planning.length>0 && !vm.planning_modifie" class="md-raised custum_button" aria-label="Modifier" ng-click="vm.modifier_planning()">
+								<md-icon md-font-icon="icon-table-edit" class="s16" style="color: white;"></md-icon>
+								  Modifier
+								</md-button>
+								<md-button type="submit"  ng-show="vm.nombre_modification >0" class="md-raised bouton_preselectionne" aria-label="Modifier" ng-click="vm.enregistrer_planning(0)" style="color: white !important; background-color: #33C7FF  !important;width: auto !important; font-size: 10px;font-weight: bold;;width:11%;">
+								<md-icon md-font-icon="icon-select" class="s16" style="color: white;"></md-icon>
+								  Enregistrer
+								</md-button>
+							</div>
+						</div>						
+					</div>	
+						<div class="price-table style-1 md-whiteframe-1dp" layout="column">
+							<table ng-table="planning" id="table_planning" name="table_planning" class="dataTable row-border cell-border text-center"  datatable="ng" dt-options="vm.dtOptions_new" ms-responsive-table>
+								<thead>
+									<tr>
+										<th rowspan='2' class="secondary-text" style="width:25% !important;border:1px solid !impotant;border-collapse:collapse !important;">
+											<div class="table-header">
+												<span class="column-title text-center">&nbsp;</span>
+											</div>
+										</th>
+										<th rowspan='2' class="secondary-text" style="width:25% !important;border:1px solid !impotant;border-collapse:collapse !important;">
+											<div class="table-header">
+												<span class="column-title text-center">&nbsp;</span>
+											</div>
+										</th>
+										<th colspan='2' rowspan='2' class="secondary-text" style="border:1px solid !impotant;border-collapse:collapse !important;">
+											<div class="table-header">
+												<span class="column-title text-center">RESPONSABLE</span>
+											</div>
+										</th>
+										<th colspan='48' class="secondary-text"  ng-repeat="c in ::vm.all_titre_annuel" style="border:1px solid !impotant;border-collapse:collapse !important;">
+											<div class="table-header">
+												<span class="column-title text-center">{{c.titre}}</span>
+											</div>
+										</th>
+									</tr>
+									<tr>
+										<th colspan='4' class="secondary-text" ng-repeat="c in ::vm.all_titre_mensuel" style="border:1px solid !impotant;border-collapse:collapse !important;">
+											<div class="table-header">
+												<span class="column-title text-center">{{c.titre}}</span>
+											</div>
+										</th>
+									</tr>
+									<tr>
+										<th rowspan='1' scope='col' class="secondary-text" style="width:25% !important;border:1px solid !impotant;border-collapse:collapse !important;">
+											<div class="table-header">
+												<span class="column-title text-center">Vague</span>
+											</div>
+										</th>
+										<th rowspan='1' scope='col' class="secondary-text" style="width:25% !important;border:1px solid !impotant;border-collapse:collapse !important;">
+											<div class="table-header">
+												<span class="column-title text-center">Activité</span>
+											</div>
+										</th>
+										<th rowspan='1' colspan='1' class="secondary-text" style="border:1px solid !impotant;border-collapse:collapse !important;">
+											<div class="table-header">
+												<span class="column-title text-center">Exécution</span>
+											</div>
+										</th>
+										<th rowspan='1' colspan='1' class="secondary-text" style="border:1px solid !impotant;border-collapse:collapse !important;">
+											<div class="table-header">
+												<span class="column-title text-center">Supervision</span>
+											</div>
+										</th>
+										<th class="secondary-text"  ng-repeat="c in ::vm.all_detail_titre_par_cellule" style="border:1px solid !impotant;border-collapse:collapse !important;">
+											<div class="table-header">
+												<span class="column-title text-center">{{c.titre}}</span>
+											</div>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="cm in vm.all_planning"  ng-class="{selected: cm.$selected}">  
+										<td style="Background-Color:{{cm.couleur}}; Color:black;">
+											<span ng-if="cm.vague!=0">{{cm.vague}}</span>
+										</td>
+										<td style="Background-Color:{{cm.couleur}}; Color:black;">
+											<span>{{cm.description}}</span>
+										</td>
+										<td style="Background-Color:{{cm.couleur}}; Color:black;">
+											<span>{{cm.responsable_execution}}</span>
+										</td>
+										<td style="Background-Color:{{cm.couleur}}; Color:black;">
+											<span>{{cm.responsable_supervision}}</span>
+										</td>
+										<td ng-repeat="val in ::cm.detail_cellule_planning" ng-click='vm.click_cellule_planning(cm.rang,$index,cm.detail_valeur_planning[$index].valeur)'>
+											<div ng-if="cm.detail_valeur_planning[$index].valeur==1" style="Background-Color:{{cm.couleur}}; Color:{{cm.couleur}};font-size:45px;padding:0 !important">&nbsp;</div>
+										</td>
+									<!--
+									vm.click_cellule_planning(cm.rang,$index,cm.detail_valeur_planning[$index].valeur)
+									LES PARAMETRES
+									cm.rang : index de l'enregistrement principal à l'horizontal
+									$index : donne l'index dans detail_cellule_planning (détail variable ;nom de colonne inconnu)									
+									cm.detail_valeur_planning[$index].valeur : donne les valeurs 0 ou 1 (selectionné ou non)
+									c'est le principal souci
+									Et le val in ::cm.detail_cellule_planning : c'est FOUTAISE
+									le principal focus c'est cm.detail_valeur_planning[$index].valeur qui donne 0 ou 1
+									$index vient en principe de cm.detail_cellule_planning ha ha ha
+									c'est un leurre
+									Lors de la sauvegarde ; c'est une autre paire de manche
+									5 jours et 5 nuits blanche à poiroter avec : 
+									c'est le plus pire jour de ma vie pour developper tout ca
+									-->
+									</tr>
+								</tbody>
+							</table>
+						</div>
+				</md-tab>
+			</md-tabs>
+		</div>				
+	</div>				
+</div>				
