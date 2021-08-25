@@ -15,6 +15,7 @@
         autoWidth: false,
         responsive: true
       };
+      vm.rep_quantifiee_column = [{titre:"Code/Desscription"},{titre:"Nombre"}];
       vm.menage_column = [{titre:"Identifiant"},{titre:"N° d'enreg"},{titre:"Chef Ménage"},{titre:"Age"},{titre:"Sexe"},{titre:"Conjoint"},
       {titre:"Adresse"},{titre:"Inscr"},{titre:"Presél"},{titre:"Bénéf"},{titre:"Etat envoie"}];
       // vm.menage_column = [{titre:"Numero d'enregistrement"},{titre:"Chef Ménage"},
@@ -22,6 +23,7 @@
       vm.individu_column = [{titre:"Nom et prénom"},{titre:"Date de naissance"},{titre:"Sexe"},{titre:"Lien de parenté"},{titre:"Scolarisé"},{titre:"Activite"},{titre:"Aptitude"},{titre:"Travailleur"}];
       //initialisation variable
         vm.affiche_load = false ;
+        vm.affiche_export_carte = false ;
         vm.selectedItem = {} ;
         vm.selectedItem_individu = {} ;
 		  vm.apiUrlbase=apiUrlbase; 		
@@ -32,6 +34,9 @@
         vm.all_menages = [] ;
         vm.all_sous_projet = [] ;
         vm.all_lienparental = [] ;
+        vm.allRecordsListevariable = [] ;
+        vm.allRecordsListevariableindividu = [] ;
+        vm.all_reponse_quantifiee = [] ;
 
         vm.nouvelle_element = false ;
         vm.nouvelle_element_individu = false ;
@@ -40,6 +45,14 @@
         vm.date_now = new Date() ;
         vm.disable_button = false ;
 		vm.filtre={};		
+		vm.tab_reponse_variable=[];
+		vm.choix_unique=[];
+		vm.tab_quantifie=[];
+		vm.tab_texte=[];
+		vm.tab_reponse_variable_individu=[];
+		vm.choix_unique_individu=[];
+		vm.tab_quantifie_individu=[];
+		vm.tab_texte_individu=[];
 		// Choix sous_projet selon url et affichage titre au niveau onglet
 		vm.loc = $location ;
 		vm.url=vm.loc.path();
@@ -87,6 +100,16 @@
           vm.all_lienparental = result.data.response;    
           
         });
+		apiFactory.getAPIgeneraliserREST("liste_variable_menage/index","choix_multiple",1).then(function(result){
+			vm.allRecordsListevariable = result.data.response;
+		});    
+		apiFactory.getAPIgeneraliserREST("liste_variable_individu/index","choix_multiple",1).then(function(result){
+			vm.allRecordsListevariableindividu = result.data.response;
+			// console.log(vm.allRecordsListevariableindividu);
+		});    
+		apiFactory.getAPIgeneraliserREST("variable_menage/index","quantifie",1).then(function(result){
+			vm.all_reponse_quantifiee = result.data.response;
+		});    
 		// utilitaire
 		vm.affiche_sexe = function(parametre) {
 			if(parametre==0) {
@@ -124,12 +147,6 @@
           
         });
       }
-
-      vm.generer_ref = function()
-      {
-        // vm.get_max_id_generer_ref();
-      }
-
       vm.filtre_village = function()
       {
         apiFactory.getAPIgeneraliserREST("village/index","cle_etrangere",vm.filtre.id_commune).then(function(result)
@@ -139,55 +156,6 @@
         
         });
       }
-		apiFactory.getAll("liste_variable/index").then(function(result){
-			vm.allRecordsListevariable = result.data.response;
-		});    
-		
-		vm.get_max_id_generer_ref = function() {
-			apiFactory.getAPIgeneraliserREST("menage/index","max_id",1).then(function(result)  { 
-				vm.max_id =  result.data.response.id;          
-				var tab_region = vm.all_region ;
-				var tab_reg = [] ;
-				var tab_com = [] ;
-				var tab_vil = [] ;
-				tab_reg = vm.all_region ;
-				tab_com = vm.all_commune ;
-				tab_vil = vm.all_village ;
-				var region ;
-				var reg ;
-				var com ;
-				var vill ;
-				if (vm.filtre.id_region)  {
-					region = tab_region.filter(function(obj) {
-						return obj.id == vm.filtre.id_region;
-					});
-				}
-				if (vm.filtre.id_region && (tab_reg.length > 0 ))  {
-					reg = tab_reg.filter(function(obj)	{
-						return obj.id == vm.filtre.id_region;
-					});
-				}
-				if (vm.filtre.id_commune && tab_com.length > 0)  {
-					com = tab_com.filter(function(obj) {
-						return obj.id == vm.filtre.id_commune;
-					});
-				}
-				if (vm.filtre.village_id && tab_vil.length > 0) {
-					vill = tab_vil.filter(function(obj)	{
-						return obj.id == vm.filtre.village_id;
-					});
-				}
-				if (tab_vil) {
-					if (tab_vil.length > 0)  {
-						if (vm.nouvelle_element) {
-							vm.filtre.identifiant_menage = region[0].Code + "/"+reg[0].Code+"/"+ com[0].Code+"/"+vill[0].Code+"/" + (Number(vm.max_id)+1) ;
-						}	else {
-							vm.filtre.identifiant_menage = region[0].Code + "/"+reg[0].Code+"/"+ com[0].Code+"/"+vill[0].Code+"/" + vm.selectedItem.id ;
-						}				
-					}
-				}
-			});
-		}    
 		vm.afficher_masque_ajout = function() {
 			vm.nouvelle_element = true ;
 			vm.affichage_masque = true ;
@@ -511,7 +479,7 @@
 						vm.showAlert("Information",'Enregistrement réussi!');
 					}).error(function (data) {
 						vm.disable_button = false ;
-						console.log('erreur '+data);
+						// console.log('erreur '+data);
 						vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 					});         
 				}, function() {
@@ -543,33 +511,6 @@
 			//alert('rien');
 			});
 		}
-		vm.annuler_individu = function()  {
-			vm.nouvelle_element_individu = false ;
-			vm.affichage_masque_individu = false ;
-		}
-		vm.ajout_individu = function()  {
-			vm.affichage_masque_individu = true ;
-			vm.nouvelle_element_individu = true ;
-			vm.individu_masque = {} ;
-		}
-		vm.modifier_individu = function()  {
-			vm.nouvelle_element_individu = false ;
-			vm.affichage_masque_individu = true ;
-			vm.individu_masque={};
-			vm.individu_masque.nom = vm.selectedItem_individu.nom ;
-			vm.individu_masque.prenom = vm.selectedItem_individu.prenom ;
-			vm.individu_masque.aptitude = vm.selectedItem_individu.aptitude ;
-			vm.individu_masque.lienparental = vm.selectedItem_individu.lienparental ;
-			vm.individu_masque.lien_de_parente = vm.selectedItem_individu.lien_de_parente ;
-			vm.individu_masque.sexe = vm.selectedItem_individu.sexe ;
-			vm.individu_masque.activite = vm.selectedItem_individu.activite ;
-			vm.individu_masque.travailleur = vm.selectedItem_individu.travailleur ;
-			vm.individu_masque.scolarise = vm.selectedItem_individu.scolarise ;
-			vm.individu_masque.date_naissance = new Date(vm.selectedItem_individu.date_naissance) ;
-		}
-		vm.generer_ref = function()  {
-			// vm.get_max_id_generer_ref();
-		}
 		vm.filtrer = function()	{
 			vm.affiche_load = true ;
 			apiFactory.getAPIgeneraliserREST("menage/index","cle_etrangere",vm.filtre.village_id,"etat_statut","preselectionne","id_sous_projet",vm.filtre.id_sous_projet).then(function(result) { 
@@ -598,83 +539,6 @@
 				vm.affiche_load = false ;
 			});
 		}
-		vm.get_enquete_by_menage = function(menage_id) {			
-			apiFactory.getAPIgeneraliserREST("reponse_menage/index","cle_etrangere",menage_id).then(function(result)  { 
-				vm.enquete_by_menage = result.data.response;   
-				console.log(vm.enquete_by_menage);
-				vm.id_type_logement=vm.enquete_by_menage.id_type_logement;
-				vm.id_occupation_logement=vm.enquete_by_menage.id_occupation_logement;
-				if (vm.enquete_by_menage.id) {
-					vm.id_enquete_menage = vm.enquete_by_menage.id ;
-				} else {
-					vm.id_enquete_menage = 0 ; 
-				}        
-			});        
-		}
-		vm.get_menage_intervetion_by_menage = function(menage_id) {
-			vm.tab_intervention = [] ;
-			apiFactory.getAPIgeneraliserREST("menage_beneficiaire/index","cle_etrangere",menage_id).then(function(result) {
-				vm.menage_intervention_liaisons = result.data.response; 
-				if (vm.menage_intervention_liaisons.id_intervention)  {
-					vm.tab_intervention = vm.menage_intervention_liaisons.id_intervention ;
-				}
-				if (vm.menage_intervention_liaisons.id) {
-					vm.id_menage_intervention = vm.menage_intervention_liaisons.id ;
-				} else{
-					vm.id_menage_intervention = 0 ; 
-				}       
-			});
-		}
-		vm.get_enquete_individu_by_individu = function(id_individu) {
-			vm.tab_reponse_langue = [] ;
-			vm.reponse_individu.id_lien_de_parente = null ;
-			// vm.reponse_individu.situation_matrimoniale = null ;
-			vm.reponse_individu.id_groupe_appartenance = null ;
-			vm.reponse_individu.id_type_ecole = null ;
-			vm.reponse_individu.id_niveau_de_classe = null ;
-			vm.reponse_individu.id_handicap_auditif = null ;
-			vm.reponse_individu.id_handicap_mental = null ;
-			vm.reponse_individu.id_handicap_moteur = null ;
-			vm.reponse_individu.id_handicap_parole = null ;
-			vm.reponse_individu.id_handicap_visuel = null ;         
-			apiFactory.getAPIgeneraliserREST("enquete_sur_individu/index","cle_etrangere",id_individu).then(function(result) {
-				vm.enquete_individu = result.data.response ;
-				console.log(vm.enquete_individu);
-				vm.reponse_individu.id_lien_de_parente = vm.enquete_individu.id_lien_de_parente ;
-				// vm.reponse_individu.situation_matrimoniale = vm.enquete_individu.situation_matrimoniale ;
-				vm.reponse_individu.id_groupe_appartenance = vm.enquete_individu.id_groupe_appartenance ;
-				vm.reponse_individu.id_type_ecole = vm.enquete_individu.id_type_ecole ;
-				vm.reponse_individu.id_niveau_de_classe = vm.enquete_individu.id_niveau_de_classe ;
-				vm.reponse_individu.id_handicap_auditif = vm.enquete_individu.id_handicap_auditif ;
-				vm.reponse_individu.id_handicap_mental = vm.enquete_individu.id_handicap_mental ;
-				vm.reponse_individu.id_handicap_moteur = vm.enquete_individu.id_handicap_moteur ;
-				vm.reponse_individu.id_handicap_parole = vm.enquete_individu.id_handicap_parole ;
-				vm.reponse_individu.id_handicap_visuel = vm.enquete_individu.id_handicap_visuel ;         
-				if (vm.enquete_individu.langue) {
-					vm.tab_reponse_langue = vm.enquete_individu.langue ;
-				}
-				if (vm.enquete_individu.id) {
-					vm.id_enquete_individu = vm.enquete_individu.id ;
-				} else {
-					vm.id_enquete_individu = 0 ; 
-				}
-			});
-		}
-		vm.get_individu_intervention_by_individu = function(id_individu) {
-			vm.tab_intervention_individu = [] ;
-			apiFactory.getAPIgeneraliserREST("individu_beneficiaire/index","cle_etrangere",id_individu).then(function(result) {
-				vm.individu_intervention_liaisons = result.data.response; 
-				if (vm.individu_intervention_liaisons.id_intervention) {
-					vm.tab_intervention_individu = vm.individu_intervention_liaisons.id_intervention ;
-				}
-				if (vm.individu_intervention_liaisons.id) {
-					vm.id_individu_intervention = vm.individu_intervention_liaisons.id ;
-				} else {
-					vm.id_individu_intervention = 0 ; 
-				}        
-			});
-		}
-		
 		// Fonction modif lien de parenté
         vm.modifier_lienparental = function (item) { 
 			vm.nontrouvee=true;
@@ -755,12 +619,11 @@
 		})
 		
 		vm.selection_individu= function (item) {
-			console.log(item);
 			if (!vm.affichage_masque_individu)  {
 				vm.reponse_individu.enfant_femme = {};
 				vm.selectedItem_individu = item;
 				vm.nouvelItem_individu   = item;
-				// vm.get_enquete_individu_by_individu(item.id) ;
+				vm.charger_detail_reponse_individu(item.id);
 			}       
 		}
 		$scope.$watch('vm.selectedItem_individu', function() {
@@ -770,6 +633,96 @@
 			});
 			vm.selectedItem_individu.$selected = true;
 		})
+		vm.annuler_individu = function()  {
+			vm.nouvelle_element_individu = false ;
+			vm.affichage_masque_individu = false ;
+			vm.selectedItem_individu={};
+		}
+		vm.ajout_individu = function()  {
+			vm.affichage_masque_individu = true ;
+			vm.nouvelle_element_individu = true ;
+			vm.individu_masque = {} ;
+			vm.tab_reponse_variable_individu=[];
+			vm.choix_unique_individu=[];
+			vm.tab_quantifie_individu=[];
+			vm.tab_texte_individu=[];
+		}
+		vm.modifier_individu = function()  {
+			vm.nouvelle_element_individu = false ;
+			vm.affichage_masque_individu = true ;
+			vm.individu_masque={};
+			vm.individu_masque.nom = vm.selectedItem_individu.nom ;
+			vm.individu_masque.prenom = vm.selectedItem_individu.prenom ;
+			vm.individu_masque.aptitude = vm.selectedItem_individu.aptitude ;
+			vm.individu_masque.lienparental = vm.selectedItem_individu.lienparental ;
+			vm.individu_masque.lien_de_parente = vm.selectedItem_individu.lien_de_parente ;
+			vm.individu_masque.sexe = vm.selectedItem_individu.sexe ;
+			vm.individu_masque.activite = vm.selectedItem_individu.activite ;
+			vm.individu_masque.travailleur = vm.selectedItem_individu.travailleur ;
+			vm.individu_masque.scolarise = vm.selectedItem_individu.scolarise ;
+			if(vm.selectedItem_individu.date_naissance) {
+				vm.individu_masque.date_naissance = new Date(vm.selectedItem_individu.date_naissance) ;
+			} else {
+				vm.individu_masque.date_naissance = null;
+			}	
+		}
+		vm.supprimer_individu = function() {
+			var titre="Etes-vous sûr de supprimer l'individu nommé : " + vm.selectedItem_individu.nom + " " + vm.selectedItem_individu.prenom+" ?";
+			var confirm = $mdDialog.confirm()
+			  .title(titre)
+			  .textContent('Cliquer sur OK pour confirmer')
+			  .ariaLabel('Lucky day')
+			  .clickOutsideToClose(true)
+			  .parent(angular.element(document.body))
+			  .ok('OK')
+			  .cancel('Annuler');
+			$mdDialog.show(confirm).then(function() {
+				vm.save_individu(vm.individu_masque,1);
+			}, function() {
+				vm.selectedItem_individu={};
+			});
+		}
+		vm.supprimer_enquete_individu = function() {
+			var titre = "Etes-vous sûr de supprimer l'enquete sur l'individu nommé : " + vm.selectedItem_individu.nom + " " +vm.selectedItem_individu.prenom + " ?";
+			var confirm = $mdDialog.confirm()
+			  .title(titre)
+			  .textContent('Cliquer sur OK pour confirmer')
+			  .ariaLabel('Lucky day')
+			  .clickOutsideToClose(true)
+			  .parent(angular.element(document.body))
+			  .ok('OK')
+			  .cancel('Annuler');
+			$mdDialog.show(confirm).then(function() {
+				vm.delete_enquete_individu(vm.selectedItem_individu.id);
+			}, function() {
+			//alert('rien');
+			});
+		}
+		vm.delete_enquete_individu = function(individu_id) {
+			vm.disable_button = true ;
+			var config =  {
+                        headers : {
+                          'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                        }
+                      };
+
+			var datas = $.param(
+                    {    
+						supprimer:1,
+						id_individu: individu_id 
+                    });
+			apiFactory.add("reponse_individu/index",datas, config).success(function (data) {
+				vm.disable_button = false ;
+				vm.tab_reponse_variable_individu=[];
+				vm.choix_unique_individu=[];
+				vm.tab_quantifie_individu=[];
+				vm.tab_texte_individu=[];      
+			}).error(function (data) {
+				vm.disable_button = false ;
+				// console.log('erreur '+data);
+				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
+			});
+		}
 		//CHECK BOK MULTISELECT
         vm.toggle = function (item, list) {
           var idx = list.indexOf(item);
@@ -873,7 +826,7 @@
 				}        
 			}).error(function (data) {
 				vm.disable_button = false ;
-				console.log('erreur '+data);
+				// console.log('erreur '+data);
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 			});         
 		}
@@ -901,7 +854,7 @@
 				}        
 			}).error(function (data) {
 				vm.disable_button = false ;
-				console.log('erreur '+data);
+				// console.log('erreur '+data);
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 			}); 
 		}
@@ -937,7 +890,7 @@
 				}
 			}).error(function (data) {
 				vm.disable_button = false ;
-				console.log('erreur '+data);
+				// console.log('erreur '+data);
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 			});    
 		}
@@ -964,7 +917,7 @@
 				}       
 			}).error(function (data) {
 				vm.disable_button = false ;
-				console.log('erreur '+data);
+				// console.log('erreur '+data);
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 			}); 
 		}
@@ -1184,7 +1137,7 @@
 						preselectionne: menage.preselectionne,
 						beneficiaire: menage.beneficiaire,
 					}
-						   console.log(menage);
+						   // console.log(menage);
 					vm.nouvelle_element =false;	   
 					vm.all_menages.push(mng) ;
 					vm.selectedItem ={};	
@@ -1282,11 +1235,11 @@
   				}      
 			}).error(function (data) {
 				vm.disable_button = false ;
-				console.log('erreur '+data);
+				// console.log('erreur '+data);
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 			}); 
 		}
-		vm.save_individu = function(individu) {
+		vm.save_individu = function(individu,suppression) {
 			vm.disable_button = true ;
 			var config =  {
                         headers : {
@@ -1298,23 +1251,32 @@
 			if (!vm.nouvelle_element_individu) {
 				var id_idv = vm.selectedItem_individu.id ;
 			}
+			// angular.forEach(vm.tab_texte_individu, function(value, key)  { 
+				// vm.x="key= " + key;
+				// vm.y="value= " + value;
+				// console.log(vm.x);
+				// console.log(vm.y);
+			// });			
+			// les tableaux sont enregistrés en meme temps que les info pour individu 
 			var datas = $.param(
                     {    
-                      supprimer:0,
-                      id: id_idv ,
-                      menage_id: vm.selectedItem.id,
-                      date_naissance: formatDateBDD(individu.date_naissance),
-                      activite: individu.activite,
-                      travailleur: individu.travailleur,
-                      sexe: individu.sexe,
-                      nom: individu.nom,
-                      prenom: individu.prenom,
-                      lienparental: individu.lienparental,
-                      aptitude: individu.aptitude,
-                      scolarise: individu.scolarise,
-                      a_ete_modifie: 0,
-                    
-                                                 
+						supprimer:suppression,
+						id: id_idv ,
+						tab_multiple: JSON.stringify(vm.tab_reponse_variable_individu),      
+						tab_unique: JSON.stringify(vm.choix_unique_individu),      
+						tab_quantifie: JSON.stringify(vm.tab_quantifie_individu),      
+						tab_texte: JSON.stringify(vm.tab_texte_individu),      
+						menage_id: vm.selectedItem.id,
+						date_naissance: formatDateBDD(individu.date_naissance),
+						activite: individu.activite,
+						travailleur: individu.travailleur,
+						sexe: individu.sexe,
+						nom: individu.nom,
+						prenom: individu.prenom,
+						lienparental: individu.lienparental,
+						aptitude: individu.aptitude,
+						scolarise: individu.scolarise,
+						a_ete_modifie: 0,                                               
                     });
 			apiFactory.add("individu/index",datas, config).success(function (data) {
 				vm.disable_button = false ;
@@ -1337,56 +1299,56 @@
 							a_ete_modifie: 0,
 						}
 						vm.all_individus.push(indiv);
+						vm.nouvelle_element_individu=false;
+						vm.selectedItem_individu={};
 				} else {
-					vm.affichage_masque_individu = false ;
-					vm.selectedItem_individu.nom = vm.individu_masque.nom  ;
-					vm.selectedItem_individu.prenom = vm.individu_masque.prenom  ;
-					vm.selectedItem_individu.lienparental = vm.individu_masque.lienparental  ;
-					vm.selectedItem_individu.lien_de_parente = vm.individu_masque.lien_de_parente  ;
-					vm.selectedItem_individu.aptitude = vm.individu_masque.aptitude  ;
-					vm.selectedItem_individu.activite = vm.individu_masque.activite   ;
-					vm.selectedItem_individu.travailleur = vm.individu_masque.travailleur  ;
-					vm.selectedItem_individu.sexe = vm.individu_masque.sexe  ;
-					vm.selectedItem_individu.date_naissance = vm.individu_masque.date_naissance   ;
-					vm.selectedItem_individu.scolarise = vm.individu_masque.scolarise   ;
-					vm.selectedItem_individu.a_ete_modifie = 0;
+					if(parseInt(suppression==1)) {
+						vm.all_individus = vm.all_individus.filter(function(obj) {
+							return obj.id !== vm.selectedItem_individu.id;
+						});	
+						vm.nouvelle_element_individu=false;
+						vm.selectedItem ={};	
+						
+					} else {
+						vm.affichage_masque_individu = false ;
+						vm.selectedItem_individu.nom = vm.individu_masque.nom  ;
+						vm.selectedItem_individu.prenom = vm.individu_masque.prenom  ;
+						vm.selectedItem_individu.lienparental = vm.individu_masque.lienparental  ;
+						vm.selectedItem_individu.lien_de_parente = vm.individu_masque.lien_de_parente  ;
+						vm.selectedItem_individu.aptitude = vm.individu_masque.aptitude  ;
+						vm.selectedItem_individu.activite = vm.individu_masque.activite   ;
+						vm.selectedItem_individu.travailleur = vm.individu_masque.travailleur  ;
+						vm.selectedItem_individu.sexe = vm.individu_masque.sexe  ;
+						vm.selectedItem_individu.date_naissance = vm.individu_masque.date_naissance   ;
+						vm.selectedItem_individu.scolarise = vm.individu_masque.scolarise   ;
+						vm.selectedItem_individu.a_ete_modifie = 0;
+						vm.nouvelle_element_individu=false;
+						vm.selectedItem_individu={};
+					}       
 				}       
 			}).error(function (data) {
 				vm.disable_button = false ;
-				console.log('erreur '+data);
+				// console.log('erreur '+data);
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 			});
 		}
 		vm.charger_detail_reponse_menage= function(item) {
 				vm.affiche_load=true;
 				apiFactory.getAPIgeneraliser("reponse_menage/index","cle_etrangere",vm.selectedItem.id).then(function(result) {
-					// console.log(result.data.response);
-					// item.detail_reponse_menage_unique = result.data.response.variable_choix_unique; 
-					// vm.selectedItem.detail_reponse_menage_unique = result.data.response.variable_choix_unique; 
-					// item.detail_reponse_menage_multiple = result.data.response.variable_choix_multiple; 
-					// vm.selectedItem.detail_reponse_menage_multiple = result.data.response.variable_choix_multiple; 
-					// vm.menage_prevu=result.data.response.menage_prevu;
-					// vm.individu_prevu=result.data.response.individu_prevu;
-					// vm.groupe_prevu=result.data.response.groupe_prevu;
-					// if(parseInt(vm.menage_prevu)==1) {
-						// vm.afficher_cible="MENAGE";
-					// } else if(parseInt(vm.individu_prevu)==1) {
-						// vm.afficher_cible="INDIVIDU";
-					// } else {
-						// vm.afficher_cible="GROUPE";
-					// }
 					vm.tab_reponse_variable=[];
 					vm.choix_unique=[];
-					// if(item.detail_reponse_menage_multiple.length >0 || item.detail_reponse_menage_unique.length >0) {
-					if(result.data.response.variable_choix_multiple.length >0 || result.data.response.variable_choix_unique.length >0) {
-						vm.tab_reponse_variable = result.data.response.variable_choix_multiple; 
-						vm.choix_unique=result.data.response.variable_choix_unique;
+					vm.tab_texte=[];
+					vm.tab_quantifie=[];
+					// console.log(result.data.response);
+					// console.log(vm.selectedItem.id);
+					vm.tab_reponse_variable=result.data.response.variable_choix_multiple; ;
+					vm.choix_unique=result.data.response.variable_choix_unique;
+					vm.tab_texte=result.data.response.variable_texte_libre;
+					vm.temp=result.data.response.variable_quantifiee;					
+					angular.forEach(vm.temp, function(value, key)  { 
+						vm.tab_quantifie[key] = Number(value);
+					});			
 						vm.id_enquete_menage=1;
-					} else {
-						vm.id_enquete_menage=1;
-					}
-					// item.detail_variable_charge=1;
-					// vm.selectedItem.detail_variable_charge=1;
 					if(vm.selectedItem.nombre_personne_plus_soixantedixans)
 					vm.filtre.nombre_personne_plus_soixantedixans =  parseInt(vm.selectedItem.nombre_personne_plus_soixantedixans) ;
 					if(vm.selectedItem.taille_menage)
@@ -1673,7 +1635,6 @@
 					vm.affiche_load=false;
 				})
 		}	
-		// DEBUT DIFFRENTES FONCTIONS UTILES POUR LA SAUVEGARDE VARIABLE INTERVENTION
 		vm.sauvegarder_reponse_menage=function(id_intervention) {
 			if(id_intervention && parseInt(id_intervention) >0) {
 				// Double sauvegarde : menage et reponse_menage
@@ -1681,76 +1642,63 @@
 				// Tableau détail variable intervention : vm.tab_reponse_variable et vm.choix_unique à stocker dans des variables indexées id_variable_(index)
 				// Puis on utilise la fonction eval afin que l'on puisse poster normalement txtTmp
 				// C'est une façon de contourner la récupération impossible de variable tableau dans le serveur PHP	
-				vm.nombre_reponse_menage_choix_multiple = vm.tab_reponse_variable.length; // nombre valeur selectionnée multiple
-				vm.nombre_reponse_menage_choix_unique = 0; // nombre valeur selectionnée unique
 				var intitule_intervention = vm.selectedItem.intitule;
-				var txtTmp="";
 				// Début réponse table menage
-				txtTmp += "id_menage" +":\"" + vm.selectedItem.id + "\",";
-				txtTmp += "nombre_personne_plus_soixantedixans" +":\"" + vm.filtre.nombre_personne_plus_soixantedixans + "\",";
-				txtTmp += "taille_menage" +":\"" + vm.filtre.taille_menage + "\",";
-				txtTmp += "nombre_enfant_moins_quinze_ans" +":\"" + vm.filtre.nombre_enfant_moins_quinze_ans + "\",";
-				txtTmp += "nombre_enfant_non_scolarise" +":\"" + vm.filtre.nombre_enfant_non_scolarise + "\",";
-				txtTmp += "nombre_enfant_scolarise" +":\"" + vm.filtre.nombre_enfant_scolarise + "\",";
-				txtTmp += "nombre_enfant_moins_six_ans" +":\"" + vm.filtre.nombre_enfant_moins_six_ans + "\",";
-				txtTmp += "nombre_personne_handicape" +":\"" + vm.filtre.nombre_personne_handicape + "\",";
-				txtTmp += "nombre_adulte_travail" +":\"" + vm.filtre.nombre_adulte_travail + "\",";
-				txtTmp += "nombre_membre_a_etranger" +":\"" + vm.filtre.nombre_membre_a_etranger + "\",";
-				txtTmp += "maison_non_dure" +":\"" + vm.filtre.maison_non_dure + "\",";
-				txtTmp += "acces_electricite" +":\"" + vm.filtre.acces_electricite + "\",";
-				txtTmp += "acces_eau_robinet" +":\"" + vm.filtre.acces_eau_robinet + "\",";
-				txtTmp += "logement_endommage" +":\"" + vm.filtre.logement_endommage + "\",";
-				txtTmp += "niveau_degat_logement" +":\"" + vm.filtre.niveau_degat_logement + "\",";
-				txtTmp += "rehabilitation" +":\"" + vm.filtre.rehabilitation + "\",";
-				txtTmp += "beneficiaire_autre_programme" +":\"" + vm.filtre.beneficiaire_autre_programme + "\",";
-				txtTmp += "membre_fonctionnaire" +":\"" + vm.filtre.membre_fonctionnaire + "\",";
-				txtTmp += "antenne_parabolique" +":\"" + vm.filtre.antenne_parabolique + "\",";
-				txtTmp += "possede_frigo" +":\"" + vm.filtre.possede_frigo + "\",";
-				txtTmp += "nombre_personne_plus_soixantedixans_enquete" +":\"" + vm.filtre.nombre_personne_plus_soixantedixans_enquete + "\",";
-				txtTmp += "taille_menage_enquete" +":\"" + vm.filtre.taille_menage_enquete + "\",";
-				txtTmp += "nombre_enfant_moins_quinze_ans_enquete" +":\"" + vm.filtre.nombre_enfant_moins_quinze_ans_enquete + "\",";
-				txtTmp += "nombre_enfant_non_scolarise_enquete" +":\"" + vm.filtre.nombre_enfant_non_scolarise_enquete + "\",";
-				txtTmp += "nombre_enfant_scolarise_enquete" +":\"" + vm.filtre.nombre_enfant_scolarise_enquete + "\",";
-				txtTmp += "nombre_enfant_moins_six_ans_enquete" +":\"" + vm.filtre.nombre_enfant_moins_six_ans_enquete + "\",";
-				txtTmp += "nombre_personne_handicape_enquete" +":\"" + vm.filtre.nombre_personne_handicape_enquete + "\",";
-				txtTmp += "nombre_adulte_travail_enquete" +":\"" + vm.filtre.nombre_adulte_travail_enquete + "\",";
-				txtTmp += "nombre_membre_a_etranger_enquete" +":\"" + vm.filtre.nombre_membre_a_etranger_enquete + "\",";
-				txtTmp += "maison_non_dure_enquete" +":\"" + vm.filtre.maison_non_dure_enquete + "\",";
-				txtTmp += "acces_electricite_enquete" +":\"" + vm.filtre.acces_electricite_enquete + "\",";
-				txtTmp += "acces_eau_robinet_enquete" +":\"" + vm.filtre.acces_eau_robinet_enquete + "\",";
-				txtTmp += "logement_endommage_enquete" +":\"" + vm.filtre.logement_endommage_enquete + "\",";
-				txtTmp += "niveau_degat_logement_enquete" +":\"" + vm.filtre.niveau_degat_logement_enquete + "\",";
-				txtTmp += "rehabilitation_enquete" +":\"" + vm.filtre.rehabilitation_enquete + "\",";
-				txtTmp += "beneficiaire_autre_programme_enquete" +":\"" + vm.filtre.beneficiaire_autre_programme_enquete + "\",";
-				txtTmp += "membre_fonctionnaire_enquete" +":\"" + vm.filtre.membre_fonctionnaire_enquete + "\",";
-				txtTmp += "antenne_parabolique_enquete" +":\"" + vm.filtre.antenne_parabolique_enquete + "\",";
-				txtTmp += "possede_frigo_enquete" +":\"" + vm.filtre.possede_frigo_enquete + "\",";
-				txtTmp += "score_obtenu" +":\"" + vm.filtre.score_obtenu + "\",";
-				txtTmp += "rang_obtenu" +":\"" + vm.filtre.rang_obtenu + "\",";
-				txtTmp += "inapte" +":\"" + vm.filtre.inapte + "\",";
-				// Fin réponse table menage
-				// Début réponse table reponse_menage : choix unique/multiple
-				txtTmp += "id_intervention" +":\"" + id_intervention + "\",";	
-				txtTmp += "intitule_intervention" +":\"" + intitule_intervention + "\",";	
-				txtTmp += "nombre_reponse_menage_choix_multiple" +":\"" + vm.nombre_reponse_menage_choix_multiple + "\",";	
-				for(var i=0;i < vm.nombre_reponse_menage_choix_multiple;i++) {
-					txtTmp += "id_variable_" + (i+1) + ":\"" + vm.tab_reponse_variable[i] + "\",";	
-				}
-				var iteration=1;
-				angular.forEach(vm.choix_unique, function(value, key)  { 
-					txtTmp += "id_liste_variable_" + iteration + ":\"" + key + "\",";
-					txtTmp += "id_variable_unique_" + iteration + ":\"" + value + "\",";
-					iteration=iteration + 1;	
-				});				
-				vm.nombre_reponse_menage_choix_unique =iteration; // nombre valeur selectionnée unique
-				txtTmp += "nombre_reponse_menage_choix_unique" +":\"" + (iteration - 1) + "\",";	
-				var donnees = $.param(eval('({' + txtTmp + '})'));
+				inapte : vm.filtre.inapte 
+				var datas = $.param({
+					id_menage:vm.selectedItem.id,      
+					tab_multiple: JSON.stringify(vm.tab_reponse_variable),      
+					tab_unique: JSON.stringify(vm.choix_unique),      
+					tab_quantifie: JSON.stringify(vm.tab_quantifie),      
+					tab_texte: JSON.stringify(vm.tab_texte),      
+					identifiant_menage: vm.selectedItem.identifiant_menage ,
+					nombre_personne_plus_soixantedixans: vm.filtre.nombre_personne_plus_soixantedixans ,
+					taille_menage: vm.filtre.taille_menage ,
+					nombre_enfant_moins_quinze_ans: vm.filtre.nombre_enfant_moins_quinze_ans ,
+					nombre_enfant_non_scolarise: vm.filtre.nombre_enfant_non_scolarise ,
+					nombre_enfant_scolarise: vm.filtre.nombre_enfant_scolarise ,
+					nombre_enfant_moins_six_ans: vm.filtre.nombre_enfant_moins_six_ans ,
+					nombre_personne_handicape: vm.filtre.nombre_personne_handicape ,
+					nombre_adulte_travail: vm.filtre.nombre_adulte_travail ,
+					nombre_membre_a_etranger: vm.filtre.nombre_membre_a_etranger ,
+					maison_non_dure: vm.filtre.maison_non_dure ,
+					acces_electricite: vm.filtre.acces_electricite ,
+					acces_eau_robinet: vm.filtre.acces_eau_robinet ,
+					logement_endommage: vm.filtre.logement_endommage ,
+					niveau_degat_logement: vm.filtre.niveau_degat_logement ,
+					rehabilitation: vm.filtre.rehabilitation ,
+					beneficiaire_autre_programme: vm.filtre.beneficiaire_autre_programme ,
+					membre_fonctionnaire: vm.filtre.membre_fonctionnaire ,
+					antenne_parabolique: vm.filtre.antenne_parabolique ,
+					possede_frigo: vm.filtre.possede_frigo ,
+					nombre_personne_plus_soixantedixans_enquete: vm.filtre.nombre_personne_plus_soixantedixans_enquete ,
+					taille_menage_enquete: vm.filtre.taille_menage_enquete ,
+					nombre_enfant_moins_quinze_ans_enquete: vm.filtre.nombre_enfant_moins_quinze_ans_enquete ,
+					nombre_enfant_non_scolarise_enquete: vm.filtre.nombre_enfant_non_scolarise_enquete ,
+					nombre_enfant_scolarise_enquete: vm.filtre.nombre_enfant_scolarise_enquete ,
+					nombre_enfant_moins_six_ans_enquete: vm.filtre.nombre_enfant_moins_six_ans_enquete ,
+					nombre_personne_handicape_enquete: vm.filtre.nombre_personne_handicape_enquete ,
+					nombre_adulte_travail_enquete: vm.filtre.nombre_adulte_travail_enquete ,
+					nombre_membre_a_etranger_enquete: vm.filtre.nombre_membre_a_etranger_enquete ,
+					maison_non_dure_enquete: vm.filtre.maison_non_dure_enquete ,
+					acces_electricite_enquete: vm.filtre.acces_electricite_enquete ,
+					acces_eau_robinet_enquete: vm.filtre.acces_eau_robinet_enquete ,
+					logement_endommage_enquete: vm.filtre.logement_endommage_enquete ,
+					niveau_degat_logement_enquete: vm.filtre.niveau_degat_logement_enquete ,
+					rehabilitation_enquete: vm.filtre.rehabilitation_enquete ,
+					beneficiaire_autre_programme_enquete: vm.filtre.beneficiaire_autre_programme_enquete ,
+					membre_fonctionnaire_enquete: vm.filtre.membre_fonctionnaire_enquete ,
+					antenne_parabolique_enquete: vm.filtre.antenne_parabolique_enquete ,
+					possede_frigo_enquete: vm.filtre.possede_frigo_enquete ,
+					score_obtenu: vm.filtre.score_obtenu ,
+					rang_obtenu: vm.filtre.rang_obtenu 
+				});       
 				var config = {
 					headers : {
 						'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
 					}
 				};
-				apiFactory.add("reponse_menage/index",donnees, config).success(function (data) {
+				apiFactory.add("reponse_menage/index",datas, config).success(function (data) {
 					// Ecraser les valeurs dans vm.selectedItem 
 					vm.selectedItem.detail_reponse_menage_multiple = []; 
 					vm.selectedItem.detail_reponse_menage_unique = []; 	
@@ -1999,13 +1947,6 @@
 					vm.menage_prevu=data.response.menage_prevu;
 					vm.individu_prevu=data.response.individu_prevu;
 					vm.groupe_prevu=data.response.groupe_prevu;
-					if(parseInt(vm.menage_prevu)==1) {
-						vm.afficher_cible="MENAGE";
-					} else if(parseInt(vm.individu_prevu)==1) {
-						vm.afficher_cible="INDIVIDU";
-					} else {
-						vm.afficher_cible="GROUPE";
-					}
 					vm.selectedItem.detail_charge=1;
 					vm.showAlert("INFORMATION","Réponse ménage sauvegardé avec succès");
 					//add historique : suppresion/modifcation/ajout DDB Annuaire : variable d'intervention
@@ -2038,6 +1979,23 @@
 					}		
 				});				
 			}
+		}	
+		vm.charger_detail_reponse_individu= function(item) {
+				vm.affiche_load=true;
+				apiFactory.getAPIgeneraliser("reponse_individu/index","cle_etrangere",vm.selectedItem_individu.id).then(function(result) {
+					vm.tab_reponse_variable_individu=[];
+					vm.choix_unique_individu=[];
+					vm.tab_texte_individu=[];
+					vm.tab_quantifie_individu=[];
+					vm.tab_reponse_variable_individu=result.data.response.variable_choix_multiple; ;
+					vm.choix_unique_individu=result.data.response.variable_choix_unique;
+					vm.tab_texte_individu=result.data.response.variable_texte_libre;
+					vm.temp=result.data.response.variable_quantifiee;					
+					angular.forEach(vm.temp, function(value, key)  { 
+						vm.tab_quantifie_individu[key] = Number(value);
+					});			
+					vm.affiche_load=false;
+				});
 		}	
 		vm.Sommer_Membre_Menages=function() {
 			vm.total=0;
@@ -2082,6 +2040,18 @@
 				vm.total=vm.total + parseInt(vm.filtre.nombre_membre_a_etranger_enquete);
 			}
 			vm.filtre.taille_menage_enquete=vm.total;
+		}
+		vm.browse=function() {
+			// console.log(vm.tab_quantifie);
+		}	
+		vm.browsetexte=function() {
+			// console.log(vm.tab_texte);
+		}	
+		vm.browseindividu=function() {
+			// console.log(vm.tab_quantifie_individu);
+		}	
+		vm.browsetexteindividu=function() {
+			// console.log(vm.tab_texte_individu);
 		}	
 		// FIN DIFFRENTES FONCTIONS UTILES POUR LA SAUVEGARDE VARIABLE INTERVENTION
 	}

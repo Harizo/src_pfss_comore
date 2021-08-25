@@ -194,7 +194,7 @@
 			}).error(function (data) {
 				vm.disable_button = false ;
 				vm.affiche_load = false ;
-				console.log('erreur '+data);
+				// console.log('erreur '+data);
 				vm.showAlert("Attention","Erreur lors de l'enregistrement!");
 			});         
 		}
@@ -225,7 +225,7 @@
 		});    
 		apiFactory.getAPIgeneraliserREST("liste_variable_individu/index","choix_multiple",1).then(function(result){
 			vm.allRecordsListevariableindividu = result.data.response;
-			console.log(vm.allRecordsListevariableindividu);
+			// console.log(vm.allRecordsListevariableindividu);
 		});    
 		apiFactory.getAPIgeneraliserREST("variable_menage/index","quantifie",1).then(function(result){
 			vm.all_reponse_quantifiee = result.data.response;
@@ -607,7 +607,7 @@
 						vm.showAlert("Information",'Enregistrement réussi!');
 					}).error(function (data) {
 						vm.disable_button = false ;
-						console.log('erreur '+data);
+						// console.log('erreur '+data);
 						vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 					});
 				}	
@@ -743,7 +743,7 @@
                                                 ).then(function(result) {               
 					vm.status =  result.data.status ;
 					if(vm.status)  {
-						console.log(result.data);
+						// console.log(result.data);
 						var ile =	result.data.ile;
 						var region =result.data.region;
 						var commune =result.data.commune;
@@ -765,7 +765,7 @@
 						vm.affiche_export_carte =false; 
 					} else {
 						vm.affiche_export_carte =false;
-						console.log(result.data);
+						// console.log(result.data);
 						var message=result.data.message;
 						var message=result.data.nom_file;
 						vm.showAlert('Export en excel',message);
@@ -889,7 +889,7 @@
 				vm.tab_texte_individu=[];      
 			}).error(function (data) {
 				vm.disable_button = false ;
-				console.log('erreur '+data);
+				// console.log('erreur '+data);
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 			});
 		}
@@ -996,7 +996,7 @@
 				}        
 			}).error(function (data) {
 				vm.disable_button = false ;
-				console.log('erreur '+data);
+				// console.log('erreur '+data);
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 			});         
 		}
@@ -1024,7 +1024,7 @@
 				}        
 			}).error(function (data) {
 				vm.disable_button = false ;
-				console.log('erreur '+data);
+				// console.log('erreur '+data);
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 			}); 
 		}
@@ -1060,7 +1060,7 @@
 				}
 			}).error(function (data) {
 				vm.disable_button = false ;
-				console.log('erreur '+data);
+				// console.log('erreur '+data);
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 			});    
 		}
@@ -1087,7 +1087,7 @@
 				}       
 			}).error(function (data) {
 				vm.disable_button = false ;
-				console.log('erreur '+data);
+				// console.log('erreur '+data);
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 			}); 
 		}
@@ -1313,7 +1313,7 @@
 						phototravailleur: menage.phototravailleur,
 						phototravailleursuppliant: menage.phototravailleursuppliant,
 					}
-						   console.log(menage);
+						   // console.log(menage);
 					vm.nouvelle_element =false;	   
 					vm.all_menages.push(mng) ;
 					vm.selectedItem ={};	
@@ -1411,7 +1411,7 @@
   				}      
 			}).error(function (data) {
 				vm.disable_button = false ;
-				console.log('erreur '+data);
+				// console.log('erreur '+data);
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 			}); 
 		}
@@ -1427,12 +1427,12 @@
 			if (!vm.nouvelle_element_individu) {
 				var id_idv = vm.selectedItem_individu.id ;
 			}
-					angular.forEach(vm.tab_texte_individu, function(value, key)  { 
-						vm.x="key= " + key;
-						vm.y="value= " + value;
-						console.log(vm.x);
-						console.log(vm.y);
-					});			
+			// angular.forEach(vm.tab_texte_individu, function(value, key)  { 
+				// vm.x="key= " + key;
+				// vm.y="value= " + value;
+				// console.log(vm.x);
+				// console.log(vm.y);
+			// });			
 			// les tableaux sont enregistrés en meme temps que les info pour individu 
 			var datas = $.param(
                     {    
@@ -1452,9 +1452,7 @@
 						lienparental: individu.lienparental,
 						aptitude: individu.aptitude,
 						scolarise: individu.scolarise,
-						a_ete_modifie: 0,
-                    
-                                                 
+						a_ete_modifie: 0,                                               
                     });
 			apiFactory.add("individu/index",datas, config).success(function (data) {
 				vm.disable_button = false ;
@@ -1506,7 +1504,7 @@
 				}       
 			}).error(function (data) {
 				vm.disable_button = false ;
-				console.log('erreur '+data);
+				// console.log('erreur '+data);
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 			});
 		}
@@ -1517,7 +1515,8 @@
 					vm.choix_unique=[];
 					vm.tab_texte=[];
 					vm.tab_quantifie=[];
-					console.log(result.data.response);
+					// console.log(result.data.response);
+					// console.log(vm.selectedItem.id);
 					vm.tab_reponse_variable=result.data.response.variable_choix_multiple; ;
 					vm.choix_unique=result.data.response.variable_choix_unique;
 					vm.tab_texte=result.data.response.variable_texte_libre;
@@ -2219,16 +2218,16 @@
 			vm.filtre.taille_menage_enquete=vm.total;
 		}
 		vm.browse=function() {
-			console.log(vm.tab_quantifie);
+			// console.log(vm.tab_quantifie);
 		}	
 		vm.browsetexte=function() {
-			console.log(vm.tab_texte);
+			// console.log(vm.tab_texte);
 		}	
 		vm.browseindividu=function() {
-			console.log(vm.tab_quantifie_individu);
+			// console.log(vm.tab_quantifie_individu);
 		}	
 		vm.browsetexteindividu=function() {
-			console.log(vm.tab_texte_individu);
+			// console.log(vm.tab_texte_individu);
 		}	
 		// FIN DIFFRENTES FONCTIONS UTILES POUR LA SAUVEGARDE VARIABLE INTERVENTION
 		// Début Fonction concernant la fenetre modal
@@ -2300,7 +2299,7 @@
 				$mdDialog.hide();
 			}).error(function (data) {
 				vm.disable_button = false ;
-				console.log('erreur '+data);
+				// console.log('erreur '+data);
 				vm.showAlert("Alerte","Erreur lors de l'enregistrement!");
 			});
 		}			
